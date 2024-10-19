@@ -2,18 +2,19 @@ package com.bobmowzie.mowziesmobs.client.particle.util;
 
 import com.bobmowzie.mowziesmobs.client.particle.ParticleRibbon;
 import com.bobmowzie.mowziesmobs.client.particle.types.RibbonParticleType;
+import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.world.phys.Vec3;
 
 public class RibbonComponent extends ParticleComponent {
     int length;
-    ParticleType<? extends RibbonParticleType> ribbon;
+    Holder<ParticleType<?>> ribbon;
     double yaw, pitch, roll, scale, r, g, b, a;
     boolean faceCamera;
     boolean emissive;
     ParticleComponent[] components;
 
-    public RibbonComponent(ParticleType<? extends RibbonParticleType> particle, int length, double yaw, double pitch, double roll, double scale, double r, double g, double b, double a, boolean faceCamera, boolean emissive, ParticleComponent[] components) {
+    public RibbonComponent(Holder<ParticleType<?>> particle, int length, double yaw, double pitch, double roll, double scale, double r, double g, double b, double a, boolean faceCamera, boolean emissive, ParticleComponent[] components) {
         this.length = length;
         this.yaw = yaw;
         this.pitch = pitch;
