@@ -36,16 +36,19 @@ public class ClientLayerRegistry {
     }
 
     private static void addLayerIfApplicable(EntityType<? extends LivingEntity> entityType, EntityRenderersEvent.AddLayers event) {
-        LivingEntityRenderer renderer = null;
-        if(entityType != EntityType.ENDER_DRAGON){
-            try{
-                renderer = event.getRenderer(entityType);
-            }catch (Exception e){
+        LivingEntityRenderer<?, ?> renderer = null;
+
+        if (entityType != EntityType.ENDER_DRAGON) {
+            try {
+                if (event.getRenderer(entityType) instanceof LivingEntityRenderer<?,?> livingRenderer) {
+                    renderer = livingRenderer;
+                }
+            } catch (Exception e) {
                 if (!entityType.getBaseClass().isAssignableFrom(MowzieEntity.class)) {
                     MMCommon.LOGGER.warn("Could not apply layer to " + entityType.getDescriptionId() + ", has custom renderer that is not LivingEntityRenderer.");
                 }
             }
-            if(renderer != null){
+            if (renderer != null) {
                 renderer.addLayer(new FrozenRenderHandler.LayerFrozen(renderer));
                 renderer.addLayer(new SunblockLayer(renderer));
             }

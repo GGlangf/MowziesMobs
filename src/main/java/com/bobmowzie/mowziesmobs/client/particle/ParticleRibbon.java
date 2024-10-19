@@ -220,10 +220,10 @@ public class ParticleRibbon extends AdvancedParticleBase {
         return getV1();
     }
 
-    public static final class Factory implements ParticleProvider<RibbonParticleType> {
+    public static final class Provider implements ParticleProvider<RibbonParticleType> {
         private final SpriteSet spriteSet;
 
-        public Factory(SpriteSet spriteSet) {
+        public Provider(SpriteSet spriteSet) {
             this.spriteSet = spriteSet;
         }
 

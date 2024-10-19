@@ -10,6 +10,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
+import net.minecraft.util.FastColor;
 
 public class WroughtnautEyesLayer<T extends EntityWroughtnaut> extends RenderLayer<T, ModelWroughtnaut<T>> {
     private final EntityModel<T> model = new ModelWroughtnaut<>(true);
@@ -24,7 +25,7 @@ public class WroughtnautEyesLayer<T extends EntityWroughtnaut> extends RenderLay
             this.model.prepareMobModel(entitylivingbaseIn, limbSwing, limbSwingAmount, partialTicks);
             this.model.setupAnim(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
             VertexConsumer ivertexbuilder = bufferIn.getBuffer(MMRenderType.eyes(this.getTextureLocation(entitylivingbaseIn)));
-            this.model.renderToBuffer(matrixStackIn, ivertexbuilder, packedLightIn, LivingEntityRenderer.getOverlayCoords(entitylivingbaseIn, 0.0F), 1.0F, 1.0F, 1.0F, 1.0F);
+            this.model.renderToBuffer(matrixStackIn, ivertexbuilder, packedLightIn, LivingEntityRenderer.getOverlayCoords(entitylivingbaseIn, 0.0F), -1);
         }
     }
 }

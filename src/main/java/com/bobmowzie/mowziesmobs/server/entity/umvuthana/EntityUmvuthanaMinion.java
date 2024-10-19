@@ -224,10 +224,10 @@ public class EntityUmvuthanaMinion extends EntityUmvuthana implements LeaderSuns
 
     @Nullable
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData livingData, @Nullable CompoundTag compound) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData livingData) {
         tradeStore = DEFAULT;
         if (reason == MobSpawnType.COMMAND) restrictTo(blockPosition(), 25);
-        return super.finalizeSpawn(world, difficulty, reason, livingData, compound);
+        return super.finalizeSpawn(world, difficulty, reason, livingData);
     }
 
     @Override
@@ -256,8 +256,8 @@ public class EntityUmvuthanaMinion extends EntityUmvuthana implements LeaderSuns
     @Override
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
-        tradeStore = TradeStore.deserialize(compound.getCompound("tradeStore"));
-        setOfferingTrade(Trade.deserialize(compound.getCompound("offeringTrade")));
+        tradeStore = TradeStore.deserialize(registryAccess(), compound.getCompound("tradeStore"));
+        setOfferingTrade(Trade.deserialize(registryAccess(), compound.getCompound("offeringTrade")));
         timeOffering = compound.getInt("timeOffering");
         int i = compound.getInt("HomePosX");
         int j = compound.getInt("HomePosY");

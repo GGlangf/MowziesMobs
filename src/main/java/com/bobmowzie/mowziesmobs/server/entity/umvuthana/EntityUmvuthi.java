@@ -461,7 +461,7 @@ public class EntityUmvuthi extends MowzieGeckoEntity implements LeaderSunstrikeI
                     float offsetX = (float) (-0.3 * Math.sin(getYRot() * Math.PI / 180));
                     float offsetZ = (float) (-0.3 * Math.cos(getYRot() * Math.PI / 180));
                     float offsetY = 1;
-                    level().addParticle(new ParticleOrb.OrbData((float) getX() + offsetX, (float) getY() + offsetY, (float) getZ() + offsetZ, 6), getX() + ox + offsetX, getY() + offsetY + oy, getZ() + oz + offsetZ, 0, 0, 0);
+                    level().addParticle(ParticleOrb.Data.create((float) getX() + offsetX, (float) getY() + offsetY, (float) getZ() + offsetZ, 6), getX() + ox + offsetX, getY() + offsetY + oy, getZ() + oz + offsetZ, 0, 0, 0);
                 }
             }
         }

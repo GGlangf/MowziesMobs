@@ -218,14 +218,14 @@ public class GongBlock extends BaseEntityBlock {
 
     }
 
-    public void playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
+    @Override
+    public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
         if (!level.isClientSide && player.isCreative()) {
             for (int i = 0; i <= 2; i++) {
                 BlockPos abovePos = pos.above(i);
                 BlockPos blockpos1 = abovePos.relative(state.getValue(FACING).getClockWise());
-                BlockPos blockpos2 = abovePos;
                 BlockPos blockpos3 = abovePos.relative(state.getValue(FACING).getCounterClockWise());
-                BlockPos[] toBreakPoses = {blockpos1, blockpos2, blockpos3};
+                BlockPos[] toBreakPoses = {blockpos1, abovePos, blockpos3};
                 for (BlockPos toBreakPos : toBreakPoses) {
                     BlockState blockstate = level.getBlockState(toBreakPos);
                     if (blockstate.is(BlockHandler.GONG_PART.get())) {
@@ -236,7 +236,7 @@ public class GongBlock extends BaseEntityBlock {
             }
         }
 
-        super.playerWillDestroy(level, pos, state, player);
+        return super.playerWillDestroy(level, pos, state, player);
     }
 
     public enum GongPart implements StringRepresentable {

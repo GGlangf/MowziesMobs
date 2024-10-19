@@ -49,12 +49,12 @@ public final class TradeStore {
         return compound;
     }
 
-    public static TradeStore deserialize(CompoundTag compound) {
+    public static TradeStore deserialize(RegistryAccess access, CompoundTag compound) {
         ListTag tradesList = compound.getList("trades", Tag.TAG_COMPOUND);
         int totalWeight = 0;
         ImmutableSet.Builder<Trade> trades = new ImmutableSet.Builder<>();
         for (int i = 0; i < tradesList.size(); i++) {
-            Trade trade = Trade.deserialize(tradesList.getCompound(i));
+            Trade trade = Trade.deserialize(access, tradesList.getCompound(i));
             if (trade != null) {
                 trades.add(trade);
                 totalWeight += trade.getWeight();
@@ -69,11 +69,7 @@ public final class TradeStore {
         private int totalWeight;
 
         public Builder addTrade(Item input, int inputCount, Item output, int outputCount, int weight) {
-            return addTrade(input, inputCount, null, output, outputCount, null, weight);
-        }
-
-        public Builder addTrade(Item input, int inputCount, CompoundTag inputMeta, Item output, int outputCount, CompoundTag outputMeta, int weight) {
-            return addTrade(new ItemStack(input, inputCount, inputMeta), new ItemStack(output, outputCount, outputMeta), weight);
+            return addTrade(new ItemStack(input, inputCount), new ItemStack(output, outputCount), weight);
         }
 
         public Builder addTrade(ItemStack input, ItemStack output, int weight) {

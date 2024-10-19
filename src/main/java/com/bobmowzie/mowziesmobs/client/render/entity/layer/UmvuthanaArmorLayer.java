@@ -62,7 +62,7 @@ public class UmvuthanaArmorLayer extends GeoRenderLayer<EntityUmvuthana> {
                         poseStack.mulPose((new Quaternionf()).rotationXYZ(0.0F, 0.0F, (float) Math.PI));
                         poseStack.scale(1.511f, 1.511f, 1.511f);
                         poseStack.translate(0, -0.55, 0.15);
-                        model.renderToBuffer(poseStack, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, FastColor.ARGB32.colorFromFloat(1, 1, 1, 1));
+                        model.renderToBuffer(poseStack, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, -1);
                     }
                 });
             }

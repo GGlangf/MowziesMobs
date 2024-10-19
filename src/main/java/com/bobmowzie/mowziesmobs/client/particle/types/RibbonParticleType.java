@@ -2,6 +2,7 @@ package com.bobmowzie.mowziesmobs.client.particle.types;
 
 import com.bobmowzie.mowziesmobs.client.particle.util.ParticleComponent;
 import com.bobmowzie.mowziesmobs.client.particle.util.ParticleRotation;
+import com.bobmowzie.mowziesmobs.server.message.NetworkHandler;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -69,7 +70,7 @@ public class RibbonParticleType extends AdvancedTypeBase {
                     Codec.FLOAT.fieldOf("duration").forGetter(RibbonParticleType::duration),
                     Codec.FLOAT.fieldOf("air_drag").forGetter(RibbonParticleType::airDrag),
                     Codec.BOOL.fieldOf("emissive").forGetter(RibbonParticleType::emissive),
-                    Codec.INT.fieldOf("emissive").forGetter(RibbonParticleType::length)
+                    Codec.INT.fieldOf("length").forGetter(RibbonParticleType::length)
             ).apply(instance, RibbonParticleType::new)
     );
 
@@ -89,7 +90,7 @@ public class RibbonParticleType extends AdvancedTypeBase {
             ByteBufCodecs.FLOAT, RibbonParticleType::yaw,
             ByteBufCodecs.FLOAT, RibbonParticleType::pitch,
             ByteBufCodecs.FLOAT, RibbonParticleType::roll,
-            AdvancedParticleType::new
+            RibbonParticleType::new
     );
 
     public int length() {

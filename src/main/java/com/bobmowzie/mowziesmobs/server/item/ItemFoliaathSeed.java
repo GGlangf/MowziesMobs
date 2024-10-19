@@ -4,6 +4,7 @@ import com.bobmowzie.mowziesmobs.server.entity.EntityHandler;
 import com.bobmowzie.mowziesmobs.server.entity.foliaath.EntityBabyFoliaath;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
@@ -33,7 +34,7 @@ public class ItemFoliaathSeed extends Item {
             entity.moveTo(x + 0.5, y, z + 0.5, world.getLevel().random.nextFloat() * 360 - 180, 0);
             entity.yHeadRot = entity.getYRot();
             entity.yBodyRot = entity.getYRot();
-            entity.finalizeSpawn(world, world.getCurrentDifficultyAt(entity.blockPosition()), MobSpawnType.MOB_SUMMONED, null, null);
+            entity.finalizeSpawn(world, world.getCurrentDifficultyAt(entity.blockPosition()), MobSpawnType.MOB_SUMMONED, null);
             if (!entity.checkSpawnRules(world, MobSpawnType.MOB_SUMMONED)) {
                 return null;
             }
@@ -58,7 +59,7 @@ public class ItemFoliaathSeed extends Item {
         }
         Entity entity = spawnCreature((ServerLevel) world, new EntityBabyFoliaath(EntityHandler.BABY_FOLIAATH.get(), world), pos.getX(), pos.getY() + 1, pos.getZ());
         if (entity != null) {
-            if (entity instanceof LivingEntity && stack.hasCustomHoverName()) {
+            if (entity instanceof LivingEntity && stack.has(DataComponents.CUSTOM_NAME)) {
                 entity.setCustomName(stack.getHoverName());
             }
             if (!player.isCreative()) {

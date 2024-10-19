@@ -187,7 +187,8 @@ public class EntityBoulderProjectile extends EntityBoulderBase {
         setDeltaMovement(shootDirection);
         if (!travelling) setDeathTime(60);
         travelling = true;
-        setBoundingBox(getType().getAABB(getX(), getY(), getZ()));
+        // FIXME 1.21 :: in vanilla this was only used in spawn logic so this may not accurately reflect the dimensions of the entity
+        setBoundingBox(getType().getSpawnAABB(getX(), getY(), getZ()));
 
         if (boulderSize == GeomancyTier.SMALL) {
             playSound(MMSounds.EFFECT_GEOMANCY_HIT_SMALL.get(), 1.5f, 1.3f);

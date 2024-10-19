@@ -75,21 +75,21 @@ public class EntityIceBreath extends EntityMagicEffect {
             Camera camera = Minecraft.getInstance().gameRenderer.getMainCamera();
             boolean overrideLimiter = camera.getPosition().distanceToSqr(getX(), getY(), getZ()) < 64 * 64;
             if (tickCount % 8 == 0) {
-                level().addAlwaysVisibleParticle(new ParticleRing.RingData(yaw, -pitch, 40, 1f, 1f, 1f, 1f, 110f * spread, false, ParticleRing.EnumRingBehavior.GROW), overrideLimiter, getX(), getY(), getZ(), 0.5f * xComp, 0.5f * yComp, 0.5f * zComp);
+                level().addAlwaysVisibleParticle(new ParticleRing.Data(yaw, -pitch, 40, 1f, 1f, 1f, 1f, (int) (110 * spread), false, ParticleRing.EnumRingBehavior.GROW), overrideLimiter, getX(), getY(), getZ(), 0.5f * xComp, 0.5f * yComp, 0.5f * zComp);
             }
 
             for (int i = 0; i < 6; i++) {
                 double xSpeed = speed * 1f * xComp;// + (spread * (rand.nextFloat() * 2 - 1) * (1 - Math.abs(xComp)));
                 double ySpeed = speed * 1f * yComp;// + (spread * (rand.nextFloat() * 2 - 1) * (1 - Math.abs(yComp)));
                 double zSpeed = speed * 1f * zComp;// + (spread * (rand.nextFloat() * 2 - 1) * (1 - Math.abs(zComp)));
-                level().addParticle(new ParticleSnowFlake.SnowflakeData(37f, true), getX(), getY(), getZ(), xSpeed, ySpeed, zSpeed);
+                level().addParticle(new ParticleSnowFlake.Data(37f, true), getX(), getY(), getZ(), xSpeed, ySpeed, zSpeed);
             }
             for (int i = 0; i < 5; i++) {
                 double xSpeed = speed * xComp + (spread * 0.7 * (random.nextFloat() * 2 - 1) * (Math.sqrt(1 - xComp * xComp)));
                 double ySpeed = speed * yComp + (spread * 0.7 * (random.nextFloat() * 2 - 1) * (Math.sqrt(1 - yComp * yComp)));
                 double zSpeed = speed * zComp + (spread * 0.7 * (random.nextFloat() * 2 - 1) * (Math.sqrt(1 - zComp * zComp)));
                 float value = random.nextFloat() * 0.15f;
-                level().addAlwaysVisibleParticle(new ParticleCloud.CloudData(ParticleHandler.CLOUD.get(), 0.75f + value, 0.75f + value,1f, 10f + random.nextFloat() * 20f, 40, ParticleCloud.EnumCloudBehavior.GROW, 1f), overrideLimiter, getX(), getY(), getZ(), xSpeed, ySpeed, zSpeed);
+                level().addAlwaysVisibleParticle(new ParticleCloud.Data(0.75f + value, 0.75f + value,1f, 10f + random.nextFloat() * 20f, 40, ParticleCloud.EnumCloudBehavior.GROW, 1f), overrideLimiter, getX(), getY(), getZ(), xSpeed, ySpeed, zSpeed);
             }
         }
         if (tickCount > 10) hitEntities();

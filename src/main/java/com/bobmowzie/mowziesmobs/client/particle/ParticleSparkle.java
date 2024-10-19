@@ -54,11 +54,11 @@ public class ParticleSparkle extends TextureSheetParticle {
         return MMRenderType.PARTICLE_SHEET_TRANSLUCENT_NO_DEPTH;
     }
 
-    public static final class SparkleFactory implements ParticleProvider<SimpleParticleType> {
+    public static final class Provider implements ParticleProvider<SimpleParticleType> {
 
         private final SpriteSet spriteSet;
 
-        public SparkleFactory(SpriteSet sprite) {
+        public Provider(SpriteSet sprite) {
             this.spriteSet = sprite;
         }
 

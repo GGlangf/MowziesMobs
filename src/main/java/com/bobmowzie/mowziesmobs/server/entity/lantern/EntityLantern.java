@@ -157,8 +157,8 @@ public class EntityLantern extends MowzieLLibraryEntity {
         if (getAnimationTick() == 1 && level().isClientSide) {
             for (int i = 0; i < 8; i++) {
                 level().addParticle(ParticleTypes.ITEM_SLIME, getX(), getY(), getZ(), 0.2 * (random.nextFloat() - 0.5), 0.2 * (random.nextFloat() - 0.5), 0.2 * (random.nextFloat() - 0.5));
-                level().addParticle(new ParticleCloud.CloudData(163f / 256f, 247f / 256f, 74f / 256f, 10f + random.nextFloat() * 20f, 30, ParticleCloud.EnumCloudBehavior.GROW, 0.9f), getX(), getY() + 0.3, getZ(), 0.25 * (random.nextFloat() - 0.5), 0.25 * (random.nextFloat() - 0.5), 0.25 * (random.nextFloat() - 0.5));
-                level().addParticle(new ParticleOrb.OrbData(163f / 256f, 247f / 256f, 74f / 256f, 1.5f, 25), getX(), getY() + 0.3, getZ(), 0.2f * (random.nextFloat() - 0.5f), 0.2f * (random.nextFloat() - 0.5f), 0.2f * (random.nextFloat() - 0.5f));
+                level().addParticle(new ParticleCloud.Data(163f / 256f, 247f / 256f, 74f / 256f, 10f + random.nextFloat() * 20f, 30, ParticleCloud.EnumCloudBehavior.GROW, 0.9f), getX(), getY() + 0.3, getZ(), 0.25 * (random.nextFloat() - 0.5), 0.25 * (random.nextFloat() - 0.5), 0.25 * (random.nextFloat() - 0.5));
+                level().addParticle(ParticleOrb.Data.create(163f / 256f, 247f / 256f, 74f / 256f, 1.5f, 25), getX(), getY() + 0.3, getZ(), 0.2f * (random.nextFloat() - 0.5f), 0.2f * (random.nextFloat() - 0.5f), 0.2f * (random.nextFloat() - 0.5f));
             }
         }
         if (getAnimationTick() == 2) playSound(MMSounds.ENTITY_LANTERN_POP.get(), 1f, 0.8f + random.nextFloat() * 0.4f);

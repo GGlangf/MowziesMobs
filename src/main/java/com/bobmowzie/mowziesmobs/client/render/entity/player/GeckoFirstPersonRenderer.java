@@ -83,7 +83,7 @@ public class GeckoFirstPersonRenderer extends ItemInHandRenderer implements GeoR
             RenderType rendertype = RenderType.itemEntityTranslucentCull(getTextureLocation(geckoPlayer));
             VertexConsumer ivertexbuilder = bufferIn.getBuffer(rendertype);
             matrixStackIn.translate(0, -2, -1);
-            actuallyRender(matrixStackIn, geckoPlayer, getGeoModel().getBakedModel(getGeoModel().getModelResource(geckoPlayer)), rendertype, bufferIn, ivertexbuilder, false, partialTicks, combinedLightIn, OverlayTexture.NO_OVERLAY, FastColor.ARGB32.colorFromFloat(1, 1, 1, 1));
+            actuallyRender(matrixStackIn, geckoPlayer, getGeoModel().getBakedModel(getGeoModel().getModelResource(geckoPlayer)), rendertype, bufferIn, ivertexbuilder, false, partialTicks, combinedLightIn, OverlayTexture.NO_OVERLAY, -1);
         }
 
         PlayerAbility.HandDisplay handDisplay = PlayerAbility.HandDisplay.DEFAULT;

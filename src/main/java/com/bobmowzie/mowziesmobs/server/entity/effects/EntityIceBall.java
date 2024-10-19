@@ -9,7 +9,6 @@ import com.bobmowzie.mowziesmobs.server.capability.CapabilityHandler;
 import com.bobmowzie.mowziesmobs.server.capability.FrozenCapability.Capability;
 import com.bobmowzie.mowziesmobs.server.config.ConfigHandler;
 import com.bobmowzie.mowziesmobs.server.entity.EntityHandler;
-import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -18,7 +17,6 @@ import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -78,30 +76,30 @@ public class EntityIceBall extends EntityMagicEffect {
                 double ySpeed = scale * 0.01 * (random.nextFloat() * 2 - 1);
                 double zSpeed = scale * 0.01 * (random.nextFloat() * 2 - 1);
                 float value = random.nextFloat() * 0.15f;
-                level().addParticle(new ParticleCloud.CloudData(ParticleHandler.CLOUD.get(), 0.75f + value, 0.75f + value,1f, scale * (10f + random.nextFloat() * 20f), 20, ParticleCloud.EnumCloudBehavior.SHRINK, 1f), x + xSpeed, y + ySpeed, z + zSpeed, xSpeed, ySpeed, zSpeed);
+                level().addParticle(new ParticleCloud.Data(0.75f + value, 0.75f + value,1f, scale * (10f + random.nextFloat() * 20f), 20, ParticleCloud.EnumCloudBehavior.SHRINK, 1f), x + xSpeed, y + ySpeed, z + zSpeed, xSpeed, ySpeed, zSpeed);
             }
             for (int i = 0; i < 1; i++) {
                 double xSpeed = scale * 0.01 * (random.nextFloat() * 2 - 1);
                 double ySpeed = scale * 0.01 * (random.nextFloat() * 2 - 1);
                 double zSpeed = scale * 0.01 * (random.nextFloat() * 2 - 1);
-                level().addParticle(new ParticleCloud.CloudData(ParticleHandler.CLOUD.get(), 1f, 1f, 1f, scale * (5f + random.nextFloat() * 10f), 40, ParticleCloud.EnumCloudBehavior.SHRINK, 1f), x, y, z, xSpeed, ySpeed, zSpeed);
+                level().addParticle(new ParticleCloud.Data(1f, 1f, 1f, scale * (5f + random.nextFloat() * 10f), 40, ParticleCloud.EnumCloudBehavior.SHRINK, 1f), x, y, z, xSpeed, ySpeed, zSpeed);
             }
 
             for (int i = 0; i < 5; i++) {
                 double xSpeed = scale * 0.05 * (random.nextFloat() * 2 - 1);
                 double ySpeed = scale * 0.05 * (random.nextFloat() * 2 - 1);
                 double zSpeed = scale * 0.05 * (random.nextFloat() * 2 - 1);
-                level().addParticle(new ParticleSnowFlake.SnowflakeData(40, false), x - 20 * (xSpeed) + motionX, y - 20 * ySpeed + motionY, z - 20 * zSpeed + motionZ, xSpeed, ySpeed, zSpeed);
+                level().addParticle(new ParticleSnowFlake.Data(40, false), x - 20 * (xSpeed) + motionX, y - 20 * ySpeed + motionY, z - 20 * zSpeed + motionZ, xSpeed, ySpeed, zSpeed);
             }
 
             float yaw = (float) Math.atan2(motionX, motionZ);
             float pitch = (float) (Math.acos(motionY / Math.sqrt(motionX * motionX + motionY * motionY + motionZ * motionZ)) + Math.PI / 2);
             if (tickCount % 3 == 0) {
-                level().addParticle(new ParticleRing.RingData(yaw, pitch, 40, 0.9f, 0.9f, 1f, 0.4f, scale * 16f, false, ParticleRing.EnumRingBehavior.GROW_THEN_SHRINK), x + 1.5f * motionX, y + 1.5f *motionY, z + 1.5f * motionZ, 0, 0, 0);
+                level().addParticle(new ParticleRing.Data(yaw, pitch, 40, 0.9f, 0.9f, 1f, 0.4f, (int) (scale * 16), false, ParticleRing.EnumRingBehavior.GROW_THEN_SHRINK), x + 1.5f * motionX, y + 1.5f *motionY, z + 1.5f * motionZ, 0, 0, 0);
             }
 
             if (tickCount == 1) {
-                level().addParticle(new ParticleRing.RingData(yaw, pitch, 20, 0.9f, 0.9f, 1f, 0.4f, scale * 16f, false, ParticleRing.EnumRingBehavior.GROW), x, y, z, 0, 0, 0);
+                level().addParticle(new ParticleRing.Data(yaw, pitch, 20, 0.9f, 0.9f, 1f, 0.4f, (int) (scale * 16), false, ParticleRing.EnumRingBehavior.GROW), x, y, z, 0, 0, 0);
             }
         }
         if (tickCount > 50) discard() ;
@@ -118,13 +116,13 @@ public class EntityIceBall extends EntityMagicEffect {
                 particlePos = particlePos.yRot((float) (random.nextFloat() * 2 * Math.PI));
                 particlePos = particlePos.xRot((float) (random.nextFloat() * 2 * Math.PI));
                 float value = random.nextFloat() * 0.15f;
-                level().addParticle(new ParticleCloud.CloudData(ParticleHandler.CLOUD.get(), 0.75f + value, 0.75f + value, 1f, 10f + random.nextFloat() * 20f, 40, ParticleCloud.EnumCloudBehavior.GROW, 1f), getX() + particlePos.x, getY() + particlePos.y, getZ() + particlePos.z, particlePos.x, particlePos.y, particlePos.z);
+                level().addParticle(new ParticleCloud.Data(0.75f + value, 0.75f + value, 1f, 10f + random.nextFloat() * 20f, 40, ParticleCloud.EnumCloudBehavior.GROW, 1f), getX() + particlePos.x, getY() + particlePos.y, getZ() + particlePos.z, particlePos.x, particlePos.y, particlePos.z);
             }
             for (int i = 0; i < 10; i++) {
                 Vec3 particlePos = new Vec3(random.nextFloat() * 0.3, 0, 0);
                 particlePos = particlePos.yRot((float) (random.nextFloat() * 2 * Math.PI));
                 particlePos = particlePos.xRot((float) (random.nextFloat() * 2 * Math.PI));
-                level().addParticle(new ParticleSnowFlake.SnowflakeData(40, false), getX() + particlePos.x, getY() + particlePos.y, getZ() + particlePos.z, particlePos.x, particlePos.y, particlePos.z);
+                level().addParticle(new ParticleSnowFlake.Data(40, false), getX() + particlePos.x, getY() + particlePos.y, getZ() + particlePos.z, particlePos.x, particlePos.y, particlePos.z);
             }
         }
         discard() ;

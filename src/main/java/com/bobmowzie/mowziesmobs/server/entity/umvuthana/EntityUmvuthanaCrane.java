@@ -278,9 +278,9 @@ public class EntityUmvuthanaCrane extends EntityUmvuthanaMinion {
     }
 
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType reason, SpawnGroupData livingData, CompoundTag compound) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType reason, SpawnGroupData livingData) {
         setMask(MaskType.FAITH);
         setWeapon(3);
-        return super.finalizeSpawn(world, difficulty, reason, livingData, compound);
+        return super.finalizeSpawn(world, difficulty, reason, livingData);
     }
 }

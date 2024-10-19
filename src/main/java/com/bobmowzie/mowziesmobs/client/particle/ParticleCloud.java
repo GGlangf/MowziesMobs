@@ -85,15 +85,15 @@ public class ParticleCloud extends TextureSheetParticle {
         super.render(buffer, renderInfo, partialTicks);
     }
 
-    public static final class CloudFactory implements ParticleProvider<CloudData> {
+    public static final class Provider implements ParticleProvider<Data> {
         private final SpriteSet spriteSet;
 
-        public CloudFactory(SpriteSet sprite) {
+        public Provider(SpriteSet sprite) {
             this.spriteSet = sprite;
         }
 
         @Override
-        public Particle createParticle(CloudData typeIn, ClientLevel worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+        public Particle createParticle(Data typeIn, @NotNull ClientLevel worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
             ParticleCloud particleCloud = new ParticleCloud(worldIn, x, y, z, xSpeed, ySpeed, zSpeed, typeIn.red(), typeIn.green(), typeIn.blue(), typeIn.scale(), typeIn.duration(), typeIn.behavior(), typeIn.airDrag());
             particleCloud.setSpriteFromAge(spriteSet);
             particleCloud.setColor(typeIn.red(), typeIn.green(), typeIn.blue());
@@ -101,10 +101,10 @@ public class ParticleCloud extends TextureSheetParticle {
         }
     }
 
-    public record CloudData(float red, float green, float blue, float scale, int duration, EnumCloudBehavior behavior, float airDrag) implements ParticleOptions {
+    public record Data(float red, float green, float blue, float scale, int duration, EnumCloudBehavior behavior, float airDrag) implements ParticleOptions {
         public static final Codec<EnumCloudBehavior> BEHAVIOUR_CODEC = StringRepresentable.fromEnum(EnumCloudBehavior::values);
 
-        public static final MapCodec<CloudData> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+        public static final MapCodec<Data> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
                         Codec.FLOAT.fieldOf("red").forGetter(data -> data.red),
                         Codec.FLOAT.fieldOf("green").forGetter(data -> data.green),
                         Codec.FLOAT.fieldOf("blue").forGetter(data -> data.blue),
@@ -112,18 +112,18 @@ public class ParticleCloud extends TextureSheetParticle {
                         Codec.INT.fieldOf("duration").forGetter(data -> data.duration),
                         BEHAVIOUR_CODEC.fieldOf("behaviour").forGetter(data -> data.behavior),
                         Codec.FLOAT.fieldOf("air_drag").forGetter(data -> data.airDrag)
-                ).apply(instance, CloudData::new)
+                ).apply(instance, Data::new)
         );
 
-        public static final StreamCodec<RegistryFriendlyByteBuf, CloudData> STREAM_CODEC = NeoForgeStreamCodecs.composite(
-                ByteBufCodecs.FLOAT, CloudData::red,
-                ByteBufCodecs.FLOAT, CloudData::green,
-                ByteBufCodecs.FLOAT, CloudData::blue,
-                ByteBufCodecs.FLOAT, CloudData::scale,
-                ByteBufCodecs.INT, CloudData::duration,
-                NeoForgeStreamCodecs.enumCodec(EnumCloudBehavior.class), CloudData::behavior,
-                ByteBufCodecs.FLOAT, CloudData::airDrag,
-                CloudData::new
+        public static final StreamCodec<RegistryFriendlyByteBuf, Data> STREAM_CODEC = NeoForgeStreamCodecs.composite(
+                ByteBufCodecs.FLOAT, Data::red,
+                ByteBufCodecs.FLOAT, Data::green,
+                ByteBufCodecs.FLOAT, Data::blue,
+                ByteBufCodecs.FLOAT, Data::scale,
+                ByteBufCodecs.INT, Data::duration,
+                NeoForgeStreamCodecs.enumCodec(EnumCloudBehavior.class), Data::behavior,
+                ByteBufCodecs.FLOAT, Data::airDrag,
+                Data::new
         );
 
         @Override

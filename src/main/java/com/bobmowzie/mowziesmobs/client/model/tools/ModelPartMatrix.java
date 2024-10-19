@@ -5,7 +5,7 @@ import net.minecraft.client.model.geom.ModelPart;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 
-public class ModelPartMatrix extends ModelPart { // FIXME 1.21 :: accesstransformer
+public class ModelPartMatrix extends ModelPart {
     private Matrix4f worldXform;
     private Matrix3f worldNormal;
 

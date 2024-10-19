@@ -229,7 +229,7 @@ public class EntitySolarBeam extends Entity {
                         double o2x = (float) (-1 * Math.cos(getYaw()) * Math.cos(getPitch()));
                         double o2y = (float) (-1 * Math.sin(getPitch()));
                         double o2z = (float) (-1 * Math.sin(getYaw()) * Math.cos(getPitch()));
-                        level().addParticle(new ParticleOrb.OrbData((float) (collidePosX + o2x + ox), (float) (collidePosY + o2y + oy), (float) (collidePosZ + o2z + oz), 15), getX() + o2x + ox, getY() + o2y + oy, getZ() + o2z + oz, 0, 0, 0);
+                        level().addParticle(ParticleOrb.Data.create((float) (collidePosX + o2x + ox), (float) (collidePosY + o2y + oy), (float) (collidePosZ + o2z + oz), 15), getX() + o2x + ox, getY() + o2y + oy, getZ() + o2z + oz, 0, 0, 0);
                     }
                     particleCount = 4;
                     while (particleCount --> 0) {
@@ -242,7 +242,7 @@ public class EntitySolarBeam extends Entity {
                         double o2x = -1 * Math.cos(getYaw()) * Math.cos(getPitch());
                         double o2y = -1 * Math.sin(getPitch());
                         double o2z = -1 * Math.sin(getYaw()) * Math.cos(getPitch());
-                        level().addParticle(new ParticleOrb.OrbData((float) (collidePosX + o2x + ox), (float) (collidePosY + o2y + oy), (float) (collidePosZ + o2z + oz), 20), collidePosX + o2x, collidePosY + o2y, collidePosZ + o2z, 0, 0, 0);
+                        level().addParticle(ParticleOrb.Data.create((float) (collidePosX + o2x + ox), (float) (collidePosY + o2y + oy), (float) (collidePosZ + o2z + oz), 20), collidePosX + o2x, collidePosY + o2y, collidePosZ + o2z, 0, 0, 0);
                     }
                 }
             }

@@ -140,10 +140,10 @@ public class ParticleDecal extends AdvancedParticleBase {
         buffer.addVertex((float) (x - vector3d.x()), (float) (y - vector3d.y()), (float) (z - vector3d.z())).setUv(u, v).setColor(r, g, b, alpha).setLight(lightColor);
     }
 
-    public static class Factory implements ParticleProvider<DecalParticleType> {
+    public static class Provider implements ParticleProvider<DecalParticleType> {
         private final SpriteSet spriteSet;
 
-        public Factory(SpriteSet sprite) {
+        public Provider(SpriteSet sprite) {
             this.spriteSet = sprite;
         }
 

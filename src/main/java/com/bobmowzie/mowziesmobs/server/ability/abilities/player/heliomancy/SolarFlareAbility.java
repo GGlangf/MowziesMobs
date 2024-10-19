@@ -66,7 +66,7 @@ public class SolarFlareAbility extends HeliomancyAbilityBase {
                 double ox = radius * Math.sin(yaw) * Math.sin(pitch);
                 double oy = radius * Math.cos(pitch);
                 double oz = radius * Math.cos(yaw) * Math.sin(pitch);
-                getLevel().addParticle(new ParticleOrb.OrbData((float) getUser().getX(), (float) getUser().getY() + getUser().getBbHeight() / 2f, (float) getUser().getZ(), 6), getUser().getX() + ox, getUser().getY() + getUser().getBbHeight() / 2f + oy, getUser().getZ() + oz, 0, 0, 0);
+                getLevel().addParticle(ParticleOrb.Data.create((float) getUser().getX(), (float) getUser().getY() + getUser().getBbHeight() / 2f, (float) getUser().getZ(), 6), getUser().getX() + ox, getUser().getY() + getUser().getBbHeight() / 2f + oy, getUser().getZ() + oz, 0, 0, 0);
             }
         }
 

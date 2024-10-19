@@ -149,7 +149,7 @@ public class EntitySunstrike extends Entity implements IEntityWithComplexSpawn {
                     float oz = r * Mth.sin(theta);
                     final float minY = 0.1F;
                     float oy = random.nextFloat() * (time * 6 - minY) + minY;
-                    level().addParticle(new ParticleOrb.OrbData((float) getX(), (float) getZ()), getX() + ox, getY() + oy, getZ() + oz, 0, 0, 0);
+                    level().addParticle(ParticleOrb.Data.create((float) getX(), (float) getZ()), getX() + ox, getY() + oy, getZ() + oz, 0, 0, 0);
                 }
             } else if (strikeTime > STRIKE_EXPLOSION) {
                 this.smolder();

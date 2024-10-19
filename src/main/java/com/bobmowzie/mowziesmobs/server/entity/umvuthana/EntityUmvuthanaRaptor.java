@@ -144,7 +144,7 @@ public class EntityUmvuthanaRaptor extends EntityUmvuthana implements LeaderSuns
 
     @Nullable
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData livingData, @Nullable CompoundTag compound) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData livingData) {
         int size = random.nextInt(2) + 3;
         float theta = (2 * (float) Math.PI / size);
         for (int i = 0; i <= size; i++) {
@@ -154,7 +154,7 @@ public class EntityUmvuthanaRaptor extends EntityUmvuthana implements LeaderSuns
             tribeHunter.setWeapon(weapon);
             world.addFreshEntity(tribeHunter);
         }
-        return super.finalizeSpawn(world, difficulty, reason, livingData, compound);
+        return super.finalizeSpawn(world, difficulty, reason, livingData);
     }
 
     @Override

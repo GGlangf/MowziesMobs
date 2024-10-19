@@ -484,7 +484,7 @@ public class UmvuthanaGrovePieces {
                     BlockPos bPos = findGround(worldIn, x, z);
                     umvuthana.setPos(bPos.getX(), bPos.getY(), bPos.getZ());
                     if (bPos.getY() > 0 && umvuthana.checkSpawnRules(worldIn, MobSpawnType.STRUCTURE) && worldIn.noCollision(umvuthana.getBoundingBox())) {
-                        umvuthana.finalizeSpawn(worldIn, worldIn.getCurrentDifficultyAt(umvuthana.blockPosition()), MobSpawnType.STRUCTURE, null, null);
+                        umvuthana.finalizeSpawn(worldIn, worldIn.getCurrentDifficultyAt(umvuthana.blockPosition()), MobSpawnType.STRUCTURE, null);
                         umvuthana.restrictTo(centerPos, 25);
                         worldIn.addFreshEntity(umvuthana);
                         break;

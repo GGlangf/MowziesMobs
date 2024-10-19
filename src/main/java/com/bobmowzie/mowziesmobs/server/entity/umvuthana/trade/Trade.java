@@ -58,9 +58,9 @@ public final class Trade {
         return compound;
     }
 
-    public static Trade deserialize(CompoundTag compound) {
-        ItemStack input = ItemStack.of(compound.getCompound("input"));
-        ItemStack output = ItemStack.of(compound.getCompound("output"));
+    public static Trade deserialize(RegistryAccess access, CompoundTag compound) {
+        ItemStack input = ItemStack.parseOptional(access, compound.getCompound("input"));
+        ItemStack output = ItemStack.parseOptional(access, compound.getCompound("output"));
         int weight = compound.getInt("weight");
         if (input.isEmpty() || output.isEmpty() || weight < 1) {
             return null;

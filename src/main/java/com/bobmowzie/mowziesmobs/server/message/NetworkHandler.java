@@ -4,9 +4,13 @@ import com.bobmowzie.mowziesmobs.server.message.mouse.MessageLeftMouseDown;
 import com.bobmowzie.mowziesmobs.server.message.mouse.MessageLeftMouseUp;
 import com.bobmowzie.mowziesmobs.server.message.mouse.MessageRightMouseDown;
 import com.bobmowzie.mowziesmobs.server.message.mouse.MessageRightMouseUp;
+import com.mojang.datafixers.util.Function10;
 import com.mojang.datafixers.util.Function12;
 import com.mojang.datafixers.util.Function15;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.VarInt;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
@@ -46,7 +50,92 @@ public class NetworkHandler {
         registrar.playToServer(MessageLeftMouseDown.TYPE, MessageLeftMouseDown.STREAM_CODEC, MessageLeftMouseDown::handleServer);
     }
 
+    public static StreamCodec<FriendlyByteBuf, Vec3[]> VEC3_ARRAY = new StreamCodec<>() {
+        public Vec3 @NotNull [] decode(@NotNull FriendlyByteBuf buffer) {
+            return NetworkHandler.readVec3Array(buffer);
+        }
+
+        public void encode(@NotNull FriendlyByteBuf buffer, Vec3 @NotNull [] value) {
+            NetworkHandler.writeVec3Array(buffer, value);
+        }
+    };
+
+    private static void writeVec3Array(FriendlyByteBuf buffer, Vec3[] array) {
+        VarInt.write(buffer, array.length);
+
+        for (Vec3 vec3 : array) {
+            buffer.writeVec3(vec3);
+        }
+    }
+
+    private static Vec3[] readVec3Array(FriendlyByteBuf buffer) {
+        int size = VarInt.read(buffer);
+        Vec3[] vec3s = new Vec3[size];
+
+        // should result in keeping the intended order
+        for (int index = 0; index < size; index++) {
+            vec3s[index] = buffer.readVec3();
+        }
+
+        return vec3s;
+    }
+
     // Vanilla / NeoForge don't go that far
+    public static <B, C, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> StreamCodec<B, C> composite(
+            final StreamCodec<? super B, T1> codec1,
+            final Function<C, T1> getter1,
+            final StreamCodec<? super B, T2> codec2,
+            final Function<C, T2> getter2,
+            final StreamCodec<? super B, T3> codec3,
+            final Function<C, T3> getter3,
+            final StreamCodec<? super B, T4> codec4,
+            final Function<C, T4> getter4,
+            final StreamCodec<? super B, T5> codec5,
+            final Function<C, T5> getter5,
+            final StreamCodec<? super B, T6> codec6,
+            final Function<C, T6> getter6,
+            final StreamCodec<? super B, T7> codec7,
+            final Function<C, T7> getter7,
+            final StreamCodec<? super B, T8> codec8,
+            final Function<C, T8> getter8,
+            final StreamCodec<? super B, T9> codec9,
+            final Function<C, T9> getter9,
+            final StreamCodec<? super B, T10> codec10,
+            final Function<C, T10> getter10,
+            final Function10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, C> factory
+    ) {
+        return new StreamCodec<>() {
+            @Override
+            public @NotNull C decode(@NotNull B buffer) {
+                T1 t1 = codec1.decode(buffer);
+                T2 t2 = codec2.decode(buffer);
+                T3 t3 = codec3.decode(buffer);
+                T4 t4 = codec4.decode(buffer);
+                T5 t5 = codec5.decode(buffer);
+                T6 t6 = codec6.decode(buffer);
+                T7 t7 = codec7.decode(buffer);
+                T8 t8 = codec8.decode(buffer);
+                T9 t9 = codec9.decode(buffer);
+                T10 t10 = codec10.decode(buffer);
+                return factory.apply(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10);
+            }
+
+            @Override
+            public void encode(@NotNull B buffer, @NotNull C object) {
+                codec1.encode(buffer, getter1.apply(object));
+                codec2.encode(buffer, getter2.apply(object));
+                codec3.encode(buffer, getter3.apply(object));
+                codec4.encode(buffer, getter4.apply(object));
+                codec5.encode(buffer, getter5.apply(object));
+                codec6.encode(buffer, getter6.apply(object));
+                codec7.encode(buffer, getter7.apply(object));
+                codec8.encode(buffer, getter8.apply(object));
+                codec9.encode(buffer, getter9.apply(object));
+                codec10.encode(buffer, getter10.apply(object));
+            }
+        };
+    }
+
     public static <B, C, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12> StreamCodec<B, C> composite(
             final StreamCodec<? super B, T1> codec1,
             final Function<C, T1> getter1,

@@ -5,7 +5,6 @@ import com.bobmowzie.mowziesmobs.client.particle.types.AdvancedParticleType;
 import com.bobmowzie.mowziesmobs.client.particle.types.DecalParticleType;
 import com.bobmowzie.mowziesmobs.client.particle.types.RibbonParticleType;
 import com.bobmowzie.mowziesmobs.client.particle.util.AdvancedParticleBase;
-import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
@@ -27,41 +26,63 @@ public class ParticleHandler {
 
     public static final DeferredHolder<ParticleType<?>, SimpleParticleType> SPARKLE = REG.register("sparkle", () -> new SimpleParticleType(false));
 
-    public static final DeferredHolder<ParticleType<?>, ParticleType<ParticleVanillaCloudExtended.VanillaCloudData>> VANILLA_CLOUD_EXTENDED = REG.register("vanilla_cloud_extended", () -> new ParticleType<ParticleVanillaCloudExtended.VanillaCloudData>(false, ParticleVanillaCloudExtended.VanillaCloudData.DESERIALIZER) {
+    public static final DeferredHolder<ParticleType<?>, ParticleType<ParticleVanillaCloudExtended.Data>> VANILLA_CLOUD_EXTENDED = REG.register("vanilla_cloud_extended", () -> new ParticleType<>(false) {
         @Override
-        public Codec<ParticleVanillaCloudExtended.VanillaCloudData> codec() {
-            return ParticleVanillaCloudExtended.VanillaCloudData.CODEC(VANILLA_CLOUD_EXTENDED.get());
-        }
-    });
-    public static final DeferredHolder<ParticleType<?>, ParticleType<ParticleSnowFlake.SnowflakeData>> SNOWFLAKE = REG.register("snowflake", () -> new ParticleType<ParticleSnowFlake.SnowflakeData>(false, ParticleSnowFlake.SnowflakeData.DESERIALIZER) {
-        @Override
-        public Codec<ParticleSnowFlake.SnowflakeData> codec() {
-            return ParticleSnowFlake.SnowflakeData.CODEC(SNOWFLAKE.get());
-        }
-    });
-
-    public static final DeferredHolder<ParticleType<?>, ParticleType<ParticleCloud.CloudData>> CLOUD = REG.register("cloud_soft", () -> new ParticleType<>(false) {
-        @Override
-        public @NotNull MapCodec<ParticleCloud.CloudData> codec() {
-            return ParticleCloud.CloudData.CODEC;
+        public @NotNull MapCodec<ParticleVanillaCloudExtended.Data> codec() {
+            return ParticleVanillaCloudExtended.Data.CODEC;
         }
 
         @Override
-        public @NotNull StreamCodec<? super RegistryFriendlyByteBuf, ParticleCloud.CloudData> streamCodec() {
-            return ParticleCloud.CloudData.STREAM_CODEC;
+        public @NotNull StreamCodec<? super RegistryFriendlyByteBuf, ParticleVanillaCloudExtended.Data> streamCodec() {
+            return ParticleVanillaCloudExtended.Data.STREAM_CODEC;
         }
     });
 
-    public static final DeferredHolder<ParticleType<?>, ParticleType<ParticleOrb.OrbData>> ORB = REG.register("orb_0", () -> new ParticleType<ParticleOrb.OrbData>(false, ParticleOrb.OrbData.DESERIALIZER) {
+    public static final DeferredHolder<ParticleType<?>, ParticleType<ParticleSnowFlake.Data>> SNOWFLAKE = REG.register("snowflake", () -> new ParticleType<>(false) {
         @Override
-        public Codec<ParticleOrb.OrbData> codec() {
-            return ParticleOrb.OrbData.CODEC(ORB.get());
+        public @NotNull MapCodec<ParticleSnowFlake.Data> codec() {
+            return ParticleSnowFlake.Data.CODEC;
+        }
+
+        @Override
+        public @NotNull StreamCodec<? super RegistryFriendlyByteBuf, ParticleSnowFlake.Data> streamCodec() {
+            return ParticleSnowFlake.Data.STREAM_CODEC;
         }
     });
-    public static final DeferredHolder<ParticleType<?>, ParticleType<ParticleRing.RingData>> RING = REG.register("ring_0", () -> new ParticleType<ParticleRing.RingData>(false, ParticleRing.RingData.DESERIALIZER) {
+
+    public static final DeferredHolder<ParticleType<?>, ParticleType<ParticleCloud.Data>> CLOUD = REG.register("cloud_soft", () -> new ParticleType<>(false) {
         @Override
-        public Codec<ParticleRing.RingData> codec() {
-            return ParticleRing.RingData.CODEC(RING.get());
+        public @NotNull MapCodec<ParticleCloud.Data> codec() {
+            return ParticleCloud.Data.CODEC;
+        }
+
+        @Override
+        public @NotNull StreamCodec<? super RegistryFriendlyByteBuf, ParticleCloud.Data> streamCodec() {
+            return ParticleCloud.Data.STREAM_CODEC;
+        }
+    });
+
+    public static final DeferredHolder<ParticleType<?>, ParticleType<ParticleOrb.Data>> ORB = REG.register("orb_0", () -> new ParticleType<>(false) {
+        @Override
+        public @NotNull MapCodec<ParticleOrb.Data> codec() {
+            return ParticleOrb.Data.CODEC;
+        }
+
+        @Override
+        public @NotNull StreamCodec<? super RegistryFriendlyByteBuf, ParticleOrb.Data> streamCodec() {
+            return ParticleOrb.Data.STREAM_CODEC;
+        }
+    });
+
+    public static final DeferredHolder<ParticleType<?>, ParticleType<ParticleRing.Data>> RING = REG.register("ring_0", () -> new ParticleType<>(false) {
+        @Override
+        public @NotNull MapCodec<ParticleRing.Data> codec() {
+            return ParticleRing.Data.CODEC;
+        }
+
+        @Override
+        public @NotNull StreamCodec<? super RegistryFriendlyByteBuf, ParticleRing.Data> streamCodec() {
+            return ParticleRing.Data.STREAM_CODEC;
         }
     });
 
@@ -93,12 +114,12 @@ public class ParticleHandler {
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void registerParticles(RegisterParticleProvidersEvent event) {
-        event.registerSpriteSet(ParticleHandler.SPARKLE.get(), ParticleSparkle.SparkleFactory::new);
-        event.registerSpriteSet(ParticleHandler.VANILLA_CLOUD_EXTENDED.get(), ParticleVanillaCloudExtended.CloudFactory::new);
-        event.registerSpriteSet(ParticleHandler.SNOWFLAKE.get(), ParticleSnowFlake.SnowFlakeFactory::new);
-        event.registerSpriteSet(ParticleHandler.CLOUD.get(), ParticleCloud.CloudFactory::new);
-        event.registerSpriteSet(ParticleHandler.ORB.get(), ParticleOrb.OrbFactory::new);
-        event.registerSpriteSet(ParticleHandler.RING.get(), ParticleRing.RingFactory::new);
+        event.registerSpriteSet(ParticleHandler.SPARKLE.get(), ParticleSparkle.Provider::new);
+        event.registerSpriteSet(ParticleHandler.VANILLA_CLOUD_EXTENDED.get(), ParticleVanillaCloudExtended.Provider::new);
+        event.registerSpriteSet(ParticleHandler.SNOWFLAKE.get(), ParticleSnowFlake.Provider::new);
+        event.registerSpriteSet(ParticleHandler.CLOUD.get(), ParticleCloud.Provider::new);
+        event.registerSpriteSet(ParticleHandler.ORB.get(), ParticleOrb.Provider::new);
+        event.registerSpriteSet(ParticleHandler.RING.get(), ParticleRing.Provider::new);
 
         event.registerSpriteSet(ParticleHandler.RING2.get(), AdvancedParticleBase.Factory::new);
         event.registerSpriteSet(ParticleHandler.RING_BIG.get(), AdvancedParticleBase.Factory::new);
@@ -117,13 +138,13 @@ public class ParticleHandler {
         event.registerSpriteSet(ParticleHandler.GLOW.get(), AdvancedParticleBase.Factory::new);
         event.registerSpriteSet(ParticleHandler.ARROW_HEAD.get(), AdvancedParticleBase.Factory::new);
         event.registerSpriteSet(ParticleHandler.LEAF.get(), AdvancedParticleBase.Factory::new);
-        event.registerSpriteSet(ParticleHandler.STRIX_FOOTPRINT.get(), ParticleDecal.Factory::new);
-        event.registerSpriteSet(ParticleHandler.GROUND_CRACK.get(), ParticleDecal.Factory::new);
+        event.registerSpriteSet(ParticleHandler.STRIX_FOOTPRINT.get(), ParticleDecal.Provider::new);
+        event.registerSpriteSet(ParticleHandler.GROUND_CRACK.get(), ParticleDecal.Provider::new);
 
-        event.registerSpriteSet(ParticleHandler.RIBBON_FLAT.get(), ParticleRibbon.Factory::new);
-        event.registerSpriteSet(ParticleHandler.RIBBON_STREAKS.get(), ParticleRibbon.Factory::new);
-        event.registerSpriteSet(ParticleHandler.RIBBON_GLOW.get(), ParticleRibbon.Factory::new);
-        event.registerSpriteSet(ParticleHandler.RIBBON_SQUIGGLE.get(), ParticleRibbon.Factory::new);
+        event.registerSpriteSet(ParticleHandler.RIBBON_FLAT.get(), ParticleRibbon.Provider::new);
+        event.registerSpriteSet(ParticleHandler.RIBBON_STREAKS.get(), ParticleRibbon.Provider::new);
+        event.registerSpriteSet(ParticleHandler.RIBBON_GLOW.get(), ParticleRibbon.Provider::new);
+        event.registerSpriteSet(ParticleHandler.RIBBON_SQUIGGLE.get(), ParticleRibbon.Provider::new);
     }
 
     private static DeferredHolder<ParticleType<?>, ParticleType<AdvancedParticleType>> registerAdvanced(String key) {

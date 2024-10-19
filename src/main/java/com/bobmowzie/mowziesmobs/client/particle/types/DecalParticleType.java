@@ -38,7 +38,7 @@ public class DecalParticleType extends AdvancedTypeBase {
                     Codec.FLOAT.fieldOf("duration").forGetter(DecalParticleType::duration),
                     Codec.FLOAT.fieldOf("air_drag").forGetter(DecalParticleType::airDrag),
                     Codec.BOOL.fieldOf("emissive").forGetter(DecalParticleType::emissive),
-                    Codec.FLOAT.fieldOf("angle").forGetter(DecalParticleType::airDrag),
+                    Codec.FLOAT.fieldOf("angle").forGetter(DecalParticleType::angle),
                     Codec.INT.fieldOf("sprite_size").forGetter(DecalParticleType::spriteSize),
                     Codec.INT.fieldOf("buffer_size").forGetter(DecalParticleType::bufferSize)
             ).apply(instance, DecalParticleType::new)
