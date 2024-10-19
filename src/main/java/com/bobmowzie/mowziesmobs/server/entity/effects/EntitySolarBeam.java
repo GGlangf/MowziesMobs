@@ -175,7 +175,7 @@ public class EntitySolarBeam extends Entity {
                 else {
                     attractorPos[0] = new Vec3(rootX, rootY, rootZ);
                 }
-                AdvancedParticleBase.spawnParticle(level(), ParticleHandler.ORB2.get(), rootX + ox, rootY + oy, rootZ + oz, 0, 0, 0, true, 0, 0, 0, 0, 5F, 1, 1, 1, 1, 1, 7, true, false, new ParticleComponent[]{
+                AdvancedParticleBase.spawnParticle(level(), ParticleHandler.ORB2, rootX + ox, rootY + oy, rootZ + oz, 0, 0, 0, true, 0, 0, 0, 0, 5F, 1, 1, 1, 1, 1, 7, true, false, new ParticleComponent[]{
                         new ParticleComponent.Attractor(attractorPos, 1.7f, 0.0f, ParticleComponent.Attractor.EnumAttractorBehavior.EXPONENTIAL),
                         new ParticleComponent.PropertyControl(ParticleComponent.PropertyControl.EnumParticleProperty.ALPHA, new ParticleComponent.KeyTrack(
                                 new float[]{0f, 0.8f},

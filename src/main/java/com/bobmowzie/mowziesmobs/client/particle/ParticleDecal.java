@@ -1,7 +1,7 @@
 package com.bobmowzie.mowziesmobs.client.particle;
 
 import com.bobmowzie.mowziesmobs.client.particle.util.AdvancedParticleBase;
-import com.bobmowzie.mowziesmobs.client.particle.util.DecalParticleData;
+import com.bobmowzie.mowziesmobs.client.particle.types.DecalParticleType;
 import com.bobmowzie.mowziesmobs.client.particle.util.ParticleComponent;
 import com.bobmowzie.mowziesmobs.client.particle.util.ParticleRotation;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -11,6 +11,7 @@ import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
@@ -136,10 +137,10 @@ public class ParticleDecal extends AdvancedParticleBase {
     private static void decalVertex(VertexConsumer buffer, Camera renderInfo, float alpha, float x, float y, float z, float u, float v, float r, float g, float b, int lightColor) {
         Vec3 vector3d = renderInfo.getPosition();
 //        Vector3d = new Vec3(0, 1, 0);
-        buffer.vertex(x - vector3d.x(), y - vector3d.y(), z - vector3d.z()).uv(u, v).color(r, g, b, alpha).uv2(lightColor).endVertex();
+        buffer.addVertex((float) (x - vector3d.x()), (float) (y - vector3d.y()), (float) (z - vector3d.z())).setUv(u, v).setColor(r, g, b, alpha).setLight(lightColor);
     }
 
-    public static class Factory implements ParticleProvider<DecalParticleData> {
+    public static class Factory implements ParticleProvider<DecalParticleType> {
         private final SpriteSet spriteSet;
 
         public Factory(SpriteSet sprite) {
@@ -147,14 +148,14 @@ public class ParticleDecal extends AdvancedParticleBase {
         }
 
         @Override
-        public Particle createParticle(DecalParticleData typeIn, ClientLevel worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            ParticleDecal particle = new ParticleDecal(worldIn, x, y, z, xSpeed, ySpeed, zSpeed, typeIn.getRotation(), typeIn.getScale(), typeIn.getRed(), typeIn.getGreen(), typeIn.getBlue(), typeIn.getAlpha(), typeIn.getAirDrag(), typeIn.getDuration(), typeIn.isEmissive(), typeIn.getCanCollide(), spriteSet, typeIn.getSpriteSize(), typeIn.getBufferSize(), typeIn.getComponents());
-            particle.setColor((float) typeIn.getRed(), (float) typeIn.getGreen(), (float) typeIn.getBlue());
+        public Particle createParticle(DecalParticleType typeIn, ClientLevel worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+            ParticleDecal particle = new ParticleDecal(worldIn, x, y, z, xSpeed, ySpeed, zSpeed, typeIn.rotation(), typeIn.scale(), typeIn.red(), typeIn.green(), typeIn.blue(), typeIn.alpha(), typeIn.airDrag(), typeIn.duration(), typeIn.emissive(), typeIn.canCollide(), spriteSet, typeIn.spriteSize(), typeIn.bufferSize(), typeIn.components());
+            particle.setColor(typeIn.red(), typeIn.green(), typeIn.blue());
             return particle;
         }
     }
 
-    public static void spawnDecal(Level world, ParticleType<DecalParticleData> particle, double x, double y, double z, double motionX, double motionY, double motionZ, double rotation, double scale, double r, double g, double b, double a, double drag, double duration, boolean emissive, int spriteSize, int bufferSize, ParticleComponent[] components) {
-        world.addParticle(new DecalParticleData(particle, rotation, scale, r, g, b, a, drag, duration, emissive, spriteSize, bufferSize, components), x, y, z, motionX, motionY, motionZ);
+    public static void spawnDecal(Level world, Holder<ParticleType<?>> particle, double x, double y, double z, double motionX, double motionY, double motionZ, double angle, double scale, double red, double green, double blue, double alpha, double airDrag, double duration, boolean emissive, int spriteSize, int bufferSize, ParticleComponent[] components) {
+        world.addParticle(new DecalParticleType(particle, (float) red, (float) green, (float) blue, (float) alpha, (float) scale, (float) duration, (float) airDrag, emissive, (float) angle, spriteSize, bufferSize, components), x, y, z, motionX, motionY, motionZ);
     }
 }

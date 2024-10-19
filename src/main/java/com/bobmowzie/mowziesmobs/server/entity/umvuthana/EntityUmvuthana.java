@@ -386,7 +386,7 @@ public abstract class EntityUmvuthana extends MowzieGeckoEntity {
         if (level().isClientSide()) {
             if (deathTime < 20 && active && !(getActiveAbilityType() == TELEPORT_ABILITY && getActiveAbility().getCurrentSection().sectionType != AbilitySection.AbilitySectionType.RECOVERY)) {
                 if (this.tickCount % 10 == 1) {
-                    AdvancedParticleBase.spawnParticle(level(), ParticleHandler.GLOW.get(), getX(), getY(), getZ(), 0, 0, 0, true, 0, 0, 0, 0, 0F, 1, 1, 0.3, 0.4, 1, 9, true, false, new ParticleComponent[]{
+                    AdvancedParticleBase.spawnParticle(level(), ParticleHandler.GLOW, getX(), getY(), getZ(), 0, 0, 0, true, 0, 0, 0, 0, 0F, 1, 1, 0.3, 0.4, 1, 9, true, false, new ParticleComponent[]{
                             new ParticleComponent.PinLocation(headPos),
                             new ParticleComponent.PropertyControl(ParticleComponent.PropertyControl.EnumParticleProperty.SCALE, ParticleComponent.KeyTrack.oscillate(9, 10, 12), false)
                     });
@@ -476,7 +476,7 @@ public abstract class EntityUmvuthana extends MowzieGeckoEntity {
             footstepCounter++;
             double rotation = Math.toRadians(yBodyRot + 180f);
             Vec3 offset = new Vec3(0, 0, footstepCounter % 2 == 0 ? 0.3 : -0.3).yRot((float) rotation);
-            ParticleDecal.spawnDecal(level(), ParticleHandler.STRIX_FOOTPRINT.get(), getX() + offset.x(), getY() + 0.01, getZ() + offset.z(), 0, 0, 0, rotation,1F, 1, 0.95, 0.1, 1, 1, 200, true, 8, 32, new ParticleComponent[]{
+            ParticleDecal.spawnDecal(level(), ParticleHandler.STRIX_FOOTPRINT, getX() + offset.x(), getY() + 0.01, getZ() + offset.z(), 0, 0, 0, rotation,1F, 1, 0.95, 0.1, 1, 1, 200, true, 8, 32, new ParticleComponent[]{
                     new ParticleComponent.PropertyControl(ParticleComponent.PropertyControl.EnumParticleProperty.RED, new ParticleComponent.KeyTrack(
                             new float[]{0.995f, 0.05f},
                             new float[]{0, 0.3f}
@@ -994,7 +994,7 @@ public abstract class EntityUmvuthana extends MowzieGeckoEntity {
                 if (getTicksInUse() == 5) {
                     ParticleComponent.KeyTrack keyTrack1 = ParticleComponent.KeyTrack.oscillate(0, 2, 24);
                     ParticleComponent.KeyTrack keyTrack2 = new ParticleComponent.KeyTrack(new float[]{0, 18, 18, 0}, new float[]{0, 0.2f, 0.8f, 1});
-                    AdvancedParticleBase.spawnParticle(getUser().level(), ParticleHandler.SUN.get(), getUser().getX(), getUser().getY(), getUser().getZ(), 0, 0, 0, true, 0, 0, 0, 0, 0F, 1, 1, 1, 1, 1, 15, true, false, new ParticleComponent[]{
+                    AdvancedParticleBase.spawnParticle(getUser().level(), ParticleHandler.SUN, getUser().getX(), getUser().getY(), getUser().getZ(), 0, 0, 0, true, 0, 0, 0, 0, 0F, 1, 1, 1, 1, 1, 15, true, false, new ParticleComponent[]{
                             new ParticleComponent.PinLocation(getUser().myPos),
                             new ParticleComponent.PropertyControl(ParticleComponent.PropertyControl.EnumParticleProperty.SCALE, keyTrack2, false),
                             new ParticleComponent.PropertyControl(ParticleComponent.PropertyControl.EnumParticleProperty.SCALE, keyTrack1, true),
@@ -1012,7 +1012,7 @@ public abstract class EntityUmvuthana extends MowzieGeckoEntity {
 //                        v = v.rotatePitch(increment * i);
                         v = v.yRot(increment * rand.nextFloat() + increment * (i / (float)num));
                         v = v.zRot(increment * rand.nextFloat() + increment * (i % num));
-                        AdvancedParticleBase.spawnParticle(getUser().level(), ParticleHandler.PIXEL.get(), getUser().myPos[0].x(), getUser().myPos[0].y(), getUser().myPos[0].z(), v.x(), v.y(), v.z(), true, 0, 0, 0, 0, 4f, 0.98, 0.94, 0.39, 1, 0.8, 6 + rand.nextFloat() * 4, true, false, new ParticleComponent[] {
+                        AdvancedParticleBase.spawnParticle(getUser().level(), ParticleHandler.PIXEL, getUser().myPos[0].x(), getUser().myPos[0].y(), getUser().myPos[0].z(), v.x(), v.y(), v.z(), true, 0, 0, 0, 0, 4f, 0.98, 0.94, 0.39, 1, 0.8, 6 + rand.nextFloat() * 4, true, false, new ParticleComponent[] {
                                 new ParticleComponent.PropertyControl(ParticleComponent.PropertyControl.EnumParticleProperty.SCALE, new ParticleComponent.KeyTrack(
                                         new float[] {4f, 0},
                                         new float[] {0.8f, 1}
@@ -1101,7 +1101,7 @@ public abstract class EntityUmvuthana extends MowzieGeckoEntity {
                     double ox = radius * Math.sin(yaw) * Math.sin(pitch);
                     double oy = radius * Math.cos(pitch);
                     double oz = radius * Math.cos(yaw) * Math.sin(pitch);
-                    if (getTicksInUse() % 5 == 0) AdvancedParticleBase.spawnParticle(getUser().level(), ParticleHandler.ARROW_HEAD.get(), getUser().headPos[0].x(), getUser().headPos[0].y(), getUser().headPos[0].z(), 0, 0, 0, false, 0, 0, 0, 0, 3.5F, 0.95, 0.9, 0.35, 0.75, 1, Math.min(2 * dist, 60), true, false, new ParticleComponent[]{
+                    if (getTicksInUse() % 5 == 0) AdvancedParticleBase.spawnParticle(getUser().level(), ParticleHandler.ARROW_HEAD, getUser().headPos[0].x(), getUser().headPos[0].y(), getUser().headPos[0].z(), 0, 0, 0, false, 0, 0, 0, 0, 3.5F, 0.95, 0.9, 0.35, 0.75, 1, Math.min(2 * dist, 60), true, false, new ParticleComponent[]{
                             new ParticleComponent.Attractor(getUser().barakoPos, 0.5f, 0.2f, ParticleComponent.Attractor.EnumAttractorBehavior.LINEAR),
                             new RibbonComponent(ParticleHandler.RIBBON_FLAT.get(), 10, 0, 0, 0, 0.12F, 0.95, 0.9, 0.35, 0.75, true, true, new ParticleComponent[]{
                                     new RibbonComponent.PropertyOverLength(RibbonComponent.PropertyOverLength.EnumRibbonProperty.SCALE, ParticleComponent.KeyTrack.startAndEnd(1, 0))
@@ -1112,7 +1112,7 @@ public abstract class EntityUmvuthana extends MowzieGeckoEntity {
                             new ParticleComponent.FaceMotion(),
                             new ParticleComponent.PropertyControl(ParticleComponent.PropertyControl.EnumParticleProperty.ALPHA, new ParticleComponent.KeyTrack(new float[]{0, 0, 1}, new float[]{0, 0.05f, 0.06f}), false),
                     });
-                    if (getTicksInUse() % 5 == 0) AdvancedParticleBase.spawnParticle(getUser().level(), ParticleHandler.RING2.get(), getUser().headPos[0].x(), getUser().headPos[0].y(), getUser().headPos[0].z(), 0, 0, 0, true, 0, 0, 0, 0, 1.5F, 1, 223 / 255f, 66 / 255f, 1, 1, 15, true, false, new ParticleComponent[]{
+                    if (getTicksInUse() % 5 == 0) AdvancedParticleBase.spawnParticle(getUser().level(), ParticleHandler.RING2, getUser().headPos[0].x(), getUser().headPos[0].y(), getUser().headPos[0].z(), 0, 0, 0, true, 0, 0, 0, 0, 1.5F, 1, 223 / 255f, 66 / 255f, 1, 1, 15, true, false, new ParticleComponent[]{
                             new ParticleComponent.PropertyControl(ParticleComponent.PropertyControl.EnumParticleProperty.ALPHA, ParticleComponent.KeyTrack.startAndEnd(1f, 0f), false),
                             new ParticleComponent.PropertyControl(ParticleComponent.PropertyControl.EnumParticleProperty.SCALE, ParticleComponent.KeyTrack.startAndEnd(1f, 10f), false)
                     });

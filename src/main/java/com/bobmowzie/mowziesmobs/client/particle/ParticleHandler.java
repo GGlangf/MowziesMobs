@@ -2,14 +2,18 @@ package com.bobmowzie.mowziesmobs.client.particle;
 
 import com.bobmowzie.mowziesmobs.MMCommon;
 import com.bobmowzie.mowziesmobs.client.particle.util.AdvancedParticleBase;
-import com.bobmowzie.mowziesmobs.client.particle.util.AdvancedParticleData;
-import com.bobmowzie.mowziesmobs.client.particle.util.DecalParticleData;
-import com.bobmowzie.mowziesmobs.client.particle.util.RibbonParticleData;
+import com.bobmowzie.mowziesmobs.client.particle.types.AdvancedParticleType;
+import com.bobmowzie.mowziesmobs.client.particle.types.DecalParticleType;
+import com.bobmowzie.mowziesmobs.client.particle.types.RibbonParticleType;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -17,13 +21,14 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import org.jetbrains.annotations.NotNull;
 
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ParticleHandler {
-
     public static final DeferredRegister<ParticleType<?>> REG = DeferredRegister.create(Registries.PARTICLE_TYPE, MMCommon.MODID);
 
-    public static final DeferredHolder<ParticleType<?>, SimpleParticleType> SPARKLE = register("sparkle", false);
+    public static final DeferredHolder<ParticleType<?>, SimpleParticleType> SPARKLE = REG.register("sparkle", () -> new SimpleParticleType(false));
+
     public static final DeferredHolder<ParticleType<?>, ParticleType<ParticleVanillaCloudExtended.VanillaCloudData>> VANILLA_CLOUD_EXTENDED = REG.register("vanilla_cloud_extended", () -> new ParticleType<ParticleVanillaCloudExtended.VanillaCloudData>(false, ParticleVanillaCloudExtended.VanillaCloudData.DESERIALIZER) {
         @Override
         public Codec<ParticleVanillaCloudExtended.VanillaCloudData> codec() {
@@ -36,12 +41,19 @@ public class ParticleHandler {
             return ParticleSnowFlake.SnowflakeData.CODEC(SNOWFLAKE.get());
         }
     });
-    public static final DeferredHolder<ParticleType<?>, ParticleType<ParticleCloud.CloudData>> CLOUD = REG.register("cloud_soft", () -> new ParticleType<ParticleCloud.CloudData>(false, ParticleCloud.CloudData.DESERIALIZER) {
+
+    public static final DeferredHolder<ParticleType<?>, ParticleType<ParticleCloud.CloudData>> CLOUD = REG.register("cloud_soft", () -> new ParticleType<>(false) {
         @Override
-        public Codec<ParticleCloud.CloudData> codec() {
-            return ParticleCloud.CloudData.CODEC(CLOUD.get());
+        public @NotNull MapCodec<ParticleCloud.CloudData> codec() {
+            return ParticleCloud.CloudData.CODEC;
+        }
+
+        @Override
+        public @NotNull StreamCodec<? super RegistryFriendlyByteBuf, ParticleCloud.CloudData> streamCodec() {
+            return ParticleCloud.CloudData.STREAM_CODEC;
         }
     });
+
     public static final DeferredHolder<ParticleType<?>, ParticleType<ParticleOrb.OrbData>> ORB = REG.register("orb_0", () -> new ParticleType<ParticleOrb.OrbData>(false, ParticleOrb.OrbData.DESERIALIZER) {
         @Override
         public Codec<ParticleOrb.OrbData> codec() {
@@ -55,31 +67,31 @@ public class ParticleHandler {
         }
     });
 
-    public static final DeferredHolder<ParticleType<?>, ParticleType<AdvancedParticleData>> RING2 = register("ring", AdvancedParticleData.DESERIALIZER);
-    public static final DeferredHolder<ParticleType<?>, ParticleType<AdvancedParticleData>> RING_BIG = register("ring_big", AdvancedParticleData.DESERIALIZER);
-    public static final DeferredHolder<ParticleType<?>, ParticleType<AdvancedParticleData>> PIXEL = register("pixel", AdvancedParticleData.DESERIALIZER);
-    public static final DeferredHolder<ParticleType<?>, ParticleType<AdvancedParticleData>> ORB2 = register("orb", AdvancedParticleData.DESERIALIZER);
-    public static final DeferredHolder<ParticleType<?>, ParticleType<AdvancedParticleData>> EYE = register("eye", AdvancedParticleData.DESERIALIZER);
-    public static final DeferredHolder<ParticleType<?>, ParticleType<AdvancedParticleData>> BUBBLE = register("bubble", AdvancedParticleData.DESERIALIZER);
-    public static final DeferredHolder<ParticleType<?>, ParticleType<AdvancedParticleData>> SUN = register("sun", AdvancedParticleData.DESERIALIZER);
-    public static final DeferredHolder<ParticleType<?>, ParticleType<AdvancedParticleData>> SUN_NOVA = register("sun_nova", AdvancedParticleData.DESERIALIZER);
-    public static final DeferredHolder<ParticleType<?>, ParticleType<AdvancedParticleData>> FLARE = register("flare", AdvancedParticleData.DESERIALIZER);
-    public static final DeferredHolder<ParticleType<?>, ParticleType<AdvancedParticleData>> FLARE_RADIAL = register("flare_radial", AdvancedParticleData.DESERIALIZER);
-    public static final DeferredHolder<ParticleType<?>, ParticleType<AdvancedParticleData>> BURST_IN = register("ring1", AdvancedParticleData.DESERIALIZER);
-    public static final DeferredHolder<ParticleType<?>, ParticleType<AdvancedParticleData>> BURST_MESSY = register("burst_messy", AdvancedParticleData.DESERIALIZER);
-    public static final DeferredHolder<ParticleType<?>, ParticleType<AdvancedParticleData>> RING_SPARKS = register("sparks_ring", AdvancedParticleData.DESERIALIZER);
-    public static final DeferredHolder<ParticleType<?>, ParticleType<AdvancedParticleData>> BURST_OUT = register("ring2", AdvancedParticleData.DESERIALIZER);
-    public static final DeferredHolder<ParticleType<?>, ParticleType<AdvancedParticleData>> GLOW = register("glow", AdvancedParticleData.DESERIALIZER);
-    public static final DeferredHolder<ParticleType<?>, ParticleType<AdvancedParticleData>> ARROW_HEAD = register("arrow_head", AdvancedParticleData.DESERIALIZER);
-    public static final DeferredHolder<ParticleType<?>, ParticleType<AdvancedParticleData>> LEAF = register("leaf", AdvancedParticleData.DESERIALIZER);
+    public static final DeferredHolder<ParticleType<?>, AdvancedParticleType> RING2 = registerAdvanced("ring");
+    public static final DeferredHolder<ParticleType<?>, AdvancedParticleType> RING_BIG = registerAdvanced("ring_big");
+    public static final DeferredHolder<ParticleType<?>, AdvancedParticleType> PIXEL = registerAdvanced("pixel");
+    public static final DeferredHolder<ParticleType<?>, AdvancedParticleType> ORB2 = registerAdvanced("orb");
+    public static final DeferredHolder<ParticleType<?>, AdvancedParticleType> EYE = registerAdvanced("eye");
+    public static final DeferredHolder<ParticleType<?>, AdvancedParticleType> BUBBLE = registerAdvanced("bubble");
+    public static final DeferredHolder<ParticleType<?>, AdvancedParticleType> SUN = registerAdvanced("sun");
+    public static final DeferredHolder<ParticleType<?>, AdvancedParticleType> SUN_NOVA = registerAdvanced("sun_nova");
+    public static final DeferredHolder<ParticleType<?>, AdvancedParticleType> FLARE = registerAdvanced("flare");
+    public static final DeferredHolder<ParticleType<?>, AdvancedParticleType> FLARE_RADIAL = registerAdvanced("flare_radial");
+    public static final DeferredHolder<ParticleType<?>, AdvancedParticleType> BURST_IN = registerAdvanced("ring1");
+    public static final DeferredHolder<ParticleType<?>, AdvancedParticleType> BURST_MESSY = registerAdvanced("burst_messy");
+    public static final DeferredHolder<ParticleType<?>, AdvancedParticleType> RING_SPARKS = registerAdvanced("sparks_ring");
+    public static final DeferredHolder<ParticleType<?>, AdvancedParticleType> BURST_OUT = registerAdvanced("ring2");
+    public static final DeferredHolder<ParticleType<?>, AdvancedParticleType> GLOW = registerAdvanced("glow");
+    public static final DeferredHolder<ParticleType<?>, AdvancedParticleType> ARROW_HEAD = registerAdvanced("arrow_head");
+    public static final DeferredHolder<ParticleType<?>, AdvancedParticleType> LEAF = registerAdvanced("leaf");
 
-    public static final DeferredHolder<ParticleType<?>, ParticleType<DecalParticleData>> STRIX_FOOTPRINT = registerDecal("strix_footprint", DecalParticleData.DESERIALIZER);
-    public static final DeferredHolder<ParticleType<?>, ParticleType<DecalParticleData>> GROUND_CRACK = registerDecal("crack", DecalParticleData.DESERIALIZER);
+    public static final DeferredHolder<ParticleType<?>, DecalParticleType> STRIX_FOOTPRINT = registerDecal("strix_footprint");
+    public static final DeferredHolder<ParticleType<?>, DecalParticleType> GROUND_CRACK = registerDecal("crack");
 
-    public static final DeferredHolder<ParticleType<?>, ParticleType<RibbonParticleData>> RIBBON_FLAT = registerRibbon("ribbon_flat", RibbonParticleData.DESERIALIZER);
-    public static final DeferredHolder<ParticleType<?>, ParticleType<RibbonParticleData>> RIBBON_STREAKS = registerRibbon("ribbon_streaks", RibbonParticleData.DESERIALIZER);
-    public static final DeferredHolder<ParticleType<?>, ParticleType<RibbonParticleData>> RIBBON_GLOW = registerRibbon("ribbon_glow", RibbonParticleData.DESERIALIZER);
-    public static final DeferredHolder<ParticleType<?>, ParticleType<RibbonParticleData>> RIBBON_SQUIGGLE = registerRibbon("ribbon_squiggle", RibbonParticleData.DESERIALIZER);
+    public static final DeferredHolder<ParticleType<?>, ParticleType<RibbonParticleType>> RIBBON_FLAT = registerRibbon("ribbon_flat", RibbonParticleType.DESERIALIZER);
+    public static final DeferredHolder<ParticleType<?>, ParticleType<RibbonParticleType>> RIBBON_STREAKS = registerRibbon("ribbon_streaks", RibbonParticleType.DESERIALIZER);
+    public static final DeferredHolder<ParticleType<?>, ParticleType<RibbonParticleType>> RIBBON_GLOW = registerRibbon("ribbon_glow", RibbonParticleType.DESERIALIZER);
+    public static final DeferredHolder<ParticleType<?>, ParticleType<RibbonParticleType>> RIBBON_SQUIGGLE = registerRibbon("ribbon_squiggle", RibbonParticleType.DESERIALIZER);
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void registerParticles(RegisterParticleProvidersEvent event) {
@@ -116,30 +128,22 @@ public class ParticleHandler {
         event.registerSpriteSet(ParticleHandler.RIBBON_SQUIGGLE.get(), ParticleRibbon.Factory::new);
     }
 
-    private static DeferredHolder<ParticleType<?>, SimpleParticleType> register(String key, boolean alwaysShow) {
-        return REG.register(key, () -> new SimpleParticleType(alwaysShow));
+    private static DeferredHolder<ParticleType<?>, SimpleParticleType> register(String key) {
+        return REG.register(key, () -> new SimpleParticleType(false));
     }
 
-    private static DeferredHolder<ParticleType<?>, ParticleType<AdvancedParticleData>> register(String key, ParticleOptions.Deserializer<AdvancedParticleData> deserializer) {
-        return REG.register(key, () -> new ParticleType<AdvancedParticleData>(false, deserializer) {
-            public Codec<AdvancedParticleData> codec() {
-                return AdvancedParticleData.CODEC(this);
-            }
-        });
+    private static DeferredHolder<ParticleType<?>, AdvancedParticleType> registerAdvanced(String key) {
+        return REG.register(key, location -> new AdvancedParticleType(BuiltInRegistries.PARTICLE_TYPE.getHolder(location).orElseThrow()));
     }
 
-    private static DeferredHolder<ParticleType<?>, ParticleType<DecalParticleData>> registerDecal(String key, ParticleOptions.Deserializer<DecalParticleData> deserializer) {
-        return REG.register(key, () -> new ParticleType<DecalParticleData>(false, deserializer) {
-            public Codec<DecalParticleData> codec() {
-                return DecalParticleData.CODEC_RIBBON(this);
-            }
-        });
+    private static DeferredHolder<ParticleType<?>, DecalParticleType> registerDecal(String key) {
+        return REG.register(key, location -> new DecalParticleType(BuiltInRegistries.PARTICLE_TYPE.getHolder(location).orElseThrow()));
     }
 
-    private static DeferredHolder<ParticleType<?>, ParticleType<RibbonParticleData>> registerRibbon(String key, ParticleOptions.Deserializer<RibbonParticleData> deserializer) {
-        return REG.register(key, () -> new ParticleType<RibbonParticleData>(false, deserializer) {
-            public Codec<RibbonParticleData> codec() {
-                return RibbonParticleData.CODEC_RIBBON(this);
+    private static DeferredHolder<ParticleType<?>, ParticleType<RibbonParticleType>> registerRibbon(String key, ParticleOptions.Deserializer<RibbonParticleType> deserializer) {
+        return REG.register(key, () -> new ParticleType<RibbonParticleType>(false, deserializer) {
+            public Codec<RibbonParticleType> codec() {
+                return RibbonParticleType.CODEC_RIBBON(this);
             }
         });
     }

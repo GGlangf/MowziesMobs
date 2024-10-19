@@ -505,7 +505,7 @@ public class EntitySculptor extends MowzieGeckoEntity {
                         if (level().isClientSide() && isPlayerInTestZone(Minecraft.getInstance().player) && blockHasExposedSide(checkPos)) {
                             MMCommon.PROXY.sculptorMarkBlock(this.getId(), checkPos);
                             ParticleRotation.FaceCamera faceCamera = new ParticleRotation.FaceCamera(0);
-                            AdvancedParticleBase.spawnAlwaysVisibleParticle(level(), ParticleHandler.RING2.get(), 64, checkPos.getX() + 0.5, checkPos.getY() + 0.5, checkPos.getZ() + 0.5, 0, 0, 0, faceCamera, 3.5F, 0.83f, 1, 0.39f, 1, 1, 20, true, false, new ParticleComponent[]{
+                            AdvancedParticleBase.spawnAlwaysVisibleParticle(level(), ParticleHandler.RING2, 64, checkPos.getX() + 0.5, checkPos.getY() + 0.5, checkPos.getZ() + 0.5, 0, 0, 0, faceCamera, 3.5F, 0.83f, 1, 0.39f, 1, 1, 20, true, false, new ParticleComponent[]{
                                     new ParticleComponent.PropertyControl(ParticleComponent.PropertyControl.EnumParticleProperty.ALPHA, ParticleComponent.KeyTrack.startAndEnd(0.7f, 0f), false),
                                     new ParticleComponent.PropertyControl(ParticleComponent.PropertyControl.EnumParticleProperty.SCALE, ParticleComponent.KeyTrack.startAndEnd(0f, 16.0f), false)
                             });
@@ -1271,7 +1271,7 @@ public class EntitySculptor extends MowzieGeckoEntity {
                     double yaw = getUser().random.nextDouble() * Math.PI/2d;
                     double pitch = getUser().random.nextDouble() * Math.PI/2d;
                     double roll = getUser().random.nextDouble() * Math.PI/2d;
-                    AdvancedParticleBase.spawnParticle(getUser().level(), ParticleHandler.LEAF.get(), x, y, z, 0, 0, 0, false, yaw, pitch, roll, 0, 1f, (247d + colorVariation) / 256d, (185d + colorVariation) / 256d, (220d + colorVariation) / 256d, 1, 0.9, 35 + getUser().random.nextFloat() * 20, false, true, new ParticleComponent[]{
+                    AdvancedParticleBase.spawnParticle(getUser().level(), ParticleHandler.LEAF, x, y, z, 0, 0, 0, false, yaw, pitch, roll, 0, 1f, (247d + colorVariation) / 256d, (185d + colorVariation) / 256d, (220d + colorVariation) / 256d, 1, 0.9, 35 + getUser().random.nextFloat() * 20, false, true, new ParticleComponent[]{
                             new ParticleComponent.PropertyControl(ParticleComponent.PropertyControl.EnumParticleProperty.SCALE, new ParticleComponent.KeyTrack(
                                     new float[]{0, 1f, 0},
                                     new float[]{0, 0.5f, 1}

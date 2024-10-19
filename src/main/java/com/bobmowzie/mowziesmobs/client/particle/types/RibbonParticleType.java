@@ -1,5 +1,7 @@
-package com.bobmowzie.mowziesmobs.client.particle.util;
+package com.bobmowzie.mowziesmobs.client.particle.types;
 
+import com.bobmowzie.mowziesmobs.client.particle.util.ParticleComponent;
+import com.bobmowzie.mowziesmobs.client.particle.util.ParticleRotation;
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.serialization.Codec;
@@ -8,9 +10,9 @@ import net.minecraft.core.particles.ParticleType;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.phys.Vec3;
 
-public class RibbonParticleData extends AdvancedParticleData {
-    public static final Deserializer<RibbonParticleData> DESERIALIZER = new Deserializer<RibbonParticleData>() {
-        public RibbonParticleData fromCommand(ParticleType<RibbonParticleData> particleTypeIn, StringReader reader) throws CommandSyntaxException {
+public class RibbonParticleType extends AdvancedParticleType {
+    public static final Deserializer<RibbonParticleType> DESERIALIZER = new Deserializer<RibbonParticleType>() {
+        public RibbonParticleType fromCommand(ParticleType<RibbonParticleType> particleTypeIn, StringReader reader) throws CommandSyntaxException {
             reader.expect(' ');
             double airDrag = reader.readDouble();
             reader.expect(' ');
@@ -43,10 +45,10 @@ public class RibbonParticleData extends AdvancedParticleData {
             if (rotationMode.equals("face_camera")) rotation = new ParticleRotation.FaceCamera((float) 0);
             else if (rotationMode.equals("euler")) rotation = new ParticleRotation.EulerAngles((float)yaw, (float)pitch, (float)roll);
             else rotation = new ParticleRotation.OrientVector(new Vec3(yaw, pitch, roll));
-            return new RibbonParticleData(particleTypeIn, rotation, scale, red, green, blue, alpha, airDrag, duration, emissive, length);
+            return new RibbonParticleType(particleTypeIn, rotation, scale, red, green, blue, alpha, airDrag, duration, emissive, length);
         }
 
-        public RibbonParticleData fromNetwork(ParticleType<RibbonParticleData> particleTypeIn, FriendlyByteBuf buffer) {
+        public RibbonParticleType fromNetwork(ParticleType<RibbonParticleType> particleTypeIn, FriendlyByteBuf buffer) {
             double airDrag = buffer.readFloat();
             double red = buffer.readFloat();
             double green = buffer.readFloat();
@@ -65,17 +67,17 @@ public class RibbonParticleData extends AdvancedParticleData {
             if (rotationMode.equals("face_camera")) rotation = new ParticleRotation.FaceCamera((float) 0);
             else if (rotationMode.equals("euler")) rotation = new ParticleRotation.EulerAngles((float)yaw, (float)pitch, (float)roll);
             else rotation = new ParticleRotation.OrientVector(new Vec3(yaw, pitch, roll));
-            return new RibbonParticleData(particleTypeIn, rotation, scale, red, green, blue, alpha, airDrag, duration, emissive, length);
+            return new RibbonParticleType(particleTypeIn, rotation, scale, red, green, blue, alpha, airDrag, duration, emissive, length);
         }
     };
 
     private final int length;
 
-    public RibbonParticleData(ParticleType<? extends RibbonParticleData> type, ParticleRotation rotation, double scale, double r, double g, double b, double a, double drag, double duration, boolean emissive, int length) {
+    public RibbonParticleType(ParticleType<? extends RibbonParticleType> type, ParticleRotation rotation, double scale, double r, double g, double b, double a, double drag, double duration, boolean emissive, int length) {
         this(type, rotation, scale, r, g, b, a, drag, duration, emissive, length, new ParticleComponent[]{});
     }
 
-    public RibbonParticleData(ParticleType<? extends RibbonParticleData> type, ParticleRotation rotation, double scale, double r, double g, double b, double a, double drag, double duration, boolean emissive, int length, ParticleComponent[] components) {
+    public RibbonParticleType(ParticleType<? extends RibbonParticleType> type, ParticleRotation rotation, double scale, double r, double g, double b, double a, double drag, double duration, boolean emissive, int length, ParticleComponent[] components) {
         super(type, rotation, scale, r, g, b, a, drag, duration, emissive, false, components);
         this.length = length;
     }
@@ -96,19 +98,19 @@ public class RibbonParticleData extends AdvancedParticleData {
         return this.length;
     }
 
-    public static Codec<RibbonParticleData> CODEC_RIBBON(ParticleType<RibbonParticleData> particleType) {
+    public static Codec<RibbonParticleType> CODEC_RIBBON(ParticleType<RibbonParticleType> particleType) {
         return RecordCodecBuilder.create((codecBuilder) -> codecBuilder.group(
-                Codec.DOUBLE.fieldOf("scale").forGetter(RibbonParticleData::getScale),
-                Codec.DOUBLE.fieldOf("r").forGetter(RibbonParticleData::getRed),
-                Codec.DOUBLE.fieldOf("g").forGetter(RibbonParticleData::getGreen),
-                Codec.DOUBLE.fieldOf("b").forGetter(RibbonParticleData::getBlue),
-                Codec.DOUBLE.fieldOf("a").forGetter(RibbonParticleData::getAlpha),
-                Codec.DOUBLE.fieldOf("drag").forGetter(RibbonParticleData::getAirDrag),
-                Codec.DOUBLE.fieldOf("duration").forGetter(RibbonParticleData::getDuration),
-                Codec.BOOL.fieldOf("emissive").forGetter(RibbonParticleData::isEmissive),
-                Codec.INT.fieldOf("length").forGetter(RibbonParticleData::getLength)
+                Codec.DOUBLE.fieldOf("scale").forGetter(RibbonParticleType::scale),
+                Codec.DOUBLE.fieldOf("r").forGetter(RibbonParticleType::red),
+                Codec.DOUBLE.fieldOf("g").forGetter(RibbonParticleType::green),
+                Codec.DOUBLE.fieldOf("b").forGetter(RibbonParticleType::blue),
+                Codec.DOUBLE.fieldOf("a").forGetter(RibbonParticleType::alpha),
+                Codec.DOUBLE.fieldOf("drag").forGetter(RibbonParticleType::airDrag),
+                Codec.DOUBLE.fieldOf("duration").forGetter(RibbonParticleType::duration),
+                Codec.BOOL.fieldOf("emissive").forGetter(RibbonParticleType::emissive),
+                Codec.INT.fieldOf("length").forGetter(RibbonParticleType::getLength)
                 ).apply(codecBuilder, (scale, r, g, b, a, drag, duration, emissive, length) ->
-                    new RibbonParticleData(particleType, new ParticleRotation.FaceCamera(0), scale, r, g, b, a, drag, duration, emissive, length, new ParticleComponent[]{}))
+                    new RibbonParticleType(particleType, new ParticleRotation.FaceCamera(0), scale, r, g, b, a, drag, duration, emissive, length, new ParticleComponent[]{}))
         );
     }
 }

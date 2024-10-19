@@ -723,7 +723,7 @@ public final class ServerEventHandler {
                         Vec3 ringOffset = attacker.getLookAngle().scale(-target.getBbWidth() / 2.f);
                         ParticleRotation.OrientVector rotation = new ParticleRotation.OrientVector(ringOffset);
                         Vec3 pos = target.position().add(0, target.getBbHeight() / 2f, 0).add(ringOffset);
-                        AdvancedParticleBase.spawnParticle(target.level(), ParticleHandler.RING_SPARKS.get(), pos.x(), pos.y(), pos.z(), 0, 0, 0, rotation, 3.5F, 0.83f, 1, 0.39f, 1, 1, 6, false, true, new ParticleComponent[]{
+                        AdvancedParticleBase.spawnParticle(target.level(), ParticleHandler.RING_SPARKS, pos.x(), pos.y(), pos.z(), 0, 0, 0, rotation, 3.5F, 0.83f, 1, 0.39f, 1, 1, 6, false, true, new ParticleComponent[]{
                                 new ParticleComponent.PropertyControl(ParticleComponent.PropertyControl.EnumParticleProperty.ALPHA, new ParticleComponent.KeyTrack(new float[]{1f, 1f, 0f}, new float[]{0f, 0.5f, 1f}), false),
                                 new ParticleComponent.PropertyControl(ParticleComponent.PropertyControl.EnumParticleProperty.SCALE, ParticleComponent.KeyTrack.startAndEnd(0f, 15f), false)
                         });
@@ -743,7 +743,7 @@ public final class ServerEventHandler {
                             particlePos = particlePos.xRot((float) (rand.nextFloat() * 2 * Math.PI));
                             double value = rand.nextFloat() * 0.1f;
                             double life = rand.nextFloat() * 2.5f + 5f;
-                            AdvancedParticleBase.spawnParticle(target.level(), ParticleHandler.PIXEL.get(), pos.x(), pos.y(), pos.z(), particlePos.x * explodeSpeed, particlePos.y * explodeSpeed, particlePos.z * explodeSpeed, true, 0, 0, 0, 0, 3f, 0.07d + value, 0.25d + value, 0.07d + value, 1d, 0.6, life * 0.95, false, true);
+                            AdvancedParticleBase.spawnParticle(target.level(), ParticleHandler.PIXEL, pos.x(), pos.y(), pos.z(), particlePos.x * explodeSpeed, particlePos.y * explodeSpeed, particlePos.z * explodeSpeed, true, 0, 0, 0, 0, 3f, 0.07d + value, 0.25d + value, 0.07d + value, 1d, 0.6, life * 0.95, false, true);
                         }
                         for (int i = 0; i < 6; i++) {
                             Vec3 particlePos = new Vec3(rand.nextFloat() * 0.25, 0, 0);
@@ -751,7 +751,7 @@ public final class ServerEventHandler {
                             particlePos = particlePos.xRot((float) (rand.nextFloat() * 2 * Math.PI));
                             double value = rand.nextFloat() * 0.1f;
                             double life = rand.nextFloat() * 5f + 10f;
-                            AdvancedParticleBase.spawnParticle(target.level(), ParticleHandler.BUBBLE.get(), pos.x(), pos.y(), pos.z(), particlePos.x * explodeSpeed, particlePos.y * explodeSpeed, particlePos.z * explodeSpeed, true, 0, 0, 0, 0, 3f, 0.25d + value, 0.75d + value, 0.25d + value, 1d, 0.6, life * 0.95, false, true);
+                            AdvancedParticleBase.spawnParticle(target.level(), ParticleHandler.BUBBLE, pos.x(), pos.y(), pos.z(), particlePos.x * explodeSpeed, particlePos.y * explodeSpeed, particlePos.z * explodeSpeed, true, 0, 0, 0, 0, 3f, 0.25d + value, 0.75d + value, 0.25d + value, 1d, 0.6, life * 0.95, false, true);
                         }
                     }
                 }

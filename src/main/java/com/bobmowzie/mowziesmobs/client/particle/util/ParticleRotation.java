@@ -6,6 +6,8 @@ public abstract class ParticleRotation {
 
     }
 
+    public abstract String getId();
+
     public static class FaceCamera extends ParticleRotation {
         public float faceCameraAngle;
         public float prevFaceCameraAngle;
@@ -16,6 +18,11 @@ public abstract class ParticleRotation {
         @Override
         public void setPrevValues() {
             prevFaceCameraAngle = faceCameraAngle;
+        }
+
+        @Override
+        public String getId() {
+            return "face_camera";
         }
     }
 
@@ -34,6 +41,11 @@ public abstract class ParticleRotation {
             prevPitch = pitch;
             prevRoll = roll;
         }
+
+        @Override
+        public String getId() {
+            return "euler";
+        }
     }
 
     public static class OrientVector extends ParticleRotation {
@@ -46,6 +58,11 @@ public abstract class ParticleRotation {
         @Override
         public void setPrevValues() {
             prevOrientation = orientation;
+        }
+
+        @Override
+        public String getId() {
+            return "orient";
         }
     }
 }
