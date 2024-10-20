@@ -16,7 +16,7 @@ import java.util.Map;
 public class ModelPlayerAnimated<T extends LivingEntity> extends PlayerModel<T> {
     private final List<ModelPart> parts;
 
-    public ModelPlayerAnimated(ModelPart root, boolean smallArmsIn) { // FIXME 1.21 :: ear is private
+    public ModelPlayerAnimated(ModelPart root, boolean smallArmsIn) {
         super(root, smallArmsIn);
         ModelPartMatrix bodyMatrix = new ModelPartMatrix(body, false);
         ModelPartMatrix headMatrix = new ModelPartMatrix(head, false);
