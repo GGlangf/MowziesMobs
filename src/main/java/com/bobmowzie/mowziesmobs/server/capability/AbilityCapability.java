@@ -9,6 +9,7 @@ import com.bobmowzie.mowziesmobs.server.entity.MowzieGeckoEntity;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -128,10 +129,14 @@ public class AbilityCapability {
         }
     }
 
-    public static class Provider implements ICapabilityProvider<Player, Void, AbilityCapability.Capability> {
+    public static class Provider implements ICapabilityProvider<Entity, Void, AbilityCapability.Capability> {
         @Override
-        public @Nullable AbilityCapability.Capability getCapability(Player player, Void context) {
-            return player.getCapability(CapabilityHandler.ABILITY_CAPABILITY);
+        public @Nullable AbilityCapability.Capability getCapability(@NotNull Entity entity, Void context) {
+            if (entity instanceof LivingEntity) {
+                return entity.getData(CapabilityHandler.ABILITY_DATA);
+            }
+
+            return null;
         }
     }
 }

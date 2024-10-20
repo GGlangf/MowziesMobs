@@ -20,7 +20,6 @@ import java.util.stream.Collectors;
 public class ClientLayerRegistry {
     @SubscribeEvent
     public static void onAddLayers(EntityRenderersEvent.AddLayers event) {
-        // Logic to collect living entity types is from EntityAttributeModificationEvent
         List<EntityType<? extends LivingEntity>> entityTypes = ImmutableList.copyOf(MMCommon.getLivingEntityTypes().collect(Collectors.toList()));
         entityTypes.forEach((entityType -> addLayerIfApplicable(entityType, event)));
 

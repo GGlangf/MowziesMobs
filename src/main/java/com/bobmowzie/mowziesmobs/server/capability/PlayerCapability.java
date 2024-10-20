@@ -410,7 +410,7 @@ public class PlayerCapability {
     public static class Provider implements ICapabilityProvider<Player, Void, PlayerCapability.Capability> {
         @Override
         public @Nullable PlayerCapability.Capability getCapability(Player player, Void context) {
-            return player.getCapability(CapabilityHandler.PLAYER_CAPABILITY);
+            return player.getData(CapabilityHandler.PLAYER_DATA);
         }
     }
 }

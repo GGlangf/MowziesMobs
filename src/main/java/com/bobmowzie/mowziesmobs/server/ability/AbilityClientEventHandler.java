@@ -7,7 +7,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.client.event.RenderFrameEvent;
 
 public class AbilityClientEventHandler {
-    public static void onRenderTick(RenderFrameEvent event) {
+    public static void onRenderTick(RenderFrameEvent.Post event) { // FIXME 1.21 :: Post correct here?
         Player player = Minecraft.getInstance().player;
         if (player != null) {
             AbilityCapability.Capability abilityCapability = AbilityHandler.INSTANCE.getAbilityCapability(player);

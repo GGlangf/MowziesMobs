@@ -23,7 +23,7 @@ import org.joml.Quaternionf;
 import org.joml.Vector3d;
 
 public class RenderUmvuthi extends MowzieGeoEntityRenderer<EntityUmvuthi> {
-    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(MMCommon.MODID, "textures/entity/umvuthi.png");
+    public static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(MMCommon.MODID, "textures/entity/umvuthi.png");
     public static final ResourceLocation SUN = ResourceLocation.fromNamespaceAndPath(MMCommon.MODID, "textures/effects/sun_effect.png");
 
     public static final float BURST_RADIUS = 3.5f;

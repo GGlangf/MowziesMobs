@@ -28,14 +28,12 @@ import com.bobmowzie.mowziesmobs.server.world.spawn.SpawnHandler;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.DefaultAttributes;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
-import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.config.ModConfigEvent;
-import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.neoforged.fml.loading.FMLLoader;
 import net.neoforged.neoforge.common.NeoForge;
@@ -45,7 +43,6 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.stream.Stream;
 
-@EventBusSubscriber
 @Mod(MMCommon.MODID)
 public final class MMCommon {
     public static final String MODID = "mowziesmobs";
@@ -58,11 +55,14 @@ public final class MMCommon {
         PROXY = FMLLoader.getDist().isClient() ? new ClientProxy() : new ServerProxy();
         BlockHandler.REG.register(modBus);
         EntityHandler.REG.register(modBus);
+        EntityHandler.SERIALIZER_REG.register(modBus);
         MaterialHandler.MM_ARMOR_MATERIALS.register(modBus);
         ItemHandler.REG.register(modBus);
         MMSounds.REG.register(modBus);
         BlockEntityHandler.REG.register(modBus);
         ParticleHandler.REG.register(modBus);
+        JigsawHandler.MM_STRUCTURE_POOLS.register(modBus);
+        ProcessorHandler.MM_STRUCTURE_PROCESSORS.register(modBus);
         StructureTypeHandler.STRUCTURE_TYPE_REG.register(modBus);
         StructureTypeHandler.STRUCTURE_PIECE_TYPE_REG.register(modBus);
         ContainerHandler.REG.register(modBus);
@@ -72,24 +72,22 @@ public final class MMCommon {
         LootTableHandler.LOOT_CONDITION_TYPE_REG.register(modBus);
         LootTableHandler.LOOT_FUNCTION_TYPE_REG.register(modBus);
         AdvancementHandler.MM_TRIGGERS.register(modBus);
+        CapabilityHandler.MM_ATTACHMENT_TYPES.register(modBus);
         CreativeTabHandler.register(modBus);
 
         PROXY.init();
-        modBus.<FMLCommonSetupEvent>addListener(this::init);
-        modBus.<FMLLoadCompleteEvent>addListener(this::init);
+        modBus.addListener(this::handleLoadComplete);
         modBus.addListener(this::onModConfigEvent);
         modBus.addListener(CapabilityHandler::registerCapabilities);
         modBus.addListener(SpawnHandler::registerSpawnPlacementTypes);
 
-        NeoForge.EVENT_BUS.register(this);
         NeoForge.EVENT_BUS.register(new ServerEventHandler());
         NeoForge.EVENT_BUS.register(new AbilityCommonEventHandler());
         NeoForge.EVENT_BUS.addListener(PotionTypeHandler::addMixes);
 
         container.registerConfig(ModConfig.Type.COMMON, ConfigHandler.COMMON_CONFIG);
     }
-    
-    @SubscribeEvent
+
     public void onModConfigEvent(final ModConfigEvent event) {
         final ModConfig config = event.getConfig();
         // Rebake the configs when they change
@@ -142,19 +140,13 @@ public final class MMCommon {
         };
     }
 
-    public void init(final FMLCommonSetupEvent event) {
-        event.enqueueWork(() -> {
-            JigsawHandler.registerJigsawElements();
-            ProcessorHandler.registerStructureProcessors();
-        });
-    }
-
-    private void init(FMLLoadCompleteEvent event) {
+    private void handleLoadComplete(FMLLoadCompleteEvent event) {
         ItemHandler.initializeDispenserBehaviors();
         BlockHandler.init();
     }
 
     public static Stream<EntityType<? extends LivingEntity>> getLivingEntityTypes() {
-        return BuiltInRegistries.ENTITY_TYPE.stream().map(entityType -> (EntityType<? extends LivingEntity>) entityType);
+        // Logic to collect living entity types is from EntityAttributeModificationEvent
+        return BuiltInRegistries.ENTITY_TYPE.stream().filter(DefaultAttributes::hasSupplier).map(entityType -> (EntityType<? extends LivingEntity>) entityType);
     }
 }

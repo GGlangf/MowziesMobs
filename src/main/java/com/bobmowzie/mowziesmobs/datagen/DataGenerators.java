@@ -1,6 +1,5 @@
 package com.bobmowzie.mowziesmobs.datagen;
 
-import com.bobmowzie.mowziesmobs.MMCommon;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;

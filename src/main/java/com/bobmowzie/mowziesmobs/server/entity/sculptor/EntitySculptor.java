@@ -277,7 +277,6 @@ public class EntitySculptor extends MowzieGeckoEntity {
     @Override
     protected void defineSynchedData(@NotNull SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
-
         builder.define(DESIRES, new ItemStack(BuiltInRegistries.ITEM.get(ResourceLocation.tryParse(ConfigHandler.COMMON.MOBS.SCULPTOR.whichItem.get())), ConfigHandler.COMMON.MOBS.SCULPTOR.howMany.get()));
         builder.define(IS_TRADING, false);
         builder.define(IS_FIGHTING, false);

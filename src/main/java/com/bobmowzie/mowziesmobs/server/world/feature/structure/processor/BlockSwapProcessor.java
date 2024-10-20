@@ -35,7 +35,7 @@ public class BlockSwapProcessor extends StructureProcessor {
     }
 
     protected StructureProcessorType<?> getType() {
-        return ProcessorHandler.BASE_PROCESSOR;
+        return ProcessorHandler.BASE_PROCESSOR.value();
     }
 
     @Override

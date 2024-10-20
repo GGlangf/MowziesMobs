@@ -120,7 +120,7 @@ public enum ClientEventHandler {
     }
 
     @SubscribeEvent
-    public void onPlayerTick(PlayerTickEvent event) {
+    public void onPlayerTick(PlayerTickEvent.Post event) { // FIXME 1.21 :: Post correct here?
         Player player = event.getEntity();
         PlayerCapability.Capability playerCapability = CapabilityHandler.getCapability(player, CapabilityHandler.PLAYER_CAPABILITY);
         if (playerCapability != null && player.level().isClientSide()) {
@@ -148,7 +148,7 @@ public enum ClientEventHandler {
     }
 
     @SubscribeEvent
-    public void onRenderTick(RenderFrameEvent event) {
+    public void onRenderTick(RenderFrameEvent.Post event) { // FIXME 1.21 :: Post correct here?
         Player player = Minecraft.getInstance().player;
 //        if (player != null) {
 //            PlayerCapability.Capability playerCapability = CapabilityHandler.getCapability(player, CapabilityHandler.PLAYER_CAPABILITY);
@@ -315,7 +315,7 @@ public enum ClientEventHandler {
     }
 
     @SubscribeEvent
-    public void onLevelTick(LevelTickEvent event) {
+    public void onLevelTick(LevelTickEvent.Post event) { // FIXME 1.21 :: Post correct here?
         if (event.getLevel().isClientSide()) {
             MMCommon.PROXY.updateMarkedBlocks();
             BossMusicPlayer.tick();

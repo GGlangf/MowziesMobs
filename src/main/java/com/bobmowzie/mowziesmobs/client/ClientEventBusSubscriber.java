@@ -74,13 +74,15 @@ public class ClientEventBusSubscriber {
     }
 
     @SubscribeEvent
-    public static void onRegisterModels(ModelEvent.RegisterAdditional modelRegistryEvent) {
+    public static void onRegisterModels(ModelEvent.RegisterAdditional modelRegistryEvent) { // FIXME 1.21 :: can only register 'standalone' here - unsure what the difference to 'inventory' (previously used here) is
         for (String item : MMModels.HAND_MODEL_ITEMS) {
-        	modelRegistryEvent.register(new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(MMCommon.MODID, item + "_in_hand"), "inventory"));
+        	modelRegistryEvent.register(ModelResourceLocation.standalone(ResourceLocation.fromNamespaceAndPath(MMCommon.MODID, item + "_in_hand")));
         }
+
         for (MaskType type : MaskType.values()) {
-        	modelRegistryEvent.register(new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(MMCommon.MODID,"umvuthana_mask_" + type.name + "_frame"), "inventory"));
+        	modelRegistryEvent.register(ModelResourceLocation.standalone(ResourceLocation.fromNamespaceAndPath(MMCommon.MODID,"umvuthana_mask_" + type.name + "_frame")));
         }
-        modelRegistryEvent.register(new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(MMCommon.MODID, "sol_visage_frame"), "inventory"));
+
+        modelRegistryEvent.register(ModelResourceLocation.standalone(ResourceLocation.fromNamespaceAndPath(MMCommon.MODID, "sol_visage_frame")));
     }
 }

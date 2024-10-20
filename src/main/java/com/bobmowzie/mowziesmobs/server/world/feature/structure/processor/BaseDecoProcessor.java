@@ -37,7 +37,7 @@ public class BaseDecoProcessor extends StructureProcessor {
     };
 
     protected StructureProcessorType<?> getType() {
-        return ProcessorHandler.BASE_DECO_PROCESSOR;
+        return ProcessorHandler.BASE_DECO_PROCESSOR.value();
     }
 
     @Override

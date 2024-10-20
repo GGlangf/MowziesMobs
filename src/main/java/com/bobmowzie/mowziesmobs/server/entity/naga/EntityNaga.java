@@ -22,7 +22,6 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.FluidTags;
@@ -33,7 +32,6 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.LookControl;
@@ -53,7 +51,6 @@ import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.monster.RangedAttackMob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
@@ -62,7 +59,6 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.NeoForgeMod;
 import org.jetbrains.annotations.NotNull;
 
@@ -680,77 +676,76 @@ public class EntityNaga extends MowzieLLibraryEntity implements RangedAttackMob,
         }
     }
 
-    public void travel(Vec3 motion) {
-        double gravity = getAttributeValue(Attributes.GRAVITY);
-        boolean flag = this.getDeltaMovement().y <= 0.0D;
-//        if (flag && this.isPotionActive(Effects.SLOW_FALLING)) {
-//            if (!gravity.hasModifier(SLOW_FALLING)) gravity.applyNonPersistentModifier(SLOW_FALLING);
-//            this.fallDistance = 0.0F;
-//        } else if (gravity.hasModifier(SLOW_FALLING)) {
-//            gravity.removeModifier(SLOW_FALLING);
-//        } TODO: SLOW_FALLING has private access. Skip?
+    @Override // Mostly a copy of the parent method
+    public void travel(@NotNull Vec3 motion) {
+        double gravity = getGravity();
+        boolean isFalling = this.getDeltaMovement().y <= 0;
+
+        if (isFalling && hasEffect(MobEffects.SLOW_FALLING)) {
+            gravity = Math.max(gravity, 0.01);
+        }
 
         FluidState fluidstate = this.level().getFluidState(this.blockPosition());
         if ((this.isInWater() || (this.isInFluidType(fluidstate) && fluidstate.getFluidType() != NeoForgeMod.LAVA_TYPE.value())) && this.isAffectedByFluids() && !this.canStandOnFluid(fluidstate)) {
             if (this.isInWater() || (this.isInFluidType(fluidstate) && !this.moveInFluid(fluidstate, motion, gravity))) {
-                double d8 = this.getY();
-                float f5 = this.isSprinting() ? 0.9F : this.getWaterSlowDown();
-                float f6 = 0.02F;
-                float f7 = (float) EnchantmentHelper.getDepthStrider(this); // FIXME 1.21 :: adjust to 1.21 code (which uses swim speed etc.)
-                if (f7 > 3.0F) {
-                    f7 = 3.0F;
+                double y = this.getY();
+                float waterSpeed = this.isSprinting() ? 0.9F : this.getWaterSlowDown();
+                float swimSpeed = 0.02F;
+                float speedModifier = (float) getAttributeValue(Attributes.WATER_MOVEMENT_EFFICIENCY);
+
+                if (!onGround()) {
+                    speedModifier *= 0.5f;
                 }
 
-                if (!this.onGround()) {
-                    f7 *= 0.5F;
-                }
-
-                if (f7 > 0.0F) {
-                    f5 += (0.54600006F - f5) * f7 / 3.0F;
-                    f6 += (this.getSpeed() - f6) * f7 / 3.0F;
+                if (speedModifier > 0) {
+                    waterSpeed += (0.54600006F - waterSpeed) * speedModifier;
+                    swimSpeed += (this.getSpeed() - swimSpeed) * speedModifier;
                 }
 
                 if (this.hasEffect(MobEffects.DOLPHINS_GRACE)) {
-                    f5 = 0.96F;
+                    waterSpeed = 0.96F;
                 }
 
-                f6 *= (float) this.getAttributeValue(NeoForgeMod.SWIM_SPEED);
-                this.moveRelative(f6, motion);
+                swimSpeed *= (float) this.getAttributeValue(NeoForgeMod.SWIM_SPEED);
+                this.moveRelative(swimSpeed, motion);
                 this.move(MoverType.SELF, this.getDeltaMovement());
-                Vec3 vector3d6 = this.getDeltaMovement();
+                Vec3 deltaMovement = this.getDeltaMovement();
+
                 if (this.horizontalCollision && this.onClimbable()) {
-                    vector3d6 = new Vec3(vector3d6.x, 0.2D, vector3d6.z);
+                    deltaMovement = new Vec3(deltaMovement.x, 0.2D, deltaMovement.z);
                 }
 
-                this.setDeltaMovement(vector3d6.multiply((double)f5, (double)0.8F, (double)f5));
-                Vec3 vec32 = this.getFluidFallingAdjustedMovement(gravity, flag, this.getDeltaMovement());
-                this.setDeltaMovement(vec32);
-                if (this.horizontalCollision && this.isFree(vec32.x, vec32.y + (double)0.6F - this.getY() + d8, vec32.z)) {
-                    this.setDeltaMovement(vec32.x, (double)0.3F, vec32.z);
+                this.setDeltaMovement(deltaMovement.multiply(waterSpeed, 0.8F, waterSpeed));
+                Vec3 fluidMovement = this.getFluidFallingAdjustedMovement(gravity, isFalling, this.getDeltaMovement());
+                this.setDeltaMovement(fluidMovement);
+
+                if (this.horizontalCollision && this.isFree(fluidMovement.x, fluidMovement.y + 0.6F - this.getY() + y, fluidMovement.z)) {
+                    this.setDeltaMovement(fluidMovement.x, 0.3F, fluidMovement.z);
                 }
             }
         } else if (this.isInLava() && this.isAffectedByFluids() && !this.canStandOnFluid(fluidstate)) {
-            double d7 = this.getY();
+            double y = this.getY();
             this.moveRelative(0.02F, motion);
             this.move(MoverType.SELF, this.getDeltaMovement());
+
             if (this.getFluidHeight(FluidTags.LAVA) <= this.getFluidJumpThreshold()) {
                 this.setDeltaMovement(this.getDeltaMovement().multiply(0.5D, 0.8F, 0.5D));
-                Vec3 vector3d3 = this.getFluidFallingAdjustedMovement(gravity, flag, this.getDeltaMovement());
-                this.setDeltaMovement(vector3d3);
+                Vec3 fluidMovement = this.getFluidFallingAdjustedMovement(gravity, isFalling, this.getDeltaMovement());
+                this.setDeltaMovement(fluidMovement);
             } else {
                 this.setDeltaMovement(this.getDeltaMovement().scale(0.5D));
             }
 
-            if (!this.isNoGravity()) {
+            if (gravity != 0) {
                 this.setDeltaMovement(this.getDeltaMovement().add(0.0D, -gravity / 4.0D, 0.0D));
             }
 
-            Vec3 vector3d4 = this.getDeltaMovement();
-            if (this.horizontalCollision && this.isFree(vector3d4.x, vector3d4.y + (double) 0.6F - this.getY() + d7, vector3d4.z)) {
-                this.setDeltaMovement(vector3d4.x, 0.3F, vector3d4.z);
+            Vec3 deltaMovement = this.getDeltaMovement();
+
+            if (this.horizontalCollision && this.isFree(deltaMovement.x, deltaMovement.y + (double) 0.6F - this.getY() + y, deltaMovement.z)) {
+                this.setDeltaMovement(deltaMovement.x, 0.3F, deltaMovement.z);
             }
-        }
-        else if (movement == EnumNagaMovement.HOVERING) {
+        } else if (movement == EnumNagaMovement.HOVERING) {
             BlockPos ground = new BlockPos((int) this.getX(), (int) (this.getBoundingBox().minY - 1.0D), (int) this.getZ());
             float f = 0.91F;
             if (this.onGround()) {
@@ -808,9 +803,9 @@ public class EntityNaga extends MowzieLLibraryEntity implements RangedAttackMob,
 
             this.setDeltaMovement(vec3.multiply(0.99F, 0.98F, 0.99F));
             this.move(MoverType.SELF, this.getDeltaMovement());
+
             if (moveDirection.y() < 0 && getAnimation() == NO_ANIMATION)
                 AnimationHandler.INSTANCE.sendAnimationMessage(this, FLAP_ANIMATION);
-
         } else if (movement == EnumNagaMovement.FALLING || movement == EnumNagaMovement.FALLEN || isNoAi()) {
             BlockPos blockpos = this.getBlockPosBelowThatAffectsMyMovement();
             float f2 = this.level().getBlockState(this.getBlockPosBelowThatAffectsMyMovement()).getFriction(level(), this.getBlockPosBelowThatAffectsMyMovement(), this);

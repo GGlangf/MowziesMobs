@@ -23,7 +23,7 @@ public class RootsProcessor extends StructureProcessor {
     public static final MapCodec<RootsProcessor> CODEC = MapCodec.unit(() -> INSTANCE);
 
     protected StructureProcessorType<?> getType() {
-        return ProcessorHandler.BASE_PROCESSOR;
+        return ProcessorHandler.BASE_PROCESSOR.value();
     }
 
     @Override

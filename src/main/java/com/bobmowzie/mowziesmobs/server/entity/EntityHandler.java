@@ -12,19 +12,52 @@ import com.bobmowzie.mowziesmobs.server.entity.lantern.EntityLantern;
 import com.bobmowzie.mowziesmobs.server.entity.naga.EntityNaga;
 import com.bobmowzie.mowziesmobs.server.entity.sculptor.EntitySculptor;
 import com.bobmowzie.mowziesmobs.server.entity.umvuthana.*;
+import com.bobmowzie.mowziesmobs.server.entity.umvuthana.trade.Trade;
 import com.bobmowzie.mowziesmobs.server.entity.wroughtnaut.EntityWroughtnaut;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.syncher.EntityDataSerializer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import net.neoforged.neoforge.registries.NeoForgeRegistries;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Optional;
 
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD)
 public class EntityHandler {
+    private static final StreamCodec<RegistryFriendlyByteBuf, Optional<Trade>> OPTIONAL_TRADE_CODEC = new StreamCodec<>() {
+        public @NotNull Optional<Trade> decode(@NotNull RegistryFriendlyByteBuf buffer) {
+            boolean hasTrade = buffer.readBoolean();
+
+            if (!hasTrade) {
+                return Optional.empty();
+            }
+
+            return Optional.of(new Trade(ItemStack.OPTIONAL_STREAM_CODEC.decode(buffer), ItemStack.OPTIONAL_STREAM_CODEC.decode(buffer), buffer.readInt()));
+        }
+
+        public void encode(@NotNull RegistryFriendlyByteBuf buffer, @NotNull Optional<Trade> optional) {
+            optional.ifPresentOrElse(trade -> {
+                buffer.writeBoolean(true);
+                ItemStack.OPTIONAL_STREAM_CODEC.encode(buffer, trade.getInput());
+                ItemStack.OPTIONAL_STREAM_CODEC.encode(buffer, trade.getOutput());
+                buffer.writeInt(trade.getWeight());
+            }, () -> buffer.writeBoolean(false));
+        }
+    };
+
+    public static final DeferredRegister<EntityDataSerializer<?>> SERIALIZER_REG = DeferredRegister.create(NeoForgeRegistries.ENTITY_DATA_SERIALIZERS, MMCommon.MODID);
+    public static DeferredHolder<EntityDataSerializer<?>, EntityDataSerializer<Optional<Trade>>> OPTIONAL_TRADE = SERIALIZER_REG.register("optional_trade", () -> EntityDataSerializer.forValueType(OPTIONAL_TRADE_CODEC));
+
     public static final DeferredRegister<EntityType<?>> REG = DeferredRegister.create(Registries.ENTITY_TYPE, MMCommon.MODID);
 
     public static final DeferredHolder<EntityType<?>, EntityType<EntityFoliaath>> FOLIAATH = REG.register("foliaath", () -> EntityType.Builder.of(EntityFoliaath::new, MobCategory.MONSTER).sized(0.5f, 2.5f).build(ResourceLocation.fromNamespaceAndPath(MMCommon.MODID, "foliaath").toString()));

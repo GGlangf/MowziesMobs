@@ -24,12 +24,12 @@ public class MMModels {
     public static final String[] HAND_MODEL_ITEMS = new String[] {"wrought_axe", "spear", "earthrend_gauntlet", "sculptor_staff"};
 
     @SubscribeEvent
-    public static void onModelBakeEvent(ModelEvent.ModifyBakingResult event) {
+    public static void onModelBakeEvent(ModelEvent.ModifyBakingResult event) { // FIXME 1.21 :: can only register 'standalone' here - unsure what the difference to 'inventory' (previously used here) is
         Map<ModelResourceLocation, BakedModel> models = event.getModels();
 
         for (String item : HAND_MODEL_ITEMS) {
-            ModelResourceLocation modelInventory = new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(MMCommon.MODID, item), "inventory");
-            ModelResourceLocation modelHand = new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(MMCommon.MODID, item + "_in_hand"), "inventory");
+            ModelResourceLocation modelInventory = ModelResourceLocation.standalone(ResourceLocation.fromNamespaceAndPath(MMCommon.MODID, item));
+            ModelResourceLocation modelHand = ModelResourceLocation.standalone(ResourceLocation.fromNamespaceAndPath(MMCommon.MODID, item + "_in_hand"));
 
             BakedModel bakedModelDefault = models.get(modelInventory);
             BakedModel bakedModelHand = models.get(modelHand);
@@ -83,12 +83,12 @@ public class MMModels {
         }
 
         for (MaskType type : MaskType.values()) {
-            ModelResourceLocation maskModelInventory = new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(MMCommon.MODID,"umvuthana_mask_" + type.name), "inventory");
-            ModelResourceLocation maskModelFrame = new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(MMCommon.MODID, "umvuthana_mask_" + type.name + "_frame"), "inventory");
+            ModelResourceLocation maskModelInventory = ModelResourceLocation.standalone(ResourceLocation.fromNamespaceAndPath(MMCommon.MODID,"umvuthana_mask_" + type.name));
+            ModelResourceLocation maskModelFrame = ModelResourceLocation.standalone(ResourceLocation.fromNamespaceAndPath(MMCommon.MODID, "umvuthana_mask_" + type.name + "_frame"));
             bakeMask(models, maskModelInventory, maskModelFrame);
         }
-        ModelResourceLocation maskModelInventory = new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(MMCommon.MODID, "sol_visage"), "inventory");
-        ModelResourceLocation maskModelFrame = new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(MMCommon.MODID, "sol_visage_frame"), "inventory");
+        ModelResourceLocation maskModelInventory = ModelResourceLocation.standalone(ResourceLocation.fromNamespaceAndPath(MMCommon.MODID, "sol_visage"));
+        ModelResourceLocation maskModelFrame = ModelResourceLocation.standalone(ResourceLocation.fromNamespaceAndPath(MMCommon.MODID, "sol_visage_frame"));
         bakeMask(models, maskModelInventory, maskModelFrame);
     }
 

@@ -331,7 +331,7 @@ public class FrozenCapability {
         @Override
         public @Nullable FrozenCapability.Capability getCapability(@NotNull Entity entity, Void context) {
             if (entity instanceof LivingEntity) {
-                return entity.getCapability(CapabilityHandler.FROZEN_CAPABILITY);
+                return entity.getData(CapabilityHandler.FROZEN_DATA);
             }
 
             return null;

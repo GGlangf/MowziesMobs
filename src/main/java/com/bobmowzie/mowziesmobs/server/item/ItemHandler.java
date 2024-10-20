@@ -34,7 +34,7 @@ public class ItemHandler {
     public static final DeferredHolder<Item, ItemWroughtHelm> WROUGHT_HELMET = REG.register("wrought_helmet", () -> new ItemWroughtHelm(() -> {
         Item.Properties properties = new Item.Properties().rarity(Rarity.UNCOMMON);
 
-        if (ConfigHandler.COMMON.TOOLS_AND_ABILITIES.WROUGHT_HELM.breakable.get()) {
+        if (true /*ConfigHandler.COMMON.TOOLS_AND_ABILITIES.WROUGHT_HELM.breakable.get()*/) { // FIXME 1.21 :: config is accessed too early
             properties.durability(/* Iron */ ArmorItem.Type.HELMET.getDurability(15));
         } else {
             properties.stacksTo(1);
@@ -51,7 +51,7 @@ public class ItemHandler {
     public static final DeferredHolder<Item, ItemSolVisage> SOL_VISAGE = REG.register("sol_visage", () -> new ItemSolVisage(() -> {
         Item.Properties properties = new Item.Properties().rarity(Rarity.RARE);
 
-        if (ConfigHandler.COMMON.TOOLS_AND_ABILITIES.SOL_VISAGE.breakable.get()) {
+        if (true /*ConfigHandler.COMMON.TOOLS_AND_ABILITIES.SOL_VISAGE.breakable.get()*/) {
             properties.durability(/* Golden */ ArmorItem.Type.HELMET.getDurability(7));
         } else {
             properties.stacksTo(1);

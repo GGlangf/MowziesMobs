@@ -28,8 +28,16 @@ public class GeckoArmorLayer<T extends LivingEntity, M extends HumanoidModel<T>,
         super(layerParent, innerModel, outerModel, modelManager);
     }
 
-    @Override // Mostly a copy of the parent method
-    protected void renderArmorPiece(PoseStack poseStack, MultiBufferSource bufferSource, T livingEntity, EquipmentSlot slot, int packedLight, A p_model) {
+    @Override // FIXME :: in the latest neoforge version these other variables are passed on to the armor piece renderer (supposedly for animation)
+    public void render(PoseStack poseStack, MultiBufferSource buffer, int packedLight, T livingEntity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+        this.renderArmorPiece(poseStack, buffer, livingEntity, EquipmentSlot.CHEST, packedLight, this.getArmorModel(EquipmentSlot.CHEST));
+        this.renderArmorPiece(poseStack, buffer, livingEntity, EquipmentSlot.LEGS, packedLight, this.getArmorModel(EquipmentSlot.LEGS));
+        this.renderArmorPiece(poseStack, buffer, livingEntity, EquipmentSlot.FEET, packedLight, this.getArmorModel(EquipmentSlot.FEET));
+        this.renderArmorPiece(poseStack, buffer, livingEntity, EquipmentSlot.HEAD, packedLight, this.getArmorModel(EquipmentSlot.HEAD));
+    }
+
+    // FIXME 1.21 :: access transformer causes a mixin from geckolib to fail
+    private void renderArmorPiece(PoseStack poseStack, MultiBufferSource bufferSource, T livingEntity, EquipmentSlot slot, int packedLight, A p_model) {
         ItemStack itemstack = livingEntity.getItemBySlot(slot);
         if (itemstack.getItem() instanceof ArmorItem armoritem) {
             if (armoritem.getEquipmentSlot() == slot) {
@@ -55,12 +63,14 @@ public class GeckoArmorLayer<T extends LivingEntity, M extends HumanoidModel<T>,
                 ArmorTrim armortrim = itemstack.get(DataComponents.TRIM);
                 if (armortrim != null) {
                     ModelBipedAnimated.setUseMatrixMode(p_model, true); // Custom logic
-                    this.renderTrim(armoritem.getMaterial(), poseStack, bufferSource, packedLight, armortrim, model, flag);
+                    // FIXME 1.21 :: access transformer seems to have problems
+//                    this.renderTrim(armoritem.getMaterial(), poseStack, bufferSource, packedLight, armortrim, model, flag);
                 }
 
                 if (itemstack.hasFoil()) {
                     ModelBipedAnimated.setUseMatrixMode(p_model, true); // Custom logic
-                    this.renderGlint(poseStack, bufferSource, packedLight, model);
+                    // FIXME 1.21 :: access transformer seems to have problems
+//                    this.renderGlint(poseStack, bufferSource, packedLight, model);
                 }
             }
         }

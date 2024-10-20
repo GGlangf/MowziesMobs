@@ -149,7 +149,7 @@ public final class ServerEventHandler {
     private static final AttributeModifier KNOCKBACK_MODIFIER_BELT = new AttributeModifier(GEOMANCY_BELT_KNOCKBACK_RESISTANCE, 1D, AttributeModifier.Operation.ADD_VALUE);
 
     @SubscribeEvent
-    public void onLivingTick(EntityTickEvent event) { // FIXME 1.21 :: was 'LivingTickEvent' -> use 'Pre' or 'Post'?
+    public void onLivingTick(EntityTickEvent.Post event) { // FIXME 1.21 :: was 'LivingTickEvent' -> use 'Pre' or 'Post'?
         if (event.getEntity() instanceof LivingEntity entity) {
             if (entity.getEffect(EffectHandler.POISON_RESIST) != null && entity.getEffect(MobEffects.POISON) != null) {
                 entity.removeEffectNoUpdate(MobEffects.POISON);
@@ -325,7 +325,7 @@ public final class ServerEventHandler {
     }
 
     @SubscribeEvent
-    public void onPlayerTick(PlayerTickEvent event) {
+    public void onPlayerTick(PlayerTickEvent.Post event) { // FIXME 1.21 :: Post correct here?
         Player player = event.getEntity();
         PlayerCapability.Capability playerCapability = CapabilityHandler.getCapability(player, CapabilityHandler.PLAYER_CAPABILITY);
         if (playerCapability != null) {

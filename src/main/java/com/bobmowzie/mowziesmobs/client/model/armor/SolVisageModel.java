@@ -1,6 +1,7 @@
 package com.bobmowzie.mowziesmobs.client.model.armor;
 
 import com.bobmowzie.mowziesmobs.MMCommon;
+import com.bobmowzie.mowziesmobs.client.render.entity.RenderUmvuthi;
 import com.bobmowzie.mowziesmobs.server.item.ItemSolVisage;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
@@ -15,7 +16,7 @@ public class SolVisageModel extends GeoModel<ItemSolVisage> {
 
 	@Override
 	public ResourceLocation getTextureResource(ItemSolVisage object) {
-		return ResourceLocation.fromNamespaceAndPath(MMCommon.MODID, "textures/entity/umvuthi.png");
+		return RenderUmvuthi.TEXTURE;
 	}
 
 	@Override

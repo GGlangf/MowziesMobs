@@ -180,11 +180,6 @@ public class EntityGrottol extends MowzieLLibraryEntity {
         return 1;
     }
 
-    @Override // FIXME 1.21 :: add to tag 'EntityTypeTags.CAN_BREATHE_UNDER_WATER'
-    public boolean canBreatheUnderwater() {
-        return true;
-    }
-
     @Override
     public boolean displayFireAnimation() {
         return false;

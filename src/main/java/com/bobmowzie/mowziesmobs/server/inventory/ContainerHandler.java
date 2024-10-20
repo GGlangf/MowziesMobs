@@ -4,11 +4,9 @@ import com.bobmowzie.mowziesmobs.MMCommon;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.inventory.MenuType;
-import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
-@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD)
 public class ContainerHandler {
     public static final DeferredRegister<MenuType<?>> REG = DeferredRegister.create(Registries.MENU, MMCommon.MODID);
     

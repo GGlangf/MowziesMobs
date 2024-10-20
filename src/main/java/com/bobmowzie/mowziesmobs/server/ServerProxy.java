@@ -20,31 +20,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Optional;
 
 public class ServerProxy {
-    private static final StreamCodec<RegistryFriendlyByteBuf, Optional<Trade>> OPTIONAL_TRADE_CODEC = new StreamCodec<>() {
-        public @NotNull Optional<Trade> decode(@NotNull RegistryFriendlyByteBuf buffer) {
-            boolean hasTrade = buffer.readBoolean();
-
-            if (!hasTrade) {
-                return Optional.empty();
-            }
-
-            return Optional.of(new Trade(ItemStack.OPTIONAL_STREAM_CODEC.decode(buffer), ItemStack.OPTIONAL_STREAM_CODEC.decode(buffer), buffer.readInt()));
-        }
-
-        public void encode(@NotNull RegistryFriendlyByteBuf buffer, @NotNull Optional<Trade> optional) {
-            optional.ifPresentOrElse(trade -> {
-                buffer.writeBoolean(true);
-                ItemStack.OPTIONAL_STREAM_CODEC.encode(buffer, trade.getInput());
-                ItemStack.OPTIONAL_STREAM_CODEC.encode(buffer, trade.getOutput());
-                buffer.writeInt(trade.getWeight());
-            }, () -> buffer.writeBoolean(false));
-        }
-    };
-
-    public static final EntityDataSerializer<Optional<Trade>> OPTIONAL_TRADE = EntityDataSerializer.forValueType(OPTIONAL_TRADE_CODEC);
-
     public void init() {
-        EntityDataSerializers.registerSerializer(OPTIONAL_TRADE);
     }
 
     public void playSunstrikeSound(EntitySunstrike strike) {

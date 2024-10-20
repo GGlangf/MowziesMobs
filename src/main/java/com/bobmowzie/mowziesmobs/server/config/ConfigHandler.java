@@ -3,7 +3,6 @@ package com.bobmowzie.mowziesmobs.server.config;
 import com.bobmowzie.mowziesmobs.MMCommon;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
-import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.ModConfigSpec;
 
 import java.util.Arrays;
@@ -11,7 +10,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
 
-@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD)
 public final class ConfigHandler {
     private static final String LANG_PREFIX = "config." + MMCommon.MODID + ".";
 

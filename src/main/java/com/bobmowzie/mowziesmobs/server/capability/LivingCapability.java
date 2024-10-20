@@ -48,7 +48,7 @@ public class LivingCapability {
         @Override
         public @Nullable LivingCapability.Capability getCapability(@NotNull Entity entity, Void context) {
             if (entity instanceof LivingEntity) {
-                return entity.getCapability(CapabilityHandler.LIVING_CAPABILITY);
+                return entity.getData(CapabilityHandler.LIVING_DATA);
             }
 
             return null;

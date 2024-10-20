@@ -8,8 +8,10 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.client.extensions.IBlockEntityRendererExtension;
+import org.jetbrains.annotations.NotNull;
 
-public class GongBlockEntity extends BlockEntity {
+public class GongBlockEntity extends BlockEntity implements IBlockEntityRendererExtension<GongBlockEntity> {
     public int ticks;
     public boolean shaking;
     public Direction clickDirection;
@@ -55,8 +57,9 @@ public class GongBlockEntity extends BlockEntity {
     }
 
     @Override
-    public AABB getRenderBoundingBox() {
-        AABB bounds = super.getRenderBoundingBox();
+    public @NotNull AABB getRenderBoundingBox(@NotNull GongBlockEntity gong) {
+        // FIXME 1.21 :: the super call no longer uses custom forge code to determine the aabb
+        AABB bounds = IBlockEntityRendererExtension.super.getRenderBoundingBox(gong);
         bounds = bounds.expandTowards(new Vec3(facing.getClockWise().step()));
         bounds = bounds.expandTowards(new Vec3(facing.getCounterClockWise().step()));
         bounds = bounds.expandTowards(0, 2, 0);

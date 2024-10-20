@@ -43,7 +43,7 @@ public final class GuiUmvuthanaTrade extends AbstractContainerScreen<ContainerUm
         guiGraphics.blit(TEXTURE, leftPos, topPos, 0, 0, imageWidth, imageHeight);
         umvuthana.renderingInGUI = true;
         // FIXME 1.21 :: needs 'to x' and 'to y' coordinates and a potential 'y offset'
-        InventoryScreen.renderEntityInInventoryFollowsMouse(guiGraphics, leftPos + 33, topPos + 64, 20, leftPos + 33 - x, topPos + 21 - y, umvuthana);
+//        InventoryScreen.renderEntityInInventoryFollowsMouse(guiGraphics, leftPos + 33, topPos + 64, 20, leftPos + 33 - x, topPos + 21 - y, umvuthana);
         umvuthana.renderingInGUI = false;
     }
 

@@ -66,7 +66,8 @@ public final class GuiSculptorTrade extends AbstractContainerScreen<ContainerScu
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         guiGraphics.blit(TEXTURE_TRADE, leftPos, topPos, 0, 0, imageWidth, imageHeight);
-        InventoryScreen.renderEntityInInventoryFollowsMouse(guiGraphics, leftPos + 33, topPos + 56, 14, leftPos + 33 - x, topPos + 21 - y, sculptor);
+        // FIXME 1.21
+//        InventoryScreen.renderEntityInInventoryFollowsMouse(guiGraphics, leftPos + 33, topPos + 56, 14, leftPos + 33 - x, topPos + 21 - y, sculptor);
     }
 
     @Override

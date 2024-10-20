@@ -47,7 +47,7 @@ public class MaterialHandler {
             0.1f
     ));
 
-    public static final DeferredHolder<ArmorMaterial, ArmorMaterial> GEOMANCER_ARMOR_MATERIAL = MM_ARMOR_MATERIALS.register("wrought_helm", () -> new ArmorMaterial(Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
+    public static final DeferredHolder<ArmorMaterial, ArmorMaterial> GEOMANCER_ARMOR_MATERIAL = MM_ARMOR_MATERIALS.register("geomancer_armor", () -> new ArmorMaterial(Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
         map.put(ArmorItem.Type.HELMET, (int) (ArmorMaterials.DIAMOND.value().getDefense(ArmorItem.Type.HELMET) * ConfigHandler.COMMON.TOOLS_AND_ABILITIES.GEOMANCER_ARMOR.armorConfig.damageReductionMultiplierValue));
         map.put(ArmorItem.Type.BODY, (int) (ArmorMaterials.DIAMOND.value().getDefense(ArmorItem.Type.BODY) * ConfigHandler.COMMON.TOOLS_AND_ABILITIES.GEOMANCER_ARMOR.armorConfig.damageReductionMultiplierValue));
         map.put(ArmorItem.Type.LEGGINGS, (int) (ArmorMaterials.DIAMOND.value().getDefense(ArmorItem.Type.LEGGINGS) * ConfigHandler.COMMON.TOOLS_AND_ABILITIES.GEOMANCER_ARMOR.armorConfig.damageReductionMultiplierValue));

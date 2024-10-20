@@ -17,7 +17,6 @@ import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
-import software.bernie.geckolib.util.Color;
 
 /**
  * An enhanced ModelRenderer
@@ -31,7 +30,7 @@ public class AdvancedModelRenderer extends BasicModelRenderer {
     public float defaultRotationX, defaultRotationY, defaultRotationZ;
     public float defaultPositionX, defaultPositionY, defaultPositionZ;
     public float scaleX = 1.0F, scaleY = 1.0F, scaleZ = 1.0F;
-    public float opacity = 1.0F;
+    public float opacity = 1;
     public boolean scaleChildren;
     private final Model model;
     private AdvancedModelRenderer parent;
@@ -278,7 +277,17 @@ public class AdvancedModelRenderer extends BasicModelRenderer {
 
                 matrixStackIn.pushPose();
                 this.translateRotate(matrixStackIn);
-                if (!isHidden) this.doRender(matrixStackIn.last(), bufferIn, packedLightIn, packedOverlayIn, FastColor.ARGB32.red(color), FastColor.ARGB32.green(color), FastColor.ARGB32.blue(color), FastColor.ARGB32.alpha(color) * opacity);
+                if (!isHidden) {
+                    if (opacity != 1) { // FIXME 1.21 :: is this correct?
+                        float alpha = (FastColor.ARGB32.alpha(color) / 255f) * opacity;
+                        float red = FastColor.ARGB32.red(color) / 255f;
+                        float green = FastColor.ARGB32.green(color) / 255f;
+                        float blue = FastColor.ARGB32.blue(color) / 255f;
+                        color = FastColor.ARGB32.colorFromFloat(alpha, red, green, blue);
+                    }
+
+                    this.doRender(matrixStackIn.last(), bufferIn, packedLightIn, packedOverlayIn, color);
+                }
 
                 // Render children
                 for(BasicModelRenderer modelrenderer : this.childModels) {
@@ -291,14 +300,14 @@ public class AdvancedModelRenderer extends BasicModelRenderer {
     }
 
     // Copied from parent class
-    protected void doRender(PoseStack.Pose matrixEntryIn, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+    protected void doRender(PoseStack.Pose matrixEntryIn, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, int color) {
         Matrix4f matrix4f = matrixEntryIn.pose();
         Matrix3f matrix3f = matrixEntryIn.normal();
         if (mat3Override != null) matrix3f = mat3Override;
         if (mat4Override != null) matrix4f = mat4Override;
 
         for(AdvancedModelRenderer.ModelPart modelrenderer$modelbox : this.cubeList) {
-            modelrenderer$modelbox.render(matrix4f, matrix3f, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+            modelrenderer$modelbox.render(matrix4f, matrix3f, bufferIn, packedLightIn, packedOverlayIn, color);
         }
     }
 
@@ -444,7 +453,7 @@ public class AdvancedModelRenderer extends BasicModelRenderer {
     }
 
     public abstract static class ModelPart {
-        public void render(Matrix4f mat4, Matrix3f mat3, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+        public void render(Matrix4f mat4, Matrix3f mat3, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, int color) {
 
         }
     }
@@ -508,7 +517,7 @@ public class AdvancedModelRenderer extends BasicModelRenderer {
         }
 
         @Override
-        public void render(Matrix4f matrix4f, Matrix3f matrix3f, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+        public void render(Matrix4f matrix4f, Matrix3f matrix3f, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, int color) {
             for(AdvancedModelRenderer.TexturedQuad modelrenderer$texturedquad : quads) {
                 Vector3f vector3f = new Vector3f(modelrenderer$texturedquad.normal);
                 vector3f.mul(matrix3f);
@@ -523,7 +532,7 @@ public class AdvancedModelRenderer extends BasicModelRenderer {
                     float f5 = modelrenderer$positiontexturevertex.position.z() / 16.0F;
                     Vector4f vector4f = new Vector4f(f3, f4, f5, 1.0F);
                     vector4f.mul(matrix4f);
-                    bufferIn.addVertex(vector4f.x(), vector4f.y(), vector4f.z(), Color.ofARGB(alpha, red, green, blue).getColor(), modelrenderer$positiontexturevertex.textureU, modelrenderer$positiontexturevertex.textureV, packedOverlayIn, packedLightIn, f, f1, f2);
+                    bufferIn.addVertex(vector4f.x(), vector4f.y(), vector4f.z(), color, modelrenderer$positiontexturevertex.textureU, modelrenderer$positiontexturevertex.textureV, packedOverlayIn, packedLightIn, f, f1, f2);
                 }
             }
         }
