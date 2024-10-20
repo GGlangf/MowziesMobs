@@ -17,6 +17,8 @@ import java.util.List;
 public class MaterialHandler {
     public static final DeferredRegister<ArmorMaterial> MM_ARMOR_MATERIALS = DeferredRegister.create(Registries.ARMOR_MATERIAL, MMCommon.MODID);
 
+    // FIXME 1.21 :: does not respect config values since its loaded too early
+    // FIXME 1.21 :: there is 'ArmorItem#getToughness' and the values also get stored in 'ArmorItem#defaultModifiers' in the constructor (attribute modification event to overwrite the values?)
     public static final DeferredHolder<ArmorMaterial, ArmorMaterial> SOL_VISAGE_MATERIAL = MM_ARMOR_MATERIALS.register("sol_visage", () -> new ArmorMaterial(Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
         map.put(ArmorItem.Type.HELMET, (int) (ArmorMaterials.GOLD.value().getDefense(ArmorItem.Type.HELMET) * ConfigHandler.COMMON.TOOLS_AND_ABILITIES.SOL_VISAGE.armorConfig.damageReductionMultiplierValue));
     }), ArmorMaterials.GOLD.value().enchantmentValue(),

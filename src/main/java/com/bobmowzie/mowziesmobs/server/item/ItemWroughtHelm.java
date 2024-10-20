@@ -18,11 +18,10 @@ import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.function.Supplier;
 
 public class ItemWroughtHelm extends ArmorItem {
-    public ItemWroughtHelm(Supplier<Item.Properties> properties) {
-        super(MaterialHandler.ARMOR_WROUGHT_HELM, Type.HELMET, properties.get());
+    public ItemWroughtHelm(Item.Properties properties) {
+        super(MaterialHandler.ARMOR_WROUGHT_HELM, Type.HELMET, properties);
     }
 
     @Override

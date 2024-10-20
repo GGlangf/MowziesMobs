@@ -80,6 +80,7 @@ public final class MMCommon {
         modBus.addListener(this::onModConfigEvent);
         modBus.addListener(CapabilityHandler::registerCapabilities);
         modBus.addListener(SpawnHandler::registerSpawnPlacementTypes);
+        modBus.addListener(ItemHandler::modifyComponents);
 
         NeoForge.EVENT_BUS.register(new ServerEventHandler());
         NeoForge.EVENT_BUS.register(new AbilityCommonEventHandler());
@@ -137,7 +138,7 @@ public final class MMCommon {
                     ConfigHandler.COMMON.TOOLS_AND_ABILITIES.GEOMANCER_ARMOR.armorConfig.damageReductionMultiplier.get().floatValue();
             ConfigHandler.COMMON.TOOLS_AND_ABILITIES.GEOMANCER_ARMOR.armorConfig.toughnessMultiplierValue =
                     ConfigHandler.COMMON.TOOLS_AND_ABILITIES.GEOMANCER_ARMOR.armorConfig.toughnessMultiplier.get().floatValue();
-        };
+        }
     }
 
     private void handleLoadComplete(FMLLoadCompleteEvent event) {

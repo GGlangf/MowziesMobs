@@ -25,7 +25,6 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.function.Supplier;
 
 /**
  * Created by BobMowzie on 8/15/2016.
@@ -34,8 +33,8 @@ public class ItemSolVisage extends ArmorItem implements UmvuthanaMask, GeoItem {
     public String controllerName = "controller";
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
-    public ItemSolVisage(Supplier<Item.Properties> properties) {
-        super(MaterialHandler.SOL_VISAGE_MATERIAL, Type.HELMET, properties.get());
+    public ItemSolVisage(Item.Properties properties) {
+        super(MaterialHandler.SOL_VISAGE_MATERIAL, Type.HELMET, properties);
     }
 
     @Override
