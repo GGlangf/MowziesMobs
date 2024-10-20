@@ -30,3 +30,6 @@ mandatory = true
 versionRange = "${geckolib_version_range}"
 ordering = "BEFORE"
 side = "BOTH"
+
+[[mixins]]
+config = "${mod_id}.mixins.json"

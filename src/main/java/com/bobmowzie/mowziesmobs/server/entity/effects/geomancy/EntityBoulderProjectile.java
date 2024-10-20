@@ -34,7 +34,7 @@ import java.util.List;
  * Created by BobMowzie on 4/14/2017.
  */
 public class EntityBoulderProjectile extends EntityBoulderBase {
-    protected final List<Entity> ridingEntities = new ArrayList<Entity>();
+    protected final List<Entity> ridingEntities = new ArrayList<>();
     protected boolean travelling = false;
     protected float speed = 1.5f;
     protected int damage = 8;
@@ -82,7 +82,7 @@ public class EntityBoulderProjectile extends EntityBoulderBase {
 
     protected void findRidingEntities() {
         if (!(getCaster() instanceof EntitySculptor)) {
-            if (ridingEntities != null) ridingEntities.clear();
+            ridingEntities.clear();
             List<Entity> onTopOfEntities = level().getEntities(this, getBoundingBox().contract(0, getBbHeight() - 1, 0).move(new Vec3(0, getBbHeight() - 0.5, 0)).inflate(0.6, 0.5, 0.6));
             for (Entity entity : onTopOfEntities) {
                 if (entity != null && entity.isPickable() && !(entity instanceof EntityBoulderProjectile) && entity.getY() >= this.getY() + 0.2)

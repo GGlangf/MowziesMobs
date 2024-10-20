@@ -69,43 +69,43 @@
       "required": false
     },
     {
-      "id": "#forge:cobblestone",
+      "id": "#c:cobblestones",
       "required": false
     },
     {
-      "id": "#forge:end_stones",
+      "id": "#c:end_stones",
       "required": false
     },
     {
-      "id": "#forge:gravel",
+      "id": "#c:gravels",
       "required": false
     },
     {
-      "id": "#forge:netherrack",
+      "id": "#c:netherracks",
       "required": false
     },
     {
-      "id": "#forge:obsidian",
+      "id": "#c:obsidians",
       "required": false
     },
     {
-      "id": "#forge:ores",
+      "id": "#c:ores",
       "required": false
     },
     {
-      "id": "#forge:sand",
+      "id": "#c:sands",
       "required": false
     },
     {
-      "id": "#forge:sandstone",
+      "id": "#c:sandstone/blocks",
       "required": false
     },
     {
-      "id": "#forge:stone",
+      "id": "#c:stones",
       "required": false
     },
     {
-      "id": "#forge:concrete",
+      "id": "#c:concretes",
       "required": false
     }
   ]

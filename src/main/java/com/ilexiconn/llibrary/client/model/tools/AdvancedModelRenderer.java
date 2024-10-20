@@ -278,7 +278,8 @@ public class AdvancedModelRenderer extends BasicModelRenderer {
                 matrixStackIn.pushPose();
                 this.translateRotate(matrixStackIn);
                 if (!isHidden) {
-                    if (opacity != 1) { // FIXME 1.21 :: is this correct?
+                    if (opacity < 1) {
+                        // Turn the 0 - 255 int values into 0 - 1 float values to calculate the opacity impact (only opacity value of 0 - 1 matters)
                         float alpha = (FastColor.ARGB32.alpha(color) / 255f) * opacity;
                         float red = FastColor.ARGB32.red(color) / 255f;
                         float green = FastColor.ARGB32.green(color) / 255f;
