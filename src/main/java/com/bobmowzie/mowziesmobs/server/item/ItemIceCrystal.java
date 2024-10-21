@@ -1,13 +1,12 @@
 package com.bobmowzie.mowziesmobs.server.item;
 
 import com.bobmowzie.mowziesmobs.server.ability.AbilityHandler;
-import com.bobmowzie.mowziesmobs.server.capability.AbilityCapability;
+import com.bobmowzie.mowziesmobs.server.capability.DataHandler;
 import com.bobmowzie.mowziesmobs.server.config.ConfigHandler;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -26,21 +25,18 @@ public class ItemIceCrystal extends Item {
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn) {
-        ItemStack stack = playerIn.getItemInHand(handIn);
-        AbilityCapability.Capability abilityCapability = AbilityHandler.INSTANCE.getAbilityCapability(playerIn);
-        if (abilityCapability != null) {
-            playerIn.startUsingItem(handIn);
-            if (stack.getDamageValue() + 5 < stack.getMaxDamage() || ConfigHandler.COMMON.TOOLS_AND_ABILITIES.ICE_CRYSTAL.breakable.get()) {
-                if (!worldIn.isClientSide()) AbilityHandler.INSTANCE.sendAbilityMessage(playerIn, AbilityHandler.ICE_BREATH_ABILITY);
-                stack.hurtAndBreak(5, playerIn, LivingEntity.getSlotForHand(handIn));
-                playerIn.startUsingItem(handIn);
-                return new InteractionResultHolder<>(InteractionResult.SUCCESS, playerIn.getItemInHand(handIn));
-            } else {
-                abilityCapability.getAbilityMap().get(AbilityHandler.ICE_BREATH_ABILITY).end();
-            }
+    public InteractionResultHolder<ItemStack> use(Level worldIn, Player player, InteractionHand handIn) {
+        ItemStack stack = player.getItemInHand(handIn);
+        player.startUsingItem(handIn);
+        if (stack.getDamageValue() + 5 < stack.getMaxDamage() || ConfigHandler.COMMON.TOOLS_AND_ABILITIES.ICE_CRYSTAL.breakable.get()) {
+            if (!worldIn.isClientSide()) AbilityHandler.INSTANCE.sendAbilityMessage(player, AbilityHandler.ICE_BREATH_ABILITY);
+            stack.hurtAndBreak(5, player, LivingEntity.getSlotForHand(handIn));
+            player.startUsingItem(handIn);
+            return new InteractionResultHolder<>(InteractionResult.SUCCESS, player.getItemInHand(handIn));
+        } else {
+            DataHandler.getData(player, DataHandler.ABILITY_DATA).getAbilityMap().get(AbilityHandler.ICE_BREATH_ABILITY).end();
         }
-        return super.use(worldIn, playerIn, handIn);
+        return super.use(worldIn, player, handIn);
     }
 
     @Override

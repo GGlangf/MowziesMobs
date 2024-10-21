@@ -1,7 +1,7 @@
 package com.bobmowzie.mowziesmobs.server.entity.effects;
 
-import com.bobmowzie.mowziesmobs.server.capability.CapabilityHandler;
-import com.bobmowzie.mowziesmobs.server.capability.PlayerCapability;
+import com.bobmowzie.mowziesmobs.server.capability.DataHandler;
+import com.bobmowzie.mowziesmobs.server.capability.PlayerData;
 import com.bobmowzie.mowziesmobs.server.config.ConfigHandler;
 import com.bobmowzie.mowziesmobs.server.entity.EntityHandler;
 import com.bobmowzie.mowziesmobs.server.item.ItemHandler;
@@ -185,14 +185,11 @@ public class EntityAxeAttack extends EntityMagicEffect {
                 // Do raycast check to prevent damaging through walls
                 if (!raytraceCheckEntity(entityHit)) continue;
 
-                PlayerCapability.Capability playerCapability = CapabilityHandler.getCapability(getCaster(), CapabilityHandler.PLAYER_CAPABILITY);
-                if (playerCapability != null) {
-                    playerCapability.setAxeCanAttack(true);
-                    if (getCaster() instanceof Player) attackTargetEntityWithCurrentItem(entityHit, (Player) getCaster(), damage / ConfigHandler.COMMON.TOOLS_AND_ABILITIES.AXE_OF_A_THOUSAND_METALS.toolConfig.attackDamage.get().floatValue(), applyKnockback);
-                    playerCapability.setAxeCanAttack(false);
-                } else {
-                    entityHit.hurt(damageSources().mobAttack(getCaster()), damage);
-                    entityHit.setDeltaMovement(entityHit.getDeltaMovement().x * applyKnockback, entityHit.getDeltaMovement().y, entityHit.getDeltaMovement().z * applyKnockback);
+                if (getCaster() instanceof Player player) {
+                    PlayerData data = DataHandler.getData(player, DataHandler.PLAYER_DATA);
+                    data.setAxeCanAttack(true);
+                    attackTargetEntityWithCurrentItem(entityHit, player, damage / ConfigHandler.COMMON.TOOLS_AND_ABILITIES.AXE_OF_A_THOUSAND_METALS.toolConfig.attackDamage.get().floatValue(), applyKnockback);
+                    data.setAxeCanAttack(false);
                 }
 
                 hit = true;

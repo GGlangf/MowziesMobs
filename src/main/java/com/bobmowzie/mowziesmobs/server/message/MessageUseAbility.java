@@ -1,8 +1,8 @@
 package com.bobmowzie.mowziesmobs.server.message;
 
 import com.bobmowzie.mowziesmobs.MMCommon;
-import com.bobmowzie.mowziesmobs.server.capability.AbilityCapability;
-import com.bobmowzie.mowziesmobs.server.capability.CapabilityHandler;
+import com.bobmowzie.mowziesmobs.server.capability.AbilityData;
+import com.bobmowzie.mowziesmobs.server.capability.DataHandler;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -26,11 +26,8 @@ public record MessageUseAbility(int entityId, int index) implements CustomPacket
     public static void handleClient(final MessageUseAbility packet, final IPayloadContext context) {
         context.enqueueWork(() -> {
             if (Minecraft.getInstance().level.getEntity(packet.entityId()) instanceof LivingEntity entity) {
-                AbilityCapability.Capability abilityCapability = CapabilityHandler.getCapability(entity, CapabilityHandler.ABILITY_CAPABILITY);
-
-                if (abilityCapability != null) {
-                    abilityCapability.activateAbility(entity, abilityCapability.getAbilityTypesOnEntity(entity)[packet.index()]);
-                }
+                AbilityData data = DataHandler.getData(entity, DataHandler.ABILITY_DATA);
+                data.activateAbility(entity, data.getAbilityTypesOnEntity(entity)[packet.index()]);
             }
         });
     }

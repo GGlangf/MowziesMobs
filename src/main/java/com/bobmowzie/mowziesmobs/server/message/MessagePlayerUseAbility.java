@@ -2,8 +2,7 @@ package com.bobmowzie.mowziesmobs.server.message;
 
 import com.bobmowzie.mowziesmobs.MMCommon;
 import com.bobmowzie.mowziesmobs.server.ability.AbilityHandler;
-import com.bobmowzie.mowziesmobs.server.capability.AbilityCapability;
-import com.bobmowzie.mowziesmobs.server.capability.CapabilityHandler;
+import com.bobmowzie.mowziesmobs.server.capability.DataHandler;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -24,12 +23,7 @@ public record MessagePlayerUseAbility(int index) implements CustomPacketPayload 
     public static void handleServer(final MessagePlayerUseAbility packet, final IPayloadContext context) {
         context.enqueueWork(() -> {
             Player player = context.player();
-
-            AbilityCapability.Capability abilityCapability = CapabilityHandler.getCapability(player, CapabilityHandler.ABILITY_CAPABILITY);
-
-            if (abilityCapability != null) {
-                AbilityHandler.INSTANCE.sendAbilityMessage(player, abilityCapability.getAbilityTypesOnEntity(player)[packet.index()]);
-            }
+            AbilityHandler.INSTANCE.sendAbilityMessage(player, DataHandler.getData(player, DataHandler.ABILITY_DATA).getAbilityTypesOnEntity(player)[packet.index()]);
         });
     }
 

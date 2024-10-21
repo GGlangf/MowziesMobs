@@ -2,7 +2,7 @@ package com.bobmowzie.mowziesmobs.server.item;
 
 import com.bobmowzie.mowziesmobs.client.render.item.RenderEarthrendGauntlet;
 import com.bobmowzie.mowziesmobs.server.ability.AbilityHandler;
-import com.bobmowzie.mowziesmobs.server.capability.AbilityCapability;
+import com.bobmowzie.mowziesmobs.server.capability.DataHandler;
 import com.bobmowzie.mowziesmobs.server.config.ConfigHandler;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.network.chat.Component;
@@ -48,21 +48,18 @@ public class ItemEarthrendGauntlet extends DiggerItem implements GeoItem {
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn) {
-        ItemStack stack = playerIn.getItemInHand(handIn);
-        AbilityCapability.Capability abilityCapability = AbilityHandler.INSTANCE.getAbilityCapability(playerIn);
-        if (abilityCapability != null) {
-            playerIn.startUsingItem(handIn);
-            if (stack.getDamageValue() + 5 < stack.getMaxDamage() || ConfigHandler.COMMON.TOOLS_AND_ABILITIES.EARTHREND_GAUNTLET.breakable.get()) {
-                if (!worldIn.isClientSide()) AbilityHandler.INSTANCE.sendAbilityMessage(playerIn, AbilityHandler.TUNNELING_ABILITY);
-                playerIn.startUsingItem(handIn);
-                return new InteractionResultHolder<ItemStack>(InteractionResult.SUCCESS, playerIn.getItemInHand(handIn));
-            }
-            else {
-                abilityCapability.getAbilityMap().get(AbilityHandler.TUNNELING_ABILITY).end();
-            }
+    public InteractionResultHolder<ItemStack> use(Level worldIn, Player player, InteractionHand handIn) {
+        ItemStack stack = player.getItemInHand(handIn);
+        player.startUsingItem(handIn);
+        if (stack.getDamageValue() + 5 < stack.getMaxDamage() || ConfigHandler.COMMON.TOOLS_AND_ABILITIES.EARTHREND_GAUNTLET.breakable.get()) {
+            if (!worldIn.isClientSide()) AbilityHandler.INSTANCE.sendAbilityMessage(player, AbilityHandler.TUNNELING_ABILITY);
+            player.startUsingItem(handIn);
+            return new InteractionResultHolder<>(InteractionResult.SUCCESS, player.getItemInHand(handIn));
         }
-        return super.use(worldIn, playerIn, handIn);
+        else {
+            DataHandler.getData(player, DataHandler.ABILITY_DATA).getAbilityMap().get(AbilityHandler.TUNNELING_ABILITY).end();
+        }
+        return super.use(worldIn, player, handIn);
     }
 
     @Override
@@ -106,8 +103,7 @@ public class ItemEarthrendGauntlet extends DiggerItem implements GeoItem {
 
     @Override
     public boolean onEntitySwing(ItemStack stack, LivingEntity entity, InteractionHand hand) {
-        AbilityCapability.Capability abilityCapability = AbilityHandler.INSTANCE.getAbilityCapability(entity);
-        if (abilityCapability != null && abilityCapability.getActiveAbility() == null) {
+        if (DataHandler.getData(entity, DataHandler.ABILITY_DATA).getActiveAbility() == null) {
             if (entity.getUseItem() != stack) {
                 if (entity.level() instanceof ServerLevel) {
                     triggerAnim(entity, GeoItem.getOrAssignId(stack, (ServerLevel) entity.level()), CONTROLLER_NAME, ATTACK_ANIM_NAME);

@@ -9,7 +9,7 @@ import com.bobmowzie.mowziesmobs.server.ability.AbilityCommonEventHandler;
 import com.bobmowzie.mowziesmobs.server.advancement.AdvancementHandler;
 import com.bobmowzie.mowziesmobs.server.block.BlockHandler;
 import com.bobmowzie.mowziesmobs.server.block.entity.BlockEntityHandler;
-import com.bobmowzie.mowziesmobs.server.capability.CapabilityHandler;
+import com.bobmowzie.mowziesmobs.server.capability.DataHandler;
 import com.bobmowzie.mowziesmobs.server.config.ConfigHandler;
 import com.bobmowzie.mowziesmobs.server.creativetab.CreativeTabHandler;
 import com.bobmowzie.mowziesmobs.server.entity.EntityHandler;
@@ -72,13 +72,12 @@ public final class MMCommon {
         LootTableHandler.LOOT_CONDITION_TYPE_REG.register(modBus);
         LootTableHandler.LOOT_FUNCTION_TYPE_REG.register(modBus);
         AdvancementHandler.MM_TRIGGERS.register(modBus);
-        CapabilityHandler.MM_ATTACHMENT_TYPES.register(modBus);
+        DataHandler.MM_ATTACHMENT_TYPES.register(modBus);
         CreativeTabHandler.register(modBus);
 
         PROXY.init();
         modBus.addListener(this::handleLoadComplete);
         modBus.addListener(this::onModConfigEvent);
-        modBus.addListener(CapabilityHandler::registerCapabilities);
         modBus.addListener(SpawnHandler::registerSpawnPlacementTypes);
         modBus.addListener(ItemHandler::modifyComponents);
 

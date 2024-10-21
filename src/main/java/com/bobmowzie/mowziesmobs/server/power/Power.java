@@ -1,6 +1,6 @@
 package com.bobmowzie.mowziesmobs.server.power;
 
-import com.bobmowzie.mowziesmobs.server.capability.PlayerCapability;
+import com.bobmowzie.mowziesmobs.server.capability.PlayerData;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -14,10 +14,10 @@ import java.util.List;
 
 public abstract class Power {
 
-    private final PlayerCapability.Capability capability;
+    private final PlayerData data;
 
-    public Power(PlayerCapability.Capability capability) {
-        this.capability = capability;
+    public Power(PlayerData data) {
+        this.data = data;
     }
 
     public void tick(PlayerTickEvent event) {
@@ -88,8 +88,8 @@ public abstract class Power {
         return true;
     }
 
-    public PlayerCapability.Capability getProperties() {
-        return capability;
+    public PlayerData getProperties() {
+        return data;
     }
 
     public List<LivingEntity> getEntityLivingBaseNearby(LivingEntity player, double distanceX, double distanceY, double distanceZ, double radius) {

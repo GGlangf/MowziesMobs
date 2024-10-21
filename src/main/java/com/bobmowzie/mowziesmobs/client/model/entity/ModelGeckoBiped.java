@@ -4,8 +4,8 @@ import com.bobmowzie.mowziesmobs.MMCommon;
 import com.bobmowzie.mowziesmobs.client.model.tools.geckolib.MowzieGeoBone;
 import com.bobmowzie.mowziesmobs.client.model.tools.geckolib.MowzieGeoModel;
 import com.bobmowzie.mowziesmobs.client.render.entity.player.GeckoPlayer;
-import com.bobmowzie.mowziesmobs.server.ability.AbilityHandler;
-import com.bobmowzie.mowziesmobs.server.capability.AbilityCapability;
+import com.bobmowzie.mowziesmobs.server.capability.AbilityData;
+import com.bobmowzie.mowziesmobs.server.capability.DataHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.player.AbstractClientPlayer;
@@ -258,9 +258,9 @@ public class ModelGeckoBiped extends MowzieGeoModel<GeckoPlayer> {
 //			this.bipedRightLeg().setRotX(MathHelper.lerp(this.swimAnimation, this.bipedRightLeg().getRotX(), 0.3F * MathHelper.cos(limbSwing * 0.33333334F)));
 //		}
 
-		AbilityCapability.Capability abilityCapability = AbilityHandler.INSTANCE.getAbilityCapability(entityIn);
-		if (abilityCapability != null && abilityCapability.getActiveAbility() != null) {
-			abilityCapability.codeAnimations(this, partialTick);
+		AbilityData data = DataHandler.getData(entityIn, DataHandler.ABILITY_DATA);
+		if (data.getActiveAbility() != null) {
+			data.codeAnimations(this, partialTick);
 		}
 	}
 

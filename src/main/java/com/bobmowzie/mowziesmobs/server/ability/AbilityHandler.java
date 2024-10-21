@@ -6,8 +6,8 @@ import com.bobmowzie.mowziesmobs.server.ability.abilities.player.heliomancy.Sola
 import com.bobmowzie.mowziesmobs.server.ability.abilities.player.heliomancy.SolarFlareAbility;
 import com.bobmowzie.mowziesmobs.server.ability.abilities.player.heliomancy.SunstrikeAbility;
 import com.bobmowzie.mowziesmobs.server.ability.abilities.player.heliomancy.SupernovaAbility;
-import com.bobmowzie.mowziesmobs.server.capability.AbilityCapability;
-import com.bobmowzie.mowziesmobs.server.capability.CapabilityHandler;
+import com.bobmowzie.mowziesmobs.server.capability.AbilityData;
+import com.bobmowzie.mowziesmobs.server.capability.DataHandler;
 import com.bobmowzie.mowziesmobs.server.message.MessageInterruptAbility;
 import com.bobmowzie.mowziesmobs.server.message.MessageJumpToAbilitySection;
 import com.bobmowzie.mowziesmobs.server.message.MessagePlayerUseAbility;
@@ -67,30 +67,19 @@ public enum AbilityHandler {
     };
 
     @Nullable
-    public AbilityCapability.Capability getAbilityCapability(LivingEntity entity) {
-        return CapabilityHandler.getCapability(entity, CapabilityHandler.ABILITY_CAPABILITY);
-    }
-
-    @Nullable
     public Ability<?>getAbility(LivingEntity entity, AbilityType<?, ?> abilityType) {
-        AbilityCapability.Capability abilityCapability = getAbilityCapability(entity);
-        if (abilityCapability != null) {
-            return abilityCapability.getAbilityMap().get(abilityType);
-        }
-        return null;
+        return DataHandler.getData(entity, DataHandler.ABILITY_DATA).getAbilityMap().get(abilityType);
     }
 
     public <T extends LivingEntity> void sendAbilityMessage(T entity, AbilityType<?, ?> abilityType) {
         if (entity.level().isClientSide) {
             return;
         }
-        AbilityCapability.Capability abilityCapability = getAbilityCapability(entity);
-        if (abilityCapability != null) {
-            Ability<?>instance = abilityCapability.getAbilityMap().get(abilityType);
-            if (instance != null && instance.canUse()) {
-                abilityCapability.activateAbility(entity, abilityType);
-                PacketDistributor.sendToPlayersTrackingEntityAndSelf(entity, new MessageUseAbility(entity.getId(), ArrayUtils.indexOf(abilityCapability.getAbilityTypesOnEntity(entity), abilityType)));
-            }
+        AbilityData data = DataHandler.getData(entity, DataHandler.ABILITY_DATA);
+        Ability<?> instance = data.getAbilityMap().get(abilityType);
+        if (instance != null && instance.canUse()) {
+            data.activateAbility(entity, abilityType);
+            PacketDistributor.sendToPlayersTrackingEntityAndSelf(entity, new MessageUseAbility(entity.getId(), ArrayUtils.indexOf(data.getAbilityTypesOnEntity(entity), abilityType)));
         }
     }
 
@@ -98,13 +87,11 @@ public enum AbilityHandler {
         if (entity.level().isClientSide) {
             return;
         }
-        AbilityCapability.Capability abilityCapability = getAbilityCapability(entity);
-        if (abilityCapability != null) {
-            Ability<?>instance = abilityCapability.getAbilityMap().get(abilityType);
-            if (instance.isUsing()) {
-                instance.interrupt();
-                PacketDistributor.sendToPlayersTrackingEntityAndSelf(entity, new MessageInterruptAbility(entity.getId(), ArrayUtils.indexOf(abilityCapability.getAbilityTypesOnEntity(entity), abilityType)));
-            }
+        AbilityData data = DataHandler.getData(entity, DataHandler.ABILITY_DATA);
+        Ability<?> instance = data.getAbilityMap().get(abilityType);
+        if (instance.isUsing()) {
+            instance.interrupt();
+            PacketDistributor.sendToPlayersTrackingEntityAndSelf(entity, new MessageInterruptAbility(entity.getId(), ArrayUtils.indexOf(data.getAbilityTypesOnEntity(entity), abilityType)));
         }
     }
 
@@ -112,10 +99,8 @@ public enum AbilityHandler {
         if (!(entity.level().isClientSide && entity instanceof LocalPlayer)) {
             return;
         }
-        AbilityCapability.Capability abilityCapability = getAbilityCapability(entity);
-        if (abilityCapability != null) {
-            PacketDistributor.sendToServer(new MessagePlayerUseAbility(ArrayUtils.indexOf(abilityCapability.getAbilityTypesOnEntity(entity), ability)));
-        }
+
+        PacketDistributor.sendToServer(new MessagePlayerUseAbility(ArrayUtils.indexOf(DataHandler.getData(entity, DataHandler.ABILITY_DATA).getAbilityTypesOnEntity(entity), ability)));
     }
 
 
@@ -124,15 +109,12 @@ public enum AbilityHandler {
             return;
         }
 
-        AbilityCapability.Capability abilityCapability = getAbilityCapability(entity);
+        AbilityData data = DataHandler.getData(entity, DataHandler.ABILITY_DATA);
+        Ability<?> instance = data.getAbilityMap().get(abilityType);
 
-        if (abilityCapability != null) {
-            Ability<?> instance = abilityCapability.getAbilityMap().get(abilityType);
-
-            if (instance.isUsing()) {
-                instance.jumpToSection(sectionIndex);
-                PacketDistributor.sendToPlayersTrackingEntityAndSelf(entity, new MessageJumpToAbilitySection(entity.getId(), ArrayUtils.indexOf(abilityCapability.getAbilityTypesOnEntity(entity), abilityType), sectionIndex));
-            }
+        if (instance.isUsing()) {
+            instance.jumpToSection(sectionIndex);
+            PacketDistributor.sendToPlayersTrackingEntityAndSelf(entity, new MessageJumpToAbilitySection(entity.getId(), ArrayUtils.indexOf(data.getAbilityTypesOnEntity(entity), abilityType), sectionIndex));
         }
     }
 }

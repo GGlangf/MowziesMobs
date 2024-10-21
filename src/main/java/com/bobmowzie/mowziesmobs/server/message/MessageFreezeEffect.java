@@ -1,9 +1,8 @@
 package com.bobmowzie.mowziesmobs.server.message;
 
 import com.bobmowzie.mowziesmobs.MMCommon;
-import com.bobmowzie.mowziesmobs.server.capability.AbilityCapability;
-import com.bobmowzie.mowziesmobs.server.capability.CapabilityHandler;
-import com.bobmowzie.mowziesmobs.server.capability.FrozenCapability;
+import com.bobmowzie.mowziesmobs.server.capability.DataHandler;
+import com.bobmowzie.mowziesmobs.server.capability.FrozenData;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -33,18 +32,12 @@ public record MessageFreezeEffect(int entityId, boolean isFrozen) implements Cus
             Entity entity = Minecraft.getInstance().level.getEntity(packet.entityId());
 
             if (entity instanceof LivingEntity living) {
-                AbilityCapability.Capability abilityCapability = CapabilityHandler.getCapability(living, CapabilityHandler.ABILITY_CAPABILITY);
+                FrozenData data = DataHandler.getData(living, DataHandler.FROZEN_DATA);
 
-                if (abilityCapability != null) {
-                    FrozenCapability.Capability capability = CapabilityHandler.getCapability(living, CapabilityHandler.FROZEN_CAPABILITY);
-
-                    if (capability != null) {
-                        if (packet.isFrozen()) {
-                            capability.onFreeze(living);
-                        } else {
-                            capability.onUnfreeze(living);
-                        }
-                    }
+                if (packet.isFrozen()) {
+                    data.onFreeze(living);
+                } else {
+                    data.onUnfreeze(living);
                 }
             }
         });

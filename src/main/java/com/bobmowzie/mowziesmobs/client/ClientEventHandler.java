@@ -10,11 +10,9 @@ import com.bobmowzie.mowziesmobs.client.render.entity.player.GeckoFirstPersonRen
 import com.bobmowzie.mowziesmobs.client.render.entity.player.GeckoPlayer;
 import com.bobmowzie.mowziesmobs.client.render.entity.player.GeckoRenderPlayer;
 import com.bobmowzie.mowziesmobs.client.sound.BossMusicPlayer;
-import com.bobmowzie.mowziesmobs.server.ability.AbilityHandler;
-import com.bobmowzie.mowziesmobs.server.capability.AbilityCapability;
-import com.bobmowzie.mowziesmobs.server.capability.CapabilityHandler;
-import com.bobmowzie.mowziesmobs.server.capability.FrozenCapability;
-import com.bobmowzie.mowziesmobs.server.capability.PlayerCapability;
+import com.bobmowzie.mowziesmobs.server.capability.AbilityData;
+import com.bobmowzie.mowziesmobs.server.capability.DataHandler;
+import com.bobmowzie.mowziesmobs.server.capability.FrozenData;
 import com.bobmowzie.mowziesmobs.server.config.ConfigHandler;
 import com.bobmowzie.mowziesmobs.server.entity.effects.EntityCameraShake;
 import com.bobmowzie.mowziesmobs.server.entity.frostmaw.EntityFrozenController;
@@ -58,31 +56,29 @@ public enum ClientEventHandler {
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void onHandRender(RenderHandEvent event) {
         if (!ConfigHandler.CLIENT.customPlayerAnims.get()) return;
-        Player player = Minecraft.getInstance().player;
+        LocalPlayer player = Minecraft.getInstance().player;
         if (player == null) return;
         boolean shouldAnimate = false;
-        AbilityCapability.Capability abilityCapability = AbilityHandler.INSTANCE.getAbilityCapability(player);
-        if (abilityCapability != null) shouldAnimate = abilityCapability.getActiveAbility() != null;
+        AbilityData data = DataHandler.getData(player, DataHandler.ABILITY_DATA);
+        shouldAnimate = data.getActiveAbility() != null;
 //        shouldAnimate = (player.ticksExisted / 20) % 2 == 0;
         if (shouldAnimate) {
-            PlayerCapability.Capability playerCapability = CapabilityHandler.getCapability(player, CapabilityHandler.PLAYER_CAPABILITY);
-            if (playerCapability != null) {
-                GeckoPlayer.GeckoPlayerFirstPerson geckoPlayer = GeckoFirstPersonRenderer.GECKO_PLAYER_FIRST_PERSON;
-                if (geckoPlayer != null) {
-                    ModelGeckoPlayerFirstPerson geckoFirstPersonModel = (ModelGeckoPlayerFirstPerson) geckoPlayer.getModel();
-                    GeckoFirstPersonRenderer firstPersonRenderer = (GeckoFirstPersonRenderer) geckoPlayer.getPlayerRenderer();
+            GeckoPlayer.GeckoPlayerFirstPerson geckoPlayer = GeckoFirstPersonRenderer.GECKO_PLAYER_FIRST_PERSON;
 
-                    if (geckoFirstPersonModel != null && firstPersonRenderer != null) {
-                        if (!geckoFirstPersonModel.isUsingSmallArms() && ((AbstractClientPlayer) player).getSkin().model().name().equals("slim")) {
-                            firstPersonRenderer.setSmallArms();
-                        }
-                        event.setCanceled(true);
+            if (geckoPlayer != null) {
+                ModelGeckoPlayerFirstPerson geckoFirstPersonModel = (ModelGeckoPlayerFirstPerson) geckoPlayer.getModel();
+                GeckoFirstPersonRenderer firstPersonRenderer = (GeckoFirstPersonRenderer) geckoPlayer.getPlayerRenderer();
 
-                        if (event.isCanceled()) {
-                            float delta = event.getPartialTick();
-                            float f1 = Mth.lerp(delta, player.xRotO, player.getXRot());
-                            firstPersonRenderer.renderItemInFirstPerson((AbstractClientPlayer) player, f1, delta, event.getHand(), event.getSwingProgress(), event.getItemStack(), event.getEquipProgress(), event.getPoseStack(), event.getMultiBufferSource(), event.getPackedLight(), geckoPlayer);
-                        }
+                if (geckoFirstPersonModel != null && firstPersonRenderer != null) {
+                    if (!geckoFirstPersonModel.isUsingSmallArms() && player.getSkin().model().name().equals("slim")) {
+                        firstPersonRenderer.setSmallArms();
+                    }
+                    event.setCanceled(true);
+
+                    if (event.isCanceled()) {
+                        float delta = event.getPartialTick();
+                        float f1 = Mth.lerp(delta, player.xRotO, player.getXRot());
+                        firstPersonRenderer.renderItemInFirstPerson(player, f1, delta, event.getHand(), event.getSwingProgress(), event.getItemStack(), event.getEquipProgress(), event.getPoseStack(), event.getMultiBufferSource(), event.getPackedLight(), geckoPlayer);
                     }
                 }
             }
@@ -91,27 +87,23 @@ public enum ClientEventHandler {
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void renderLivingEvent(RenderLivingEvent.Pre<? extends LivingEntity, ? extends EntityModel<? extends LivingEntity>> event) {
-        if (event.getEntity() instanceof Player) {
+        if (event.getEntity() instanceof Player player) {
             if (!ConfigHandler.CLIENT.customPlayerAnims.get()) return;
-            Player player = (Player) event.getEntity();
-            if (player == null) return;
             float delta = event.getPartialTick();
-            AbilityCapability.Capability abilityCapability = AbilityHandler.INSTANCE.getAbilityCapability(player);
+            AbilityData abilityData = DataHandler.getData(player, DataHandler.ABILITY_DATA);
 //            if ((player.tickCount / 20) % 2 == 0) {
-            if (abilityCapability != null && abilityCapability.getActiveAbility() != null) {
-                PlayerCapability.Capability playerCapability = CapabilityHandler.getCapability(event.getEntity(), CapabilityHandler.PLAYER_CAPABILITY);
-                if (playerCapability != null) {
-                    GeckoPlayer.GeckoPlayerThirdPerson geckoPlayer = playerCapability.getGeckoPlayer();
-                    if (geckoPlayer != null) {
-                        ModelGeckoPlayerThirdPerson geckoPlayerModel = (ModelGeckoPlayerThirdPerson) geckoPlayer.getModel();
-                        GeckoRenderPlayer animatedPlayerRenderer = (GeckoRenderPlayer) geckoPlayer.getPlayerRenderer();
+            if (abilityData != null && abilityData.getActiveAbility() != null) {
+                GeckoPlayer.GeckoPlayerThirdPerson geckoPlayer = DataHandler.getData(player, DataHandler.PLAYER_DATA).getGeckoPlayer();
 
-                        if (geckoPlayerModel != null && animatedPlayerRenderer != null) {
-                            event.setCanceled(true);
+                if (geckoPlayer != null) {
+                    ModelGeckoPlayerThirdPerson geckoPlayerModel = (ModelGeckoPlayerThirdPerson) geckoPlayer.getModel();
+                    GeckoRenderPlayer animatedPlayerRenderer = (GeckoRenderPlayer) geckoPlayer.getPlayerRenderer();
 
-                            if (event.isCanceled()) {
-                                animatedPlayerRenderer.render((AbstractClientPlayer) event.getEntity(), event.getEntity().getYRot(), delta, event.getPoseStack(), event.getMultiBufferSource(), event.getPackedLight(), geckoPlayer);
-                            }
+                    if (geckoPlayerModel != null && animatedPlayerRenderer != null) {
+                        event.setCanceled(true);
+
+                        if (event.isCanceled()) {
+                            animatedPlayerRenderer.render((AbstractClientPlayer) event.getEntity(), event.getEntity().getYRot(), delta, event.getPoseStack(), event.getMultiBufferSource(), event.getPackedLight(), geckoPlayer);
                         }
                     }
                 }
@@ -122,9 +114,9 @@ public enum ClientEventHandler {
     @SubscribeEvent
     public void onPlayerTick(PlayerTickEvent.Post event) {
         Player player = event.getEntity();
-        PlayerCapability.Capability playerCapability = CapabilityHandler.getCapability(player, CapabilityHandler.PLAYER_CAPABILITY);
-        if (playerCapability != null && player.level().isClientSide()) {
-            GeckoPlayer geckoPlayer = playerCapability.getGeckoPlayer();
+
+        if (player.level().isClientSide()) {
+            GeckoPlayer geckoPlayer = DataHandler.getData(player, DataHandler.PLAYER_DATA).getGeckoPlayer();
             if (geckoPlayer != null) geckoPlayer.tick();
             if (player == Minecraft.getInstance().player) GeckoFirstPersonRenderer.GECKO_PLAYER_FIRST_PERSON.tick();
         }
@@ -141,15 +133,16 @@ public enum ClientEventHandler {
 //            player.level.addParticle(ParticleTypes.SMALL_FLAME, particleVec2.x, particleVec2.y, particleVec2.z, 0d, 0d, 0d);
 //
 //        }
-
-        if (player == Minecraft.getInstance().player) {
-
-        }
     }
 
     @SubscribeEvent
     public void onRenderTick(RenderFrameEvent.Post event) { // FIXME 1.21 :: Post correct here?
         Player player = Minecraft.getInstance().player;
+        
+        if (player == null) {
+            return;
+        }
+        
 //        if (player != null) {
 //            PlayerCapability.Capability playerCapability = CapabilityHandler.getCapability(player, CapabilityHandler.PLAYER_CAPABILITY);
 //            if (playerCapability != null && playerCapability.getGeomancy().canUse(player) && playerCapability.getGeomancy().isSpawningBoulder() && playerCapability.getGeomancy().getSpawnBoulderCharge() > 2) {
@@ -165,11 +158,11 @@ public enum ClientEventHandler {
 //                player.prevRotationPitch = player.rotationPitch;
 //                player.prevRotationYawHead = player.rotationYawHead;
 //            }
-        FrozenCapability.Capability frozenCapability = CapabilityHandler.getCapability(player, CapabilityHandler.FROZEN_CAPABILITY);
-        if (frozenCapability != null && frozenCapability.getFrozen() && frozenCapability.getPrevFrozen()) {
-            player.setYRot(frozenCapability.getFrozenYaw());
-            player.setXRot(frozenCapability.getFrozenPitch());
-            player.yHeadRot = frozenCapability.getFrozenYawHead();
+        FrozenData data = DataHandler.getData(player, DataHandler.FROZEN_DATA);
+        if (data.getFrozen() && data.getPrevFrozen()) {
+            player.setYRot(data.getFrozenYaw());
+            player.setXRot(data.getFrozenPitch());
+            player.yHeadRot = data.getFrozenYawHead();
             player.yRotO = player.getYRot();
             player.xRotO = player.getXRot();
             player.yHeadRotO = player.yHeadRot;
@@ -179,15 +172,15 @@ public enum ClientEventHandler {
     @SubscribeEvent
     public void onRenderLiving(RenderLivingEvent.Pre<?, ?> event) {
         LivingEntity entity = event.getEntity();
-        FrozenCapability.Capability frozenCapability = CapabilityHandler.getCapability(entity, CapabilityHandler.FROZEN_CAPABILITY);
-        if (frozenCapability != null && frozenCapability.getFrozen() && frozenCapability.getPrevFrozen()) {
-            entity.setYRot(entity.yRotO = frozenCapability.getFrozenYaw());
-            entity.setXRot(entity.xRotO = frozenCapability.getFrozenPitch());
-            entity.yHeadRot = entity.yHeadRotO = frozenCapability.getFrozenYawHead();
-            entity.yBodyRot = entity.yBodyRotO = frozenCapability.getFrozenRenderYawOffset();
-            entity.attackAnim = entity.oAttackAnim = frozenCapability.getFrozenSwingProgress();
-            entity.walkAnimation.setSpeed(frozenCapability.getFrozenWalkAnimSpeed());
-            entity.walkAnimation.position(frozenCapability.getFrozenWalkAnimPosition());
+        FrozenData data = DataHandler.getData(entity, DataHandler.FROZEN_DATA);
+        if (data.getFrozen() && data.getPrevFrozen()) {
+            entity.setYRot(entity.yRotO = data.getFrozenYaw());
+            entity.setXRot(entity.xRotO = data.getFrozenPitch());
+            entity.yHeadRot = entity.yHeadRotO = data.getFrozenYawHead();
+            entity.yBodyRot = entity.yBodyRotO = data.getFrozenRenderYawOffset();
+            entity.attackAnim = entity.oAttackAnim = data.getFrozenSwingProgress();
+            entity.walkAnimation.setSpeed(data.getFrozenWalkAnimSpeed());
+            entity.walkAnimation.position(data.getFrozenWalkAnimPosition());
             entity.setShiftKeyDown(false);
         }
     }

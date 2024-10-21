@@ -1,8 +1,7 @@
 package com.bobmowzie.mowziesmobs.client.render.entity;
 
 import com.bobmowzie.mowziesmobs.MMCommon;
-import com.bobmowzie.mowziesmobs.server.capability.CapabilityHandler;
-import com.bobmowzie.mowziesmobs.server.capability.FrozenCapability;
+import com.bobmowzie.mowziesmobs.server.capability.DataHandler;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
@@ -52,9 +51,8 @@ public enum FrozenRenderHandler {
 
         @Override
         public void render(PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn, LivingEntity living, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-            FrozenCapability.Capability frozenCapability = CapabilityHandler.getCapability(living, CapabilityHandler.FROZEN_CAPABILITY);
-            if (frozenCapability != null && frozenCapability.getFrozen()) {
-                EntityModel model = this.renderer.getModel();
+            if (DataHandler.getData(living, DataHandler.FROZEN_DATA).getFrozen()) {
+                EntityModel<?> model = this.renderer.getModel();
                 VertexConsumer ivertexbuilder = bufferIn.getBuffer(RenderType.entityTranslucent(FROZEN_TEXTURE));
                 model.renderToBuffer(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, -1);
             }
@@ -69,8 +67,7 @@ public enum FrozenRenderHandler {
 
         @Override
         public void render(PoseStack poseStack, T animatable, BakedGeoModel bakedModel, RenderType renderType, MultiBufferSource bufferSource, VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay) {
-            FrozenCapability.Capability frozenCapability = CapabilityHandler.getCapability(animatable, CapabilityHandler.FROZEN_CAPABILITY);
-            if (frozenCapability != null && frozenCapability.getFrozen()) {
+            if (DataHandler.getData(animatable, DataHandler.FROZEN_DATA).getFrozen()) {
                 RenderType frozenRenderType = RenderType.entityTranslucent(FROZEN_TEXTURE);
                 getRenderer().reRender(getDefaultBakedModel(animatable), poseStack, bufferSource, animatable, renderType, bufferSource.getBuffer(frozenRenderType), partialTick, packedLight, OverlayTexture.NO_OVERLAY, -1);
             }
@@ -80,12 +77,10 @@ public enum FrozenRenderHandler {
     @SubscribeEvent
     public void onRenderHand(RenderHandEvent event) {
         event.getPoseStack().pushPose();
-
         Player player = Minecraft.getInstance().player;
 
-        if(player != null) {
-            FrozenCapability.Capability frozenCapability = CapabilityHandler.getCapability(player, CapabilityHandler.FROZEN_CAPABILITY);
-            if (frozenCapability != null && frozenCapability.getFrozen()) {
+        if (player != null) {
+            if (DataHandler.getData(player, DataHandler.FROZEN_DATA).getFrozen()) {
                 boolean isMainHand = event.getHand() == InteractionHand.MAIN_HAND;
                 if (isMainHand && !player.isInvisible() && event.getItemStack().isEmpty()) {
                     HumanoidArm enumhandside = isMainHand ? player.getMainArm() : player.getMainArm().getOpposite();

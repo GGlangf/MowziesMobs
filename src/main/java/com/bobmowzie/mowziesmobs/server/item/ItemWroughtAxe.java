@@ -1,8 +1,8 @@
 package com.bobmowzie.mowziesmobs.server.item;
 
 import com.bobmowzie.mowziesmobs.server.ability.AbilityHandler;
-import com.bobmowzie.mowziesmobs.server.capability.CapabilityHandler;
-import com.bobmowzie.mowziesmobs.server.capability.PlayerCapability;
+import com.bobmowzie.mowziesmobs.server.capability.DataHandler;
+import com.bobmowzie.mowziesmobs.server.capability.PlayerData;
 import com.bobmowzie.mowziesmobs.server.config.ConfigHandler;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
@@ -35,14 +35,21 @@ public class ItemWroughtAxe extends AxeItem {
 
     @Override
     public boolean onLeftClickEntity(ItemStack stack, Player player, Entity entity) {
-        PlayerCapability.Capability playerCapability = CapabilityHandler.getCapability(player, CapabilityHandler.PLAYER_CAPABILITY);
-        return playerCapability == null || (!playerCapability.getAxeCanAttack() && playerCapability.getUntilAxeSwing() > 0);
+        if (entity instanceof Player) {
+            PlayerData data = DataHandler.getData(entity, DataHandler.PLAYER_DATA);
+            return !data.getAxeCanAttack() && data.getUntilAxeSwing() > 0;
+        }
+
+        return false;
     }
 
     @Override
     public boolean onEntitySwing(ItemStack stack, LivingEntity entity, InteractionHand hand) { // FIXME 1.21 :: now has the hand -> the point where this is called seems to be the same though ('LivingEntity#swing' always had hand context)
-        PlayerCapability.Capability playerCapability = CapabilityHandler.getCapability(entity, CapabilityHandler.PLAYER_CAPABILITY);
-        return playerCapability != null && playerCapability.getUntilAxeSwing() > 0;
+        if (entity instanceof Player) {
+            return DataHandler.getData(entity, DataHandler.PLAYER_DATA).getUntilAxeSwing() > 0;
+        }
+
+        return false;
     }
 
     @Override
@@ -57,15 +64,16 @@ public class ItemWroughtAxe extends AxeItem {
     @Override
     public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
         if (hand == InteractionHand.MAIN_HAND && player.getAttackStrengthScale(0.5F) == 1.0f) {
-            PlayerCapability.Capability playerCapability = CapabilityHandler.getCapability(player, CapabilityHandler.PLAYER_CAPABILITY);
-            if (playerCapability != null && playerCapability.getUntilAxeSwing() <= 0) {
+            PlayerData data = DataHandler.getData(player, DataHandler.PLAYER_DATA);
+
+            if (data.getUntilAxeSwing() <= 0) {
                 boolean verticalAttack = player.isShiftKeyDown() && player.onGround();
                 if (verticalAttack)
                     AbilityHandler.INSTANCE.sendAbilityMessage(player, AbilityHandler.WROUGHT_AXE_SLAM_ABILITY);
                 else
                     AbilityHandler.INSTANCE.sendAbilityMessage(player, AbilityHandler.WROUGHT_AXE_SWING_ABILITY);
-                playerCapability.setVerticalSwing(verticalAttack);
-                playerCapability.setUntilAxeSwing(30);
+                data.setVerticalSwing(verticalAttack);
+                data.setUntilAxeSwing(30);
                 player.startUsingItem(hand);
                 if (ConfigHandler.COMMON.TOOLS_AND_ABILITIES.AXE_OF_A_THOUSAND_METALS.breakable.get() && !player.getAbilities().instabuild) player.getItemInHand(hand).hurtAndBreak(2, player, LivingEntity.getSlotForHand(hand));
             }

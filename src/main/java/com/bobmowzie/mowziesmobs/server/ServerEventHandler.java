@@ -9,7 +9,8 @@ import com.bobmowzie.mowziesmobs.client.particle.util.ParticleRotation;
 import com.bobmowzie.mowziesmobs.server.ability.AbilityHandler;
 import com.bobmowzie.mowziesmobs.server.ai.AvoidEntityIfNotTamedGoal;
 import com.bobmowzie.mowziesmobs.server.block.BlockHandler;
-import com.bobmowzie.mowziesmobs.server.capability.*;
+import com.bobmowzie.mowziesmobs.server.capability.DataHandler;
+import com.bobmowzie.mowziesmobs.server.capability.PlayerData;
 import com.bobmowzie.mowziesmobs.server.config.ConfigHandler;
 import com.bobmowzie.mowziesmobs.server.entity.EntityHandler;
 import com.bobmowzie.mowziesmobs.server.entity.LeaderSunstrikeImmune;
@@ -97,16 +98,14 @@ public final class ServerEventHandler {
     @SubscribeEvent
     public void onJoinWorld(EntityJoinLevelEvent event) {
         if (event.getEntity() instanceof Player || event.getEntity() instanceof MowzieGeckoEntity) {
-            AbilityCapability.Capability abilityCapability = AbilityHandler.INSTANCE.getAbilityCapability((LivingEntity) event.getEntity());
-            if (abilityCapability != null) abilityCapability.instanceAbilities((LivingEntity) event.getEntity());
+            DataHandler.getData(event.getEntity(), DataHandler.ABILITY_DATA).instanceAbilities((LivingEntity) event.getEntity());
         }
 
         if (event.getEntity() instanceof Player) {
-            PlayerCapability.Capability playerCapability = CapabilityHandler.getCapability(event.getEntity(), CapabilityHandler.PLAYER_CAPABILITY);
-            if (playerCapability != null) playerCapability.addedToWorld(event);
+            DataHandler.getData(event.getEntity(), DataHandler.PLAYER_DATA).addedToWorld(event);
         }
 
-        if (event.getLevel().isClientSide) {
+        if (event.getLevel().isClientSide()) {
             return;
         }
         Entity entity = event.getEntity();
@@ -150,44 +149,33 @@ public final class ServerEventHandler {
 
     @SubscribeEvent
     public void onLivingTick(EntityTickEvent.Post event) { // FIXME 1.21 :: was 'LivingTickEvent' -> use 'Pre' or 'Post'?
-        if (event.getEntity() instanceof LivingEntity entity) {
-            if (entity.getEffect(EffectHandler.POISON_RESIST) != null && entity.getEffect(MobEffects.POISON) != null) {
-                entity.removeEffectNoUpdate(MobEffects.POISON);
+        if (event.getEntity() instanceof LivingEntity livingEntity) {
+            if (livingEntity.getEffect(EffectHandler.POISON_RESIST) != null && livingEntity.getEffect(MobEffects.POISON) != null) {
+                livingEntity.removeEffectNoUpdate(MobEffects.POISON);
             }
 
-            if (!entity.level().isClientSide) {
-                Item headItemStack = entity.getItemBySlot(EquipmentSlot.HEAD).getItem();
-                if (headItemStack instanceof ItemUmvuthanaMask) {
-                    ItemUmvuthanaMask mask = (ItemUmvuthanaMask) headItemStack;
-                    EffectHandler.addOrCombineEffect(entity, mask.getPotion(), 50, 0, true, false);
+            if (!livingEntity.level().isClientSide) {
+                Item headItemStack = livingEntity.getItemBySlot(EquipmentSlot.HEAD).getItem();
+                if (headItemStack instanceof ItemUmvuthanaMask mask) {
+                    EffectHandler.addOrCombineEffect(livingEntity, mask.getPotion(), 50, 0, true, false);
                 }
             }
 
-            if (entity instanceof Mob && !(entity instanceof EntityUmvuthanaCrane)) {
-                Mob mob = (Mob) entity;
+            if (livingEntity instanceof Mob mob && !(livingEntity instanceof EntityUmvuthanaCrane)) {
                 if (mob.getTarget() instanceof EntityUmvuthi && mob.getTarget().hasEffect(EffectHandler.SUNBLOCK)) {
                     EntityUmvuthanaCrane sunblocker = mob.level().getNearestEntity(EntityUmvuthanaCrane.class, TargetingConditions.DEFAULT, mob, mob.getX(), mob.getY() + mob.getEyeHeight(), mob.getZ(), mob.getBoundingBox().inflate(40.0D, 15.0D, 40.0D));
                     mob.setTarget(sunblocker);
                 }
             }
 
-            FrozenCapability.Capability frozenCapability = CapabilityHandler.getCapability(entity, CapabilityHandler.FROZEN_CAPABILITY);
-            if (frozenCapability != null) {
-                frozenCapability.tick(entity);
-            }
-            LivingCapability.Capability livingCapability = CapabilityHandler.getCapability(entity, CapabilityHandler.LIVING_CAPABILITY);
-            if (livingCapability != null) {
-                livingCapability.tick(entity);
-            }
-            AbilityCapability.Capability abilityCapability = CapabilityHandler.getCapability(entity, CapabilityHandler.ABILITY_CAPABILITY);
-            if (abilityCapability != null) {
-                abilityCapability.tick(entity);
-            }
+            DataHandler.getData(livingEntity, DataHandler.FROZEN_DATA).tick(livingEntity);
+            DataHandler.getData(livingEntity, DataHandler.LIVING_DATA).tick(livingEntity);
+            DataHandler.getData(livingEntity, DataHandler.ABILITY_DATA).tick(livingEntity);
 
             // Geomancer Belt mechanics
-            AttributeInstance attributeInstanceArmor = entity.getAttribute(Attributes.ARMOR);
-            AttributeInstance attributeInstanceKnockbackRes = entity.getAttribute(Attributes.KNOCKBACK_RESISTANCE);
-            if (entity.getItemBySlot(EquipmentSlot.LEGS).is(ItemHandler.GEOMANCER_BELT.get()) && entity.hasEffect(MobEffects.MOVEMENT_SLOWDOWN)) {
+            AttributeInstance attributeInstanceArmor = livingEntity.getAttribute(Attributes.ARMOR);
+            AttributeInstance attributeInstanceKnockbackRes = livingEntity.getAttribute(Attributes.KNOCKBACK_RESISTANCE);
+            if (livingEntity.getItemBySlot(EquipmentSlot.LEGS).is(ItemHandler.GEOMANCER_BELT.get()) && livingEntity.hasEffect(MobEffects.MOVEMENT_SLOWDOWN)) {
                 if (attributeInstanceArmor != null && !attributeInstanceArmor.hasModifier(GEOMANCY_BELT_DEFENSE)) {
                     attributeInstanceArmor.addTransientModifier(DEFENSE_MODIFIER_BELT);
                 }
@@ -222,12 +210,8 @@ public final class ServerEventHandler {
 
         if (event.getEffectInstance().getEffect() == EffectHandler.FROZEN) {
             if (!event.getEntity().level().isClientSide()) {
+                DataHandler.getData(event.getEntity(), DataHandler.FROZEN_DATA).onFreeze(event.getEntity());
                 PacketDistributor.sendToPlayersTrackingEntityAndSelf(event.getEntity(), new MessageFreezeEffect(event.getEntity().getId(), true));
-                FrozenCapability.Capability frozenCapability = CapabilityHandler.getCapability(event.getEntity(), CapabilityHandler.FROZEN_CAPABILITY);
-
-                if (frozenCapability != null) {
-                    frozenCapability.onFreeze(event.getEntity());
-                }
             }
         }
     }
@@ -243,12 +227,8 @@ public final class ServerEventHandler {
         }
 
         if (!event.getEntity().level().isClientSide() && event.getEffectInstance().getEffect() == EffectHandler.FROZEN) {
+            DataHandler.getData(event.getEntity(), DataHandler.FROZEN_DATA).onUnfreeze(event.getEntity());
             PacketDistributor.sendToPlayersTrackingEntityAndSelf(event.getEntity(), new MessageFreezeEffect(event.getEntity().getId(), false));
-            FrozenCapability.Capability frozenCapability = CapabilityHandler.getCapability(event.getEntity(), CapabilityHandler.FROZEN_CAPABILITY);
-
-            if (frozenCapability != null) {
-                frozenCapability.onUnfreeze(event.getEntity());
-            }
         }
     }
 
@@ -261,12 +241,8 @@ public final class ServerEventHandler {
         }
 
         if (!event.getEntity().level().isClientSide() && effectInstance != null && effectInstance.getEffect() == EffectHandler.FROZEN) {
+            DataHandler.getData(event.getEntity(), DataHandler.FROZEN_DATA).onUnfreeze(event.getEntity());
             PacketDistributor.sendToPlayersTrackingEntityAndSelf(event.getEntity(), new MessageFreezeEffect(event.getEntity().getId(), false));
-            FrozenCapability.Capability frozenCapability = CapabilityHandler.getCapability(event.getEntity(), CapabilityHandler.FROZEN_CAPABILITY);
-
-            if (frozenCapability != null) {
-                frozenCapability.onUnfreeze(event.getEntity());
-            }
         }
     }
 
@@ -296,20 +272,13 @@ public final class ServerEventHandler {
 
         if (event.getSource().is(DamageTypeTags.IS_FIRE)) {
             event.getEntity().removeEffectNoUpdate(EffectHandler.FROZEN);
+            DataHandler.getData(event.getEntity(), DataHandler.FROZEN_DATA).onUnfreeze(event.getEntity());
             PacketDistributor.sendToPlayersTrackingEntityAndSelf(event.getEntity(), new MessageFreezeEffect(event.getEntity().getId(), false));
-            FrozenCapability.Capability frozenCapability = CapabilityHandler.getCapability(event.getEntity(), CapabilityHandler.FROZEN_CAPABILITY);
-
-            if (frozenCapability != null) {
-                frozenCapability.onUnfreeze(event.getEntity());
-            }
         }
         if (event.getEntity() instanceof Player player) {
-            PlayerCapability.Capability playerCapability = CapabilityHandler.getCapability(event.getEntity(), CapabilityHandler.PLAYER_CAPABILITY);
-            if (playerCapability != null) {
-                Power[] powers = playerCapability.getPowers();
-                for (Power power : powers) {
-                    power.onTakeDamage(event);
-                }
+            Power[] powers = DataHandler.getData(player, DataHandler.PLAYER_DATA).getPowers();
+            for (Power power : powers) {
+                power.onTakeDamage(event);
             }
 
             if (player.getItemBySlot(EquipmentSlot.CHEST).is(ItemHandler.GEOMANCER_ROBE.get())) {
@@ -317,24 +286,17 @@ public final class ServerEventHandler {
             }
         }
 
-        LivingEntity living = event.getEntity();
-        LivingCapability.Capability capability = CapabilityHandler.getCapability(living, CapabilityHandler.LIVING_CAPABILITY);
-        if (capability != null) {
-            capability.setLastDamage(event.getNewDamage());
-        }
+        DataHandler.getData(event.getEntity(), DataHandler.LIVING_DATA).setLastDamage(event.getNewDamage());
     }
 
     @SubscribeEvent
     public void onPlayerTick(PlayerTickEvent.Post event) {
         Player player = event.getEntity();
-        PlayerCapability.Capability playerCapability = CapabilityHandler.getCapability(player, CapabilityHandler.PLAYER_CAPABILITY);
-        if (playerCapability != null) {
-            playerCapability.tick(event);
-
-            Power[] powers = playerCapability.getPowers();
-            for (Power power : powers) {
-                power.tick(event);
-            }
+        PlayerData data = DataHandler.getData(player, DataHandler.PLAYER_DATA);
+        data.tick(event);
+        Power[] powers = data.getPowers();
+        for (Power power : powers) {
+            power.tick(event);
         }
     }
 
@@ -355,8 +317,7 @@ public final class ServerEventHandler {
             return;
         }
 
-        AbilityCapability.Capability abilityCapability = AbilityHandler.INSTANCE.getAbilityCapability(living);
-        if (abilityCapability != null && abilityCapability.itemUsePrevented(event.getItem())) {
+        if (DataHandler.getData(living, DataHandler.ABILITY_DATA).itemUsePrevented(event.getItem())) {
             event.setCanceled(true);
             return;
         }
@@ -371,8 +332,7 @@ public final class ServerEventHandler {
                 return;
             }
 
-            AbilityCapability.Capability abilityCapability = AbilityHandler.INSTANCE.getAbilityCapability(living);
-            if (abilityCapability != null && abilityCapability.blockBreakingBuildingPrevented()) {
+            if (DataHandler.getData(living, DataHandler.ABILITY_DATA).blockBreakingBuildingPrevented()) {
                 event.setCanceled(true);
                 return;
             }
@@ -414,8 +374,7 @@ public final class ServerEventHandler {
             return;
         }
 
-        AbilityCapability.Capability abilityCapability = AbilityHandler.INSTANCE.getAbilityCapability(event.getPlayer());
-        if (abilityCapability != null && abilityCapability.blockBreakingBuildingPrevented()) {
+        if (DataHandler.getData(event.getPlayer(), DataHandler.ABILITY_DATA).blockBreakingBuildingPrevented()) {
             event.setCanceled(true);
             return;
         }
@@ -456,27 +415,22 @@ public final class ServerEventHandler {
             return;
         }
 
-        AbilityCapability.Capability abilityCapability = AbilityHandler.INSTANCE.getAbilityCapability(event.getEntity());
-        if (abilityCapability != null && abilityCapability.interactingPrevented()) {
+        if (DataHandler.getData(event.getEntity(), DataHandler.ABILITY_DATA).interactingPrevented()) {
             return;
         }
 
         Player player = event.getEntity();
-        PlayerCapability.Capability playerCapability = CapabilityHandler.getCapability(player, CapabilityHandler.PLAYER_CAPABILITY);
-        if (playerCapability != null) {
-
-            if (event.getLevel().isClientSide && player.getInventory().getSelected().isEmpty() && player.hasEffect(EffectHandler.SUNS_BLESSING)) {
-                if (player.isShiftKeyDown()) {
-                    AbilityHandler.INSTANCE.sendPlayerTryAbilityMessage(event.getEntity(), AbilityHandler.SOLAR_BEAM_ABILITY);
-                } else {
-                    AbilityHandler.INSTANCE.sendPlayerTryAbilityMessage(event.getEntity(), AbilityHandler.SUNSTRIKE_ABILITY);
-                }
+        if (event.getLevel().isClientSide && player.getInventory().getSelected().isEmpty() && player.hasEffect(EffectHandler.SUNS_BLESSING)) {
+            if (player.isShiftKeyDown()) {
+                AbilityHandler.INSTANCE.sendPlayerTryAbilityMessage(event.getEntity(), AbilityHandler.SOLAR_BEAM_ABILITY);
+            } else {
+                AbilityHandler.INSTANCE.sendPlayerTryAbilityMessage(event.getEntity(), AbilityHandler.SUNSTRIKE_ABILITY);
             }
+        }
 
-            Power[] powers = playerCapability.getPowers();
-            for (Power power : powers) {
-                power.onRightClickEmpty(event);
-            }
+        Power[] powers = DataHandler.getData(player, DataHandler.PLAYER_DATA).getPowers();
+        for (Power power : powers) {
+            power.onRightClickEmpty(event);
         }
     }
 
@@ -487,18 +441,14 @@ public final class ServerEventHandler {
             return;
         }
 
-        AbilityCapability.Capability abilityCapability = AbilityHandler.INSTANCE.getAbilityCapability(event.getEntity());
-        if (abilityCapability != null && abilityCapability.interactingPrevented()) {
+        if (DataHandler.getData(event.getEntity(), DataHandler.ABILITY_DATA).interactingPrevented()) {
             event.setCanceled(true);
             return;
         }
 
-        PlayerCapability.Capability playerCapability = CapabilityHandler.getCapability(event.getEntity(), CapabilityHandler.PLAYER_CAPABILITY);
-        if (playerCapability != null) {
-            Power[] powers = playerCapability.getPowers();
-            for (Power power : powers) {
-                power.onRightClickEntity(event);
-            }
+        Power[] powers = DataHandler.getData(event.getEntity(), DataHandler.PLAYER_DATA).getPowers();
+        for (Power power : powers) {
+            power.onRightClickEntity(event);
         }
     }
 
@@ -509,8 +459,7 @@ public final class ServerEventHandler {
             return;
         }
 
-        AbilityCapability.Capability abilityCapability = AbilityHandler.INSTANCE.getAbilityCapability(event.getEntity());
-        if (abilityCapability != null && abilityCapability.interactingPrevented()) {
+        if (DataHandler.getData(event.getEntity(), DataHandler.ABILITY_DATA).interactingPrevented()) {
             event.setCanceled(true);
             return;
         }
@@ -520,32 +469,27 @@ public final class ServerEventHandler {
             aggroUmvuthana(player);
         }
 
-        PlayerCapability.Capability playerCapability = CapabilityHandler.getCapability(player, CapabilityHandler.PLAYER_CAPABILITY);
-        if (playerCapability != null) {
+        ItemStack item = event.getItemStack();
+        
+        if (item.getItem() == Items.FLINT_AND_STEEL || item.getItem() == Items.TNT_MINECART) {
+            aggroUmvuthana(player);
+        }
 
-            ItemStack item = event.getItemStack();
-            if (
-                    item.getItem() == Items.FLINT_AND_STEEL ||
-                    item.getItem() == Items.TNT_MINECART
-            ) {
-                aggroUmvuthana(player);
+        if (player.level().isClientSide() && player.getInventory().getSelected().isEmpty() && player.hasEffect(EffectHandler.SUNS_BLESSING) && player.level().getBlockState(event.getPos()).getMenuProvider(player.level(), event.getPos()) == null) {
+            if (player.isShiftKeyDown()) {
+                AbilityHandler.INSTANCE.sendPlayerTryAbilityMessage(event.getEntity(), AbilityHandler.SOLAR_BEAM_ABILITY);
+            } else {
+                AbilityHandler.INSTANCE.sendPlayerTryAbilityMessage(event.getEntity(), AbilityHandler.SUNSTRIKE_ABILITY);
             }
-
-            if (player.level().isClientSide() && player.getInventory().getSelected().isEmpty() && player.hasEffect(EffectHandler.SUNS_BLESSING) && player.level().getBlockState(event.getPos()).getMenuProvider(player.level(), event.getPos()) == null) {
-                if (player.isShiftKeyDown()) {
-                    AbilityHandler.INSTANCE.sendPlayerTryAbilityMessage(event.getEntity(), AbilityHandler.SOLAR_BEAM_ABILITY);
-                } else {
-                    AbilityHandler.INSTANCE.sendPlayerTryAbilityMessage(event.getEntity(), AbilityHandler.SUNSTRIKE_ABILITY);
-                }
-            }
-            if (player.getMainHandItem().is(ItemHandler.WROUGHT_AXE.get()) && player.level().getBlockState(event.getPos()).getMenuProvider(player.level(), event.getPos()) != null) {
-                player.resetAttackStrengthTicker();
-                return;
-            }
-            Power[] powers = playerCapability.getPowers();
-            for (Power power : powers) {
-                power.onRightClickBlock(event);
-            }
+        }
+        if (player.getMainHandItem().is(ItemHandler.WROUGHT_AXE.get()) && player.level().getBlockState(event.getPos()).getMenuProvider(player.level(), event.getPos()) != null) {
+            player.resetAttackStrengthTicker();
+            return;
+        }
+        
+        Power[] powers = DataHandler.getData(player, DataHandler.PLAYER_DATA).getPowers();
+        for (Power power : powers) {
+            power.onRightClickBlock(event);
         }
     }
 
@@ -553,18 +497,16 @@ public final class ServerEventHandler {
     public void onPlayerLeftClick(PlayerInteractEvent.LeftClickEmpty event) {
         double range = 6.5;
         Player player = event.getEntity();
-        PlayerCapability.Capability playerCapability = CapabilityHandler.getCapability(player, CapabilityHandler.PLAYER_CAPABILITY);
         if (player.getMainHandItem().getItem() == ItemHandler.SPEAR.get()) {
             LivingEntity entityHit = ItemSpear.raytraceEntities(player.getCommandSenderWorld(), player, range);
             if (entityHit != null) {
                 PacketDistributor.sendToServer(MessagePlayerAttackMob.fromEntity(entityHit));
             }
         }
-        if (playerCapability != null) {
-            Power[] powers = playerCapability.getPowers();
-            for (Power power : powers) {
-                power.onLeftClickEmpty(event);
-            }
+        
+        Power[] powers = DataHandler.getData(player, DataHandler.PLAYER_DATA).getPowers();
+        for (Power power : powers) {
+            power.onLeftClickEmpty(event);
         }
     }
 
@@ -573,12 +515,8 @@ public final class ServerEventHandler {
         LivingEntity entity = event.getEntity();
         if (entity.getHealth() <= event.getNewDamage() && entity.hasEffect(EffectHandler.FROZEN)) {
             entity.removeEffectNoUpdate(EffectHandler.FROZEN);
-            FrozenCapability.Capability frozenCapability = CapabilityHandler.getCapability(entity, CapabilityHandler.FROZEN_CAPABILITY);
+            DataHandler.getData(entity, DataHandler.FROZEN_DATA).onUnfreeze(entity);
             PacketDistributor.sendToPlayersTrackingEntityAndSelf(event.getEntity(), new MessageFreezeEffect(event.getEntity().getId(), false));
-
-            if (frozenCapability != null) {
-                frozenCapability.onUnfreeze(entity);
-            }
         }
 
         if (event.getNewDamage() > 0 && event.getSource().getEntity() instanceof Player player) {
@@ -595,18 +533,14 @@ public final class ServerEventHandler {
             return;
         }
 
-        AbilityCapability.Capability abilityCapability = AbilityHandler.INSTANCE.getAbilityCapability(event.getEntity());
-        if (abilityCapability != null && abilityCapability.itemUsePrevented(event.getItemStack())) {
+        if (DataHandler.getData(event.getEntity(), DataHandler.ABILITY_DATA).itemUsePrevented(event.getItemStack())) {
             event.setCanceled(true);
             return;
         }
 
-        PlayerCapability.Capability playerCapability = CapabilityHandler.getCapability(event.getEntity(), CapabilityHandler.PLAYER_CAPABILITY);
-        if (playerCapability != null) {
-            Power[] powers = playerCapability.getPowers();
-            for (Power power : powers) {
-                power.onRightClickWithItem(event);
-            }
+        Power[] powers = DataHandler.getData(event.getEntity(), DataHandler.PLAYER_DATA).getPowers();
+        for (Power power : powers) {
+            power.onRightClickWithItem(event);
         }
     }
 
@@ -618,37 +552,30 @@ public final class ServerEventHandler {
             return;
         }
 
-        AbilityCapability.Capability abilityCapability = AbilityHandler.INSTANCE.getAbilityCapability(event.getEntity());
-        if (abilityCapability != null && abilityCapability.blockBreakingBuildingPrevented()) {
+        if (DataHandler.getData(event.getEntity(), DataHandler.ABILITY_DATA).blockBreakingBuildingPrevented()) {
             event.setCanceled(true);
             return;
         }
 
-        PlayerCapability.Capability playerCapability = CapabilityHandler.getCapability(player, CapabilityHandler.PLAYER_CAPABILITY);
-        if (playerCapability != null) {
-            Power[] powers = playerCapability.getPowers();
-            for (Power power : powers) {
-                power.onLeftClickBlock(event);
-            }
+        Power[] powers = DataHandler.getData(player, DataHandler.PLAYER_DATA).getPowers();
+        for (Power power : powers) {
+            power.onLeftClickBlock(event);
         }
     }
 
     @SubscribeEvent
     public void onLivingJump(LivingEvent.LivingJumpEvent event) {
-         if (event.getEntity() instanceof LivingEntity) {
-            LivingEntity entity = (LivingEntity) event.getEntity();
-            if (entity.hasEffect(EffectHandler.FROZEN) && entity.onGround()) {
-                entity.setDeltaMovement(entity.getDeltaMovement().multiply(1, 0, 1));
-            }
+        LivingEntity entity = event.getEntity();
+
+        if (entity.hasEffect(EffectHandler.FROZEN) && entity.onGround()) {
+            entity.setDeltaMovement(entity.getDeltaMovement().multiply(1, 0, 1));
         }
 
         if (event.getEntity() instanceof Player) {
-            PlayerCapability.Capability playerCapability = CapabilityHandler.getCapability(event.getEntity(), CapabilityHandler.PLAYER_CAPABILITY);
-            if (playerCapability != null) {
-                Power[] powers = playerCapability.getPowers();
-                for (Power power : powers) {
-                    power.onJump(event);
-                }
+            Power[] powers = DataHandler.getData(event.getEntity(), DataHandler.PLAYER_DATA).getPowers();
+
+            for (Power power : powers) {
+                power.onJump(event);
             }
         }
     }
@@ -660,42 +587,36 @@ public final class ServerEventHandler {
             return;
         }
 
-        if (event.getEntity() != null) {
-            AbilityCapability.Capability abilityCapability = AbilityHandler.INSTANCE.getAbilityCapability(event.getEntity());
-            if (abilityCapability != null && abilityCapability.attackingPrevented()) {
-                event.setCanceled(true);
-                return;
+        if (DataHandler.getData(event.getEntity(), DataHandler.ABILITY_DATA).attackingPrevented()) {
+            event.setCanceled(true);
+            return;
+        }
+
+        PlayerData data = DataHandler.getData(event.getEntity(), DataHandler.PLAYER_DATA);
+        data.setPrevCooledAttackStrength(event.getEntity().getAttackStrengthScale(0.5f));
+
+        Power[] powers = data.getPowers();
+        for (Power power : powers) {
+            power.onLeftClickEntity(event);
+        }
+
+        if (event.getTarget() instanceof ItemFrame itemFrame) {
+            if (itemFrame.getItem().getItem() instanceof ItemUmvuthanaMask) {
+                aggroUmvuthana(event.getEntity());
             }
+        }
+        if (event.getTarget() instanceof LeaderSunstrikeImmune) {
+            aggroUmvuthana(event.getEntity());
+        }
 
-            PlayerCapability.Capability playerCapability = CapabilityHandler.getCapability(event.getEntity(), CapabilityHandler.PLAYER_CAPABILITY);
-            if (playerCapability != null) {
-                playerCapability.setPrevCooledAttackStrength(event.getEntity().getAttackStrengthScale(0.5f));
-
-                Power[] powers = playerCapability.getPowers();
-                for (Power power : powers) {
-                    power.onLeftClickEntity(event);
-                }
-
-                if (event.getTarget() instanceof ItemFrame) {
-                    ItemFrame itemFrame = (ItemFrame) event.getTarget();
-                    if (itemFrame.getItem().getItem() instanceof ItemUmvuthanaMask) {
-                        aggroUmvuthana(event.getEntity());
-                    }
-                }
-                if (event.getTarget() instanceof LeaderSunstrikeImmune) {
-                    aggroUmvuthana(event.getEntity());
-                }
-
-                if (!(event.getTarget() instanceof LivingEntity)) return;
-                if (event.getTarget() instanceof EntityUmvuthanaFollowerToPlayer) return;
-                if (!event.getEntity().level().isClientSide()) {
-                    for (int i = 0; i < playerCapability.getPackSize(); i++) {
-                        EntityUmvuthanaFollowerToPlayer umvuthana = playerCapability.getUmvuthanaPack().get(i);
-                        LivingEntity living = (LivingEntity) event.getTarget();
-                        if (umvuthana.getMaskType() != MaskType.FAITH) {
-                            if (!living.isInvulnerable()) umvuthana.setTarget(living);
-                        }
-                    }
+        if (!(event.getTarget() instanceof LivingEntity)) return;
+        if (event.getTarget() instanceof EntityUmvuthanaFollowerToPlayer) return;
+        if (!event.getEntity().level().isClientSide()) {
+            for (int i = 0; i < data.getPackSize(); i++) {
+                EntityUmvuthanaFollowerToPlayer umvuthana = data.getUmvuthanaPack().get(i);
+                LivingEntity living = (LivingEntity) event.getTarget();
+                if (umvuthana.getMaskType() != MaskType.FAITH) {
+                    if (!living.isInvulnerable()) umvuthana.setTarget(living);
                 }
             }
         }
@@ -705,21 +626,20 @@ public final class ServerEventHandler {
     public void checkCritEvent(CriticalHitEvent event) {
         ItemStack weapon = event.getEntity().getMainHandItem();
         Player attacker = event.getEntity();
-        PlayerCapability.Capability playerCapability = CapabilityHandler.getCapability(event.getEntity(), CapabilityHandler.PLAYER_CAPABILITY);
-        if (playerCapability != null && playerCapability.getPrevCooledAttackStrength() == 1.0f && !weapon.isEmpty() && event.getTarget() instanceof LivingEntity) {
-            LivingEntity target = (LivingEntity)event.getTarget();
+
+        if (DataHandler.getData(attacker, DataHandler.PLAYER_DATA).getPrevCooledAttackStrength() == 1 && !weapon.isEmpty() && event.getTarget() instanceof LivingEntity target) {
             if (weapon.getItem() instanceof ItemNagaFangDagger) {
                 Vec3 lookDir = new Vec3(target.getLookAngle().x, 0, target.getLookAngle().z).normalize();
                 Vec3 vecBetween = new Vec3(target.getX() - event.getEntity().getX(), 0, target.getZ() - event.getEntity().getZ()).normalize();
                 double dot = lookDir.dot(vecBetween);
                 if (dot > 0.7) {
                     event.setCriticalHit(true);
-                    // FIXME 1.21 :: add to current damage modifier (in case mods modify this as well)?
+                    // FIXME 1.21 :: add to current damage modifier? (in case mods modify this as well) (i.e. setDamageMultiplier(getDamageMultiplier + ...))
                     event.setDamageMultiplier(ConfigHandler.COMMON.TOOLS_AND_ABILITIES.NAGA_FANG_DAGGER.backstabDamageMultiplier.get().floatValue());
                     target.playSound(MMSounds.ENTITY_NAGA_ACID_HIT.get(), 1f, 1.2f);
                     AbilityHandler.INSTANCE.sendAbilityMessage(attacker, AbilityHandler.BACKSTAB_ABILITY);
 
-                    if (target.level().isClientSide() && target != null && attacker != null) {
+                    if (target.level().isClientSide()) {
                         Vec3 ringOffset = attacker.getLookAngle().scale(-target.getBbWidth() / 2.f);
                         ParticleRotation.OrientVector rotation = new ParticleRotation.OrientVector(ringOffset);
                         Vec3 pos = target.position().add(0, target.getBbHeight() / 2f, 0).add(ringOffset);

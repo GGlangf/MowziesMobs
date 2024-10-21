@@ -3,8 +3,8 @@ package com.bobmowzie.mowziesmobs.server.message;
 import com.bobmowzie.mowziesmobs.MMCommon;
 import com.bobmowzie.mowziesmobs.server.ability.Ability;
 import com.bobmowzie.mowziesmobs.server.ability.AbilityType;
-import com.bobmowzie.mowziesmobs.server.capability.AbilityCapability;
-import com.bobmowzie.mowziesmobs.server.capability.CapabilityHandler;
+import com.bobmowzie.mowziesmobs.server.capability.AbilityData;
+import com.bobmowzie.mowziesmobs.server.capability.DataHandler;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -33,15 +33,12 @@ public record MessageJumpToAbilitySection(int entityId, int index, int sectionIn
             Entity entity = Minecraft.getInstance().level.getEntity(packet.entityId());
 
             if (entity instanceof LivingEntity living) {
-                AbilityCapability.Capability abilityCapability = CapabilityHandler.getCapability(living, CapabilityHandler.ABILITY_CAPABILITY);
+                AbilityData data = DataHandler.getData(living, DataHandler.ABILITY_DATA);
+                AbilityType<?, ?> abilityType = data.getAbilityTypesOnEntity(living)[packet.index()];
+                Ability<?> instance = data.getAbilityMap().get(abilityType);
 
-                if (abilityCapability != null) {
-                    AbilityType<?, ?> abilityType = abilityCapability.getAbilityTypesOnEntity(living)[packet.index()];
-                    Ability<?> instance = abilityCapability.getAbilityMap().get(abilityType);
-
-                    if (instance.isUsing()) {
-                        instance.jumpToSection(packet.sectionIndex());
-                    }
+                if (instance.isUsing()) {
+                    instance.jumpToSection(packet.sectionIndex());
                 }
             }
         });

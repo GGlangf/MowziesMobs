@@ -1,8 +1,7 @@
 package com.bobmowzie.mowziesmobs.server.message;
 
 import com.bobmowzie.mowziesmobs.MMCommon;
-import com.bobmowzie.mowziesmobs.server.capability.CapabilityHandler;
-import com.bobmowzie.mowziesmobs.server.capability.LivingCapability;
+import com.bobmowzie.mowziesmobs.server.capability.DataHandler;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -29,11 +28,7 @@ public record MessageSunblockEffect(int entityId, boolean hasSunBlock) implement
     public static void handleClient(final MessageSunblockEffect packet, final IPayloadContext context) {
         context.enqueueWork(() -> {
             if (Minecraft.getInstance().level.getEntity(packet.entityId()) instanceof LivingEntity entity) {
-                LivingCapability.Capability livingCapability = CapabilityHandler.getCapability(entity, CapabilityHandler.LIVING_CAPABILITY);
-
-                if (livingCapability != null) {
-                    livingCapability.setHasSunblock(packet.hasSunBlock());
-                }
+                DataHandler.getData(entity, DataHandler.LIVING_DATA).setHasSunblock(packet.hasSunBlock());
             }
         });
     }

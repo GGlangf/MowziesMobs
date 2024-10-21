@@ -2,11 +2,10 @@ package com.bobmowzie.mowziesmobs.server.message.mouse;
 
 import com.bobmowzie.mowziesmobs.MMCommon;
 import com.bobmowzie.mowziesmobs.server.ability.Ability;
-import com.bobmowzie.mowziesmobs.server.ability.AbilityHandler;
 import com.bobmowzie.mowziesmobs.server.ability.PlayerAbility;
-import com.bobmowzie.mowziesmobs.server.capability.AbilityCapability;
-import com.bobmowzie.mowziesmobs.server.capability.CapabilityHandler;
-import com.bobmowzie.mowziesmobs.server.capability.PlayerCapability;
+import com.bobmowzie.mowziesmobs.server.capability.AbilityData;
+import com.bobmowzie.mowziesmobs.server.capability.DataHandler;
+import com.bobmowzie.mowziesmobs.server.capability.PlayerData;
 import com.bobmowzie.mowziesmobs.server.power.Power;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.StreamCodec;
@@ -26,20 +25,17 @@ public record MessageRightMouseUp() implements CustomPacketPayload {
     public static void handleServer(final MessageRightMouseUp packet, final IPayloadContext context) {
         context.enqueueWork(() -> {
             Player player = context.player();
-            PlayerCapability.Capability capability = CapabilityHandler.getCapability(player, CapabilityHandler.PLAYER_CAPABILITY);
+            PlayerData data = DataHandler.getData(player, DataHandler.PLAYER_DATA);
+            data.setMouseRightDown(false);
 
-            if (capability != null) {
-                capability.setMouseRightDown(false);
-
-                for (Power power : capability.getPowers()) {
-                    power.onRightMouseUp(player);
-                }
+            for (Power power : data.getPowers()) {
+                power.onRightMouseUp(player);
             }
 
-            AbilityCapability.Capability abilityCapability = AbilityHandler.INSTANCE.getAbilityCapability(player);
+            AbilityData abilityData = DataHandler.getData(player, DataHandler.ABILITY_DATA);
 
-            if (abilityCapability != null) {
-                for (Ability<?> ability : abilityCapability.getAbilities()) {
+            if (abilityData != null) {
+                for (Ability<?> ability : abilityData.getAbilities()) {
                     if (ability instanceof PlayerAbility playerAbility) {
                         playerAbility.onRightMouseUp(player);
                     }

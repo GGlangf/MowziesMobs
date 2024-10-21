@@ -1,8 +1,7 @@
 package com.bobmowzie.mowziesmobs.client.render.entity.layer;
 
 import com.bobmowzie.mowziesmobs.MMCommon;
-import com.bobmowzie.mowziesmobs.server.capability.CapabilityHandler;
-import com.bobmowzie.mowziesmobs.server.capability.LivingCapability;
+import com.bobmowzie.mowziesmobs.server.capability.DataHandler;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -26,8 +25,7 @@ public class GeckoSunblockLayer<T extends LivingEntity & GeoEntity> extends GeoR
 
     @Override
     public void render(PoseStack poseStack, T animatable, BakedGeoModel bakedModel, RenderType renderType, MultiBufferSource bufferSource, VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay) {
-        LivingCapability.Capability livingCapability = CapabilityHandler.getCapability(animatable, CapabilityHandler.LIVING_CAPABILITY);
-        if (livingCapability != null && livingCapability.getHasSunblock()) {
+        if (DataHandler.getData(animatable, DataHandler.LIVING_DATA).getHasSunblock()) {
             float f = (float) animatable.tickCount + partialTick;
             RenderType renderTypeSwirl = RenderType.energySwirl(this.getTextureLocation(), this.xOffset(f), f * 0.01F);
 

@@ -6,9 +6,8 @@ import com.bobmowzie.mowziesmobs.server.ability.Ability;
 import com.bobmowzie.mowziesmobs.server.ability.AbilityHandler;
 import com.bobmowzie.mowziesmobs.server.ability.AbilityType;
 import com.bobmowzie.mowziesmobs.server.ability.abilities.player.SimpleAnimationAbility;
-import com.bobmowzie.mowziesmobs.server.capability.AbilityCapability;
-import com.bobmowzie.mowziesmobs.server.capability.CapabilityHandler;
-import com.bobmowzie.mowziesmobs.server.capability.FrozenCapability;
+import com.bobmowzie.mowziesmobs.server.capability.AbilityData;
+import com.bobmowzie.mowziesmobs.server.capability.DataHandler;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
@@ -63,18 +62,19 @@ public abstract class MowzieGeckoEntity extends MowzieEntity implements GeoEntit
     }
 
     protected <E extends GeoEntity> PlayState predicate(AnimationState<E> state) {
-        AbilityCapability.Capability abilityCapability = getAbilityCapability();
-        FrozenCapability.Capability frozenCapability = CapabilityHandler.getCapability(this, CapabilityHandler.FROZEN_CAPABILITY);
-        if (abilityCapability == null) {
-            return PlayState.STOP;
-        }
-        if (frozenCapability != null && frozenCapability.getFrozen()) {
+        AbilityData abilityData = getAbilityData();
+
+        if (abilityData == null) {
             return PlayState.STOP;
         }
 
-        if (abilityCapability.getActiveAbility() != null) {
+        if (DataHandler.getData(this, DataHandler.FROZEN_DATA).getFrozen()) {
+            return PlayState.STOP;
+        }
+
+        if (abilityData.getActiveAbility() != null) {
             getController().transitionLength(0);
-            return abilityCapability.animationPredicate(state, null);
+            return abilityData.animationPredicate(state, null);
         }
         else {
             loopingAnimations(state);
@@ -106,14 +106,14 @@ public abstract class MowzieGeckoEntity extends MowzieEntity implements GeoEntit
         return new AbilityType[]{};
     }
 
-    public AbilityCapability.Capability getAbilityCapability() {
-        return AbilityHandler.INSTANCE.getAbilityCapability(this);
+    public AbilityData getAbilityData() {
+        return DataHandler.getData(this, DataHandler.ABILITY_DATA);
     }
 
     public Ability<?>getActiveAbility() {
-        AbilityCapability.Capability capability = getAbilityCapability();
-        if (capability == null) return null;
-        return getAbilityCapability().getActiveAbility();
+        AbilityData data = getAbilityData();
+        if (data == null) return null;
+        return getAbilityData().getActiveAbility();
     }
 
     public AbilityType getActiveAbilityType() {
@@ -123,9 +123,9 @@ public abstract class MowzieGeckoEntity extends MowzieEntity implements GeoEntit
     }
 
     public Ability<?>getAbility(AbilityType abilityType) {
-        AbilityCapability.Capability capability = getAbilityCapability();
-        if (capability == null) return null;
-        return getAbilityCapability().getAbilityMap().get(abilityType);
+        AbilityData data = getAbilityData();
+        if (data == null) return null;
+        return getAbilityData().getAbilityMap().get(abilityType);
     }
 
     public void sendAbilityMessage(AbilityType abilityType) {

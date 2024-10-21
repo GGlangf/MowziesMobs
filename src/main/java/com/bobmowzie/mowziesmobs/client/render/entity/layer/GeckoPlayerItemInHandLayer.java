@@ -3,9 +3,9 @@ package com.bobmowzie.mowziesmobs.client.render.entity.layer;
 import com.bobmowzie.mowziesmobs.client.model.tools.geckolib.MowzieGeoBone;
 import com.bobmowzie.mowziesmobs.client.render.entity.player.GeckoRenderPlayer;
 import com.bobmowzie.mowziesmobs.server.ability.Ability;
-import com.bobmowzie.mowziesmobs.server.ability.AbilityHandler;
 import com.bobmowzie.mowziesmobs.server.ability.PlayerAbility;
-import com.bobmowzie.mowziesmobs.server.capability.AbilityCapability;
+import com.bobmowzie.mowziesmobs.server.capability.AbilityData;
+import com.bobmowzie.mowziesmobs.server.capability.DataHandler;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
@@ -32,11 +32,10 @@ public class GeckoPlayerItemInHandLayer extends RenderLayer<AbstractClientPlayer
         boolean flag = entitylivingbaseIn.getMainArm() == HumanoidArm.RIGHT;
         ItemStack mainHandStack = entitylivingbaseIn.getMainHandItem();
         ItemStack offHandStack = entitylivingbaseIn.getOffhandItem();
-        AbilityCapability.Capability abilityCapability = AbilityHandler.INSTANCE.getAbilityCapability(entitylivingbaseIn);
-        if (abilityCapability != null && abilityCapability.getActiveAbility() != null) {
-            Ability<?>ability = abilityCapability.getActiveAbility();
-            if (ability instanceof PlayerAbility) {
-                PlayerAbility playerAbility = (PlayerAbility) ability;
+        AbilityData abilityData = DataHandler.getData(entitylivingbaseIn, DataHandler.ABILITY_DATA);
+        if (abilityData.getActiveAbility() != null) {
+            Ability<?>ability = abilityData.getActiveAbility();
+            if (ability instanceof PlayerAbility playerAbility) {
                 mainHandStack = playerAbility.heldItemMainHandOverride() != null ? playerAbility.heldItemMainHandOverride() : mainHandStack;
                 offHandStack = playerAbility.heldItemOffHandOverride() != null ? playerAbility.heldItemOffHandOverride() : offHandStack;
             }

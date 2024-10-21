@@ -1,6 +1,7 @@
 package com.bobmowzie.mowziesmobs.server.ability;
 
-import com.bobmowzie.mowziesmobs.server.capability.AbilityCapability;
+import com.bobmowzie.mowziesmobs.server.capability.AbilityData;
+import com.bobmowzie.mowziesmobs.server.capability.DataHandler;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -14,9 +15,9 @@ public class AbilityCommonEventHandler {
     @SubscribeEvent
     public void onPlayerInteract(PlayerInteractEvent.RightClickEmpty event) {
         Player player = event.getEntity();
-        AbilityCapability.Capability abilityCapability = AbilityHandler.INSTANCE.getAbilityCapability(player);
-        if (abilityCapability != null) {
-            for (Ability<?>ability : abilityCapability.getAbilities()) {
+        AbilityData abilityData = DataHandler.getData(player, DataHandler.ABILITY_DATA);
+        if (abilityData != null) {
+            for (Ability<?>ability : abilityData.getAbilities()) {
                 if (ability instanceof PlayerAbility) {
                     ((PlayerAbility)ability).onRightClickEmpty(event);
                 }
@@ -27,9 +28,9 @@ public class AbilityCommonEventHandler {
     @SubscribeEvent
     public void onPlayerRightClickBlock(PlayerInteractEvent.RightClickBlock event) {
         Player player = event.getEntity();
-        AbilityCapability.Capability abilityCapability = AbilityHandler.INSTANCE.getAbilityCapability(player);
-        if (abilityCapability != null) {
-            for (Ability<?>ability : abilityCapability.getAbilities()) {
+        AbilityData abilityData = DataHandler.getData(player, DataHandler.ABILITY_DATA);
+        if (abilityData != null) {
+            for (Ability<?>ability : abilityData.getAbilities()) {
                 if (ability instanceof PlayerAbility) {
                     ((PlayerAbility)ability).onRightClickBlock(event);
                 }
@@ -40,9 +41,9 @@ public class AbilityCommonEventHandler {
     @SubscribeEvent
     public void onPlayerRightClickItem(PlayerInteractEvent.RightClickItem event) {
         Player player = event.getEntity();
-        AbilityCapability.Capability abilityCapability = AbilityHandler.INSTANCE.getAbilityCapability(player);
-        if (abilityCapability != null) {
-            for (Ability<?>ability : abilityCapability.getAbilities()) {
+        AbilityData abilityData = DataHandler.getData(player, DataHandler.ABILITY_DATA);
+        if (abilityData != null) {
+            for (Ability<?>ability : abilityData.getAbilities()) {
                 if (ability instanceof PlayerAbility) {
                     ((PlayerAbility)ability).onRightClickWithItem(event);
                 }
@@ -53,12 +54,10 @@ public class AbilityCommonEventHandler {
     @SubscribeEvent
     public void onPlayerRightClickEntity(PlayerInteractEvent.EntityInteract event) {
         Player player = event.getEntity();
-        AbilityCapability.Capability abilityCapability = AbilityHandler.INSTANCE.getAbilityCapability(player);
-        if (abilityCapability != null) {
-            for (Ability<?>ability : abilityCapability.getAbilities()) {
-                if (ability instanceof PlayerAbility) {
-                    ((PlayerAbility)ability).onRightClickEntity(event);
-                }
+        AbilityData abilityData = DataHandler.getData(player, DataHandler.ABILITY_DATA);
+        for (Ability<?> ability : abilityData.getAbilities()) {
+            if (ability instanceof PlayerAbility) {
+                ((PlayerAbility) ability).onRightClickEntity(event);
             }
         }
     }
@@ -66,12 +65,10 @@ public class AbilityCommonEventHandler {
     @SubscribeEvent
     public void onPlayerLeftClickEmpty(PlayerInteractEvent.LeftClickEmpty event) {
         Player player = event.getEntity();
-        AbilityCapability.Capability abilityCapability = AbilityHandler.INSTANCE.getAbilityCapability(player);
-        if (abilityCapability != null) {
-            for (Ability<?>ability : abilityCapability.getAbilities()) {
-                if (ability instanceof PlayerAbility) {
-                    ((PlayerAbility)ability).onLeftClickEmpty(event);
-                }
+        AbilityData abilityData = DataHandler.getData(player, DataHandler.ABILITY_DATA);
+        for (Ability<?> ability : abilityData.getAbilities()) {
+            if (ability instanceof PlayerAbility) {
+                ((PlayerAbility) ability).onLeftClickEmpty(event);
             }
         }
     }
@@ -79,12 +76,10 @@ public class AbilityCommonEventHandler {
     @SubscribeEvent
     public void onPlayerLeftClickBlock(PlayerInteractEvent.LeftClickBlock event) {
         Player player = event.getEntity();
-        AbilityCapability.Capability abilityCapability = AbilityHandler.INSTANCE.getAbilityCapability(player);
-        if (abilityCapability != null) {
-            for (Ability<?>ability : abilityCapability.getAbilities()) {
-                if (ability instanceof PlayerAbility) {
-                    ((PlayerAbility)ability).onLeftClickBlock(event);
-                }
+        AbilityData abilityData = DataHandler.getData(player, DataHandler.ABILITY_DATA);
+        for (Ability<?> ability : abilityData.getAbilities()) {
+            if (ability instanceof PlayerAbility) {
+                ((PlayerAbility) ability).onLeftClickBlock(event);
             }
         }
     }
@@ -92,12 +87,10 @@ public class AbilityCommonEventHandler {
     @SubscribeEvent
     public void onLeftClickEntity(AttackEntityEvent event) {
         Player player = event.getEntity();
-        AbilityCapability.Capability abilityCapability = AbilityHandler.INSTANCE.getAbilityCapability(player);
-        if (abilityCapability != null) {
-            for (Ability<?>ability : abilityCapability.getAbilities()) {
-                if (ability instanceof PlayerAbility) {
-                    ((PlayerAbility)ability).onLeftClickEntity(event);
-                }
+        AbilityData abilityData = DataHandler.getData(player, DataHandler.ABILITY_DATA);
+        for (Ability<?> ability : abilityData.getAbilities()) {
+            if (ability instanceof PlayerAbility) {
+                ((PlayerAbility) ability).onLeftClickEntity(event);
             }
         }
     }
@@ -105,23 +98,19 @@ public class AbilityCommonEventHandler {
     @SubscribeEvent
     public void onTakeDamage(LivingDamageEvent.Post event) {
         LivingEntity player = event.getEntity();
-        AbilityCapability.Capability abilityCapability = AbilityHandler.INSTANCE.getAbilityCapability(player);
-        if (abilityCapability != null) {
-            for (Ability<?>ability : abilityCapability.getAbilities()) {
-                ability.onTakeDamage(event);
-            }
+        AbilityData abilityData = DataHandler.getData(player, DataHandler.ABILITY_DATA);
+        for (Ability<?> ability : abilityData.getAbilities()) {
+            ability.onTakeDamage(event);
         }
     }
 
     @SubscribeEvent
     public void onJump(LivingEvent.LivingJumpEvent event) {
         LivingEntity player = event.getEntity();
-        AbilityCapability.Capability abilityCapability = AbilityHandler.INSTANCE.getAbilityCapability(player);
-        if (abilityCapability != null) {
-            for (Ability<?>ability : abilityCapability.getAbilities()) {
-                if (ability instanceof PlayerAbility) {
-                    ((PlayerAbility)ability).onJump(event);
-                }
+        AbilityData abilityData = DataHandler.getData(player, DataHandler.ABILITY_DATA);
+        for (Ability<?> ability : abilityData.getAbilities()) {
+            if (ability instanceof PlayerAbility) {
+                ((PlayerAbility) ability).onJump(event);
             }
         }
     }
@@ -129,12 +118,10 @@ public class AbilityCommonEventHandler {
     @SubscribeEvent
     public void onFall(LivingFallEvent event) {
         LivingEntity player = event.getEntity();
-        AbilityCapability.Capability abilityCapability = AbilityHandler.INSTANCE.getAbilityCapability(player);
-        if (abilityCapability != null) {
-            for (Ability<?>ability : abilityCapability.getAbilities()) {
-                if (ability instanceof PlayerAbility) {
-                    ((PlayerAbility)ability).onFall(event);
-                }
+        AbilityData abilityData = DataHandler.getData(player, DataHandler.ABILITY_DATA);
+        for (Ability<?> ability : abilityData.getAbilities()) {
+            if (ability instanceof PlayerAbility) {
+                ((PlayerAbility) ability).onFall(event);
             }
         }
     }

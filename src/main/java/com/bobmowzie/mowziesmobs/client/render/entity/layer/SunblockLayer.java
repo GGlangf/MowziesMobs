@@ -1,8 +1,7 @@
 package com.bobmowzie.mowziesmobs.client.render.entity.layer;
 
 import com.bobmowzie.mowziesmobs.MMCommon;
-import com.bobmowzie.mowziesmobs.server.capability.CapabilityHandler;
-import com.bobmowzie.mowziesmobs.server.capability.LivingCapability;
+import com.bobmowzie.mowziesmobs.server.capability.DataHandler;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.EntityModel;
@@ -23,8 +22,7 @@ public class SunblockLayer<T extends LivingEntity, M extends EntityModel<T>> ext
     }
 
     public void render(PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn, T entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-        LivingCapability.Capability livingCapability = CapabilityHandler.getCapability(entitylivingbaseIn, CapabilityHandler.LIVING_CAPABILITY);
-        if (livingCapability != null && livingCapability.getHasSunblock()) {
+        if (DataHandler.getData(entitylivingbaseIn, DataHandler.LIVING_DATA).getHasSunblock()) {
             float f = (float) entitylivingbaseIn.tickCount + partialTicks;
             EntityModel<T> entitymodel = this.getParentModel();
             entitymodel.prepareMobModel(entitylivingbaseIn, limbSwing, limbSwingAmount, partialTicks);

@@ -4,8 +4,8 @@ import com.bobmowzie.mowziesmobs.client.particle.ParticleHandler;
 import com.bobmowzie.mowziesmobs.client.particle.util.AdvancedParticleBase;
 import com.bobmowzie.mowziesmobs.client.particle.util.ParticleComponent;
 import com.bobmowzie.mowziesmobs.server.ability.AbilityHandler;
-import com.bobmowzie.mowziesmobs.server.capability.CapabilityHandler;
-import com.bobmowzie.mowziesmobs.server.capability.PlayerCapability;
+import com.bobmowzie.mowziesmobs.server.capability.DataHandler;
+import com.bobmowzie.mowziesmobs.server.capability.PlayerData;
 import com.bobmowzie.mowziesmobs.server.entity.MowzieEntity;
 import com.bobmowzie.mowziesmobs.server.item.ItemHandler;
 import com.bobmowzie.mowziesmobs.server.item.ItemUmvuthanaMask;
@@ -102,34 +102,38 @@ public class EntityUmvuthanaFollowerToPlayer extends EntityUmvuthanaFollower<Pla
 
     @Override
     protected int getGroupCircleTick() {
-        PlayerCapability.Capability capability = getPlayerCapability();
-        if (capability == null) return 0;
-        return capability.getTribeCircleTick();
+        PlayerData data = getPlayerData();
+        if (data == null) return 0;
+        return data.getTribeCircleTick();
     }
 
     @Override
     protected int getPackSize() {
-        PlayerCapability.Capability capability = getPlayerCapability();
-        if (capability == null) return 0;
-        return capability.getPackSize();
+        PlayerData data = getPlayerData();
+        if (data == null) return 0;
+        return data.getPackSize();
     }
 
     @Override
     protected void addAsPackMember() {
-        PlayerCapability.Capability capability = getPlayerCapability();
-        if (capability == null) return;
-        capability.addPackMember(this);
+        PlayerData data = getPlayerData();
+        if (data == null) return;
+        data.addPackMember(this);
     }
 
     @Override
     protected void removeAsPackMember() {
-        PlayerCapability.Capability capability = getPlayerCapability();
-        if (capability == null) return;
-        capability.removePackMember(this);
+        PlayerData data = getPlayerData();
+        if (data == null) return;
+        data.removePackMember(this);
     }
 
-    private PlayerCapability.Capability getPlayerCapability() {
-        return CapabilityHandler.getCapability(leader, CapabilityHandler.PLAYER_CAPABILITY);
+    private @Nullable PlayerData getPlayerData() {
+        if (leader instanceof Player) {
+            return DataHandler.getData(leader, DataHandler.PLAYER_DATA);
+        }
+
+        return null;
     }
 
     @Override
