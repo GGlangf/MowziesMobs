@@ -16,8 +16,8 @@ public class BlockBehaviourMixin implements ICopiedBlockProperties {
 
     @Inject(method = "ofLegacyCopy", at = @At("RETURN"))
     private static void onCopy(BlockBehaviour blockBehaviour, CallbackInfoReturnable<BlockBehaviour.Properties> cir) {
-        if (blockBehaviour instanceof Block block && cir.getReturnValue() instanceof ICopiedBlockProperties copied) {
-            copied.mowziesMobs$setBaseBlock(block);
+        if (blockBehaviour instanceof Block block) {
+            ((ICopiedBlockProperties) cir.getReturnValue()).mowziesMobs$setBaseBlock(block);
         }
     }
 

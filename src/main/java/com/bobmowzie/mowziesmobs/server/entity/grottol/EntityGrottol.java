@@ -446,12 +446,8 @@ public class EntityGrottol extends MowzieLLibraryEntity {
 
     public boolean isBlockDiggable(BlockState blockState) {
         if (blockState.is(TagHandler.CAN_GROTTOL_DIG)) return true;
-
-        if (blockState.getBlock().properties() instanceof ICopiedBlockProperties copied && copied.mowziesMobs$getBaseBlock() != null) {
-            return copied.mowziesMobs$getBaseBlock().builtInRegistryHolder().is(TagHandler.CAN_GROTTOL_DIG);
-        }
-
-        return false;
+        Block block = ((ICopiedBlockProperties) blockState.getBlock().properties()).mowziesMobs$getBaseBlock();
+        return block.builtInRegistryHolder().is(TagHandler.CAN_GROTTOL_DIG);
     }
 
     public boolean getDeepslate() {

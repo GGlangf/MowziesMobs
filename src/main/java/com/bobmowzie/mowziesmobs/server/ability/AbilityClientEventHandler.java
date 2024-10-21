@@ -3,7 +3,6 @@ package com.bobmowzie.mowziesmobs.server.ability;
 import com.bobmowzie.mowziesmobs.server.capability.AbilityCapability;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.client.event.RenderFrameEvent;
 
 public class AbilityClientEventHandler {

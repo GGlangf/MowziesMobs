@@ -193,7 +193,7 @@ public class PlayerCapability {
                 untilAxeSwing--;
             }
 
-            if (player.level().isClientSide()) {
+            if (!player.level().isClientSide()) {
                 if (player.getMainHandItem().getItem() instanceof ItemEarthrendGauntlet || player.getOffhandItem().getItem() instanceof ItemEarthrendGauntlet) {
                     player.addEffect(new MobEffectInstance(EffectHandler.GEOMANCY, 20, 0, false, false));
                 }

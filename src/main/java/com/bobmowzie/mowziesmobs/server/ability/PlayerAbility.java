@@ -4,8 +4,6 @@ import com.bobmowzie.mowziesmobs.client.model.tools.geckolib.MowzieAnimationCont
 import com.bobmowzie.mowziesmobs.client.render.entity.player.GeckoPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEvent;
 import net.neoforged.neoforge.event.entity.living.LivingFallEvent;
@@ -109,22 +107,18 @@ public class PlayerAbility extends Ability<Player> {
         return PlayState.CONTINUE;
     }
 
-    @OnlyIn(Dist.CLIENT)
     public ItemStack heldItemMainHandOverride() {
         return heldItemMainHandVisualOverride;
     }
 
-    @OnlyIn(Dist.CLIENT)
     public ItemStack heldItemOffHandOverride() {
         return heldItemOffHandVisualOverride;
     }
 
-    @OnlyIn(Dist.CLIENT)
     public HandDisplay getFirstPersonMainHandDisplay() {
         return firstPersonMainHandDisplay;
     }
 
-    @OnlyIn(Dist.CLIENT)
     public HandDisplay getFirstPersonOffHandDisplay() {
         return firstPersonOffHandDisplay;
     }

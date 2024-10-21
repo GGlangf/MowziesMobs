@@ -5,6 +5,7 @@ import com.bobmowzie.mowziesmobs.server.item.ItemHandler;
 import com.bobmowzie.mowziesmobs.server.tag.TagHandler;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class EffectGeomancy extends MowzieEffect {
@@ -14,12 +15,8 @@ public class EffectGeomancy extends MowzieEffect {
 
     public static boolean isBlockUseable(BlockState blockState) {
         if (blockState.is(TagHandler.GEOMANCY_USEABLE)) return true;
-
-        if (blockState.getBlock().properties() instanceof ICopiedBlockProperties copied && copied.mowziesMobs$getBaseBlock() != null) {
-            return copied.mowziesMobs$getBaseBlock().builtInRegistryHolder().is(TagHandler.GEOMANCY_USEABLE);
-        }
-
-        return false;
+        Block block = ((ICopiedBlockProperties) blockState.getBlock().properties()).mowziesMobs$getBaseBlock();
+        return block != null && block.builtInRegistryHolder().is(TagHandler.GEOMANCY_USEABLE);
     }
 
     public static boolean canUse(LivingEntity entity) {

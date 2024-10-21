@@ -26,6 +26,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.PushReaction;
@@ -71,8 +72,11 @@ public abstract class EntityGeomancyBase extends EntityMagicEffect implements Ge
     // Change the specified block to its geomancy version. I.E. Grass blocks turn to dirt, stairs and slabs turn to base versions.
     public BlockState changeBlock(BlockState blockState) {
         if (!blockState.is(TagHandler.GEOMANCY_USEABLE)) {
-            if (blockState.getBlock().properties() instanceof ICopiedBlockProperties copied && copied.mowziesMobs$getBaseBlock() != null) {
-                blockState = copied.mowziesMobs$getBaseBlock().defaultBlockState();
+            Block block = ((ICopiedBlockProperties) blockState.getBlock().properties()).mowziesMobs$getBaseBlock();
+
+            if (block != null) {
+                blockState = block.defaultBlockState();
+                // FIXME 1.21 :: should this not also check for the tag (and early return if the tag is not matched)?
             }
         }
 

@@ -22,14 +22,16 @@ import java.util.Map;
 
 public class MMModels {
     public static final String[] HAND_MODEL_ITEMS = new String[] {"wrought_axe", "spear", "earthrend_gauntlet", "sculptor_staff"};
+    // Can only register 'standalone' models which do not have this prefix
+    public static final String PREFIX = "item/";
 
     @SubscribeEvent
-    public static void onModelBakeEvent(ModelEvent.ModifyBakingResult event) { // FIXME 1.21 :: can only register 'standalone' here - unsure what the difference to 'inventory' (previously used here) is
+    public static void onModelBakeEvent(ModelEvent.ModifyBakingResult event) {
         Map<ModelResourceLocation, BakedModel> models = event.getModels();
 
         for (String item : HAND_MODEL_ITEMS) {
-            ModelResourceLocation modelInventory = ModelResourceLocation.standalone(ResourceLocation.fromNamespaceAndPath(MMCommon.MODID, item));
-            ModelResourceLocation modelHand = ModelResourceLocation.standalone(ResourceLocation.fromNamespaceAndPath(MMCommon.MODID, item + "_in_hand"));
+            ModelResourceLocation modelInventory = ModelResourceLocation.inventory(ResourceLocation.fromNamespaceAndPath(MMCommon.MODID, item));
+            ModelResourceLocation modelHand = prefixed(item + "_in_hand");
 
             BakedModel bakedModelDefault = models.get(modelInventory);
             BakedModel bakedModelHand = models.get(modelHand);
@@ -83,12 +85,12 @@ public class MMModels {
         }
 
         for (MaskType type : MaskType.values()) {
-            ModelResourceLocation maskModelInventory = ModelResourceLocation.standalone(ResourceLocation.fromNamespaceAndPath(MMCommon.MODID,"umvuthana_mask_" + type.name));
-            ModelResourceLocation maskModelFrame = ModelResourceLocation.standalone(ResourceLocation.fromNamespaceAndPath(MMCommon.MODID, "umvuthana_mask_" + type.name + "_frame"));
+            ModelResourceLocation maskModelInventory = ModelResourceLocation.inventory(ResourceLocation.fromNamespaceAndPath(MMCommon.MODID,"umvuthana_mask_" + type.name));
+            ModelResourceLocation maskModelFrame = prefixed("umvuthana_mask_" + type.name + "_frame");
             bakeMask(models, maskModelInventory, maskModelFrame);
         }
-        ModelResourceLocation maskModelInventory = ModelResourceLocation.standalone(ResourceLocation.fromNamespaceAndPath(MMCommon.MODID, "sol_visage"));
-        ModelResourceLocation maskModelFrame = ModelResourceLocation.standalone(ResourceLocation.fromNamespaceAndPath(MMCommon.MODID, "sol_visage_frame"));
+        ModelResourceLocation maskModelInventory = ModelResourceLocation.inventory(ResourceLocation.fromNamespaceAndPath(MMCommon.MODID, "sol_visage"));
+        ModelResourceLocation maskModelFrame = prefixed("sol_visage_frame");
         bakeMask(models, maskModelInventory, maskModelFrame);
     }
 
@@ -142,5 +144,9 @@ public class MMModels {
         };
 
         map.put(maskModelInventory, maskModelWrapper);
+    }
+
+    public static ModelResourceLocation prefixed(String path) {
+        return ModelResourceLocation.standalone(ResourceLocation.fromNamespaceAndPath(MMCommon.MODID, PREFIX + path));
     }
 }

@@ -325,7 +325,7 @@ public final class ServerEventHandler {
     }
 
     @SubscribeEvent
-    public void onPlayerTick(PlayerTickEvent.Post event) { // FIXME 1.21 :: Post correct here?
+    public void onPlayerTick(PlayerTickEvent.Post event) {
         Player player = event.getEntity();
         PlayerCapability.Capability playerCapability = CapabilityHandler.getCapability(player, CapabilityHandler.PLAYER_CAPABILITY);
         if (playerCapability != null) {

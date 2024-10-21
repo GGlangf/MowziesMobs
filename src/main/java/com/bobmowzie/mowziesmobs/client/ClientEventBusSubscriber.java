@@ -1,6 +1,5 @@
 package com.bobmowzie.mowziesmobs.client;
 
-import com.bobmowzie.mowziesmobs.MMCommon;
 import com.bobmowzie.mowziesmobs.client.gui.GuiSculptorTrade;
 import com.bobmowzie.mowziesmobs.client.gui.GuiUmvuthanaTrade;
 import com.bobmowzie.mowziesmobs.client.gui.GuiUmvuthiTrade;
@@ -12,8 +11,6 @@ import com.bobmowzie.mowziesmobs.server.entity.umvuthana.MaskType;
 import com.bobmowzie.mowziesmobs.server.inventory.ContainerHandler;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.entity.EntityRenderers;
-import net.minecraft.client.resources.model.ModelResourceLocation;
-import net.minecraft.resources.ResourceLocation;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -74,15 +71,15 @@ public class ClientEventBusSubscriber {
     }
 
     @SubscribeEvent
-    public static void onRegisterModels(ModelEvent.RegisterAdditional modelRegistryEvent) { // FIXME 1.21 :: can only register 'standalone' here - unsure what the difference to 'inventory' (previously used here) is
+    public static void onRegisterModels(ModelEvent.RegisterAdditional modelRegistryEvent) {
         for (String item : MMModels.HAND_MODEL_ITEMS) {
-        	modelRegistryEvent.register(ModelResourceLocation.standalone(ResourceLocation.fromNamespaceAndPath(MMCommon.MODID, item + "_in_hand")));
+        	modelRegistryEvent.register(MMModels.prefixed(item + "_in_hand"));
         }
 
         for (MaskType type : MaskType.values()) {
-        	modelRegistryEvent.register(ModelResourceLocation.standalone(ResourceLocation.fromNamespaceAndPath(MMCommon.MODID,"umvuthana_mask_" + type.name + "_frame")));
+        	modelRegistryEvent.register(MMModels.prefixed("umvuthana_mask_" + type.name + "_frame"));
         }
 
-        modelRegistryEvent.register(ModelResourceLocation.standalone(ResourceLocation.fromNamespaceAndPath(MMCommon.MODID, "sol_visage_frame")));
+        modelRegistryEvent.register(MMModels.prefixed("sol_visage_frame"));
     }
 }
