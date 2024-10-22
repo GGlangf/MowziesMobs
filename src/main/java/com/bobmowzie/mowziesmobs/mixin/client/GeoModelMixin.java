@@ -11,7 +11,7 @@ import software.bernie.geckolib.animatable.GeoAnimatable;
 import software.bernie.geckolib.model.GeoModel;
 
 /** Calls from the inventory rendering sometimes are returned early and this seems to cause issues in animating the entity in the inventory */
-@Mixin(GeoModel.class)
+@Mixin(value = GeoModel.class, remap = false)
 public abstract class GeoModelMixin {
     @Shadow private long lastRenderedInstance;
 
