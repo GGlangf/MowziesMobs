@@ -145,7 +145,7 @@ public abstract class MowzieGeoEntityRenderer<T extends MowzieGeckoEntity> exten
             RenderUtil.translateAwayFromPivotPoint(poseStack, bone);
         }
 
-        // FIXME 1.21 :: seems to be needed due to render changes -> in general this method might need to be adjusted to latest geckolib changes
+        // FIXME 1.21 :: seems to be needed due to render changes - will be removed in a future geckolib version
         buffer = checkAndRefreshBuffer(isReRender, buffer, bufferSource, renderType);
 
         renderCubesOfBone(poseStack, bone, buffer, packedLight, packedOverlay, color);
