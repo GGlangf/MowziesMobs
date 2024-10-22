@@ -9,6 +9,7 @@
     "BlockBehaviourMixin"
   ],
   "client": [
+    "client.GeoModelMixin",
     "client.HumanoidArmorLayerAccess"
   ],
   "injectors": {

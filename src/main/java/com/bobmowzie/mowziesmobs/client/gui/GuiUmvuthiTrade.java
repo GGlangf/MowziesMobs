@@ -84,9 +84,6 @@ public final class GuiUmvuthiTrade extends AbstractContainerScreen<ContainerUmvu
         //minecraft.getTextureManager().bindForSetup(hasTraded ? TEXTURE_REPLENISH : TEXTURE_TRADE);
         guiGraphics.blit(hasTraded ? TEXTURE_REPLENISH : TEXTURE_TRADE, leftPos, topPos, 0, 0, imageWidth, imageHeight);
         umvuthi.renderingInGUI = true;
-        // FIXME 1.21 :: currently seems to switch rendering between some sort of default position? and current entity position / animation
-        // FIXME 1.21 :: depending on when you open the inventory it seems to just render the default position (more likely with higher tick rate?)
-        // FIXME 1.21 :: so some sort of wrong replacement for 'getPartialTicks' or 'getFrameTime'?
         // x and y values are chosen as the first and last pixel of the black (entity) box of the gui texture
         // The two x and y values determine the size for the 'GuiGraphics#enableScissor' call (their middle point is also where the entity will be rendered)
         InventoryScreen.renderEntityInInventoryFollowsMouse(guiGraphics, leftPos + 8, topPos + 8, leftPos + 59, topPos + 69, 20, 0.25f, x, y, umvuthi);

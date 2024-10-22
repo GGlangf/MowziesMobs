@@ -26,7 +26,7 @@ public class MowzieAnimationController<T extends GeoAnimatable> extends Animatio
         currentAnimation = this.animationQueue.poll();
         isJustStarting = true;
         // FIXME 1.21 :: 'Minecraft#getPartialTick' seemed to previously return the value of 'pausePartialTick' or 'Timer#partialTick'
-        adjustTick(animatable.getTick(animatable) + Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(true));
+        adjustTick(animatable.getTick(animatable) + Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false));
         transitionLength = 0;
     }
 
