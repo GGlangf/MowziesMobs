@@ -1,5 +1,6 @@
 package com.bobmowzie.mowziesmobs.server.ability.abilities.player.geomancy;
 
+import com.bobmowzie.mowziesmobs.MMCommon;
 import com.bobmowzie.mowziesmobs.client.model.tools.geckolib.MowzieGeoBone;
 import com.bobmowzie.mowziesmobs.client.model.tools.geckolib.MowzieGeoModel;
 import com.bobmowzie.mowziesmobs.client.particle.ParticleHandler;
@@ -18,7 +19,6 @@ import com.bobmowzie.mowziesmobs.server.item.ItemEarthrendGauntlet;
 import com.bobmowzie.mowziesmobs.server.item.ItemHandler;
 import com.bobmowzie.mowziesmobs.server.potion.EffectGeomancy;
 import com.bobmowzie.mowziesmobs.server.sound.MMSounds;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
@@ -267,7 +267,7 @@ public class TunnelingAbility extends PlayerAbility {
     public <E extends GeoEntity> PlayState animationPredicate(AnimationState<E> e, GeckoPlayer.Perspective perspective) {
         e.getController().transitionLength(4);
         if (perspective == GeckoPlayer.Perspective.THIRD_PERSON) {
-            float yMotionThreshold = getUser() == Minecraft.getInstance().player ? 1 : 2;
+            float yMotionThreshold = getUser() == MMCommon.PROXY.getLocalPlayer() ? 1 : 2;
             if (!underground && getUser().getUseItem().getItem() != ItemHandler.EARTHREND_GAUNTLET.get() && getUser().getDeltaMovement().y() < yMotionThreshold) {
                 e.getController().setAnimation(FALL_ANIM);
             }

@@ -40,17 +40,18 @@ import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import net.neoforged.neoforge.client.model.data.ModelData;
 import net.neoforged.neoforge.event.tick.LevelTickEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 
-public enum ClientEventHandler {
-    INSTANCE;
-
+@EventBusSubscriber(value = Dist.CLIENT)
+public class ClientEventHandler {
     private static final ResourceLocation FROZEN_BLUR = ResourceLocation.withDefaultNamespace("textures/misc/powder_snow_outline.png");
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)

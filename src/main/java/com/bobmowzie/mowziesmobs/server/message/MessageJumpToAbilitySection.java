@@ -6,13 +6,12 @@ import com.bobmowzie.mowziesmobs.server.ability.AbilityType;
 import com.bobmowzie.mowziesmobs.server.capability.AbilityData;
 import com.bobmowzie.mowziesmobs.server.capability.DataHandler;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.jetbrains.annotations.NotNull;
 
@@ -30,9 +29,9 @@ public record MessageJumpToAbilitySection(int entityId, int index, int sectionIn
 
     public static void handleClient(final MessageJumpToAbilitySection packet, final IPayloadContext context) {
         context.enqueueWork(() -> {
-            Entity entity = Minecraft.getInstance().level.getEntity(packet.entityId());
+            Level level = MMCommon.PROXY.getClientLevel();
 
-            if (entity instanceof LivingEntity living) {
+            if (level != null && level.getEntity(packet.entityId()) instanceof LivingEntity living) {
                 AbilityData data = DataHandler.getData(living, DataHandler.ABILITY_DATA);
                 AbilityType<?, ?> abilityType = data.getAbilityTypesOnEntity(living)[packet.index()];
                 Ability<?> instance = data.getAbilityMap().get(abilityType);

@@ -3,15 +3,13 @@ package com.bobmowzie.mowziesmobs.server.message;
 import com.bobmowzie.mowziesmobs.MMCommon;
 import com.bobmowzie.mowziesmobs.server.block.BlockGrottol;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -32,10 +30,9 @@ public record MessageBlackPinkInYourArea(int entityId) implements CustomPacketPa
 
     public static void handleClient(final MessageBlackPinkInYourArea packet, final IPayloadContext context) {
         context.enqueueWork(() -> {
-            ClientLevel level = Minecraft.getInstance().level;
-            Entity entity = level.getEntity(packet.entityId());
+            Level level = MMCommon.PROXY.getClientLevel();
 
-            if (entity instanceof AbstractMinecart minecart) {
+            if (level != null && level.getEntity(packet.entityId()) instanceof AbstractMinecart minecart) {
                 MMCommon.PROXY.playBlackPinkSound(minecart);
                 BlockState state = Blocks.STONE.defaultBlockState().setValue(BlockGrottol.VARIANT, BlockGrottol.Variant.BLACK_PINK);
                 BlockPos pos = minecart.blockPosition();

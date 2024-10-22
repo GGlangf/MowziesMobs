@@ -11,6 +11,7 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.jetbrains.annotations.NotNull;
 
@@ -29,9 +30,9 @@ public record MessageFreezeEffect(int entityId, boolean isFrozen) implements Cus
 
     public static void handleClient(final MessageFreezeEffect packet, final IPayloadContext context) {
         context.enqueueWork(() -> {
-            Entity entity = Minecraft.getInstance().level.getEntity(packet.entityId());
+            Level level = MMCommon.PROXY.getClientLevel();
 
-            if (entity instanceof LivingEntity living) {
+            if (level != null && level.getEntity(packet.entityId()) instanceof LivingEntity living) {
                 FrozenData data = DataHandler.getData(living, DataHandler.FROZEN_DATA);
 
                 if (packet.isFrozen()) {

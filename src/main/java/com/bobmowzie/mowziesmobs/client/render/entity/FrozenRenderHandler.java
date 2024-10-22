@@ -26,7 +26,6 @@ import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.player.PlayerModelPart;
-import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.client.event.RenderHandEvent;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
@@ -36,9 +35,7 @@ import software.bernie.geckolib.renderer.layer.GeoRenderLayer;
 /**
  * Created by BobMowzie on 6/28/2017.
  */
-public enum FrozenRenderHandler {
-    INSTANCE;
-
+public class FrozenRenderHandler {
     private static final ResourceLocation FROZEN_TEXTURE = ResourceLocation.fromNamespaceAndPath(MMCommon.MODID, "textures/entity/frozen.png");
 
     public static class LayerFrozen<T extends LivingEntity, M extends EntityModel<T>> extends RenderLayer<T,M> {
@@ -74,8 +71,7 @@ public enum FrozenRenderHandler {
         }
     }
 
-    @SubscribeEvent
-    public void onRenderHand(RenderHandEvent event) {
+    public static void onRenderHand(RenderHandEvent event) {
         event.getPoseStack().pushPose();
         Player player = Minecraft.getInstance().player;
 
@@ -99,7 +95,7 @@ public enum FrozenRenderHandler {
      * @param equippedProgress
      * @param side
      */
-    private void renderArmFirstPersonFrozen(PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, float equippedProgress, float swingProgress, HumanoidArm side) {
+    private static void renderArmFirstPersonFrozen(PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, float equippedProgress, float swingProgress, HumanoidArm side) {
         Minecraft mc = Minecraft.getInstance();
         EntityRenderDispatcher renderManager = mc.getEntityRenderDispatcher();
         Minecraft.getInstance().getTextureManager().bindForSetup(FROZEN_TEXTURE);
@@ -126,24 +122,24 @@ public enum FrozenRenderHandler {
         if (flag) {
             playerrenderer.renderRightHand(matrixStackIn, bufferIn, combinedLightIn, abstractclientplayerentity);
             matrixStackIn.scale(1.02f, 1.02f, 1.02f);
-            this.renderRightArm(matrixStackIn, bufferIn, combinedLightIn, abstractclientplayerentity, playerrenderer.getModel());
+            renderRightArm(matrixStackIn, bufferIn, combinedLightIn, abstractclientplayerentity, playerrenderer.getModel());
         } else {
             playerrenderer.renderLeftHand(matrixStackIn, bufferIn, combinedLightIn, abstractclientplayerentity);
             matrixStackIn.scale(1.02f, 1.02f, 1.02f);
-            this.renderLeftArm(matrixStackIn, bufferIn, combinedLightIn, abstractclientplayerentity, playerrenderer.getModel());
+            renderLeftArm(matrixStackIn, bufferIn, combinedLightIn, abstractclientplayerentity, playerrenderer.getModel());
         }
     }
 
-    public void renderRightArm(PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, AbstractClientPlayer playerIn, PlayerModel<AbstractClientPlayer> model) {
-        this.renderItem(matrixStackIn, bufferIn, combinedLightIn, playerIn, (model).rightArm, (model).rightSleeve, model);
+    public static void renderRightArm(PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, AbstractClientPlayer playerIn, PlayerModel<AbstractClientPlayer> model) {
+        renderItem(matrixStackIn, bufferIn, combinedLightIn, playerIn, (model).rightArm, (model).rightSleeve, model);
     }
 
-    public void renderLeftArm(PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, AbstractClientPlayer playerIn, PlayerModel<AbstractClientPlayer> model) {
-        this.renderItem(matrixStackIn, bufferIn, combinedLightIn, playerIn, (model).leftArm, (model).leftSleeve, model);
+    public static void renderLeftArm(PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, AbstractClientPlayer playerIn, PlayerModel<AbstractClientPlayer> model) {
+        renderItem(matrixStackIn, bufferIn, combinedLightIn, playerIn, (model).leftArm, (model).leftSleeve, model);
     }
 
-    private void renderItem(PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, AbstractClientPlayer playerIn, ModelPart rendererArmIn, ModelPart rendererArmwearIn, PlayerModel<AbstractClientPlayer> model) {
-        this.setModelVisibilities(playerIn, model);
+    private static void renderItem(PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, AbstractClientPlayer playerIn, ModelPart rendererArmIn, ModelPart rendererArmwearIn, PlayerModel<AbstractClientPlayer> model) {
+        setModelVisibilities(playerIn, model);
         model.attackTime = 0.0F;
         model.crouching = false;
         model.swimAmount = 0.0F;
@@ -152,7 +148,7 @@ public enum FrozenRenderHandler {
         rendererArmwearIn.render(matrixStackIn, bufferIn.getBuffer(RenderType.entityTranslucent(FROZEN_TEXTURE)), combinedLightIn, OverlayTexture.NO_OVERLAY, FastColor.ARGB32.colorFromFloat(0.8f, 1, 1,1));
     }
 
-    private void setModelVisibilities(AbstractClientPlayer clientPlayer, PlayerModel<AbstractClientPlayer> playermodel) {
+    private static void setModelVisibilities(AbstractClientPlayer clientPlayer, PlayerModel<AbstractClientPlayer> playermodel) {
         if (clientPlayer.isSpectator()) {
             playermodel.setAllVisible(false);
             playermodel.head.visible = true;

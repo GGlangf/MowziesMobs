@@ -3,7 +3,6 @@ package com.bobmowzie.mowziesmobs.server.message;
 import com.bobmowzie.mowziesmobs.MMCommon;
 import com.bobmowzie.mowziesmobs.server.entity.ILinkedEntity;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -36,7 +35,7 @@ public record MessageLinkEntities(int sourceId, int targetId) implements CustomP
 
     public static void handleClient(final MessageLinkEntities packet, final IPayloadContext context) {
         context.enqueueWork(() -> {
-            Level level = Minecraft.getInstance().level;
+            Level level = MMCommon.PROXY.getClientLevel();
 
             if (level != null) {
                 Entity entitySource = level.getEntity(packet.sourceId());

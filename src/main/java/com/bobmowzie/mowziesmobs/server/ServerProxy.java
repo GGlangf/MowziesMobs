@@ -3,21 +3,14 @@ package com.bobmowzie.mowziesmobs.server;
 import com.bobmowzie.mowziesmobs.server.entity.effects.EntitySolarBeam;
 import com.bobmowzie.mowziesmobs.server.entity.effects.EntitySunstrike;
 import com.bobmowzie.mowziesmobs.server.entity.naga.EntityNaga;
-import com.bobmowzie.mowziesmobs.server.entity.umvuthana.trade.Trade;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.network.syncher.EntityDataSerializer;
-import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.NotNull;
-
-import java.util.Optional;
+import org.jetbrains.annotations.Nullable;
 
 public class ServerProxy {
     public void init() {
@@ -44,7 +37,7 @@ public class ServerProxy {
     public void playSolarBeamSound(EntitySolarBeam entity) {
     }
 
-    public void minecartParticles(ClientLevel world, AbstractMinecart minecart, float scale, double x, double y,
+    public void minecartParticles(Level world, AbstractMinecart minecart, float scale, double x, double y,
                                   double z, BlockState state, BlockPos pos) {
     }
 
@@ -62,5 +55,13 @@ public class ServerProxy {
     }
 
     public void updateMarkedBlocks() {
+    }
+
+    public @Nullable Player getLocalPlayer() {
+        return null;
+    }
+
+    public @Nullable Level getClientLevel() {
+        return null;
     }
 }

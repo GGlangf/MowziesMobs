@@ -12,7 +12,6 @@ import com.bobmowzie.mowziesmobs.server.message.MessageInterruptAbility;
 import com.bobmowzie.mowziesmobs.server.message.MessageJumpToAbilitySection;
 import com.bobmowzie.mowziesmobs.server.message.MessagePlayerUseAbility;
 import com.bobmowzie.mowziesmobs.server.message.MessageUseAbility;
-import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.PacketDistributor;
@@ -96,7 +95,7 @@ public enum AbilityHandler {
     }
 
     public <T extends Player> void sendPlayerTryAbilityMessage(T entity, AbilityType<?, ?> ability) {
-        if (!(entity.level().isClientSide && entity instanceof LocalPlayer)) {
+        if (!entity.level().isClientSide()) {
             return;
         }
 

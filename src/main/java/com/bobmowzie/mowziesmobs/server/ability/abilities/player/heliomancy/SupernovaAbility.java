@@ -1,9 +1,13 @@
 package com.bobmowzie.mowziesmobs.server.ability.abilities.player.heliomancy;
 
+import com.bobmowzie.mowziesmobs.MMCommon;
 import com.bobmowzie.mowziesmobs.client.render.entity.player.GeckoFirstPersonRenderer;
 import com.bobmowzie.mowziesmobs.client.render.entity.player.GeckoPlayer;
 import com.bobmowzie.mowziesmobs.client.render.entity.player.GeckoRenderPlayer;
-import com.bobmowzie.mowziesmobs.server.ability.*;
+import com.bobmowzie.mowziesmobs.server.ability.Ability;
+import com.bobmowzie.mowziesmobs.server.ability.AbilityHandler;
+import com.bobmowzie.mowziesmobs.server.ability.AbilitySection;
+import com.bobmowzie.mowziesmobs.server.ability.AbilityType;
 import com.bobmowzie.mowziesmobs.server.config.ConfigHandler;
 import com.bobmowzie.mowziesmobs.server.entity.EntityHandler;
 import com.bobmowzie.mowziesmobs.server.entity.effects.EntitySuperNova;
@@ -82,7 +86,7 @@ public class SupernovaAbility extends HeliomancyAbilityBase {
         // Particle effects
         if (getLevel().isClientSide) {
             // First person
-            if (getUser() == Minecraft.getInstance().player && Minecraft.getInstance().options.getCameraType() == CameraType.FIRST_PERSON) {
+            if (getUser() == MMCommon.PROXY.getLocalPlayer() && Minecraft.getInstance().options.getCameraType() == CameraType.FIRST_PERSON) {
                 GeckoPlayer geckoPlayer = GeckoPlayer.getGeckoPlayer(getUser(), GeckoPlayer.Perspective.FIRST_PERSON);
                 if (geckoPlayer != null) {
                     GeckoFirstPersonRenderer renderPlayer = (GeckoFirstPersonRenderer) geckoPlayer.getPlayerRenderer();

@@ -16,9 +16,12 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
@@ -78,7 +81,11 @@ public class ClientProxy extends ServerProxy {
     }
 
     @Override
-    public void minecartParticles(ClientLevel world, AbstractMinecart minecart, float scale, double x, double y, double z, BlockState state, BlockPos pos) {
+    public void minecartParticles(Level world, AbstractMinecart minecart, float scale, double x, double y, double z, BlockState state, BlockPos pos) {
+        if (!(world instanceof ClientLevel clientLevel)) {
+            return;
+        }
+
         final int size = 3;
         float offset =  -0.5F * scale;
         for (int ix = 0; ix < size; ix++) {
@@ -89,7 +96,7 @@ public class ClientProxy extends ServerProxy {
                     double dz = (double) iz / size * scale;
                     Vec3 minecartMotion = minecart.getDeltaMovement();
                     Minecraft.getInstance().particleEngine.add(new TerrainParticle(
-                            world,
+                            clientLevel,
                             x + dx + offset, y + dy + offset, z + dz + offset,
                             dx + minecartMotion.x(), dy + minecartMotion.y(), dz + minecartMotion.z(),
                             state
@@ -133,5 +140,15 @@ public class ClientProxy extends ServerProxy {
             }
             blockMarking.tick();
         }
+    }
+
+    @Override
+    public @Nullable Player getLocalPlayer() {
+        return Minecraft.getInstance().player;
+    }
+
+    @Override
+    public @Nullable Level getClientLevel() {
+        return Minecraft.getInstance().level;
     }
 }

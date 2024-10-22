@@ -1,6 +1,5 @@
 package com.bobmowzie.mowziesmobs;
 
-import com.bobmowzie.mowziesmobs.client.ClientEventHandler;
 import com.bobmowzie.mowziesmobs.client.ClientLayerRegistry;
 import com.bobmowzie.mowziesmobs.client.MMModels;
 import com.bobmowzie.mowziesmobs.client.render.entity.FrozenRenderHandler;
@@ -28,8 +27,7 @@ public class MMClient {
         modBus.addListener(this::init);
         modBus.addListener(this::registerClientExtensions);
 
-        NeoForge.EVENT_BUS.register(ClientEventHandler.INSTANCE);
-        NeoForge.EVENT_BUS.register(FrozenRenderHandler.INSTANCE);
+        NeoForge.EVENT_BUS.addListener(FrozenRenderHandler::onRenderHand);
         NeoForge.EVENT_BUS.addListener(AbilityClientEventHandler::onRenderTick);
 
         container.registerConfig(ModConfig.Type.CLIENT, ConfigHandler.CLIENT_CONFIG);

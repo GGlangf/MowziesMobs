@@ -1,5 +1,6 @@
 package com.bobmowzie.mowziesmobs.server.capability;
 
+import com.bobmowzie.mowziesmobs.MMCommon;
 import com.bobmowzie.mowziesmobs.client.render.entity.player.GeckoPlayer;
 import com.bobmowzie.mowziesmobs.server.ability.Ability;
 import com.bobmowzie.mowziesmobs.server.ability.AbilityHandler;
@@ -174,7 +175,7 @@ public class PlayerData implements INBTSerializable<CompoundTag> {
             Player player = (Player) event.getEntity();
             geckoPlayer = new GeckoPlayer.GeckoPlayerThirdPerson(player);
             // Only create 1st person instance if the player joining is this client's player
-            if (event.getEntity() == Minecraft.getInstance().player) {
+            if (event.getEntity() == MMCommon.PROXY.getLocalPlayer()) { // FIXME 1.21 :: unused?
                 GeckoPlayer.GeckoPlayerFirstPerson geckoPlayerFirstPerson = new GeckoPlayer.GeckoPlayerFirstPerson(player);
             }
         }

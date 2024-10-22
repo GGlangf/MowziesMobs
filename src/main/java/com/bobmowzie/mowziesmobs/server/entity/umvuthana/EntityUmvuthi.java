@@ -1259,7 +1259,7 @@ public class EntityUmvuthi extends MowzieGeckoEntity implements LeaderSunstrikeI
 
         public static void superNovaEffects(Ability<?>activeAbility, Vec3[] pinLocation, Level level) {
             // Darken sky
-            Player clientPlayer = Minecraft.getInstance().player;
+            Player clientPlayer = MMCommon.PROXY.getLocalPlayer();
             if (clientPlayer == null) return;
             double distToCaster = activeAbility.getUser().position().distanceToSqr(clientPlayer.position());
             if (distToCaster < 1000) {

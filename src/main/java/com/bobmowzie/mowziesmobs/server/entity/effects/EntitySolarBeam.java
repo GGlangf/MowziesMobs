@@ -149,7 +149,7 @@ public class EntitySolarBeam extends Entity {
                 double rootY = caster.getY() + caster.getBbHeight() / 2f + 0.3f;
                 double rootZ = caster.getZ();
                 if (getHasPlayer()) {
-                    if (caster instanceof Player && !(caster == Minecraft.getInstance().player && Minecraft.getInstance().options.getCameraType() == CameraType.FIRST_PERSON)) {
+                    if (caster instanceof Player && !(caster == MMCommon.PROXY.getLocalPlayer() && Minecraft.getInstance().options.getCameraType() == CameraType.FIRST_PERSON)) {
                         GeckoPlayer geckoPlayer = GeckoPlayer.getGeckoPlayer((Player) caster, GeckoPlayer.Perspective.THIRD_PERSON);
                         if (geckoPlayer != null) {
                             GeckoRenderPlayer renderPlayer = (GeckoRenderPlayer) geckoPlayer.getPlayerRenderer();

@@ -3,11 +3,11 @@ package com.ilexiconn.llibrary.server.network;
 import com.bobmowzie.mowziesmobs.MMCommon;
 import com.ilexiconn.llibrary.server.animation.IAnimatedEntity;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.jetbrains.annotations.NotNull;
 
@@ -24,7 +24,9 @@ public record AnimationMessage(int entityId, int index) implements CustomPacketP
 
     public static void handleClient(final AnimationMessage packet, final IPayloadContext context) {
         context.enqueueWork(() -> {
-            if (Minecraft.getInstance().level.getEntity(packet.entityId()) instanceof IAnimatedEntity entity) {
+            Level level = MMCommon.PROXY.getClientLevel();
+
+            if (level != null && level.getEntity(packet.entityId()) instanceof IAnimatedEntity entity) {
                 if (packet.index() == -1) {
                     entity.setAnimation(IAnimatedEntity.NO_ANIMATION);
                 } else {
