@@ -1,0 +1,14 @@
+// 1.21.1	2024-10-22T14:44:00.1092667	Tags for minecraft:item mod id mowziesmobs
+820a78fd8eb38caaecc0f94334783519263fc930 data/c/tags/item/music_discs.json
+f2401fe73963e2d5f83f0bd763beb606969a7b24 data/c/tags/item/tools/spear.json
+8ef45b9ebb04e8b0254d98d51a2411635c6aacdd data/minecraft/tags/item/chest_armor.json
+8491402718674fb11b4d08629f21fbe28cb11fb5 data/minecraft/tags/item/enchantable/durability.json
+8491402718674fb11b4d08629f21fbe28cb11fb5 data/minecraft/tags/item/enchantable/sword.json
+037b6162915d39868cea68d5ba06fb27ec9fdc95 data/minecraft/tags/item/foot_armor.json
+c338e1515ef6834a6edc61442abcbdca44565700 data/minecraft/tags/item/head_armor.json
+1989132df04492d18fa62cdc2089c34cfaa91dd3 data/minecraft/tags/item/leg_armor.json
+18e1fadfa06fcdc94c762890d5ad3d2a520cabfa data/minecraft/tags/item/piglin_loved.json
+25ddc65da044ebe872862b42d494a40eb4811077 data/minecraft/tags/item/planks.json
+ace125a9db2d9e435d98c24f92d52f4965a0a089 data/minecraft/tags/item/wooden_slabs.json
+1d701d523767c4ae665b9983462fec750fa55d0a data/mowziesmobs/tags/item/can_hit_grottol.json
+d49c7698890e714a1a1acc47016c3386109d433d data/mowziesmobs/tags/item/hand_weapons.json

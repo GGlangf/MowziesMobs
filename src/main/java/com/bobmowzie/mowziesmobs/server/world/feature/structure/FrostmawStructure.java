@@ -1,7 +1,7 @@
 package com.bobmowzie.mowziesmobs.server.world.feature.structure;
 
+import com.bobmowzie.mowziesmobs.datagen.MMBiomeTags;
 import com.bobmowzie.mowziesmobs.server.config.ConfigHandler;
-import com.bobmowzie.mowziesmobs.server.tag.TagHandler;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
@@ -42,7 +42,7 @@ public class FrostmawStructure extends MowzieStructure {
     public static FrostmawStructure buildStructureConfig(BootstrapContext<Structure> context) {
         return new FrostmawStructure(
                 new Structure.StructureSettings(
-                        context.lookup(Registries.BIOME).getOrThrow(TagHandler.HAS_MOWZIE_STRUCTURE),
+                        context.lookup(Registries.BIOME).getOrThrow(MMBiomeTags.HAS_MOWZIE_STRUCTURE),
                         new HashMap<>(),
                         GenerationStep.Decoration.SURFACE_STRUCTURES,
                         TerrainAdjustment.BEARD_THIN

@@ -1,7 +1,6 @@
 package com.bobmowzie.mowziesmobs.datagen;
 
 import com.bobmowzie.mowziesmobs.MMCommon;
-import com.bobmowzie.mowziesmobs.server.tag.TagHandler;
 import com.bobmowzie.mowziesmobs.server.world.feature.structure.FrostmawStructure;
 import com.bobmowzie.mowziesmobs.server.world.feature.structure.UmvuthanaGroveStructure;
 import com.bobmowzie.mowziesmobs.server.world.feature.structure.WroughtnautChamberStructure;
@@ -31,10 +30,10 @@ public class StructureHandler {
     }
 
     public static void bootstrap(BootstrapContext<Structure> context) {
-        context.register(WROUGHT_CHAMBER, new WroughtnautChamberStructure(structure(TagHandler.HAS_MOWZIE_STRUCTURE, TerrainAdjustment.NONE, context)));
-        context.register(UMVUTHANA_GROVE, new UmvuthanaGroveStructure(structure(TagHandler.HAS_MOWZIE_STRUCTURE, TerrainAdjustment.NONE, context)));
-        context.register(FROSTMAW, new FrostmawStructure(structure(TagHandler.HAS_MOWZIE_STRUCTURE, TerrainAdjustment.BEARD_THIN, context)));
-//        context.register(CONFIGURED_MONASTERY, FeatureHandler.MONASTERY.get().configured(new JigsawConfiguration(PlainVillagePools.START, 0), TagHandler.HAS_MOWZIE_STRUCTURE));
+        context.register(WROUGHT_CHAMBER, new WroughtnautChamberStructure(structure(MMBiomeTags.HAS_MOWZIE_STRUCTURE, TerrainAdjustment.NONE, context)));
+        context.register(UMVUTHANA_GROVE, new UmvuthanaGroveStructure(structure(MMBiomeTags.HAS_MOWZIE_STRUCTURE, TerrainAdjustment.NONE, context)));
+        context.register(FROSTMAW, new FrostmawStructure(structure(MMBiomeTags.HAS_MOWZIE_STRUCTURE, TerrainAdjustment.BEARD_THIN, context)));
+//        context.register(CONFIGURED_MONASTERY, FeatureHandler.MONASTERY.get().configured(new JigsawConfiguration(PlainVillagePools.START, 0), MMBiomeTags.HAS_MOWZIE_STRUCTURE));
     }
 
     private static HolderSet<Biome> biomes(TagKey<Biome> biomeTag, BootstrapContext<Structure> context) {

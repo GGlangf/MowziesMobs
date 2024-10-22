@@ -10,11 +10,14 @@ import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 
 public final class DataHandler {
+    // Capabilities are used when these data containers are expected to be accessed by other mods as well
+    // (through the capability provider you define which type of object (e.g. entity type) returns null or a data container (data attachment))
     public static final DeferredRegister<AttachmentType<?>> MM_ATTACHMENT_TYPES = DeferredRegister.create(NeoForgeRegistries.ATTACHMENT_TYPES.key(), MMCommon.MODID);
 
     public static final DeferredHolder<AttachmentType<?>, AttachmentType<FrozenData>> FROZEN_DATA = MM_ATTACHMENT_TYPES.register("frozen_data", () -> AttachmentType.serializable(FrozenData::new).build());
     public static final DeferredHolder<AttachmentType<?>, AttachmentType<LivingData>> LIVING_DATA = MM_ATTACHMENT_TYPES.register("living_data", () -> AttachmentType.serializable(LivingData::new).build());
-    public static final DeferredHolder<AttachmentType<?>, AttachmentType<PlayerData>> PLAYER_DATA = MM_ATTACHMENT_TYPES.register("player_data", () -> AttachmentType.serializable(PlayerData::new).copyOnDeath().build()); // FIXME 1.21 :: unsure if everything should be copied
+    // FIXME 1.21 :: unsure if everything should be copied on death
+    public static final DeferredHolder<AttachmentType<?>, AttachmentType<PlayerData>> PLAYER_DATA = MM_ATTACHMENT_TYPES.register("player_data", () -> AttachmentType.serializable(PlayerData::new).copyOnDeath().build());
     public static final DeferredHolder<AttachmentType<?>, AttachmentType<AbilityData>> ABILITY_DATA = MM_ATTACHMENT_TYPES.register("ability_data", () -> AttachmentType.serializable(AbilityData::new).copyOnDeath().build());
 
     // Single point of usage in case additional checks are needed etc.

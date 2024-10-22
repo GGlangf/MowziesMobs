@@ -79,6 +79,12 @@ public class ItemHandler {
     public static final DeferredHolder<Item, DeferredSpawnEggItem> SCULPTOR_SPAWN_EGG = REG.register("sculptor_spawn_egg", () -> new DeferredSpawnEggItem(EntityHandler.SCULPTOR, 0xc4a137, 0xfff5e7, new Item.Properties()));
 
     public static void modifyComponents(ModifyDefaultComponentsEvent event) {
+        if (!ConfigHandler.COMMON_CONFIG.isLoaded()) {
+            // Should only be the case for data generation
+            MMCommon.LOGGER.error("Could not modify default components due to config not being loaded yet");
+            return;
+        }
+
         event.modify(WROUGHT_AXE.get(), builder -> {
             if (!ConfigHandler.COMMON.TOOLS_AND_ABILITIES.AXE_OF_A_THOUSAND_METALS.breakable.get()) {
                 builder.remove(DataComponents.MAX_DAMAGE);

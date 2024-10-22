@@ -6,6 +6,7 @@ import com.bobmowzie.mowziesmobs.client.particle.ParticleVanillaCloudExtended;
 import com.bobmowzie.mowziesmobs.client.particle.util.AdvancedParticleBase;
 import com.bobmowzie.mowziesmobs.client.particle.util.ParticleComponent;
 import com.bobmowzie.mowziesmobs.client.particle.util.ParticleRotation;
+import com.bobmowzie.mowziesmobs.datagen.MMItemTags;
 import com.bobmowzie.mowziesmobs.server.ability.AbilityHandler;
 import com.bobmowzie.mowziesmobs.server.ai.AvoidEntityIfNotTamedGoal;
 import com.bobmowzie.mowziesmobs.server.block.BlockHandler;
@@ -35,7 +36,6 @@ import com.bobmowzie.mowziesmobs.server.potion.EffectGeomancy;
 import com.bobmowzie.mowziesmobs.server.potion.EffectHandler;
 import com.bobmowzie.mowziesmobs.server.power.Power;
 import com.bobmowzie.mowziesmobs.server.sound.MMSounds;
-import com.bobmowzie.mowziesmobs.server.tag.TagHandler;
 import com.bobmowzie.mowziesmobs.server.world.feature.structure.StructureTypeHandler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
@@ -691,7 +691,7 @@ public final class ServerEventHandler {
 //        if (!event.getSource().isIndirect() && attacker instanceof LivingEntity livingAttacker) {
 //            ItemStack weapon = livingAttacker.getMainHandItem();
 //            if (livingAttacker.getItemBySlot(EquipmentSlot.HEAD).is(ItemHandler.GEOMANCER_BEADS.get())) {
-//                if (weapon.isEmpty() || weapon.is(TagHandler.HAND_WEAPONS)) {
+//                if (weapon.isEmpty() || weapon.is(MMItemTags.HAND_WEAPONS)) {
 //                    event.getSource().;
 //                }
 //            }
@@ -711,7 +711,7 @@ public final class ServerEventHandler {
                 // Start by clearing attack boost
                 attributeinstance.removeModifier(ATTACK_MODIFIER_BEADS);
                 // If wearing beads and unarmed
-                if (equipper.getItemBySlot(EquipmentSlot.HEAD).is(ItemHandler.GEOMANCER_BEADS.get()) && (weapon.is(TagHandler.HAND_WEAPONS) || weapon.isEmpty())) {
+                if (equipper.getItemBySlot(EquipmentSlot.HEAD).is(ItemHandler.GEOMANCER_BEADS.get()) && (weapon.is(MMItemTags.HAND_WEAPONS) || weapon.isEmpty())) {
                     // Apply or reapply attack boost
                     attributeinstance.addTransientModifier(ATTACK_MODIFIER_BEADS);
                 }

@@ -1,6 +1,8 @@
 package com.bobmowzie.mowziesmobs.server.entity.grottol;
 
 import com.bobmowzie.mowziesmobs.client.particle.ParticleHandler;
+import com.bobmowzie.mowziesmobs.datagen.MMBlockTags;
+import com.bobmowzie.mowziesmobs.datagen.MMItemTags;
 import com.bobmowzie.mowziesmobs.server.advancement.AdvancementHandler;
 import com.bobmowzie.mowziesmobs.server.ai.EntityAIGrottolFindMinecart;
 import com.bobmowzie.mowziesmobs.server.ai.MMAIAvoidEntity;
@@ -18,7 +20,6 @@ import com.bobmowzie.mowziesmobs.server.item.ItemHandler;
 import com.bobmowzie.mowziesmobs.server.loot.LootTableHandler;
 import com.bobmowzie.mowziesmobs.server.potion.EffectHandler;
 import com.bobmowzie.mowziesmobs.server.sound.MMSounds;
-import com.bobmowzie.mowziesmobs.server.tag.TagHandler;
 import com.bobmowzie.mowziesmobs.server.util.EnchantmentUtils;
 import com.ilexiconn.llibrary.server.animation.Animation;
 import com.ilexiconn.llibrary.server.animation.AnimationHandler;
@@ -250,7 +251,7 @@ public class EntityGrottol extends MowzieLLibraryEntity {
     public boolean hurt(DamageSource source, float amount) {
         Entity entity = source.getEntity();
         if (entity instanceof Player player && !source.is(DamageTypeTags.IS_PROJECTILE)) {
-            if (player.getMainHandItem().isCorrectToolForDrops(Blocks.DIAMOND_ORE.defaultBlockState()) || player.getMainHandItem().is(TagHandler.CAN_HIT_GROTTOL)) {
+            if (player.getMainHandItem().isCorrectToolForDrops(Blocks.DIAMOND_ORE.defaultBlockState()) || player.getMainHandItem().is(MMItemTags.CAN_HIT_GROTTOL)) {
                 if (EnchantmentUtils.getLevel(Enchantments.FORTUNE, player.level(), player.getMainHandItem()) > 0) {
                     death = EnumDeathType.FORTUNE_PICKAXE;
                     if (player instanceof ServerPlayer serverPlayer) AdvancementHandler.GROTTOL_KILL_FORTUNE_TRIGGER.value().trigger(serverPlayer);
@@ -445,9 +446,9 @@ public class EntityGrottol extends MowzieLLibraryEntity {
     }
 
     public boolean isBlockDiggable(BlockState blockState) {
-        if (blockState.is(TagHandler.CAN_GROTTOL_DIG)) return true;
+        if (blockState.is(MMBlockTags.CAN_GROTTOL_DIG)) return true;
         Block block = ((ICopiedBlockProperties) blockState.getBlock().properties()).mowziesMobs$getBaseBlock();
-        return block.builtInRegistryHolder().is(TagHandler.CAN_GROTTOL_DIG);
+        return block != null && block.builtInRegistryHolder().is(MMBlockTags.CAN_GROTTOL_DIG);
     }
 
     public boolean getDeepslate() {

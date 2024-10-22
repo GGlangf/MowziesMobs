@@ -1,5 +1,6 @@
 package com.bobmowzie.mowziesmobs.server.entity.effects.geomancy;
 
+import com.bobmowzie.mowziesmobs.datagen.MMBlockTags;
 import com.bobmowzie.mowziesmobs.server.block.ICopiedBlockProperties;
 import com.bobmowzie.mowziesmobs.server.entity.EntityHandler;
 import com.bobmowzie.mowziesmobs.server.entity.effects.EntityCameraShake;
@@ -7,7 +8,6 @@ import com.bobmowzie.mowziesmobs.server.entity.effects.EntityFallingBlock;
 import com.bobmowzie.mowziesmobs.server.entity.effects.EntityMagicEffect;
 import com.bobmowzie.mowziesmobs.server.potion.EffectGeomancy;
 import com.bobmowzie.mowziesmobs.server.sound.MMSounds;
-import com.bobmowzie.mowziesmobs.server.tag.TagHandler;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -71,7 +71,7 @@ public abstract class EntityGeomancyBase extends EntityMagicEffect implements Ge
 
     // Change the specified block to its geomancy version. I.E. Grass blocks turn to dirt, stairs and slabs turn to base versions.
     public BlockState changeBlock(BlockState blockState) {
-        if (!blockState.is(TagHandler.GEOMANCY_USEABLE)) {
+        if (!blockState.is(MMBlockTags.GEOMANCY_USEABLE)) {
             Block block = ((ICopiedBlockProperties) blockState.getBlock().properties()).mowziesMobs$getBaseBlock();
 
             if (block != null) {

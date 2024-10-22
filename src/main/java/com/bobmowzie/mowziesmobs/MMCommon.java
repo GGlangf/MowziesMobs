@@ -26,6 +26,7 @@ import com.bobmowzie.mowziesmobs.server.world.feature.structure.jigsaw.JigsawHan
 import com.bobmowzie.mowziesmobs.server.world.feature.structure.processor.ProcessorHandler;
 import com.bobmowzie.mowziesmobs.server.world.spawn.SpawnHandler;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.DefaultAttributes;
@@ -143,6 +144,10 @@ public final class MMCommon {
     private void handleLoadComplete(FMLLoadCompleteEvent event) {
         ItemHandler.initializeDispenserBehaviors();
         BlockHandler.init();
+    }
+
+    public static ResourceLocation location(String path) {
+        return ResourceLocation.fromNamespaceAndPath(MODID, path);
     }
 
     public static Stream<EntityType<? extends LivingEntity>> getLivingEntityTypes() {
