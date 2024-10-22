@@ -132,8 +132,8 @@ public class ChainBuffer {
      * @param boxes the box array
      */
     public void applyChainSwingBuffer(ModelPart... boxes) {
-        // FIXME 1.21 :: replaced 'Minecraft#getFrameTime' -> real time because game time probably slows down with reduced ticks?
-        float rotateAmount = 0.01745329251F * ClientUtils.interpolate(this.prevYawVariation, this.yawVariation, Minecraft.getInstance().getTimer().getRealtimeDeltaTicks()) / boxes.length;
+        // FIXME 1.21 :: 'Minecraft#getFrameTime' previously returned 'Timer#partialTick' - unsure if 'TickRateManager#isEntityFrozen' needs to be considered
+        float rotateAmount = 0.01745329251F * ClientUtils.interpolate(this.prevYawVariation, this.yawVariation, Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false)) / boxes.length;
         for (ModelPart box : boxes) {
             box.yRot += rotateAmount;
         }
@@ -145,8 +145,8 @@ public class ChainBuffer {
      * @param boxes the box array
      */
     public void applyChainWaveBuffer(ModelPart... boxes) {
-        // FIXME 1.21 :: replaced 'Minecraft#getFrameTime' -> real time because game time probably slows down with reduced ticks?
-        float rotateAmount = 0.01745329251F * ClientUtils.interpolate(this.prevPitchVariation, this.pitchVariation, Minecraft.getInstance().getTimer().getRealtimeDeltaTicks()) / boxes.length;
+        // FIXME 1.21 :: 'Minecraft#getFrameTime' previously returned 'Timer#partialTick' - unsure if 'TickRateManager#isEntityFrozen' needs to be considered
+        float rotateAmount = 0.01745329251F * ClientUtils.interpolate(this.prevPitchVariation, this.pitchVariation, Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false)) / boxes.length;
         for (ModelPart box : boxes) {
             box.xRot += rotateAmount;
         }

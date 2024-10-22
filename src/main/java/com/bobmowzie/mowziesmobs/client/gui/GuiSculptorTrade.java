@@ -66,8 +66,10 @@ public final class GuiSculptorTrade extends AbstractContainerScreen<ContainerScu
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         guiGraphics.blit(TEXTURE_TRADE, leftPos, topPos, 0, 0, imageWidth, imageHeight);
-        // FIXME 1.21
-//        InventoryScreen.renderEntityInInventoryFollowsMouse(guiGraphics, leftPos + 33, topPos + 56, 14, leftPos + 33 - x, topPos + 21 - y, sculptor);
+        // FIXME 1.21 :: currently the rendered inventory entity has animation issues - wrong usage of frames somewhere?
+        // x and y values are chosen as the first and last pixel of the black (entity) box of the gui texture
+        // The two x and y values determine the size for the 'GuiGraphics#enableScissor' call (their middle point is also where the entity will be rendered)
+        InventoryScreen.renderEntityInInventoryFollowsMouse(guiGraphics, leftPos + 8, topPos + 8, leftPos + 59, topPos + 69, 14, 0, x, y, sculptor);
     }
 
     @Override

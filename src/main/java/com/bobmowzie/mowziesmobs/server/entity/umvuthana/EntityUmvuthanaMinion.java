@@ -1,7 +1,6 @@
 package com.bobmowzie.mowziesmobs.server.entity.umvuthana;
 
 import com.bobmowzie.mowziesmobs.MMCommon;
-import com.bobmowzie.mowziesmobs.server.ServerProxy;
 import com.bobmowzie.mowziesmobs.server.ai.EntityAIUmvuthanaTrade;
 import com.bobmowzie.mowziesmobs.server.ai.EntityAIUmvuthanaTradeLook;
 import com.bobmowzie.mowziesmobs.server.ai.UmvuthanaHurtByTargetAI;
@@ -20,10 +19,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.players.OldUsersConverter;
 import net.minecraft.world.*;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.goal.MoveTowardsRestrictionGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.AbstractSkeleton;
@@ -219,8 +215,8 @@ public class EntityUmvuthanaMinion extends EntityUmvuthana implements LeaderSuns
         if (isTrading()) {
             return false;
         }
-        ItemStack headStack = player.getInventory().armor.get(3);
-        return headStack.getItem() instanceof UmvuthanaMask && isOfferingTrade();
+
+        return player.getItemBySlot(EquipmentSlot.HEAD).getItem() instanceof UmvuthanaMask && isOfferingTrade();
     }
 
     @Nullable

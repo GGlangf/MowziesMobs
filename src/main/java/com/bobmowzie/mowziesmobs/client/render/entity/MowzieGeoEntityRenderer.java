@@ -59,7 +59,8 @@ public abstract class MowzieGeoEntityRenderer<T extends MowzieGeckoEntity> exten
             for (GeckoDynamicChain chain : animatable.dynamicChains) {
                 if (!isReRender) {
                     chain.setChain();
-                    chain.updateChain(partialTick, 0.1f, 0.1f, 0.5f, 0.02f, 10, true); // FIXME 1.21 :: 'Minecraft#getFrameTime' replaced with partial tick
+                    // FIXME 1.21 :: 'Minecraft#getFrameTime' replaced with partial tick
+                    chain.updateChain(partialTick, 0.1f, 0.1f, 0.5f, 0.02f, 10, true);
                 }
                 poseStack.pushPose();
                 if (chain.chainDynamic != null) {

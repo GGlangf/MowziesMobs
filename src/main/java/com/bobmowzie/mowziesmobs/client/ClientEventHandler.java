@@ -180,6 +180,7 @@ public enum ClientEventHandler {
             entity.yBodyRot = entity.yBodyRotO = data.getFrozenRenderYawOffset();
             entity.attackAnim = entity.oAttackAnim = data.getFrozenSwingProgress();
             entity.walkAnimation.setSpeed(data.getFrozenWalkAnimSpeed());
+            // FIXME 1.21 :: now takes a partial tick to calculate sth. - previously it was just an assignment (position = ...)
             entity.walkAnimation.position(data.getFrozenWalkAnimPosition());
             entity.setShiftKeyDown(false);
         }
@@ -236,21 +237,21 @@ public enum ClientEventHandler {
     @SubscribeEvent
     public void onSetupCamera(ViewportEvent.ComputeCameraAngles event) {
         Player player = Minecraft.getInstance().player;
-        float delta = Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false); // FIXME 1.21 :: this is used for screens (incl. 'EnchantmentScreen#render' which previously also used 'Minecraft#getFrameTime()'
+        // FIXME 1.21 :: this is used for screens (incl. 'EnchantmentScreen#render' which previously also used 'Minecraft#getFrameTime()')
+        float delta = Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false);
         float ticksExistedDelta = player.tickCount + delta;
-        if (player != null) {
-            if (ConfigHandler.CLIENT.doCameraShakes.get() && !Minecraft.getInstance().isPaused()) {
-                float shakeAmplitude = 0;
-                for (EntityCameraShake cameraShake : player.level().getEntitiesOfClass(EntityCameraShake.class, player.getBoundingBox().inflate(20, 20, 20))) {
-                    if (cameraShake.distanceTo(player) < cameraShake.getRadius()) {
-                        shakeAmplitude += cameraShake.getShakeAmount(player, delta);
-                    }
+
+        if (ConfigHandler.CLIENT.doCameraShakes.get() && !Minecraft.getInstance().isPaused()) {
+            float shakeAmplitude = 0;
+            for (EntityCameraShake cameraShake : player.level().getEntitiesOfClass(EntityCameraShake.class, player.getBoundingBox().inflate(20, 20, 20))) {
+                if (cameraShake.distanceTo(player) < cameraShake.getRadius()) {
+                    shakeAmplitude += cameraShake.getShakeAmount(player, delta);
                 }
-                if (shakeAmplitude > 1.0f) shakeAmplitude = 1.0f;
-                event.setPitch((float) (event.getPitch() + shakeAmplitude * Math.cos(ticksExistedDelta * 3 + 2) * 25));
-                event.setYaw((float) (event.getYaw() + shakeAmplitude * Math.cos(ticksExistedDelta * 5 + 1) * 25));
-                event.setRoll((float) (event.getRoll() + shakeAmplitude * Math.cos(ticksExistedDelta * 4) * 25));
             }
+            if (shakeAmplitude > 1.0f) shakeAmplitude = 1.0f;
+            event.setPitch((float) (event.getPitch() + shakeAmplitude * Math.cos(ticksExistedDelta * 3 + 2) * 25));
+            event.setYaw((float) (event.getYaw() + shakeAmplitude * Math.cos(ticksExistedDelta * 5 + 1) * 25));
+            event.setRoll((float) (event.getRoll() + shakeAmplitude * Math.cos(ticksExistedDelta * 4) * 25));
         }
     }
 
@@ -284,8 +285,7 @@ public enum ClientEventHandler {
                     event.getPoseStack().pushPose();
                     event.getPoseStack().translate((double) blockpos2.getX() - d0, (double) blockpos2.getY() - d1, (double) blockpos2.getZ() - d2);
                     PoseStack.Pose posestack$pose1 = event.getPoseStack().last();
-                    // FIXME 1.21 :: unsure if this is the correct replacement for 'Minecraft#getPartialTick()'
-                    // FIXME 1.21 :: for entities it seems to pass false when said entity is frozen
+                    // FIXME 1.21 :: 'Minecraft#getPartialTick' seemed to previously return the value of 'pausePartialTick' or 'Timer#partialTick'
                     float f = (float) Minecraft.getInstance().player.tickCount + Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false);
                     float blockOffset = (blockpos2.getX() + blockpos2.getY() + blockpos2.getZ()) * 0.25f;
                     VertexConsumer vertexconsumer1 = new SheetedDecalTextureGenerator(Minecraft.getInstance().renderBuffers().bufferSource().getBuffer(MMRenderType.highlight(SCULPTOR_BLOCK_GLOW, f * 0.02f + blockOffset, f * 0.01f + blockOffset)), posestack$pose1, 0.25F);

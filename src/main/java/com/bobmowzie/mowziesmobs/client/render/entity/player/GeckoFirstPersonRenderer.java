@@ -74,7 +74,8 @@ public class GeckoFirstPersonRenderer extends ItemInHandRenderer implements GeoR
             long instanceId = getInstanceId(geckoPlayer);
 
             AnimatableManager<GeckoPlayer> animatableManager = geckoPlayer.getAnimatableInstanceCache().getManagerForId(instanceId);
-            animationState.setData(DataTickets.TICK, geckoPlayer.getTick(geckoPlayer) + animatableManager.getFirstTickTime() + partialTicks); // FIXME 1.21 :: 'Minecraft#getFrameTime' replaced with partial tick
+            // FIXME 1.21 :: 'Minecraft#getFrameTime' replaced with partial tick
+            animationState.setData(DataTickets.TICK, geckoPlayer.getTick(geckoPlayer) + animatableManager.getFirstTickTime() + partialTicks);
             AbstractClientPlayer entity = (AbstractClientPlayer) geckoPlayer.getPlayer();
             animationState.setData(DataTickets.ENTITY, entity);
             this.geoModel.addAdditionalStateData(geckoPlayer, instanceId, animationState::setData);

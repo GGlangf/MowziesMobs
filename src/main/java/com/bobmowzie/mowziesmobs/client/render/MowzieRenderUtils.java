@@ -5,7 +5,10 @@ import com.bobmowzie.mowziesmobs.client.model.tools.ModelPartMatrix;
 import com.ilexiconn.llibrary.client.model.tools.AdvancedModelRenderer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Matrix4f;
 import org.joml.Vector4f;
@@ -117,5 +120,9 @@ public class MowzieRenderUtils {
         stack.pushPose();
         stack.last().pose().mul(part.getWorldXform());
         stack.last().normal().mul(part.getWorldNormal());
+    }
+
+    public static void renderEntityInInventory(GuiGraphics graphics, int x, int y, int scale, float yOffset, float mouseX, float mouseY, LivingEntity entity) {
+        InventoryScreen.renderEntityInInventoryFollowsMouse(graphics, x, y, x, y, scale, yOffset, mouseX, mouseY, entity);
     }
 }
