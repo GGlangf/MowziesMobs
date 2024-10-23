@@ -918,7 +918,12 @@ public class EntityUmvuthi extends MowzieGeckoEntity implements LeaderSunstrikeI
     }
 
     @Override
-    public BossMusic getBossMusic() {
+    public boolean hasBossMusic() {
+        return true;
+    }
+
+    @Override
+    public BossMusic<?> getBossMusic() {
         return BossMusicPlayer.UMVUTHI_MUSIC;
     }
 

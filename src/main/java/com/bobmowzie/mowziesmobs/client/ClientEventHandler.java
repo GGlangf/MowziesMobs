@@ -55,7 +55,7 @@ public class ClientEventHandler {
     private static final ResourceLocation FROZEN_BLUR = ResourceLocation.withDefaultNamespace("textures/misc/powder_snow_outline.png");
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
-    public void onHandRender(RenderHandEvent event) {
+    public static void onHandRender(RenderHandEvent event) {
         if (!ConfigHandler.CLIENT.customPlayerAnims.get()) return;
         LocalPlayer player = Minecraft.getInstance().player;
         if (player == null) return;
@@ -87,13 +87,13 @@ public class ClientEventHandler {
     }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
-    public void renderLivingEvent(RenderLivingEvent.Pre<? extends LivingEntity, ? extends EntityModel<? extends LivingEntity>> event) {
+    public static void renderLivingEvent(RenderLivingEvent.Pre<? extends LivingEntity, ? extends EntityModel<? extends LivingEntity>> event) {
         if (event.getEntity() instanceof Player player) {
             if (!ConfigHandler.CLIENT.customPlayerAnims.get()) return;
             float delta = event.getPartialTick();
             AbilityData abilityData = DataHandler.getData(player, DataHandler.ABILITY_DATA);
 //            if ((player.tickCount / 20) % 2 == 0) {
-            if (abilityData != null && abilityData.getActiveAbility() != null) {
+            if (abilityData.getActiveAbility() != null) {
                 GeckoPlayer.GeckoPlayerThirdPerson geckoPlayer = DataHandler.getData(player, DataHandler.PLAYER_DATA).getGeckoPlayer();
 
                 if (geckoPlayer != null) {
@@ -113,7 +113,7 @@ public class ClientEventHandler {
     }
 
     @SubscribeEvent
-    public void onPlayerTick(PlayerTickEvent.Post event) {
+    public static void onPlayerTick(PlayerTickEvent.Post event) {
         Player player = event.getEntity();
 
         if (player.level().isClientSide()) {
@@ -137,7 +137,7 @@ public class ClientEventHandler {
     }
 
     @SubscribeEvent
-    public void onRenderTick(RenderFrameEvent.Post event) { // FIXME 1.21 :: Post correct here?
+    public static void onRenderTick(RenderFrameEvent.Post event) { // FIXME 1.21 :: Post correct here?
         Player player = Minecraft.getInstance().player;
         
         if (player == null) {
@@ -171,7 +171,7 @@ public class ClientEventHandler {
     }
 
     @SubscribeEvent
-    public void onRenderLiving(RenderLivingEvent.Pre<?, ?> event) {
+    public static void onRenderLiving(RenderLivingEvent.Pre<?, ?> event) {
         LivingEntity entity = event.getEntity();
         FrozenData data = DataHandler.getData(entity, DataHandler.FROZEN_DATA);
         if (data.getFrozen() && data.getPrevFrozen()) {
@@ -180,9 +180,10 @@ public class ClientEventHandler {
             entity.yHeadRot = entity.yHeadRotO = data.getFrozenYawHead();
             entity.yBodyRot = entity.yBodyRotO = data.getFrozenRenderYawOffset();
             entity.attackAnim = entity.oAttackAnim = data.getFrozenSwingProgress();
-            entity.walkAnimation.setSpeed(data.getFrozenWalkAnimSpeed());
             // FIXME 1.21 :: now takes a partial tick to calculate sth. - previously it was just an assignment (position = ...)
-            entity.walkAnimation.position(data.getFrozenWalkAnimPosition());
+//            entity.walkAnimation.setSpeed(data.getFrozenWalkAnimSpeed());
+//            entity.walkAnimation.position(data.getFrozenWalkAnimPosition());
+            entity.walkAnimation.update(data.getFrozenWalkAnimSpeed(), event.getPartialTick());
             entity.setShiftKeyDown(false);
         }
     }
@@ -207,7 +208,7 @@ public class ClientEventHandler {
 
     // Remove frozen overlay
     @SubscribeEvent
-    public void onRenderHUD(RenderGuiLayerEvent.Pre event) {
+    public static void onRenderHUD(RenderGuiLayerEvent.Pre event) {
         LocalPlayer player = Minecraft.getInstance().player;
         if (player != null && player.isPassenger()) {
             if (player.getVehicle() instanceof EntityFrozenController) {
@@ -220,7 +221,7 @@ public class ClientEventHandler {
     }
 
     @SubscribeEvent
-    public void updateFOV(ComputeFovModifierEvent event) {
+    public static void updateFOV(ComputeFovModifierEvent event) {
         Player player = event.getPlayer();
         if (player.isUsingItem() && player.getUseItem().getItem() instanceof ItemBlowgun) {
             int i = player.getTicksUsingItem();
@@ -236,7 +237,7 @@ public class ClientEventHandler {
     }
 
     @SubscribeEvent
-    public void onSetupCamera(ViewportEvent.ComputeCameraAngles event) {
+    public static void onSetupCamera(ViewportEvent.ComputeCameraAngles event) {
         Player player = Minecraft.getInstance().player;
         // FIXME 1.21 :: this is used for screens (incl. 'EnchantmentScreen#render' which previously also used 'Minecraft#getFrameTime()')
         float delta = Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false);
@@ -257,7 +258,7 @@ public class ClientEventHandler {
     }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
-    public void onRenderBossBar(CustomizeGuiOverlayEvent.BossEventProgress event){
+    public static void onRenderBossBar(CustomizeGuiOverlayEvent.BossEventProgress event){
         if (!ConfigHandler.CLIENT.customBossBars.get()) return;
         ResourceLocation bossRegistryName = ClientProxy.bossBarRegistryNames.getOrDefault(event.getBossEvent().getId(), null);
         if (bossRegistryName == null) return;
@@ -271,7 +272,7 @@ public class ClientEventHandler {
     private static ResourceLocation SCULPTOR_BLOCK_GLOW = ResourceLocation.fromNamespaceAndPath(MMCommon.MODID, "textures/entity/sculptor_highlight.png");
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
-    public void onRenderLevelStage(RenderLevelStageEvent event) {
+    public static void onRenderLevelStage(RenderLevelStageEvent event) {
         if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_BLOCK_ENTITIES) {
             ClientLevel level = Minecraft.getInstance().level;
             if (Minecraft.getInstance().player != null && level != null && level.getModelDataManager() != null) {
@@ -299,7 +300,7 @@ public class ClientEventHandler {
         }
     }
 
-    private void renderBreakingTexture(BlockState state, BlockPos pos, BlockAndTintGetter blockAndTintGetter, PoseStack poseStack, RandomSource random, VertexConsumer vertexConsumer, ModelData modelData) {
+    private static void renderBreakingTexture(BlockState state, BlockPos pos, BlockAndTintGetter blockAndTintGetter, PoseStack poseStack, RandomSource random, VertexConsumer vertexConsumer, ModelData modelData) {
         if (state.getRenderShape() == RenderShape.MODEL) {
             BlockRenderDispatcher blockRenderDispatcher = Minecraft.getInstance().getBlockRenderer();
             BakedModel bakedmodel = blockRenderDispatcher.getBlockModel(state);
@@ -309,7 +310,7 @@ public class ClientEventHandler {
     }
 
     @SubscribeEvent
-    public void onLevelTick(LevelTickEvent.Post event) {
+    public static void onLevelTick(LevelTickEvent.Post event) {
         if (event.getLevel().isClientSide()) {
             MMCommon.PROXY.updateMarkedBlocks();
             BossMusicPlayer.tick();

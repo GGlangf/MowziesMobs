@@ -779,7 +779,12 @@ public class EntitySculptor extends MowzieGeckoEntity {
     }
 
     @Override
-    public BossMusic getBossMusic() {
+    public boolean hasBossMusic() {
+        return true;
+    }
+
+    @Override
+    public BossMusic<?> getBossMusic() {
         return BossMusicPlayer.SCULPTOR_MUSIC;
     }
 

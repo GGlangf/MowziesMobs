@@ -27,7 +27,6 @@ public abstract class AdvancedTypeBase implements ParticleOptions {
             buffer -> BuiltInRegistries.PARTICLE_TYPE.getHolder(buffer.readInt()).orElseThrow()
     );
 
-
     public AdvancedTypeBase(@NotNull Holder<ParticleType<?>> type) {
         this.type = type;
         this.rotation = new ParticleRotation.FaceCamera(0);

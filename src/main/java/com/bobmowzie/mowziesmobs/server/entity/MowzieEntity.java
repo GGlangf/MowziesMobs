@@ -230,7 +230,7 @@ public abstract class MowzieEntity extends PathfinderMob implements IEntityWithC
         }
         willLandSoon = !onGround() && level().noCollision(getBoundingBox().move(getDeltaMovement()));
 
-        if (!level().isClientSide && getBossMusic() != null) {
+        if (!level().isClientSide && hasBossMusic()) {
             if (canPlayMusic()) {
                 this.level().broadcastEntityEvent(this, MUSIC_PLAY_ID);
             }
@@ -547,6 +547,11 @@ public abstract class MowzieEntity extends PathfinderMob implements IEntityWithC
                 }
             }
         }
+    }
+
+    /** For common usage (loading the BossMusic class loads the client 'SoundInstance' class for some reason) */
+    public boolean hasBossMusic() {
+        return false;
     }
 
     public BossMusic<?> getBossMusic() {

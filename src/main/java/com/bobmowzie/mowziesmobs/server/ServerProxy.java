@@ -12,6 +12,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.function.Consumer;
+
 public class ServerProxy {
     public void init() {
     }
@@ -64,4 +66,7 @@ public class ServerProxy {
     public @Nullable Level getClientLevel() {
         return null;
     }
+
+    /** FIXME 1.21 :: Kind of a test, doesn't seem to cause issues when this class is loaded */
+    public void process(Consumer<net.minecraft.client.Minecraft> consumer) {}
 }

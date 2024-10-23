@@ -1,5 +1,6 @@
 package com.bobmowzie.mowziesmobs.client.sound;
 
+import com.bobmowzie.mowziesmobs.MMCommon;
 import com.bobmowzie.mowziesmobs.server.config.ConfigHandler;
 import com.bobmowzie.mowziesmobs.server.entity.MowzieEntity;
 import com.bobmowzie.mowziesmobs.server.sound.MMSounds;
@@ -29,7 +30,7 @@ public class BossMusicPlayer {
         BossMusic<?> requestedMusic = entity.getBossMusic();
 
         if (requestedMusic != null && entity.isAlive()) {
-            Player player = Minecraft.getInstance().player;
+            Player player = MMCommon.PROXY.getLocalPlayer();
             // If there is boss music playing
             if (currentMusic != null) {
                 // Don't play the music if the music settings volume is 0

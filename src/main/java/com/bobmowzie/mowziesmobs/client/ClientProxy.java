@@ -24,6 +24,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
+import java.util.function.Consumer;
 
 public class ClientProxy extends ServerProxy {
     private static final List<SunblockSound> sunblockSounds = new ArrayList<>();
@@ -150,5 +151,10 @@ public class ClientProxy extends ServerProxy {
     @Override
     public @Nullable Level getClientLevel() {
         return Minecraft.getInstance().level;
+    }
+
+    @Override
+    public void process(Consumer<Minecraft> consumer) {
+        consumer.accept(Minecraft.getInstance());
     }
 }

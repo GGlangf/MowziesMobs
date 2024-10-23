@@ -8,7 +8,6 @@ import net.minecraft.world.phys.Vec3;
 import org.joml.AxisAngle4f;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
-import org.joml.Vector3fc;
 
 public abstract class ParticleComponent {
     public ParticleComponent() {
@@ -217,31 +216,30 @@ public abstract class ParticleComponent {
                 else particle.scale = value;
             }
             else if (property == EnumParticleProperty.YAW) {
-                if (particle.rotation instanceof ParticleRotation.EulerAngles) {
-                    ParticleRotation.EulerAngles eulerRot = (ParticleRotation.EulerAngles) particle.rotation;
+                if (particle.rotation instanceof ParticleRotation.EulerAngles eulerRot) {
                     if (additive) eulerRot.yaw += value;
                     else eulerRot.yaw = value;
                 }
             }
             else if (property == EnumParticleProperty.PITCH) {
-                if (particle.rotation instanceof ParticleRotation.EulerAngles) {
-                    ParticleRotation.EulerAngles eulerRot = (ParticleRotation.EulerAngles) particle.rotation;
+                if (particle.rotation instanceof ParticleRotation.EulerAngles eulerRot) {
                     if (additive) eulerRot.pitch += value;
                     else eulerRot.pitch = value;
                 }
             }
             else if (property == EnumParticleProperty.ROLL) {
-                if (particle.rotation instanceof ParticleRotation.EulerAngles) {
-                    ParticleRotation.EulerAngles eulerRot = (ParticleRotation.EulerAngles) particle.rotation;
+                if (particle.rotation instanceof ParticleRotation.EulerAngles eulerRot) {
                     if (additive) eulerRot.roll += value;
                     else eulerRot.roll = value;
                 }
             }
             else if (property == EnumParticleProperty.PARTICLE_ANGLE) {
-                if (particle.rotation instanceof ParticleRotation.FaceCamera) {
-                    ParticleRotation.FaceCamera faceCameraRot = (ParticleRotation.FaceCamera) particle.rotation;
-                    if (additive) faceCameraRot.faceCameraAngle += value;
-                    else faceCameraRot.faceCameraAngle = value;
+                if (particle.rotation instanceof ParticleRotation.FaceCamera faceCameraRot) {
+                    if (additive) {
+                        faceCameraRot.angle = faceCameraRot.angle + value;
+                    } else {
+                        faceCameraRot.angle = value;
+                    }
                 }
             }
         }
@@ -403,8 +401,7 @@ public abstract class ParticleComponent {
             double dz = particle.getPosZ() - particle.getPrevPosZ();
             double d = Math.sqrt(dx * dx + dy * dy + dz * dz);
             if (d != 0) {
-                if (particle.rotation instanceof ParticleRotation.EulerAngles) {
-                    ParticleRotation.EulerAngles eulerRot = (ParticleRotation.EulerAngles) particle.rotation;
+                if (particle.rotation instanceof ParticleRotation.EulerAngles eulerRot) {
                     double a = dy / d;
                     a = Math.max(-1, Math.min(1, a));
                     float pitch = -(float) Math.asin(a);
@@ -413,8 +410,7 @@ public abstract class ParticleComponent {
                     eulerRot.yaw = yaw;
 //                particle.roll = (float) Math.PI / 2;
                 }
-                else if (particle.rotation instanceof ParticleRotation.OrientVector) {
-                    ParticleRotation.OrientVector orientRot = (ParticleRotation.OrientVector) particle.rotation;
+                else if (particle.rotation instanceof ParticleRotation.OrientVector orientRot) {
                     orientRot.orientation = new Vec3(dx, dy, dz).normalize();
                 }
             }

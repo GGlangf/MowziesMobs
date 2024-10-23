@@ -17,47 +17,13 @@ import org.jetbrains.annotations.NotNull;
 public class AdvancedParticleType extends AdvancedTypeBase {
     private final boolean canCollide;
 
-    // FIXME 1.21 :: only network relevant?
-    private final String rotationType;
-    private float faceCameraAngle;
-    private float yaw;
-    private float pitch;
-    private float roll;
-
-    public AdvancedParticleType(@NotNull Holder<ParticleType<?>> type, float red, float green, float blue, float alpha, float scale, float duration, float airDrag, boolean emissive, boolean canCollide) {
-        this(type, red, green, blue, alpha, scale, duration, airDrag, emissive, canCollide, new ParticleRotation.FaceCamera(0),  new ParticleComponent[]{});
+    public AdvancedParticleType(@NotNull Holder<ParticleType<?>> type, float red, float green, float blue, float alpha, float scale, float duration, float airDrag, boolean emissive, boolean canCollide, ParticleRotation rotation) {
+        this(type, red, green, blue, alpha, scale, duration, airDrag, emissive, canCollide, rotation,  new ParticleComponent[]{});
     }
 
     public AdvancedParticleType(@NotNull Holder<ParticleType<?>> type, float red, float green, float blue, float alpha, float scale, float duration, float airDrag, boolean emissive, boolean canCollide, ParticleRotation rotation, ParticleComponent[] components) {
         super(type, rotation, components, red, green, blue, alpha, scale, duration, airDrag, emissive);
         this.canCollide = canCollide;
-        this.rotationType = rotation.getId();
-
-        switch (rotationType) {
-            case "face_camera":
-                this.faceCameraAngle = ((ParticleRotation.FaceCamera) rotation).faceCameraAngle;
-                break;
-            case "euler":
-                this.yaw = ((ParticleRotation.EulerAngles) rotation).yaw;
-                this.pitch = ((ParticleRotation.EulerAngles) rotation).pitch;
-                this.roll = ((ParticleRotation.EulerAngles) rotation).roll;
-                break;
-            case "orient":
-                this.yaw = (float) ((ParticleRotation.OrientVector) rotation).orientation.x();
-                this.pitch = (float) ((ParticleRotation.OrientVector) rotation).orientation.y();
-                this.roll = (float) ((ParticleRotation.OrientVector) rotation).orientation.z();
-                break;
-            default:
-                throw new IllegalArgumentException("Invalid rotation type [" + rotationType + "]");
-        }
-    }
-
-    public AdvancedParticleType(@NotNull Holder<ParticleType<?>> type, float red, float green, float blue, float alpha, float scale, float duration, float airDrag, boolean emissive, boolean canCollide, String rotationType, float faceCameraAngle, float yaw, float pitch, float roll) {
-        this(type, red, green, blue, alpha, scale, duration, airDrag, emissive, canCollide, determineRotation(rotationType, faceCameraAngle, yaw, pitch, roll), new ParticleComponent[]{});
-        this.faceCameraAngle = faceCameraAngle;
-        this.yaw = yaw;
-        this.pitch = pitch;
-        this.roll = roll;
     }
 
     public static final MapCodec<AdvancedParticleType> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
@@ -70,7 +36,8 @@ public class AdvancedParticleType extends AdvancedTypeBase {
                     Codec.FLOAT.fieldOf("duration").forGetter(AdvancedParticleType::duration),
                     Codec.FLOAT.fieldOf("air_drag").forGetter(AdvancedParticleType::airDrag),
                     Codec.BOOL.fieldOf("emissive").forGetter(AdvancedParticleType::emissive),
-                    Codec.BOOL.fieldOf("can_collide").forGetter(AdvancedParticleType::canCollide)
+                    Codec.BOOL.fieldOf("can_collide").forGetter(AdvancedParticleType::canCollide),
+                    ParticleRotation.CODEC.fieldOf("rotation").forGetter(AdvancedParticleType::rotation)
             ).apply(instance, AdvancedParticleType::new)
     );
 
@@ -85,35 +52,11 @@ public class AdvancedParticleType extends AdvancedTypeBase {
             ByteBufCodecs.FLOAT, AdvancedParticleType::airDrag,
             ByteBufCodecs.BOOL, AdvancedParticleType::emissive,
             ByteBufCodecs.BOOL, AdvancedParticleType::canCollide,
-            ByteBufCodecs.STRING_UTF8, AdvancedParticleType::rotationType,
-            ByteBufCodecs.FLOAT, AdvancedParticleType::faceCameraAngle,
-            ByteBufCodecs.FLOAT, AdvancedParticleType::yaw,
-            ByteBufCodecs.FLOAT, AdvancedParticleType::pitch,
-            ByteBufCodecs.FLOAT, AdvancedParticleType::roll,
+            ParticleRotation.STREAM_CODEC, AdvancedParticleType::rotation,
             AdvancedParticleType::new
     );
 
     public boolean canCollide() {
         return canCollide;
-    }
-
-    public String rotationType() {
-        return rotationType;
-    }
-
-    public float faceCameraAngle() {
-        return faceCameraAngle;
-    }
-
-    public float yaw() {
-        return yaw;
-    }
-
-    public float pitch() {
-        return pitch;
-    }
-
-    public float roll() {
-        return roll;
     }
 }

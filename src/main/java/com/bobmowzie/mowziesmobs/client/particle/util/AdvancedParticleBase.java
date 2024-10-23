@@ -156,18 +156,16 @@ public class AdvancedParticleBase extends TextureSheetParticle {
         float f2 = (float)(Mth.lerp(partialTicks, this.zo, this.z) - Vector3d.z());
 
         Quaternionf quaternion = new Quaternionf(0.0F, 0.0F, 0.0F, 1.0F);
-        if (rotation instanceof ParticleRotation.FaceCamera) {
-            ParticleRotation.FaceCamera faceCameraRot = (ParticleRotation.FaceCamera) rotation;
-            if (faceCameraRot.faceCameraAngle == 0.0F && faceCameraRot.prevFaceCameraAngle == 0.0F) {
+        if (rotation instanceof ParticleRotation.FaceCamera faceCameraRot) {
+            if (faceCameraRot.angle == 0.0F && faceCameraRot.prevAngle == 0.0F) {
                 quaternion = renderInfo.rotation();
             } else {
                 quaternion = new Quaternionf(renderInfo.rotation());
-                float f3 = Mth.lerp(partialTicks, faceCameraRot.prevFaceCameraAngle, faceCameraRot.faceCameraAngle);
+                float f3 = Mth.lerp(partialTicks, faceCameraRot.prevAngle, faceCameraRot.angle);
                 quaternion.mul(Axis.ZP.rotation(f3));
             }
         }
-        else if (rotation instanceof ParticleRotation.EulerAngles) {
-            ParticleRotation.EulerAngles eulerRot = (ParticleRotation.EulerAngles) rotation;
+        else if (rotation instanceof ParticleRotation.EulerAngles eulerRot) {
             float rotX = eulerRot.prevPitch + (eulerRot.pitch - eulerRot.prevPitch) * partialTicks;
             float rotY = eulerRot.prevYaw + (eulerRot.yaw - eulerRot.prevYaw) * partialTicks;
             float rotZ = eulerRot.prevRoll + (eulerRot.roll - eulerRot.prevRoll) * partialTicks;
@@ -178,8 +176,7 @@ public class AdvancedParticleBase extends TextureSheetParticle {
             quaternion.mul(quatY);
             quaternion.mul(quatX);
         }
-        if (rotation instanceof ParticleRotation.OrientVector) {
-            ParticleRotation.OrientVector orientRot = (ParticleRotation.OrientVector) rotation;
+        if (rotation instanceof ParticleRotation.OrientVector orientRot) {
             double x = orientRot.prevOrientation.x + (orientRot.orientation.x - orientRot.prevOrientation.x) * partialTicks;
             double y = orientRot.prevOrientation.y + (orientRot.orientation.y - orientRot.prevOrientation.y) * partialTicks;
             double z = orientRot.prevOrientation.z + (orientRot.orientation.z - orientRot.prevOrientation.z) * partialTicks;
