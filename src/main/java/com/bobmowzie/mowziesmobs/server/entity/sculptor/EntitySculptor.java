@@ -585,7 +585,7 @@ public class EntitySculptor extends MowzieGeckoEntity {
     }
 
     public float playerProgress() {
-        if (getPillar() == null) return 0;
+        if (getPillar() == null || getTestingPlayer() == null) return 0;
         return Mth.clamp((float) (getTestingPlayer().getY() - getPillar().getY()) / (float) TEST_HEIGHT, 0f, 1f);
     }
 

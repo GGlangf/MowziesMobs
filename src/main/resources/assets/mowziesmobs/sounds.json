@@ -895,5 +895,16 @@
 			}
 		],
 		"subtitle": "subtitles.mowziesmobs.sculptor_theme"
+	},
+	"music.sculptor_theme_combat": {
+		"category": "music",
+		"sounds": [
+			{
+				"name": "mowziesmobs:music/sculptor/combat",
+				"stream": true,
+				"volume": 0.5
+			}
+		],
+		"subtitle": "subtitles.mowziesmobs.sculptor_theme"
 	}
 }
