@@ -55,7 +55,7 @@ public class UmvuthanaArmorLayer extends GeoRenderLayer<EntityUmvuthana> {
                 HumanoidModel<?> model = getArmorModelHook(entityLivingBaseIn, itemStack, EquipmentSlot.HEAD, defaultBipedModel);;
                 // FIXME 1.21 :: should all layers go through this?
                 armoritem.getMaterial().value().layers().forEach(layer -> {
-                    // FIXME 1.21 :: is inner model = false correct? (HumanoidArmorLayer has a method to check but it's only valid for Legggings)
+                    // FIXME 1.21 :: is inner model = false correct? (HumanoidArmorLayer has a method to check but it's only valid for Leggings)
                     ResourceLocation armorTexture = armoritem.getArmorTexture(itemStack, entityLivingBaseIn, EquipmentSlot.HEAD, layer, false);
                     if (armorTexture != null) {
                         VertexConsumer ivertexbuilder = ItemRenderer.getFoilBuffer(bufferIn, RenderType.entityCutoutNoCull(armorTexture), false, glintIn);

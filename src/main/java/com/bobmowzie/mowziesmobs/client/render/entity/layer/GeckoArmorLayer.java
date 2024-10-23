@@ -30,8 +30,7 @@ public class GeckoArmorLayer<T extends LivingEntity, M extends HumanoidModel<T>,
         super(layerParent, innerModel, outerModel, modelManager);
     }
 
-    // FIXME 1.21 :: geckolib (mixin) hook 'InternalUtil#tryRenderGeoArmorPiece' would cause the custom 'renderArmorPiece' logic here to be skipped
-    @Override
+    @Override // FIXME 1.21 :: geckolib (mixin) hook 'InternalUtil#tryRenderGeoArmorPiece' would cause the custom 'renderArmorPiece' logic here to be skipped (should the geckolib hook be skipped?)
     public void render(@NotNull PoseStack poseStack, @NotNull MultiBufferSource buffer, int packedLight, @NotNull T livingEntity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         this.renderArmorPiece(poseStack, buffer, livingEntity, EquipmentSlot.CHEST, packedLight, this.getArmorModel(EquipmentSlot.CHEST), limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
         this.renderArmorPiece(poseStack, buffer, livingEntity, EquipmentSlot.LEGS, packedLight, this.getArmorModel(EquipmentSlot.LEGS), limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
@@ -72,7 +71,6 @@ public class GeckoArmorLayer<T extends LivingEntity, M extends HumanoidModel<T>,
 
                 if (itemstack.hasFoil()) {
                     ModelBipedAnimated.setUseMatrixMode(p_model, true); // Custom logic
-                    // FIXME 1.21 :: access transformer seems to have problems
                     ((HumanoidArmorLayerAccess) this).mowziesmobs$renderGlint(poseStack, bufferSource, packedLight, model);
                 }
             }

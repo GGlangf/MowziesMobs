@@ -52,7 +52,7 @@ public class SpawnBoulderAbility extends PlayerAbility {
     public void start() {
         super.start();
         playAnimation(SPAWN_BOULDER_START_ANIM);
-        if (!Minecraft.getInstance().options.keyUse.isDown()) nextSection();
+        if (getLevel() != null && getLevel().isClientSide() && !Minecraft.getInstance().options.keyUse.isDown()) nextSection();
     }
 
     @Override

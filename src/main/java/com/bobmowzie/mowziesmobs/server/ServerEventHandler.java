@@ -148,7 +148,7 @@ public final class ServerEventHandler {
     private static final AttributeModifier KNOCKBACK_MODIFIER_BELT = new AttributeModifier(GEOMANCY_BELT_KNOCKBACK_RESISTANCE, 1D, AttributeModifier.Operation.ADD_VALUE);
 
     @SubscribeEvent
-    public void onLivingTick(EntityTickEvent.Post event) { // FIXME 1.21 :: was 'LivingTickEvent' -> use 'Pre' or 'Post'?
+    public void onLivingTick(EntityTickEvent.Post event) {
         if (event.getEntity() instanceof LivingEntity livingEntity) {
             if (livingEntity.getEffect(EffectHandler.POISON_RESIST) != null && livingEntity.getEffect(MobEffects.POISON) != null) {
                 livingEntity.removeEffectNoUpdate(MobEffects.POISON);
@@ -410,7 +410,7 @@ public final class ServerEventHandler {
     }
 
     @SubscribeEvent
-    public void onPlayerInteract(PlayerInteractEvent.RightClickEmpty event) { // FIXME 1.21 :: cannot be cancelled (there is not really anything to cancel either, see 'Minecraft#startUseItem'
+    public void onPlayerInteract(PlayerInteractEvent.RightClickEmpty event) {
         if (event.getEntity().hasEffect(EffectHandler.FROZEN)) {
             return;
         }

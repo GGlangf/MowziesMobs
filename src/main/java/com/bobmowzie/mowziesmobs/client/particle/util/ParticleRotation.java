@@ -37,7 +37,7 @@ public abstract class ParticleRotation {
 
     private static final Codec<Type> BEHAVIOUR_CODEC = StringRepresentable.fromEnum(Type::values);
 
-    // FIXME 1.21 :: unsure if these codecs work or not, didn't get the the game to trigger an encode or decode
+    // FIXME 1.21 :: unsure if this codec works or not, didn't get the the game to trigger an encode or decode
     public static final Codec<ParticleRotation> CODEC = new Codec<>() {
         @Override
         public <T> DataResult<T> encode(ParticleRotation rotation, DynamicOps<T> ops, T prefix) {

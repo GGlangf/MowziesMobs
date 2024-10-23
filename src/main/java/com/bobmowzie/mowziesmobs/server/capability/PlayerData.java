@@ -26,8 +26,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.common.util.INBTSerializable;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
@@ -52,7 +50,6 @@ public class PlayerData implements INBTSerializable<CompoundTag> {
     public List<EntityUmvuthanaFollowerToPlayer> umvuthanaPack = new ArrayList<>();
     public int tribePackRadius = 3;
 
-    @OnlyIn(Dist.CLIENT)
     private GeckoPlayer.GeckoPlayerThirdPerson geckoPlayer;
 
     public boolean isVerticalSwing() {
@@ -155,7 +152,6 @@ public class PlayerData implements INBTSerializable<CompoundTag> {
         prevCooledAttackStrength = cooledAttackStrength;
     }
 
-    @OnlyIn(Dist.CLIENT) // FIXME 1.21 :: maybe cannot be removed due to the class potentially being parsed completely
     public GeckoPlayer.GeckoPlayerThirdPerson getGeckoPlayer() {
         return geckoPlayer;
     }

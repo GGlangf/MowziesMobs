@@ -18,6 +18,7 @@ public abstract class GeoModelMixin {
     // FIXME 1.21 :: currently the rendering seems to switch between doing the animation and doing no animation (the umvuthana mob is less likely to be impacted)
     // FIXME 1.21 :: depending on when you open the inventory (a higher tick rate seems to help?) this issue does not occur
     // FIXME 1.21 :: maybe a problem with the 'adjustTick' logic or sth. similar?
+    // FIXME 1.21 :: with this it only plays one set of animation but it has a visible repeat point (of the animation, as in animation stops and then repeats)
     @WrapOperation(method = "handleAnimations", at = @At(value = "FIELD", target = "Lsoftware/bernie/geckolib/model/GeoModel;lastRenderedInstance:J", ordinal = 0))
     private <T extends GeoAnimatable> long test(GeoModel<?> instance, Operation<Long> original, @Local(argsOnly = true) T animatable) {
         if (animatable instanceof MowzieEntity entity && entity.renderingInGUI) {

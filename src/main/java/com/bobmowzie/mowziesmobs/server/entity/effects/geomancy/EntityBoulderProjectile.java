@@ -143,7 +143,7 @@ public class EntityBoulderProjectile extends EntityBoulderBase {
         }
     }
 
-    public List<Entity> getRidingEntities() {
+    public List<Entity> getRidingEntities() { // FIXME 1.21 :: unused
         return ridingEntities;
     }
 
@@ -188,7 +188,7 @@ public class EntityBoulderProjectile extends EntityBoulderBase {
         if (!travelling) setDeathTime(60);
         travelling = true;
         // FIXME 1.21 :: in vanilla this was only used in spawn logic so this may not accurately reflect the dimensions of the entity
-        setBoundingBox(getType().getSpawnAABB(getX(), getY(), getZ()));
+        setBoundingBox(getType().getSpawnAABB(getX(), getY(), getZ())); // FIXME 1.21 :: call was previously 'getAABB'
 
         if (boulderSize == GeomancyTier.SMALL) {
             playSound(MMSounds.EFFECT_GEOMANCY_HIT_SMALL.get(), 1.5f, 1.3f);
