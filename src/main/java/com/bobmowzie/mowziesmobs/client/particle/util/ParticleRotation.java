@@ -1,9 +1,6 @@
 package com.bobmowzie.mowziesmobs.client.particle.util;
 
-import com.mojang.datafixers.util.Pair;
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.DataResult;
-import com.mojang.serialization.DynamicOps;
+import com.mojang.serialization.*;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.StringRepresentable;
@@ -12,6 +9,7 @@ import net.neoforged.neoforge.network.codec.NeoForgeStreamCodecs;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
+import java.util.stream.Stream;
 
 public abstract class ParticleRotation {
     public abstract void setPrevValues();
@@ -35,60 +33,92 @@ public abstract class ParticleRotation {
         }
     }
 
-    private static final Codec<Type> BEHAVIOUR_CODEC = StringRepresentable.fromEnum(Type::values);
+    private static final Codec<Type> TYPE_CODEC = StringRepresentable.fromEnum(Type::values);
 
-    // FIXME 1.21 :: unsure if this codec works or not, didn't get the the game to trigger an encode or decode
-    public static final Codec<ParticleRotation> CODEC = new Codec<>() {
+    public static final MapCodec<ParticleRotation> CODEC = new MapCodec<>() {
         @Override
-        public <T> DataResult<T> encode(ParticleRotation rotation, DynamicOps<T> ops, T prefix) {
-            BEHAVIOUR_CODEC.encode(rotation.type(), ops, prefix);
+        public <T> Stream<T> keys(DynamicOps<T> ops) { // FIXME 1.21 :: unsure if this is correct
+            return Stream.of(
+                    ops.createString("type"),
+                    ops.createString("angle"),
+                    ops.createString("yaw"),
+                    ops.createString("pitch"),
+                    ops.createString("roll"),
+                    ops.createString("orientation")
+            );
+        }
+
+        @Override
+        public <T> DataResult<ParticleRotation> decode(DynamicOps<T> ops, MapLike<T> input) {
+            Optional<Type> typeOptional = TYPE_CODEC.fieldOf("type").decode(ops, input).result();
+
+            if (typeOptional.isPresent()) {
+                Type type = typeOptional.get();
+                ParticleRotation rotation;
+
+                switch (type) {
+                    case FACE_CAMERA -> {
+                        DataResult<Float> angle = Codec.FLOAT.fieldOf("angle").decode(ops, input);
+
+                        if (angle.isSuccess()) {
+                            rotation = new FaceCamera(angle.getOrThrow());
+                        } else {
+                            return DataResult.error(() -> "Invalid values for the rotation [" + angle + "]");
+                        }
+                    }
+                    case EULER_ANGLES -> {
+                        DataResult<Float> yaw = Codec.FLOAT.fieldOf("yaw").decode(ops, input);
+                        DataResult<Float> pitch = Codec.FLOAT.fieldOf("pitch").decode(ops, input);
+                        DataResult<Float> roll = Codec.FLOAT.fieldOf("roll").decode(ops, input);
+
+                        if (yaw.isSuccess() && pitch.isSuccess() && roll.isSuccess()) {
+                            rotation = new EulerAngles(yaw.getOrThrow(), pitch.getOrThrow(), roll.getOrThrow());
+                        } else {
+                            return DataResult.error(() -> "Invalid values for the rotation [" + yaw + "] [" + pitch + "] [" + roll + "]");
+                        }
+                    }
+                    case ORIENT_VECTOR -> {
+                        DataResult<Vec3> orientation = Vec3.CODEC.fieldOf("orientation").decode(ops, input);
+
+                        if (orientation.isSuccess()) {
+                            rotation = new OrientVector(orientation.getOrThrow());
+                        } else {
+                            return DataResult.error(() -> "Invalid values for the rotation [" + orientation + "]");
+                        }
+                    }
+                    default -> {
+                        return DataResult.error(() -> "Invalid rotation type [" + type + "]");
+                    }
+                }
+
+                return DataResult.success(rotation);
+            } else {
+                return DataResult.error(() -> "No valid type specified");
+            }
+        }
+
+        @Override
+        public <T> RecordBuilder<T> encode(ParticleRotation rotation, DynamicOps<T> ops, RecordBuilder<T> prefix) {
+            TYPE_CODEC.fieldOf("type").encode(rotation.type(), ops, prefix);
 
             switch (rotation.type()) {
                 case FACE_CAMERA -> {
                     FaceCamera faceCamera = (FaceCamera) rotation;
-                    Codec.FLOAT.encode(faceCamera.angle, ops, prefix);
+                    Codec.FLOAT.fieldOf("angle").encode(faceCamera.angle, ops, prefix);
                 }
                 case EULER_ANGLES -> {
                     EulerAngles eulerAngles = (EulerAngles) rotation;
-                    Codec.FLOAT.encode(eulerAngles.yaw, ops, prefix);
-                    Codec.FLOAT.encode(eulerAngles.pitch, ops, prefix);
-                    Codec.FLOAT.encode(eulerAngles.roll, ops, prefix);
+                    Codec.FLOAT.fieldOf("yaw").encode(eulerAngles.yaw, ops, prefix);
+                    Codec.FLOAT.fieldOf("pitch").encode(eulerAngles.pitch, ops, prefix);
+                    Codec.FLOAT.fieldOf("roll").encode(eulerAngles.roll, ops, prefix);
                 }
                 case ORIENT_VECTOR -> {
                     OrientVector orientVector = (OrientVector) rotation;
-                    Vec3.CODEC.encode(orientVector.orientation, ops, prefix);
+                    Vec3.CODEC.fieldOf("orientation").encode(orientVector.orientation, ops, prefix);
                 }
             }
 
-            return DataResult.success(prefix);
-        }
-
-        @Override
-        public <T> DataResult<Pair<ParticleRotation, T>> decode(DynamicOps<T> ops, T input) {
-            Optional<Pair<Type, T>> typeOptional = BEHAVIOUR_CODEC.decode(ops, input).result();
-
-            if (typeOptional.isPresent()) {
-                Pair<Type, T> type = typeOptional.get();
-
-                return DataResult.success(Pair.of(switch (type.getFirst()) {
-                    case FACE_CAMERA -> {
-                        Pair<Float, T> angle = Codec.FLOAT.decode(ops, input).getOrThrow();
-                        yield new FaceCamera(angle.getFirst());
-                    }
-                    case EULER_ANGLES -> {
-                        Pair<Float, T> yaw = Codec.FLOAT.decode(ops, input).getOrThrow();
-                        Pair<Float, T> pitch = Codec.FLOAT.decode(ops, input).getOrThrow();
-                        Pair<Float, T> roll = Codec.FLOAT.decode(ops, input).getOrThrow();
-                        yield new EulerAngles(yaw.getFirst(), pitch.getFirst(), roll.getFirst());
-                    }
-                    case ORIENT_VECTOR -> {
-                        Pair<Vec3, T> orientation = Vec3.CODEC.decode(ops, input).getOrThrow();
-                        yield new OrientVector(orientation.getFirst());
-                    }
-                }, ops.empty()));
-            } else {
-                return DataResult.error(() -> "No valid type specified");
-            }
+            return prefix;
         }
     };
 
