@@ -84,7 +84,9 @@ public class EntityPillarPiece extends Entity {
 
     @Override
     protected void readAdditionalSaveData(CompoundTag compound) {
-        setPillarUUID(compound.getUUID("pillar"));
+        if (compound != null) {
+            setPillarUUID(compound.getUUID("pillar"));
+        }
     }
 
     @Override

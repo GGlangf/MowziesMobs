@@ -410,6 +410,7 @@ public class EntitySculptor extends MowzieGeckoEntity {
         super.tick();
         if (testingPlayer == null && getTestingPlayerID().isPresent()) {
             testingPlayer = level().getPlayerByUUID(getTestingPlayerID().get());
+            if (testingPlayer != null) testing = true;
         }
 
         if (testingPlayer != null) {
@@ -736,6 +737,7 @@ public class EntitySculptor extends MowzieGeckoEntity {
             compound.putUUID("TestingPlayer", getTestingPlayerID().get());
             compound.putInt("NumLivePaths", numLivePaths);
         }
+        compound.putInt("TestTimePassed", testTimePassed);
     }
 
     @Override
@@ -746,6 +748,7 @@ public class EntitySculptor extends MowzieGeckoEntity {
             setTestingPlayerID(compound.getUUID("TestingPlayer"));
             numLivePaths = compound.getInt("NumLivePaths");
         }
+        testTimePassed = compound.getInt("TestTimePassed");
     }
 
     public boolean isPlayerInTestZone(Player player) {

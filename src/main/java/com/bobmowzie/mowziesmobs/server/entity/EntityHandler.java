@@ -112,7 +112,7 @@ public class EntityHandler {
     private static EntityType.Builder<EntityPillar.EntityPillarSculptor> sculptorPillarBuilder() {
         return EntityType.Builder.of(EntityPillar.EntityPillarSculptor::new, MobCategory.MISC);
     }
-    public static final DeferredHolder<EntityType<?>, EntityType<EntityPillar.EntityPillarSculptor>> PILLAR_SCULPTOR = REG.register("pillar_sculptor", () -> sculptorPillarBuilder().sized(1f, 1f).setUpdateInterval(1).build(ResourceLocation.fromNamespaceAndPath(MMCommon.MODID, "pillar_sculptor").toString()));
+    public static final DeferredHolder<EntityType<?>, EntityType<EntityPillar.EntityPillarSculptor>> PILLAR_SCULPTOR = REG.register("pillar_sculptor", () -> sculptorPillarBuilder().sized(1f, 1f).clientTrackingRange(8).setUpdateInterval(1).build(ResourceLocation.fromNamespaceAndPath(MMCommon.MODID, "pillar_sculptor").toString()));
     private static EntityType.Builder<EntityPillarPiece> pillarPieceBuilder() {
         return EntityType.Builder.of(EntityPillarPiece::new, MobCategory.MISC);
     }
