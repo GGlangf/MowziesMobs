@@ -34,8 +34,9 @@ public class BlockSwapProcessor extends StructureProcessor {
         this.copyProperties = copyProperties;
     }
 
+    @Override
     protected StructureProcessorType<?> getType() {
-        return ProcessorHandler.BASE_PROCESSOR.value();
+        return ProcessorHandler.BLOCK_SWAP_PROCESSOR.value();
     }
 
     @Override

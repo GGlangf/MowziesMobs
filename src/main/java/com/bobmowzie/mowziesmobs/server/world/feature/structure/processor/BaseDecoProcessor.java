@@ -36,6 +36,7 @@ public class BaseDecoProcessor extends StructureProcessor {
             {wall, stoneStairs, stoneStairs, stoneStairs, stoneStairs, stoneStairs, wall}
     };
 
+    @Override
     protected StructureProcessorType<?> getType() {
         return ProcessorHandler.BASE_DECO_PROCESSOR.value();
     }
