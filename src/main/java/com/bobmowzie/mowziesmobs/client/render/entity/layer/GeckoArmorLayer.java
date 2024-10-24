@@ -30,7 +30,7 @@ public class GeckoArmorLayer<T extends LivingEntity, M extends HumanoidModel<T>,
         super(layerParent, innerModel, outerModel, modelManager);
     }
 
-    @Override // FIXME 1.21 :: geckolib (mixin) hook 'InternalUtil#tryRenderGeoArmorPiece' would cause the custom 'renderArmorPiece' logic here to be skipped (should the geckolib hook be skipped?)
+    @Override // Used to skip GeckoLib Mixin hook 'InternalUtil#tryRenderGeoArmorPiece'
     public void render(@NotNull PoseStack poseStack, @NotNull MultiBufferSource buffer, int packedLight, @NotNull T livingEntity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         this.renderArmorPiece(poseStack, buffer, livingEntity, EquipmentSlot.CHEST, packedLight, this.getArmorModel(EquipmentSlot.CHEST), limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
         this.renderArmorPiece(poseStack, buffer, livingEntity, EquipmentSlot.LEGS, packedLight, this.getArmorModel(EquipmentSlot.LEGS), limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
@@ -38,39 +38,51 @@ public class GeckoArmorLayer<T extends LivingEntity, M extends HumanoidModel<T>,
         this.renderArmorPiece(poseStack, buffer, livingEntity, EquipmentSlot.HEAD, packedLight, this.getArmorModel(EquipmentSlot.HEAD), limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
     }
 
-    // FIXME 1.21 :: in the latest neoforge version these other variables are passed on to the armor piece renderer (supposedly for animation)
-    protected void renderArmorPiece(PoseStack poseStack, MultiBufferSource bufferSource, T livingEntity, EquipmentSlot slot, int packedLight, A p_model, float limbSwing, float limbSwingAmount, float partialTick, float ageInTicks, float netHeadYaw, float headPitch) {
+    // Custom logic (has things switched around compared to vanilla)
+    protected void renderArmorPiece(PoseStack poseStack, MultiBufferSource bufferSource, T livingEntity, EquipmentSlot slot, int packedLight, A baseModel, float limbSwing, float limbSwingAmount, float partialTick, float ageInTicks, float netHeadYaw, float headPitch) {
         ItemStack itemstack = livingEntity.getItemBySlot(slot);
+
         if (itemstack.getItem() instanceof ArmorItem armoritem) {
             if (armoritem.getEquipmentSlot() == slot) {
-                this.getParentModel().copyPropertiesTo(p_model);
-                this.setPartVisibility(p_model, slot);
-                Model model = getArmorModelHook(livingEntity, itemstack, slot, p_model);
-                boolean flag = this.usesInnerModel(slot);
+                Model model = getArmorModelHook(livingEntity, itemstack, slot, baseModel);
+
+                if (!(model instanceof HumanoidModel<?>)) {
+                    return;
+                }
+
+                getParentModel().copyPropertiesTo(baseModel);
+                getParentModel().copyPropertiesTo((HumanoidModel<T>) model);
+
+                setPartVisibility(baseModel, slot);
+                setPartVisibility((A) model, slot);
+
+                boolean usesInnerModel = usesInnerModel(slot);
                 ArmorMaterial armormaterial = armoritem.getMaterial().value();
 
                 IClientItemExtensions extensions = IClientItemExtensions.of(itemstack);
                 extensions.setupModelAnimations(livingEntity, itemstack, slot, model, limbSwing, limbSwingAmount, partialTick, ageInTicks, netHeadYaw, headPitch);
                 int fallbackColor = extensions.getDefaultDyeColor(itemstack);
-                ModelBipedAnimated.setUseMatrixMode(p_model, true); // Custom logic
+                ModelBipedAnimated.setUseMatrixMode(baseModel, true);
 
                 for (int layerIdx = 0; layerIdx < armormaterial.layers().size(); layerIdx++) {
                     ArmorMaterial.Layer armormaterial$layer = armormaterial.layers().get(layerIdx);
-                    int j = extensions.getArmorLayerTintColor(itemstack, livingEntity, armormaterial$layer, layerIdx, fallbackColor);
-                    if (j != 0) {
-                        var texture = ClientHooks.getArmorTexture(livingEntity, itemstack, armormaterial$layer, flag, slot);
-                        this.renderModel(poseStack, bufferSource, packedLight, model, j, texture);
+                    int tintColor = extensions.getArmorLayerTintColor(itemstack, livingEntity, armormaterial$layer, layerIdx, fallbackColor);
+
+                    if (tintColor != 0) {
+                        ResourceLocation texture = ClientHooks.getArmorTexture(livingEntity, itemstack, armormaterial$layer, usesInnerModel, slot);
+                        renderModel(poseStack, bufferSource, packedLight, model, tintColor, texture);
                     }
                 }
 
                 ArmorTrim armortrim = itemstack.get(DataComponents.TRIM);
+
                 if (armortrim != null) {
-                    ModelBipedAnimated.setUseMatrixMode(p_model, true); // Custom logic
-                    ((HumanoidArmorLayerAccess) this).mowziesmobs$renderTrim(armoritem.getMaterial(), poseStack, bufferSource, packedLight, armortrim, model, flag);
+                    ModelBipedAnimated.setUseMatrixMode(baseModel, true);
+                    ((HumanoidArmorLayerAccess) this).mowziesmobs$renderTrim(armoritem.getMaterial(), poseStack, bufferSource, packedLight, armortrim, model, usesInnerModel);
                 }
 
                 if (itemstack.hasFoil()) {
-                    ModelBipedAnimated.setUseMatrixMode(p_model, true); // Custom logic
+                    ModelBipedAnimated.setUseMatrixMode(baseModel, true);
                     ((HumanoidArmorLayerAccess) this).mowziesmobs$renderGlint(poseStack, bufferSource, packedLight, model);
                 }
             }

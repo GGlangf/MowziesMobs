@@ -19,7 +19,7 @@ import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ItemWroughtHelm extends ArmorItem { // FIXME 1.21 :: when using gauntlet abilities the helmet is rendered upside-down at the bottom of the feet of the player
+public class ItemWroughtHelm extends ArmorItem {
     public ItemWroughtHelm(Item.Properties properties) {
         super(MaterialHandler.ARMOR_WROUGHT_HELM, Type.HELMET, properties);
     }

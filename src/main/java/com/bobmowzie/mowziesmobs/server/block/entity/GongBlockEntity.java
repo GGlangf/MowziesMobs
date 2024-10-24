@@ -11,6 +11,7 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.client.extensions.IBlockEntityRendererExtension;
 import org.jetbrains.annotations.NotNull;
 
+// FIXME 1.21 :: if you look at the top part it stops rendering
 public class GongBlockEntity extends BlockEntity implements IBlockEntityRendererExtension<GongBlockEntity> {
     public int ticks;
     public boolean shaking;
