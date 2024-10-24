@@ -32,13 +32,11 @@ import com.bobmowzie.mowziesmobs.server.potion.EffectHandler;
 import com.bobmowzie.mowziesmobs.server.sound.MMSounds;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.DamageTypeTags;
@@ -60,13 +58,12 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.animation.*;
 import software.bernie.geckolib.animation.AnimationState;
+import software.bernie.geckolib.animation.*;
 
 import java.util.EnumSet;
 
@@ -193,7 +190,6 @@ public abstract class EntityUmvuthana extends MowzieGeckoEntity {
     @Override
     protected void registerGoals() {
         super.registerGoals();
-//        setPathfindingMalus(PathType.DAMAGE_FIRE, -8);
         goalSelector.addGoal(0, new FloatGoal(this));
         goalSelector.addGoal(0, new UseAbilityAI<>(this, ACTIVATE_ABILITY));
         goalSelector.addGoal(0, new UseAbilityAI<>(this, DEACTIVATE_ABILITY));
@@ -328,6 +324,11 @@ public abstract class EntityUmvuthana extends MowzieGeckoEntity {
     }
 
     @Override
+    public boolean shouldPlayHurtAnimation(DamageSource source, float damage) {
+        return super.shouldPlayHurtAnimation(source, damage);// && damage > 2;
+    }
+
+    @Override
     protected SoundEvent getAmbientSound() {
         if (getActiveAbilityType() == DEACTIVATE_ABILITY) {
             return null;
@@ -427,7 +428,7 @@ public abstract class EntityUmvuthana extends MowzieGeckoEntity {
             }
             return;
         }
-        if (getActiveAbility() != null) {
+        if (getActiveAbilityType() != HURT_ABILITY) {
             getNavigation().stop();
             yHeadRot = yBodyRot = getYRot();
         }

@@ -47,12 +47,15 @@ public abstract class MowzieGeckoEntity extends MowzieEntity implements GeoEntit
 
     public abstract AbilityType getDeathAbility();
 
+    public boolean shouldPlayHurtAnimation(DamageSource source, float damage) {
+        return playsHurtAnimation;
+    }
 
     @Override
     public boolean hurt(DamageSource source, float damage) {
         boolean attack = super.hurt(source, damage);
         if (attack) {
-            if (getHealth() > 0.0F && (getActiveAbility() == null || getActiveAbility().damageInterrupts()) && playsHurtAnimation) {
+            if (getHealth() > 0.0F && (getActiveAbility() == null || getActiveAbility().damageInterrupts()) && shouldPlayHurtAnimation(source, damage)) {
                 sendAbilityMessage(getHurtAbility());
             } else if (getHealth() <= 0.0F) {
                 sendAbilityMessage(getDeathAbility());
