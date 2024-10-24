@@ -191,7 +191,7 @@ public class ClientEventHandler {
     }
 
     @SubscribeEvent
-    public void onRenderOverlay(RenderGuiLayerEvent.Post event) {
+    public static void onRenderOverlay(RenderGuiLayerEvent.Post event) {
         if (event.getName() == VanillaGuiLayers.CAMERA_OVERLAYS) {
             if (Minecraft.getInstance().player != null) {
                 FrozenData data = DataHandler.getData(Minecraft.getInstance().player, DataHandler.FROZEN_DATA);
