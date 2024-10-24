@@ -16,6 +16,9 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 
 public class GongRenderer implements BlockEntityRenderer<GongBlockEntity> {
     public static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(MMCommon.MODID, "textures/block/gong.png");
@@ -81,5 +84,16 @@ public class GongRenderer implements BlockEntityRenderer<GongBlockEntity> {
         VertexConsumer vertexconsumer = buffer.getBuffer(RenderType.entityCutoutNoCull(TEXTURE));
         this.gongBase.render(poseStack, vertexconsumer, packedLight, overlay);
         poseStack.popPose();
+    }
+
+
+    @Override // Can be debugged with the '/neoforge debug_blockentity_renderbounds true' command
+    public @NotNull AABB getRenderBoundingBox(@NotNull GongBlockEntity gong) {
+        // FIXME 1.21 :: the super call no longer uses custom forge code to determine the aabb
+        AABB bounds = new AABB(gong.getBlockPos());
+        bounds = bounds.expandTowards(new Vec3(gong.facing.getClockWise().step()));
+        bounds = bounds.expandTowards(new Vec3(gong.facing.getCounterClockWise().step()));
+        bounds = bounds.expandTowards(0, 2, 0);
+        return bounds;
     }
 }

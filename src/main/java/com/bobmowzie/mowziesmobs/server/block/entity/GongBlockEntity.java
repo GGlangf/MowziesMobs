@@ -6,13 +6,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.client.extensions.IBlockEntityRendererExtension;
-import org.jetbrains.annotations.NotNull;
 
 // FIXME 1.21 :: if you look at the top part it stops rendering
-public class GongBlockEntity extends BlockEntity implements IBlockEntityRendererExtension<GongBlockEntity> {
+public class GongBlockEntity extends BlockEntity {
     public int ticks;
     public boolean shaking;
     public Direction clickDirection;
@@ -55,15 +51,5 @@ public class GongBlockEntity extends BlockEntity implements IBlockEntityRenderer
         }
 
         this.level.blockEvent(blockpos, this.getBlockState().getBlock(), 1, p_58835_.get3DDataValue());
-    }
-
-    @Override
-    public @NotNull AABB getRenderBoundingBox(@NotNull GongBlockEntity gong) {
-        // FIXME 1.21 :: the super call no longer uses custom forge code to determine the aabb
-        AABB bounds = IBlockEntityRendererExtension.super.getRenderBoundingBox(gong);
-        bounds = bounds.expandTowards(new Vec3(facing.getClockWise().step()));
-        bounds = bounds.expandTowards(new Vec3(facing.getCounterClockWise().step()));
-        bounds = bounds.expandTowards(0, 2, 0);
-        return bounds;
     }
 }
