@@ -89,7 +89,6 @@ public class GongRenderer implements BlockEntityRenderer<GongBlockEntity> {
 
     @Override // Can be debugged with the '/neoforge debug_blockentity_renderbounds true' command
     public @NotNull AABB getRenderBoundingBox(@NotNull GongBlockEntity gong) {
-        // FIXME 1.21 :: the super call no longer uses custom forge code to determine the aabb
         AABB bounds = new AABB(gong.getBlockPos());
         bounds = bounds.expandTowards(new Vec3(gong.facing.getClockWise().step()));
         bounds = bounds.expandTowards(new Vec3(gong.facing.getCounterClockWise().step()));
