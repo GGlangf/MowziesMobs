@@ -21,7 +21,9 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.SheetedDecalTextureGenerator;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
+import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.AbstractClientPlayer;
@@ -188,23 +190,19 @@ public class ClientEventHandler {
         }
     }
 
-    /* FIXME 1.21 :: not sure what this was but frostbite doesn't exist anymore (was that a forge-only hud?)
     @SubscribeEvent
-    public void onRenderOverlay(RenderGuiLayerEvent.Post e) {
-        final int startTime = 210;
-        final int pointStart = 1200;
-        final int timePerMillis = 22;
-        if (e.getName() == VanillaGuiOverlay.FROSTBITE.type()) {
+    public void onRenderOverlay(RenderGuiLayerEvent.Post event) {
+        if (event.getName() == VanillaGuiLayers.CAMERA_OVERLAYS) {
             if (Minecraft.getInstance().player != null) {
-                FrozenCapability.Capability frozenCapability = CapabilityHandler.getCapability(Minecraft.getInstance().player, CapabilityHandler.FROZEN_CAPABILITY);
-                if (frozenCapability != null && frozenCapability.getFrozen() && Minecraft.getInstance().options.getCameraType() == CameraType.FIRST_PERSON) {
-                    Window res = e.getWindow();
-                    e.getGuiGraphics().blit(FROZEN_BLUR, 0, 0, 0, 0, res.getGuiScaledWidth(), res.getGuiScaledHeight(), res.getGuiScaledWidth(), res.getGuiScaledHeight());
+                FrozenData data = DataHandler.getData(Minecraft.getInstance().player, DataHandler.FROZEN_DATA);
+
+                if (data.getFrozen() && Minecraft.getInstance().options.getCameraType() == CameraType.FIRST_PERSON) {
+                    GuiGraphics graphics = event.getGuiGraphics();
+                    graphics.blit(FROZEN_BLUR, 0, 0, 0, 0, graphics.guiWidth(), graphics.guiHeight(), graphics.guiWidth(), graphics.guiHeight());
                 }
             }
         }
     }
-    */
 
     // Remove frozen overlay
     @SubscribeEvent
