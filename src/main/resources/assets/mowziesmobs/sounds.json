@@ -417,6 +417,10 @@
 		"sounds": [ "mowziesmobs:effects/geomancy/rock_crumble" ],
 		"subtitle": "subtitles.mowziesmobs.geomancy.crumble"
 	},
+	"geomancy.rumble_loop": {
+		"sounds": [ "mowziesmobs:effects/geomancy/rumble_loop" ],
+		"subtitle": "subtitles.mowziesmobs.geomancy.rumble"
+	},
 	"geomancy.rumble1": {
 		"sounds": [ "mowziesmobs:effects/geomancy/rumble_1" ],
 		"subtitle": "subtitles.mowziesmobs.geomancy.rumble"

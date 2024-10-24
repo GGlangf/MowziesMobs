@@ -1,5 +1,7 @@
 package com.bobmowzie.mowziesmobs.server.entity.effects.geomancy;
 
+import com.bobmowzie.mowziesmobs.MMCommon;
+import com.bobmowzie.mowziesmobs.client.sound.IGeomancyRumbler;
 import com.bobmowzie.mowziesmobs.server.entity.EntityHandler;
 import com.bobmowzie.mowziesmobs.server.entity.effects.EntityMagicEffect;
 import com.bobmowzie.mowziesmobs.server.entity.sculptor.EntitySculptor;
@@ -22,7 +24,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
 import java.util.List;
 
-public class EntityPillar extends EntityGeomancyBase {
+public class EntityPillar extends EntityGeomancyBase implements IGeomancyRumbler {
     private static final EntityDataAccessor<Float> HEIGHT = SynchedEntityData.defineId(EntityPillar.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Boolean> RISING = SynchedEntityData.defineId(EntityPillar.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> FALLING = SynchedEntityData.defineId(EntityPillar.class, EntityDataSerializers.BOOLEAN);
@@ -73,6 +75,9 @@ public class EntityPillar extends EntityGeomancyBase {
 
         if (firstTick) {
             playSound(MMSounds.EFFECT_GEOMANCY_BREAK_LARGE_1.get(), 2, 1);
+            startRising();
+            if (level().isClientSide())
+                MMCommon.PROXY.playGeomancyRumbleSound(this);
         }
 
         if (!level().isClientSide()) {
@@ -194,6 +199,31 @@ public class EntityPillar extends EntityGeomancyBase {
     @Override
     public boolean doRemoveTimer() {
         return !(getCaster() instanceof EntitySculptor);
+    }
+
+    @Override
+    public boolean isRumbling() {
+        return !isRemoved() && (isFalling() || isRising());
+    }
+
+    @Override
+    public boolean isFinishedRumbling() {
+        return isRemoved();
+    }
+
+    @Override
+    public float getRumblerX() {
+        return (float) getX();
+    }
+
+    @Override
+    public float getRumblerY() {
+        return (float) getY();
+    }
+
+    @Override
+    public float getRumblerZ() {
+        return (float) getZ();
     }
 
     public static class EntityPillarSculptor extends EntityPillar {

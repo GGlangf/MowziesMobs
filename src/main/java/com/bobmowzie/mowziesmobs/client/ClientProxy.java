@@ -81,6 +81,10 @@ public class ClientProxy extends ServerProxy {
         Minecraft.getInstance().getSoundManager().play(new SolarBeamSound(entity, true));
     }
 
+    public void playGeomancyRumbleSound(IGeomancyRumbler rumbler) {
+        Minecraft.getInstance().getSoundManager().play(new EarthRumbleLoopSound(rumbler));
+    }
+
     @Override
     public void minecartParticles(Level world, AbstractMinecart minecart, float scale, double x, double y, double z, BlockState state, BlockPos pos) {
         if (!(world instanceof ClientLevel clientLevel)) {
