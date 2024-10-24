@@ -1,9 +1,22 @@
 package com.bobmowzie.mowziesmobs.server.config;
 
 import com.bobmowzie.mowziesmobs.MMCommon;
+import com.bobmowzie.mowziesmobs.datagen.MMBiomeTags;
+import com.bobmowzie.mowziesmobs.datagen.StructureSetHandler;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.BiomeTags;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.biome.Biomes;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.dimension.BuiltinDimensionTypes;
+import net.minecraft.world.level.levelgen.structure.BuiltinStructureSets;
 import net.neoforged.neoforge.common.ModConfigSpec;
+import net.neoforged.neoforge.common.Tags;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -50,7 +63,7 @@ public final class ConfigHandler {
         BiomeConfig(final ModConfigSpec.Builder builder, List<? extends String> biomeTags, List<? extends String> biomeWhitelist, List<? extends String> biomeBlacklist) {
             builder.push("biome_config");
             builder.comment("Mowzie's Mobs bosses cannot generate in modded or non-overworld biomes unless the biome is added to the 'has_structure/has_mowzie_structure' tag via a datapack!");
-            this.biomeTags = builder.comment("Each entry is a combination of allowed biome tags or biome names.", "Separate types with commas to require biomes to have all tags in an entry", "Put a '!' before a biome tag to mean NOT that tag", "A blank entry means all biomes. No entries means no biomes.", "For example, 'minecraft:is_forest,forge:is_spooky,!forge:is_snowy' would mean all biomes that are spooky forests but not snowy forests", "'!minecraft:is_mountain' would mean all non-mountain biomes")
+            this.biomeTags = builder.comment("Each entry is a combination of allowed biome tags or biome names.", "Separate types with commas to require biomes to have all tags in an entry", "Put a '!' before a biome tag to mean NOT that tag", "A blank entry means all biomes. No entries means no biomes.", "For example, 'minecraft:is_forest,c:is_spooky,!c:is_snowy' would mean all biomes that are spooky forests but not snowy forests", "'!minecraft:is_mountain' would mean all non-mountain biomes")
                     .translation(LANG_PREFIX + "biome_tags")
                     .defineList("biome_tags", biomeTags, BIOME_COMBO_PREDICATE);
             this.biomeWhitelist = builder.comment("Allow spawns in these biomes regardless of the biome tag settings")
@@ -87,8 +100,8 @@ public final class ConfigHandler {
                     .defineInRange("extra_rarity", extraRarity, 0.0, 1.0);
             this.biomeConfig = biomeConfig;
             this.dimensions = builder.comment("Names of dimensions this mob can spawn in")
-                    .translation(LANG_PREFIX + "dimensions")
-                    .defineList("dimensions", Collections.singletonList("minecraft:overworld"), STRING_PREDICATE);
+                    .translation(LANG_PREFIX + "dimensions") // FIXME 1.21 :: there is also BuiltinDimensionTypes.OVERWORLD_CAVES?
+                    .defineList("dimensions", Collections.singletonList(string(BuiltinDimensionTypes.OVERWORLD)), STRING_PREDICATE);
             this.allowedBlocks = builder.comment("Names of blocks this mob is allowed to spawn on. Leave blank to ignore block names.")
                     .translation(LANG_PREFIX + "allowed_blocks")
                     .defineList("allowed_blocks", allowedBlocks, STRING_PREDICATE);
@@ -243,11 +256,11 @@ public final class ConfigHandler {
             builder.push("foliaath");
             spawnConfig = new SpawnConfig(builder,
                     70, 1, 4, 1,
-                    new BiomeConfig(builder, Collections.singletonList("minecraft:is_jungle"), Collections.emptyList(), Collections.emptyList()),
+                    new BiomeConfig(builder, Collections.singletonList(string(Tags.Biomes.IS_JUNGLE)), Collections.emptyList(), Collections.emptyList()),
                     Collections.emptyList(),
-                    Arrays.asList("minecraft:valid_spawn", "minecraft:leaves", "minecraft:logs"),
+                    Arrays.asList(string(BlockTags.ANIMALS_SPAWNABLE_ON), string(BlockTags.LEAVES), string(BlockTags.LOGS)),
                     -65, 60, true, false, false,
-                    Arrays.asList("minecraft:villages", "minecraft:pillager_outposts")
+                    Arrays.asList(string(BuiltinStructureSets.VILLAGES), string(BuiltinStructureSets.PILLAGER_OUTPOSTS))
 
             );
             combatConfig = new CombatConfig(builder, 1, 1);
@@ -265,11 +278,11 @@ public final class ConfigHandler {
             builder.comment("Controls spawning for Umvuthana hunting groups", "Group size controls how many raptors spawn, not followers", "See Umvuthi config for grove structure controls");
             spawnConfig = new SpawnConfig(builder,
                     5, 1, 1, 1,
-                    new BiomeConfig(builder, Collections.singletonList("minecraft:is_savanna"), Collections.emptyList(), Collections.emptyList()),
+                    new BiomeConfig(builder, Collections.singletonList(string(Tags.Biomes.IS_SAVANNA)), Collections.emptyList(), Collections.emptyList()),
                     Collections.emptyList(),
-                    Arrays.asList("minecraft:valid_spawn", "minecraft:sand"),
+                    Arrays.asList(string(BlockTags.ANIMALS_SPAWNABLE_ON), string(BlockTags.SAND)),
                     -65, 60, false, false, false,
-                    Arrays.asList("minecraft:villages", "minecraft:pillager_outposts", "mowziesmobs:umvuthana_groves")
+                    Arrays.asList(string(BuiltinStructureSets.VILLAGES), string(BuiltinStructureSets.PILLAGER_OUTPOSTS), string(StructureSetHandler.UMVUTHANA_GROVES))
             );
             combatConfig = new CombatConfig(builder,1, 1);
             builder.pop();
@@ -284,12 +297,12 @@ public final class ConfigHandler {
         Naga(final ModConfigSpec.Builder builder) {
             builder.push("naga");
             spawnConfig = new SpawnConfig(builder,
-                    13, 2, 3, 1,
-                    new BiomeConfig(builder, Arrays.asList("minecraft:is_beach,minecraft:is_mountain", "minecraft:is_beach,minecraft:is_hill"), Collections.singletonList("minecraft:stony_shore"), Collections.emptyList()),
+                    20, 1, 2, 1,
+                    new BiomeConfig(builder, Arrays.asList(string(Tags.Biomes.IS_BEACH), string(Tags.Biomes.IS_MOUNTAIN), string(BiomeTags.IS_HILL)), Collections.singletonList(string(Biomes.STONY_SHORE)), Collections.emptyList()),
                     Collections.emptyList(),
-                    Collections.emptyList(),
-                    -65, 70, false, true, false,
-                    Arrays.asList("minecraft:villages", "minecraft:pillager_outposts")
+                    List.of(string(BlockTags.ANIMALS_SPAWNABLE_ON), string(BlockTags.BASE_STONE_OVERWORLD)),
+                    -65, 68, true, true, false,
+                    Arrays.asList(string(BuiltinStructureSets.VILLAGES), string(BuiltinStructureSets.PILLAGER_OUTPOSTS))
             );
             combatConfig = new CombatConfig(builder,1, 1);
             builder.pop();
@@ -305,9 +318,9 @@ public final class ConfigHandler {
             builder.push("lantern");
             spawnConfig = new SpawnConfig(builder,
                     5, 2, 4, 1,
-                    new BiomeConfig(builder, Collections.singletonList("minecraft:is_forest,mowziesmobs:is_magical,!forge:is_snowy"), Collections.emptyList(), Collections.emptyList()),
+                    new BiomeConfig(builder, List.of(string(Tags.Biomes.IS_FOREST), string(MMBiomeTags.IS_MAGICAL), inverted(Tags.Biomes.IS_SNOWY)), Collections.emptyList(), Collections.emptyList()),
                     Collections.emptyList(),
-                    Arrays.asList("minecraft:valid_spawn", "minecraft:leaves", "minecraft:logs"),
+                    Arrays.asList(string(BlockTags.ANIMALS_SPAWNABLE_ON), string(BlockTags.LEAVES), string(BlockTags.LOGS)),
                     -65, 60, true, false, false,
                     Collections.emptyList()
             );
@@ -325,9 +338,9 @@ public final class ConfigHandler {
             builder.push("grottol");
             this.spawnConfig = new SpawnConfig(builder,
                     2, 1, 1, 1,
-                    new BiomeConfig(builder,  Collections.singletonList("!forge:is_mushroom"), Collections.emptyList(), Collections.emptyList()),
+                    new BiomeConfig(builder,  Collections.singletonList(inverted(Tags.Biomes.IS_MUSHROOM)), Collections.emptyList(), Collections.emptyList()),
                     Collections.emptyList(),
-                    Collections.singletonList("minecraft:base_stone_overworld"),
+                    Collections.singletonList(string(BlockTags.BASE_STONE_OVERWORLD)),
                     16, -65, true, false, true,
                     Collections.emptyList()
             );
@@ -344,7 +357,7 @@ public final class ConfigHandler {
         FerrousWroughtnaut(final ModConfigSpec.Builder builder) {
             builder.push("ferrous_wroughtnaut");
             generationConfig = new GenerationConfig(builder, 15, 5,
-                    new BiomeConfig(builder, Collections.singletonList("!minecraft:is_ocean"), Collections.emptyList(), Collections.emptyList()),
+                    new BiomeConfig(builder, Collections.singletonList(inverted(Tags.Biomes.IS_OCEAN)), Collections.emptyList(), Collections.emptyList()),
                     20, 50,
                     Collections.emptyList()
             );
@@ -376,9 +389,9 @@ public final class ConfigHandler {
             builder.push("umvuthi");
             builder.comment("Generation controls for Umvuthana Groves");
             generationConfig = new GenerationConfig(builder, 25, 8,
-                    new BiomeConfig(builder, Collections.singletonList("minecraft:is_savanna"), Collections.emptyList(), Collections.emptyList()),
+                    new BiomeConfig(builder, Collections.singletonList(string(Tags.Biomes.IS_SAVANNA)), Collections.emptyList(), Collections.emptyList()),
                     50, 100,
-                    Arrays.asList("minecraft:villages", "minecraft:pillager_outposts")
+                    Arrays.asList(string(BuiltinStructureSets.VILLAGES), string(BuiltinStructureSets.PILLAGER_OUTPOSTS))
             );
             combatConfig = new CombatConfig(builder, 1, 1);
             this.hasBossBar = builder.comment("Disable/enable Umvuthi's boss health bar")
@@ -389,7 +402,7 @@ public final class ConfigHandler {
                     .define("heals_out_of_battle", true);
             this.whichItem = builder.comment("Which item Umvuthi desires in exchange for the Sun's Blessing")
                     .translation(LANG_PREFIX + "trade_which_item")
-                    .define("trade_which_item", "minecraft:gold_block", ITEM_NAME_PREDICATE);
+                    .define("trade_which_item", string(Items.GOLD_BLOCK), ITEM_NAME_PREDICATE);
             this.howMany = builder.comment("How many of the item Umvuthi desires in exchange for the Sun's Blessing")
                     .translation(LANG_PREFIX + "trade_how_many")
                     .defineInRange("trade_how_many", 7, 0, 64);
@@ -418,9 +431,9 @@ public final class ConfigHandler {
         Frostmaw(final ModConfigSpec.Builder builder) {
             builder.push("frostmaw");
             generationConfig = new GenerationConfig(builder, 25, 8,
-                    new BiomeConfig(builder, Collections.singletonList("forge:is_snowy,!minecraft:is_ocean,!minecraft:is_river,!minecraft:is_beach,!minecraft:is_forest,!minecraft:is_taiga"), Collections.emptyList(), Collections.emptyList()),
+                    new BiomeConfig(builder, List.of(string(Tags.Biomes.IS_SNOWY),inverted(Tags.Biomes.IS_OCEAN),inverted(Tags.Biomes.IS_RIVER), inverted(Tags.Biomes.IS_BEACH), inverted(Tags.Biomes.IS_FOREST), inverted(Tags.Biomes.IS_TAIGA)), Collections.emptyList(), Collections.emptyList()),
                     50, 100,
-                    Arrays.asList("minecraft:villages", "minecraft:pillager_outposts")
+                    Arrays.asList(string(BuiltinStructureSets.VILLAGES), string(BuiltinStructureSets.PILLAGER_OUTPOSTS))
             );
             combatConfig = new CombatConfig(builder, 1, 1);
             this.hasBossBar = builder.comment("Disable/enable Frostmaw's boss health bar")
@@ -455,7 +468,7 @@ public final class ConfigHandler {
         Sculptor(final ModConfigSpec.Builder builder) {
             builder.push("sculptor");
             generationConfig = new GenerationConfig(builder, 25, 8,
-                    new BiomeConfig(builder, Collections.singletonList("forge:is_peak"), Collections.emptyList(), Collections.emptyList()),
+                    new BiomeConfig(builder, Collections.singletonList(string(Tags.Biomes.IS_MOUNTAIN_PEAK)), Collections.emptyList(), Collections.emptyList()),
                     120, 200,
                     Collections.emptyList()
             );
@@ -474,7 +487,7 @@ public final class ConfigHandler {
                     .define("has_boss_bar", true);
             this.whichItem = builder.comment("Which item the Sculptor desires in exchange for a chance to try his challenge")
                     .translation(LANG_PREFIX + "trade_which_item")
-                    .define("trade_which_item", "minecraft:crossbow", ITEM_NAME_PREDICATE);
+                    .define("trade_which_item", string(Items.CROSSBOW), ITEM_NAME_PREDICATE);
             this.howMany = builder.comment("How many of the item the Sculptor desires in exchange for a chance to try his challenge")
                     .translation(LANG_PREFIX + "trade_how_many")
                     .defineInRange("trade_how_many", 1, 0, 64);
@@ -826,5 +839,29 @@ public final class ConfigHandler {
         public final ToolsAndAbilities TOOLS_AND_ABILITIES;
 
         public final Mobs MOBS;
+    }
+
+    private static String inverted(Object object) {
+        return "!" + string(object);
+    }
+
+    private static String string(Object object) {
+        if (object instanceof TagKey<?> tag) {
+            return tag.location().toString();
+        }
+
+        if (object instanceof ResourceKey<?> key) {
+            return key.location().toString();
+        }
+
+        if (object instanceof Item item) {
+            return string(item.builtInRegistryHolder().key());
+        }
+
+        if (object instanceof Block block) {
+            return string(block.builtInRegistryHolder().key());
+        }
+
+        throw new IllegalArgumentException("Cannot handle object type [" + object.getClass() + "]");
     }
 }

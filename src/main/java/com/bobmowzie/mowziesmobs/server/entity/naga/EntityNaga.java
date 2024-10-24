@@ -326,11 +326,6 @@ public class EntityNaga extends MowzieLLibraryEntity implements RangedAttackMob,
     }
 
     @Override
-    public boolean shouldRenderAtSqrDistance(double distance) {
-        return distance < 16600;
-    }
-
-    @Override
     public AABB getBoundingBoxForCulling() {
         return super.getBoundingBoxForCulling().inflate(12.0D);
     }
@@ -397,9 +392,9 @@ public class EntityNaga extends MowzieLLibraryEntity implements RangedAttackMob,
 
         if (hasEffect(MobEffects.POISON)) removeEffectNoUpdate(MobEffects.POISON);
 
-//        if (tickCount == 1) {
-//            System.out.println("Naga at " + position());
-//        }
+        if (tickCount == 1) {
+            System.out.println("Naga at " + position());
+        }
 
         if (!level().isClientSide) {
             if (getTarget() != null && targetDistance < 29.5 && movement != EnumNagaMovement.FALLEN && movement != EnumNagaMovement.FALLING) {
@@ -884,6 +879,16 @@ public class EntityNaga extends MowzieLLibraryEntity implements RangedAttackMob,
         int k = compound.getInt("HomePosZ");
         int dist = compound.getInt("HomeDist");
         this.restrictTo(new BlockPos(i, j, k), dist);
+    }
+
+    @Override
+    public int getDespawnDistance() {
+        return 256;
+    }
+
+    @Override
+    public int getNoDespawnDistance() {
+        return 128;
     }
 
     @Override

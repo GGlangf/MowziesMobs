@@ -30,7 +30,6 @@ import com.bobmowzie.mowziesmobs.server.item.ItemHandler;
 import com.bobmowzie.mowziesmobs.server.item.ItemSculptorStaff;
 import com.bobmowzie.mowziesmobs.server.potion.EffectGeomancy;
 import com.bobmowzie.mowziesmobs.server.sound.MMSounds;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -717,7 +716,7 @@ public class EntitySculptor extends MowzieGeckoEntity {
                 this.level().playSound(MMCommon.PROXY.getLocalPlayer(), getX(), getY(), getZ(), MMSounds.ENTITY_SCULPTOR_MAKE_GAUNTLET_PIECE.get(), SoundSource.NEUTRAL, 1, 0.7f + 0.6f * random.nextFloat());
             }
             else if (sound.equals("clap1")) {
-                this.level().playSound(Minecraft.getInstance().player, getX(), getY(), getZ(), MMSounds.ENTITY_SCULPTOR_CLAP.get(), SoundSource.NEUTRAL, 1, 0.7f + 0.6f * random.nextFloat());
+                this.level().playSound(MMCommon.PROXY.getLocalPlayer(), getX(), getY(), getZ(), MMSounds.ENTITY_SCULPTOR_CLAP.get(), SoundSource.NEUTRAL, 1, 0.7f + 0.6f * random.nextFloat());
             }
         });
     }

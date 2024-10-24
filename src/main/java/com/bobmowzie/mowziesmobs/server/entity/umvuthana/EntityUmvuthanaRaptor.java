@@ -186,7 +186,6 @@ public class EntityUmvuthanaRaptor extends EntityUmvuthana implements LeaderSuns
 
     @Override
     public void checkDespawn() {
-        super.checkDespawn();
         if (this.level().getDifficulty() == Difficulty.PEACEFUL && this.shouldDespawnInPeaceful()) {
             this.discard() ;
         } else if (!this.isPersistenceRequired() && !this.requiresCustomPersistence()) {

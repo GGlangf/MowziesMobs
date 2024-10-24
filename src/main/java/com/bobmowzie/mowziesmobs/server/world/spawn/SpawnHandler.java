@@ -60,7 +60,7 @@ public class SpawnHandler {
         event.register(EntityHandler.FOLIAATH.get(), MM_SPAWN, Heightmap.Types.MOTION_BLOCKING, MowzieEntity::spawnPredicate, RegisterSpawnPlacementsEvent.Operation.REPLACE);
         event.register(EntityHandler.LANTERN.get(), MM_SPAWN, Heightmap.Types.MOTION_BLOCKING, MowzieEntity::spawnPredicate, RegisterSpawnPlacementsEvent.Operation.REPLACE);
         event.register(EntityHandler.UMVUTHANA_RAPTOR.get(), MM_SPAWN, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, MowzieEntity::spawnPredicate, RegisterSpawnPlacementsEvent.Operation.REPLACE);
-        event.register(EntityHandler.NAGA.get(), SpawnPlacementTypes.NO_RESTRICTIONS, Heightmap.Types.MOTION_BLOCKING, MowzieEntity::spawnPredicate, RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        event.register(EntityHandler.NAGA.get(), MM_SPAWN, Heightmap.Types.MOTION_BLOCKING, MowzieEntity::spawnPredicate, RegisterSpawnPlacementsEvent.Operation.REPLACE);
         event.register(EntityHandler.GROTTOL.get(), MM_SPAWN, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, MowzieEntity::spawnPredicate, RegisterSpawnPlacementsEvent.Operation.REPLACE);
         event.register(EntityHandler.UMVUTHANA_CRANE.get(), MM_SPAWN, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, MowzieEntity::spawnPredicate, RegisterSpawnPlacementsEvent.Operation.REPLACE);
     }
