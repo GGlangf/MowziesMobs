@@ -193,7 +193,7 @@ public abstract class EntityUmvuthana extends MowzieGeckoEntity {
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        setPathfindingMalus(PathType.DAMAGE_FIRE, -8);
+//        setPathfindingMalus(PathType.DAMAGE_FIRE, -8);
         goalSelector.addGoal(0, new FloatGoal(this));
         goalSelector.addGoal(0, new UseAbilityAI<>(this, ACTIVATE_ABILITY));
         goalSelector.addGoal(0, new UseAbilityAI<>(this, DEACTIVATE_ABILITY));
