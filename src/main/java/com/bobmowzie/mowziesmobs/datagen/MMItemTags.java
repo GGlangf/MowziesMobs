@@ -70,6 +70,8 @@ public class MMItemTags extends ItemTagsProvider {
     private void addToCommonTags() {
         tag(Tags.Items.TOOLS_SPEAR).add(ItemHandler.SPEAR.value());
         tag(Tags.Items.MUSIC_DISCS).add(ItemHandler.PETIOLE_MUSIC_DISC.value());
+        tag(Tags.Items.SEEDS).add(ItemHandler.FOLIAATH_SEED.value());
+        tag(Tags.Items.SLIME_BALLS).add(ItemHandler.GLOWING_JELLY.value());
     }
 
     private static TagKey<Item> key(String path) {
