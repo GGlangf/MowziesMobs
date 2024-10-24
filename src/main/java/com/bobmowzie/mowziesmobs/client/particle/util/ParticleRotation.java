@@ -8,7 +8,6 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.network.codec.NeoForgeStreamCodecs;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Optional;
 import java.util.stream.Stream;
 
 public abstract class ParticleRotation {
@@ -50,10 +49,10 @@ public abstract class ParticleRotation {
 
         @Override
         public <T> DataResult<ParticleRotation> decode(DynamicOps<T> ops, MapLike<T> input) {
-            Optional<Type> typeOptional = TYPE_CODEC.fieldOf("type").decode(ops, input).result();
+            DataResult<Type> typeResult = TYPE_CODEC.fieldOf("type").decode(ops, input);
 
-            if (typeOptional.isPresent()) {
-                Type type = typeOptional.get();
+            if (typeResult.isSuccess()) {
+                Type type = typeResult.getOrThrow();
                 ParticleRotation rotation;
 
                 switch (type) {
@@ -93,7 +92,7 @@ public abstract class ParticleRotation {
 
                 return DataResult.success(rotation);
             } else {
-                return DataResult.error(() -> "No valid type specified");
+                return DataResult.error(() -> "Invalid rotation [" + typeResult + "]");
             }
         }
 
