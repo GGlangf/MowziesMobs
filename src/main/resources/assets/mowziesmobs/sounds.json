@@ -656,6 +656,10 @@
 		],
 		"subtitle": "subtitles.mowziesmobs.sculptor.laugh"
 	},
+	"sculptor.test_start": {
+		"sounds": [ "mowziesmobs:entity/sculptor/test_start" ],
+		"subtitle": "subtitles.mowziesmobs.sculptor.test_start"
+	},
 	"sculptor.disappoint": {
 		"sounds": [
 			"mowziesmobs:entity/sculptor/disappoint1",
@@ -703,10 +707,6 @@
 		"sounds": [ "mowziesmobs:entity/sculptor/make_gauntlet_piece" ],
 		"subtitle": "subtitles.mowziesmobs.sculptor.make_gauntlet_piece"
 	},
-	"sculptor.finish_gauntlet": {
-		"sounds": [ "mowziesmobs:entity/sculptor/finish_gauntlet" ],
-		"subtitle": "subtitles.mowziesmobs.sculptor.finish_gauntlet"
-	},
 	"sculptor.disappear": {
 		"sounds": [ "mowziesmobs:entity/sculptor/disappear" ],
 		"subtitle": "subtitles.mowziesmobs.sculptor.disappear"
@@ -714,6 +714,14 @@
 	"sculptor.disappear_effects": {
 		"sounds": [ "mowziesmobs:entity/sculptor/disappear_effects" ],
 		"subtitle": "subtitles.mowziesmobs.sculptor.disappear_effects"
+	},
+	"sculptor.clap": {
+		"sounds": [
+			"mowziesmobs:entity/sculptor/clap1",
+			"mowziesmobs:entity/sculptor/clap2",
+			"mowziesmobs:entity/sculptor/clap3"
+		],
+		"subtitle": "subtitles.mowziesmobs.sculptor.clap"
 	},
 	"misc.groundhit1": {
 		"sounds": [ "mowziesmobs:entity/misc/ground_hit1" ],

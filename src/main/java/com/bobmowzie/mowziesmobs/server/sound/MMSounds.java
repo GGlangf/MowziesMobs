@@ -204,17 +204,18 @@ public final class MMSounds {
     public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_SCULPTOR_GREETING = create("sculptor.greeting");
     public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_SCULPTOR_HM = create("sculptor.hm");
     public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_SCULPTOR_LAUGH = create("sculptor.laugh");
+    public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_SCULPTOR_TEST_START = create("sculptor.test_start");
     public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_SCULPTOR_DISAPPOINT = create("sculptor.disappoint");
     public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_SCULPTOR_CONGRATS = create("sculptor.congrats");
     public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_SCULPTOR_DEATH = create("sculptor.death");
     public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_SCULPTOR_HURT = create("sculptor.hurt");
     public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_SCULPTOR_ATTACK = create("sculptor.attack");
     public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_SCULPTOR_MAKE_GAUNTLET = create("sculptor.make_gauntlet");
-    public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_SCULPTOR_FINISH_GAUNTLET = create("sculptor.finish_gauntlet");
     public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_SCULPTOR_MAKE_GAUNTLET_EFFECTS = create("sculptor.make_gauntlet_effects");
     public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_SCULPTOR_MAKE_GAUNTLET_PIECE = create("sculptor.make_gauntlet_piece");
     public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_SCULPTOR_DISAPPEAR = create("sculptor.disappear");
     public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_SCULPTOR_DISAPPEAR_EFFECTS = create("sculptor.disappear_effects");
+    public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_SCULPTOR_CLAP = create("sculptor.clap");
 
     public static final DeferredHolder<SoundEvent, SoundEvent> EFFECT_GEOMANCY_SMALL_CRASH = create("geomancy.smallcrash");
     public static final DeferredHolder<SoundEvent, SoundEvent> EFFECT_GEOMANCY_MAGIC_SMALL = create("geomancy.hitsmall");
