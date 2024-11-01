@@ -1,6 +1,7 @@
 package com.bobmowzie.mowziesmobs.server.entity;
 
 import com.bobmowzie.mowziesmobs.MowziesMobs;
+import com.bobmowzie.mowziesmobs.server.entity.bluff.EntityBluff;
 import com.bobmowzie.mowziesmobs.server.entity.effects.*;
 import com.bobmowzie.mowziesmobs.server.entity.effects.geomancy.*;
 import com.bobmowzie.mowziesmobs.server.entity.foliaath.EntityBabyFoliaath;
@@ -51,6 +52,9 @@ public class EntityHandler {
     public static final RegistryObject<EntityType<EntityLantern>> LANTERN = REG.register("lantern", () -> EntityType.Builder.of(EntityLantern::new, MobCategory.AMBIENT).sized(1.0f, 1.0f).clientTrackingRange(8).setUpdateInterval(1).build(new ResourceLocation(MowziesMobs.MODID, "lantern").toString()));
     public static final RegistryObject<EntityType<EntityNaga>> NAGA = REG.register("naga", () -> EntityType.Builder.of(EntityNaga::new, MobCategory.MONSTER).sized(3.0f, 1.0f).clientTrackingRange(13).canSpawnFarFromPlayer().setUpdateInterval(1).build(new ResourceLocation(MowziesMobs.MODID, "naga").toString()));
     public static final RegistryObject<EntityType<EntitySculptor>> SCULPTOR = REG.register("sculptor", () -> EntityType.Builder.of(EntitySculptor::new, MobCategory.MISC).sized(1.0f, 2.3f).clientTrackingRange(8).setUpdateInterval(1).build(new ResourceLocation(MowziesMobs.MODID, "sculptor").toString()));
+    public static final RegistryObject<EntityType<EntityBluff>> BLUFF = REG.register("bluff", () -> EntityType.Builder.of(EntityBluff::new, MobCategory.MISC).sized(1.0f, 1.6f).clientTrackingRange(8).setUpdateInterval(1).build(new ResourceLocation(MowziesMobs.MODID, "bluff").toString()));
+
+
 
     private static EntityType.Builder<EntitySunstrike> sunstrikeBuilder() {
         return EntityType.Builder.of(EntitySunstrike::new, MobCategory.MISC);
@@ -151,5 +155,7 @@ public class EntityHandler {
         event.put(EntityHandler.LANTERN.get(), EntityLantern.createAttributes().build());
         event.put(EntityHandler.GROTTOL.get(), EntityGrottol.createAttributes().build());
         event.put(EntityHandler.SCULPTOR.get(), EntitySculptor.createAttributes().build());
+        event.put(EntityHandler.BLUFF.get(), EntityBluff.createAttributes().build());
+
     }
 }
