@@ -13,6 +13,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -63,6 +64,11 @@ public class EntityBoulderSculptor extends EntityBoulderProjectile {
     // When a boulder is fired, it replaces itself with a delayed boulder
     public void delayActivation(int delay) {
         timeUntilActivation = delay;
+    }
+
+    @Override
+    protected boolean shouldExtendBoundsDown() {
+        return false;
     }
 
     @Override
@@ -127,7 +133,7 @@ public class EntityBoulderSculptor extends EntityBoulderProjectile {
 
         // If it's not the main path, path has a random chance of ending. Chance is weighted by the number of live paths.
         if (!isMainPath) {
-            if (random.nextFloat() < MathUtils.fit(sculptor.numLivePaths, 3, 7, 0.0, 0.4)) {
+            if (random.nextFloat() < MathUtils.fit(sculptor.numLivePaths, 3, 7, 0.0, 0.45)) {
                 sculptor.numLivePaths--;
                 return;
             }
@@ -135,7 +141,7 @@ public class EntityBoulderSculptor extends EntityBoulderProjectile {
 
         // Path has a random chance of branching. Chance is weighted by the number of live paths.
         int numNextBoulders = 1;
-        if (random.nextFloat() < MathUtils.fit(sculptor.numLivePaths, 1, 5, 0.2, 0.0)) {
+        if (random.nextFloat() < MathUtils.fit(sculptor.numLivePaths, 1, 5, 0.15, 0.0)) {
             numNextBoulders = 2;
         }
 
@@ -274,7 +280,7 @@ public class EntityBoulderSculptor extends EntityBoulderProjectile {
         for (int i = 0; i < substeps; i++) {
             double time = (totalTime/(double)substeps) * i;
             Vec3 jumpPosition = new Vec3(0, gravity * time * time, 0).add(jumpVel.scale(time)).add(startPos);
-            AABB playerBounds = EntityType.PLAYER.getDimensions().makeBoundingBox(jumpPosition);
+            AABB playerBounds = EntityType.PLAYER.getDimensions().makeBoundingBox(jumpPosition).expandTowards(0, 0.5, 0);
             if (thisBounds.intersects(playerBounds)) return false;
         }
 

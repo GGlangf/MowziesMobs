@@ -87,7 +87,7 @@ import java.util.function.Predicate;
 public class EntitySculptor extends MowzieGeckoEntity {
     public static int TEST_HEIGHT = 20;
     public static int TEST_RADIUS_BOTTOM = 6;
-    public static int TEST_RADIUS = 16;
+    public static int TEST_RADIUS = 12;
     public static int TEST_MAX_RADIUS_HEIGHT = 20;
     public static double TEST_RADIUS_FALLOFF = 5;
     private static final int HEAL_PAUSE = 75;

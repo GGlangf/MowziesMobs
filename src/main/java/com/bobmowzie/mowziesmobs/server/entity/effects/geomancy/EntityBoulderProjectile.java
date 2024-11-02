@@ -77,8 +77,12 @@ public class EntityBoulderProjectile extends EntityBoulderBase {
     @Override
     protected @NotNull AABB makeBoundingBox() {
         AABB boundingBox = super.makeBoundingBox();
-        if (!travelling) boundingBox = boundingBox.expandTowards(0, -0.5, 0);
+        if (shouldExtendBoundsDown()) boundingBox = boundingBox.expandTowards(0, -0.5, 0);
         return boundingBox;
+    }
+
+    protected boolean shouldExtendBoundsDown() {
+        return !travelling;
     }
 
     protected void findRidingEntities() {
