@@ -672,7 +672,7 @@ public class EntitySculptor extends MowzieGeckoEntity {
 
     @Override
     protected InteractionResult mobInteract(Player player, InteractionHand hand) {
-        if (isTesting() && !getPillar().isRising()) {
+        if (isTesting() && getPillar() != null && !getPillar().isRising()) {
             if (player == testingPlayer && getActiveAbilityType() != FAIL_TEST) sendAbilityMessage(PASS_TEST);
         }
         else {
