@@ -4,7 +4,10 @@ import com.bobmowzie.mowziesmobs.server.entity.MowzieEntity;
 import com.ilexiconn.llibrary.client.model.tools.ControlledAnimation;
 import net.minecraft.client.Minecraft;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
+@OnlyIn(Dist.CLIENT)
 public class BossMusic<T extends MowzieEntity> {
     protected T boss;
     protected SoundEvent soundEvent;

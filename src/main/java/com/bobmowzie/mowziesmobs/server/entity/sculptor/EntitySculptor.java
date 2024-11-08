@@ -501,7 +501,7 @@ public class EntitySculptor extends MowzieGeckoEntity {
                     if (!level().getBlockState(checkPos).isAir()) {
                         isTestObstructed = true;
                         isTestObstructedSoFar = true;
-                        if (level().isClientSide() && isPlayerInTestZone(Minecraft.getInstance().player) && blockHasExposedSide(checkPos)) {
+                        if (level().isClientSide() && isPlayerInTestZone(MowziesMobs.PROXY.getPlayer()) && blockHasExposedSide(checkPos)) {
                             MowziesMobs.PROXY.sculptorMarkBlock(this.getId(), checkPos);
                             ParticleRotation.FaceCamera faceCamera = new ParticleRotation.FaceCamera(0);
                             AdvancedParticleBase.spawnAlwaysVisibleParticle(level(), ParticleHandler.RING2.get(), 64, checkPos.getX() + 0.5, checkPos.getY() + 0.5, checkPos.getZ() + 0.5, 0, 0, 0, faceCamera, 3.5F, 0.83f, 1, 0.39f, 1, 1, 20, true, false, new ParticleComponent[]{
@@ -711,13 +711,13 @@ public class EntitySculptor extends MowzieGeckoEntity {
         controller.setSoundKeyframeHandler(state -> {
             String sound = state.getKeyframeData().getSound();
             if (sound.equals("make_gauntlet_effects")) {
-                this.level().playSound(Minecraft.getInstance().player, getX(), getY(), getZ(), MMSounds.ENTITY_SCULPTOR_MAKE_GAUNTLET_EFFECTS.get(), SoundSource.NEUTRAL, 1, 1);
+                this.level().playSound(MowziesMobs.PROXY.getPlayer(), getX(), getY(), getZ(), MMSounds.ENTITY_SCULPTOR_MAKE_GAUNTLET_EFFECTS.get(), SoundSource.NEUTRAL, 1, 1);
             }
             else if (sound.equals("make_gauntlet_piece")) {
-                this.level().playSound(Minecraft.getInstance().player, getX(), getY(), getZ(), MMSounds.ENTITY_SCULPTOR_MAKE_GAUNTLET_PIECE.get(), SoundSource.NEUTRAL, 1, 0.7f + 0.6f * random.nextFloat());
+                this.level().playSound(MowziesMobs.PROXY.getPlayer(), getX(), getY(), getZ(), MMSounds.ENTITY_SCULPTOR_MAKE_GAUNTLET_PIECE.get(), SoundSource.NEUTRAL, 1, 0.7f + 0.6f * random.nextFloat());
             }
             else if (sound.equals("clap1")) {
-                this.level().playSound(Minecraft.getInstance().player, getX(), getY(), getZ(), MMSounds.ENTITY_SCULPTOR_CLAP.get(), SoundSource.NEUTRAL, 1, 0.7f + 0.6f * random.nextFloat());
+                this.level().playSound(MowziesMobs.PROXY.getPlayer(), getX(), getY(), getZ(), MMSounds.ENTITY_SCULPTOR_CLAP.get(), SoundSource.NEUTRAL, 1, 0.7f + 0.6f * random.nextFloat());
             }
         });
     }
@@ -788,6 +788,11 @@ public class EntitySculptor extends MowzieGeckoEntity {
     @Override
     public BossMusic getBossMusic() {
         return BossMusicPlayer.SCULPTOR_MUSIC;
+    }
+
+    @Override
+    public boolean hasBossMusic() {
+        return true;
     }
 
     @Override

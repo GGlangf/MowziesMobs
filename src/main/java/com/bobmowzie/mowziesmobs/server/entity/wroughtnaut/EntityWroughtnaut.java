@@ -628,6 +628,11 @@ public class EntityWroughtnaut extends MowzieLLibraryEntity implements Enemy {
     }
 
     @Override
+    public boolean hasBossMusic() {
+        return true;
+    }
+
+    @Override
     protected boolean canPlayMusic() {
         return super.canPlayMusic() && (active || getAnimation() == ACTIVATE_ANIMATION);
     }

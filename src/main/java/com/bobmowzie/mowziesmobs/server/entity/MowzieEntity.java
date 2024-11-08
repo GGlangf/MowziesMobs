@@ -295,7 +295,7 @@ public abstract class MowzieEntity extends PathfinderMob implements IEntityAddit
         }
         willLandSoon = !onGround() && level().noCollision(getBoundingBox().move(getDeltaMovement()));
 
-        if (!level().isClientSide && getBossMusic() != null) {
+        if (!level().isClientSide && hasBossMusic()) {
             if (canPlayMusic()) {
                 this.level().broadcastEntityEvent(this, MUSIC_PLAY_ID);
             }
@@ -593,6 +593,11 @@ public abstract class MowzieEntity extends PathfinderMob implements IEntityAddit
         }
     }
 
+    public boolean hasBossMusic() {
+        return false;
+    }
+
+    @OnlyIn(Dist.CLIENT)
     public BossMusic getBossMusic() {
         return null;
     }
