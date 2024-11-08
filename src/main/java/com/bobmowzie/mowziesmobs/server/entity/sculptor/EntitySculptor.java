@@ -1282,7 +1282,7 @@ public class EntitySculptor extends MowzieGeckoEntity {
             super.tickUsing();
             int start = 1;
             int end = 70;
-            if (getTicksInUse() > start && getTicksInUse() < end) {
+            if (getLevel().isClientSide() && getTicksInUse() > start && getTicksInUse() < end) {
                 float a = (getTicksInUse() - (float) start) / (float)(end - start);
                 float spawnRate = 15.0f * (float) Math.pow(2, -(Math.pow(a - 0.5, 2) / 0.05));
                 Vec3 windForce = new Vec3(1, 0, 0).yRot((float)Math.toRadians(-getUser().yBodyRot));

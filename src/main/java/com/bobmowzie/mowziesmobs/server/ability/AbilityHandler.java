@@ -129,7 +129,21 @@ public enum AbilityHandler {
             Ability instance = abilityCapability.getAbilityMap().get(abilityType);
             if (instance.isUsing()) {
                 instance.jumpToSection(sectionIndex);
-                MowziesMobs.NETWORK.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> entity), new MessageJumpToAbilitySection(entity.getId(), ArrayUtils.indexOf(abilityCapability.getAbilityTypesOnEntity(entity), abilityType), sectionIndex));
+                MowziesMobs.NETWORK.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> entity), new MessageJumpToAbilitySection.MessageJumpToAbilitySectionServerToClient(entity.getId(), ArrayUtils.indexOf(abilityCapability.getAbilityTypesOnEntity(entity), abilityType), sectionIndex));
+            }
+        }
+    }
+
+    public <T extends Player> void sendClientToServerJumpToSectionMessage(T entity, AbilityType<?, ?> abilityType, int sectionIndex) {
+        if (!(entity.level().isClientSide && entity instanceof LocalPlayer)) {
+            return;
+        }
+        AbilityCapability.IAbilityCapability abilityCapability = getAbilityCapability(entity);
+        if (abilityCapability != null) {
+            Ability instance = abilityCapability.getAbilityMap().get(abilityType);
+            if (instance.isUsing()) {
+                instance.jumpToSection(sectionIndex);
+                MowziesMobs.NETWORK.sendToServer(new MessageJumpToAbilitySection.MessageJumpToAbilitySectionServerToClient(entity.getId(), ArrayUtils.indexOf(abilityCapability.getAbilityTypesOnEntity(entity), abilityType), sectionIndex));
             }
         }
     }
