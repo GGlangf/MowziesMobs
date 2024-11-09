@@ -22,6 +22,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
@@ -110,6 +111,10 @@ public class ServerProxy {
     public void minecartParticles(ClientLevel world, AbstractMinecart minecart, float scale, double x, double y, double z, BlockState state, BlockPos pos) {
     }
 
+    public Player getPlayer() {
+        return null;
+    }
+
     public void initNetwork() {
         final String version = "1";
         MowziesMobs.NETWORK = NetworkRegistry.ChannelBuilder.named(new ResourceLocation(MowziesMobs.MODID, "net"))
@@ -132,7 +137,8 @@ public class ServerProxy {
         this.registerMessage(MessageUseAbility.class, MessageUseAbility::serialize, MessageUseAbility::deserialize, new MessageUseAbility.Handler());
         this.registerMessage(MessagePlayerUseAbility.class, MessagePlayerUseAbility::serialize, MessagePlayerUseAbility::deserialize, new MessagePlayerUseAbility.Handler());
         this.registerMessage(MessageInterruptAbility.class, MessageInterruptAbility::serialize, MessageInterruptAbility::deserialize, new MessageInterruptAbility.Handler());
-        this.registerMessage(MessageJumpToAbilitySection.class, MessageJumpToAbilitySection::serialize, MessageJumpToAbilitySection::deserialize, new MessageJumpToAbilitySection.Handler());
+        this.registerMessage(MessageJumpToAbilitySection.MessageJumpToAbilitySectionServerToClient.class, MessageJumpToAbilitySection.MessageJumpToAbilitySectionServerToClient::serialize, MessageJumpToAbilitySection.MessageJumpToAbilitySectionServerToClient::deserialize, new MessageJumpToAbilitySection.MessageJumpToAbilitySectionServerToClient.Handler());
+        this.registerMessage(MessageJumpToAbilitySection.MessageJumpToAbilitySectionClientToServer.class, MessageJumpToAbilitySection.MessageJumpToAbilitySectionClientToServer::serialize, MessageJumpToAbilitySection.MessageJumpToAbilitySectionClientToServer::deserialize, new MessageJumpToAbilitySection.MessageJumpToAbilitySectionClientToServer.Handler());
         this.registerMessage(MessageSculptorTrade.class, MessageSculptorTrade::serialize, MessageSculptorTrade::deserialize, new MessageSculptorTrade.Handler());
         this.registerMessage(MessageLinkEntities.class, MessageLinkEntities::serialize, MessageLinkEntities::deserialize, new MessageLinkEntities.Handler());
         this.registerMessage(MessageUpdateBossBar.class, MessageUpdateBossBar::serialize, MessageUpdateBossBar::deserialize, new MessageUpdateBossBar.Handler());

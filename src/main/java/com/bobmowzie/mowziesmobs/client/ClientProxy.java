@@ -26,6 +26,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.BlockDestructionProgress;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.state.BlockState;
@@ -176,5 +177,10 @@ public class ClientProxy extends ServerProxy {
             }
             blockMarking.tick();
         }
+    }
+
+    @Override
+    public Player getPlayer() {
+        return Minecraft.getInstance().player;
     }
 }

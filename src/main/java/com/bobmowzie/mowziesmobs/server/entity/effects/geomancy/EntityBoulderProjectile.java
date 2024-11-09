@@ -8,6 +8,7 @@ import com.bobmowzie.mowziesmobs.server.ability.AbilityHandler;
 import com.bobmowzie.mowziesmobs.server.config.ConfigHandler;
 import com.bobmowzie.mowziesmobs.server.entity.effects.EntityCameraShake;
 import com.bobmowzie.mowziesmobs.server.entity.sculptor.EntitySculptor;
+import com.bobmowzie.mowziesmobs.server.item.ItemHandler;
 import com.bobmowzie.mowziesmobs.server.potion.EffectGeomancy;
 import com.bobmowzie.mowziesmobs.server.sound.MMSounds;
 import com.google.common.collect.Iterables;
@@ -77,8 +78,12 @@ public class EntityBoulderProjectile extends EntityBoulderBase {
     @Override
     protected @NotNull AABB makeBoundingBox() {
         AABB boundingBox = super.makeBoundingBox();
-        if (!travelling) boundingBox = boundingBox.expandTowards(0, -0.5, 0);
+        if (shouldExtendBoundsDown()) boundingBox = boundingBox.expandTowards(0, -0.5, 0);
         return boundingBox;
+    }
+
+    protected boolean shouldExtendBoundsDown() {
+        return !travelling;
     }
 
     protected void findRidingEntities() {

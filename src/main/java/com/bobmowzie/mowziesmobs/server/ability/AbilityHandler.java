@@ -34,16 +34,14 @@ public enum AbilityHandler {
     public static final AbilityType<Player, IceBreathAbility> ICE_BREATH_ABILITY = new AbilityType<>("ice_breath", IceBreathAbility::new);
     public static final AbilityType<Player, SpawnBoulderAbility> SPAWN_BOULDER_ABILITY = new AbilityType<>("spawn_boulder", SpawnBoulderAbility::new);
     public static final AbilityType<Player, TunnelingAbility> TUNNELING_ABILITY = new AbilityType<>("tunneling", TunnelingAbility::new);
-    public static final AbilityType<Player, SimplePlayerAnimationAbility> HIT_BOULDER_ABILITY = new AbilityType<>("hit_boulder", (type, player) ->
-            new SimplePlayerAnimationAbility(type, (Player) player, "hit_boulder", 10, false, false)
-    );
+    public static final AbilityType<Player, HitBoulderAbility> HIT_BOULDER_ABILITY = new AbilityType<>("hit_boulder", HitBoulderAbility::new);
     public static final AbilityType<Player, SpawnPillarAbility> SPAWN_PILLAR_ABILITY = new AbilityType<>("spawn_pillar", SpawnPillarAbility::new);
     public static final AbilityType<Player, GroundSlamAbility> GROUND_SLAM_ABILITY = new AbilityType<>("ground_slam", GroundSlamAbility::new);
     public static final AbilityType<Player, BoulderRollAbility> BOULDER_ROLL_ABILITY = new AbilityType<>("boulder_roll", BoulderRollAbility::new);
     public static final AbilityType<Player, FissureAbility> FISSURE_ABILITY = new AbilityType<>("fissure", FissureAbility::new);
 
     public static final AbilityType<Player, SimplePlayerAnimationAbility> BACKSTAB_ABILITY = new AbilityType<>("backstab", (type, player) ->
-            new SimplePlayerAnimationAbility(type, (Player) player, "backstab", 12, true, true)
+            new SimplePlayerAnimationAbility(type, (Player) player, "backstab", 12, false, true, true)
     );
 
     public static final AbilityType<Player, RockSlingAbility> ROCK_SLING = new AbilityType<>("rock_sling", RockSlingAbility::new);
@@ -129,7 +127,21 @@ public enum AbilityHandler {
             Ability instance = abilityCapability.getAbilityMap().get(abilityType);
             if (instance.isUsing()) {
                 instance.jumpToSection(sectionIndex);
-                MowziesMobs.NETWORK.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> entity), new MessageJumpToAbilitySection(entity.getId(), ArrayUtils.indexOf(abilityCapability.getAbilityTypesOnEntity(entity), abilityType), sectionIndex));
+                MowziesMobs.NETWORK.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> entity), new MessageJumpToAbilitySection.MessageJumpToAbilitySectionServerToClient(entity.getId(), ArrayUtils.indexOf(abilityCapability.getAbilityTypesOnEntity(entity), abilityType), sectionIndex));
+            }
+        }
+    }
+
+    public <T extends Player> void sendClientToServerJumpToSectionMessage(T entity, AbilityType<?, ?> abilityType, int sectionIndex) {
+        if (!(entity.level().isClientSide && entity instanceof LocalPlayer)) {
+            return;
+        }
+        AbilityCapability.IAbilityCapability abilityCapability = getAbilityCapability(entity);
+        if (abilityCapability != null) {
+            Ability instance = abilityCapability.getAbilityMap().get(abilityType);
+            if (instance.isUsing()) {
+                instance.jumpToSection(sectionIndex);
+                MowziesMobs.NETWORK.sendToServer(new MessageJumpToAbilitySection.MessageJumpToAbilitySectionServerToClient(entity.getId(), ArrayUtils.indexOf(abilityCapability.getAbilityTypesOnEntity(entity), abilityType), sectionIndex));
             }
         }
     }
