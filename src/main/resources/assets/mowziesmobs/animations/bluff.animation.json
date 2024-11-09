@@ -21,6 +21,12 @@
 						"easing": "linear"
 					}
 				},
+				"core": {
+					"position": {
+						"vector": [0, "-1 + Math.sin((query.anim_time - 0.0) * 180) * 1", 0],
+						"easing": "linear"
+					}
+				},
 				"rods1": {
 					"position": {
 						"vector": [0, 0, "Math.sin((query.anim_time - 0.66) * 720) * 0.5"],
@@ -531,6 +537,10 @@
 					}
 				},
 				"core": {
+					"position": {
+						"vector": [0, "-1 + Math.sin((query.anim_time - 0.0) * 180) * 1", 0],
+						"easing": "linear"
+					},
 					"scale": {
 						"0.0": {
 							"vector": [1, 1, 1],
