@@ -9,12 +9,14 @@ import com.bobmowzie.mowziesmobs.server.entity.EntityHandler;
 import com.bobmowzie.mowziesmobs.server.entity.effects.geomancy.EntityBoulderBase;
 import com.bobmowzie.mowziesmobs.server.entity.effects.geomancy.EntityBoulderProjectile;
 import com.bobmowzie.mowziesmobs.server.entity.effects.geomancy.EntityGeomancyBase;
+import com.bobmowzie.mowziesmobs.server.item.ItemHandler;
 import com.bobmowzie.mowziesmobs.server.potion.EffectGeomancy;
 import com.bobmowzie.mowziesmobs.server.sound.MMSounds;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.Tag;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityDimensions;
@@ -27,7 +29,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.animation.Animation;
 
 public class SpawnBoulderAbility extends PlayerAbility {
     private static int MAX_CHARGE = 60;
@@ -46,13 +48,28 @@ public class SpawnBoulderAbility extends PlayerAbility {
         });
     }
 
-    private static final RawAnimation SPAWN_BOULDER_START_ANIM = RawAnimation.begin().thenPlay("spawn_boulder_start");
+    @Override
+    public InteractionHand getActiveHand() {
+        if (getUser().getMainHandItem().is(ItemHandler.EARTHREND_GAUNTLET.get())) return InteractionHand.MAIN_HAND;
+        if (getUser().getOffhandItem().is(ItemHandler.EARTHREND_GAUNTLET.get())) return InteractionHand.OFF_HAND;
+        return InteractionHand.MAIN_HAND;
+    }
 
     @Override
     public void start() {
         super.start();
-        playAnimation(SPAWN_BOULDER_START_ANIM);
-        if (getLevel().isClientSide() && !Minecraft.getInstance().options.keyUse.isDown()) AbilityHandler.INSTANCE.sendClientToServerJumpToSectionMessage(getUser(), getAbilityType(), 1);
+        if (getLevel().isClientSide()) {
+            if (!Minecraft.getInstance().options.keyUse.isDown())
+                AbilityHandler.INSTANCE.sendClientToServerJumpToSectionMessage(getUser(), getAbilityType(), 1);
+
+            playAnimationActiveHand("spawn_boulder_start", Animation.LoopType.DEFAULT, true, false);
+            if (getUser().getUsedItemHand() == InteractionHand.MAIN_HAND) {
+                heldItemMainHandVisualOverride = getUser().getUseItem();
+            }
+            else {
+                heldItemOffHandVisualOverride = getUser().getUseItem();
+            }
+        }
     }
 
     @Override
@@ -78,7 +95,7 @@ public class SpawnBoulderAbility extends PlayerAbility {
         super.tickUsing();
         if (getCurrentSection().sectionType == AbilitySection.AbilitySectionType.STARTUP) {
             spawnBoulderCharge++;
-            if (spawnBoulderCharge > 2) getUser().addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 3, 3, false, false));
+            if (spawnBoulderCharge > 2) getUser().addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 3, 2, false, false));
             if (spawnBoulderCharge == 1 && getUser().level().isClientSide) MowziesMobs.PROXY.playBoulderChargeSound(getUser());
             if ((spawnBoulderCharge + 10) % 10 == 0 && spawnBoulderCharge < 40) {
                 if (getUser().level().isClientSide) {
@@ -120,15 +137,12 @@ public class SpawnBoulderAbility extends PlayerAbility {
         return (int) Math.min(Math.max(0, Math.floor(spawnBoulderCharge/10.f) - 1), 2);
     }
 
-    private static final RawAnimation SPAWN_BOULDER_INSTANT_ANIM = RawAnimation.begin().thenPlay("spawn_boulder_instant");
-    private static final RawAnimation SPAWN_BOULDER_END_ANIM = RawAnimation.begin().thenPlay("spawn_boulder_end");
-
     private void spawnBoulder() {
         if (spawnBoulderCharge <= 2) {
-            playAnimation(SPAWN_BOULDER_INSTANT_ANIM);
+            playAnimationActiveHand("spawn_boulder_instant", Animation.LoopType.DEFAULT, true, false);
         }
         else {
-            playAnimation(SPAWN_BOULDER_END_ANIM);
+            playAnimationActiveHand("spawn_boulder_end", Animation.LoopType.DEFAULT, true, false);
         }
 
         int size = getBoulderSize();
