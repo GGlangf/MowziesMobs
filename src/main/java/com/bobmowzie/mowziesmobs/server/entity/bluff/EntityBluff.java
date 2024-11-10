@@ -13,9 +13,11 @@ import com.bobmowzie.mowziesmobs.server.ai.UseAbilityAI;
 import com.bobmowzie.mowziesmobs.server.entity.MowzieEntity;
 import com.bobmowzie.mowziesmobs.server.entity.MowzieGeckoEntity;
 import com.bobmowzie.mowziesmobs.server.entity.sculptor.EntitySculptor;
+import com.bobmowzie.mowziesmobs.server.loot.LootTableHandler;
 import com.bobmowzie.mowziesmobs.server.sound.MMSounds;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -134,6 +136,11 @@ public class EntityBluff extends MowzieGeckoEntity {
                 sendAbilityMessage(ATTACK_ABILITY);
             }
         }
+    }
+
+    @Override
+    protected ResourceLocation getDefaultLootTable() {
+        return LootTableHandler.BLUFF;
     }
 
     public static class BluffAttackAbility extends Ability<EntityBluff> {
