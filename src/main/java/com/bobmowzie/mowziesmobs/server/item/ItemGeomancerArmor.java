@@ -86,7 +86,7 @@ public class ItemGeomancerArmor extends MowzieArmorItem implements GeoItem {
 
         @Override
         public Ingredient getRepairIngredient() {
-            return ArmorMaterials.DIAMOND.getRepairIngredient();
+            return Ingredient.of(ItemHandler.BLUFF_ROD.get());
         }
 
         @Override

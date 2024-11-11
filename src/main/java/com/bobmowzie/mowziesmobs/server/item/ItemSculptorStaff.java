@@ -44,6 +44,11 @@ public class ItemSculptorStaff extends MowzieToolItem implements GeoItem {
     }
 
     @Override
+    public boolean isValidRepairItem(ItemStack tool, ItemStack ingredient) {
+        return ingredient.is(ItemHandler.BLUFF_ROD.get());
+    }
+
+    @Override
     public void initializeClient(Consumer<IClientItemExtensions> consumer) {
         super.initializeClient(consumer);
         consumer.accept(new IClientItemExtensions() {
@@ -60,6 +65,7 @@ public class ItemSculptorStaff extends MowzieToolItem implements GeoItem {
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         AbilityHandler.INSTANCE.sendAbilityMessage(player, AbilityHandler.ROCK_SLING);
         player.startUsingItem(hand);
+        if (!player.getAbilities().instabuild) player.getItemInHand(hand).hurtAndBreak(2, player, p -> p.broadcastBreakEvent(hand));
         return new InteractionResultHolder<ItemStack>(InteractionResult.SUCCESS, player.getItemInHand(hand));
     }
 
