@@ -12,6 +12,7 @@ import com.bobmowzie.mowziesmobs.server.block.entity.BlockEntityHandler;
 import com.bobmowzie.mowziesmobs.server.capability.CapabilityHandler;
 import com.bobmowzie.mowziesmobs.server.config.ConfigHandler;
 import com.bobmowzie.mowziesmobs.server.creativetab.CreativeTabHandler;
+import com.bobmowzie.mowziesmobs.server.data.EntityDataHandler;
 import com.bobmowzie.mowziesmobs.server.entity.EntityHandler;
 import com.bobmowzie.mowziesmobs.server.inventory.ContainerHandler;
 import com.bobmowzie.mowziesmobs.server.item.ItemHandler;
@@ -58,6 +59,7 @@ public final class MowziesMobs {
         final IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
         BlockHandler.REG.register(bus);
         EntityHandler.REG.register(bus);
+        EntityDataHandler.REG.register(bus);
         ItemHandler.REG.register(bus);
         MMSounds.REG.register(bus);
         BlockEntityHandler.REG.register(bus);
