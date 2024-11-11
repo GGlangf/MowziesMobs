@@ -18,6 +18,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import software.bernie.geckolib.core.animation.Animation;
 import software.bernie.geckolib.core.animation.RawAnimation;
 
 
@@ -36,8 +37,6 @@ public class RockSlingAbility extends PlayerAbility {
         });
     }
 
-    private static final RawAnimation ROCK_SLING_ANIM = RawAnimation.begin().thenPlay("rock_sling_right");
-
     @Override
     public void start() {
         super.start();
@@ -50,11 +49,11 @@ public class RockSlingAbility extends PlayerAbility {
 
         spawnBoulderPos = result.getBlockPos();
         this.spawnBoulderBlock = getUser().level().getBlockState(spawnBoulderPos);
-        playAnimation(ROCK_SLING_ANIM);
+        playAnimation("rock_sling", Animation.LoopType.DEFAULT, true, true);
 
         if(getUser().level().isClientSide()){
             AdvancedParticleBase.spawnParticle(getUser().level(), ParticleHandler.RING2.get(), (float) getUser().getX(), (float) getUser().getY() + 0.01f, (float) getUser().getZ(), 0, 0, 0, false, 0, Math.PI / 2f, 0, 0, 3.5F, 0.83f, 1, 0.39f, 1, 1, 10, true, true, new ParticleComponent[]{
-                    new ParticleComponent.PropertyControl(ParticleComponent.PropertyControl.EnumParticleProperty.ALPHA, ParticleComponent.KeyTrack.startAndEnd(0f, 0.7f), false),
+                    new ParticleComponent.PropertyControl(ParticleComponent.PropertyControl.EnumParticleProperty.ALPHA, ParticleComponent.KeyTrack.startAndEnd(0.7f, 0f), false),
                     new ParticleComponent.PropertyControl(ParticleComponent.PropertyControl.EnumParticleProperty.SCALE, ParticleComponent.KeyTrack.startAndEnd(0, (0.8f + 2.7f * 20f / 60f) * 10f), false)
             });
         }

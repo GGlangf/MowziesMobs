@@ -5,7 +5,6 @@ import com.bobmowzie.mowziesmobs.server.ability.AbilityType;
 import com.bobmowzie.mowziesmobs.server.ability.PlayerAbility;
 import com.bobmowzie.mowziesmobs.server.item.ItemHandler;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.player.Player;
 import software.bernie.geckolib.core.animation.Animation;
 
@@ -30,7 +29,7 @@ public class HitBoulderAbility extends PlayerAbility {
         super.start();
         boolean usingMainHand = getActiveHand() == InteractionHand.MAIN_HAND;
 
-        playAnimationActiveHand("hit_boulder", Animation.LoopType.DEFAULT, true, false);
+        playAnimation("hit_boulder", Animation.LoopType.DEFAULT, true, false);
 
         // Held items
         if (usingMainHand) {

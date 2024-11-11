@@ -84,7 +84,7 @@ public class PlayerAbility extends Ability<Player> {
         return getUser().getUsedItemHand();
     }
 
-    public void playAnimationActiveHand(String animationName, Animation.LoopType loopType, boolean separateLeftAndRight1stPerson, boolean separateLeftAndRight3rdPerson) {
+    public void playAnimation(String animationName, Animation.LoopType loopType, boolean separateLeftAndRight1stPerson, boolean separateLeftAndRight3rdPerson) {
         boolean usingMainHand = getActiveHand() == InteractionHand.MAIN_HAND;
         boolean isRightHanded = getUser().getMainArm() == HumanoidArm.RIGHT;
         // 1st person

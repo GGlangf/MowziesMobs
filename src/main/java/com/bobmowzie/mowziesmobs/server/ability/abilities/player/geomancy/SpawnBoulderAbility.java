@@ -62,7 +62,7 @@ public class SpawnBoulderAbility extends PlayerAbility {
             if (!Minecraft.getInstance().options.keyUse.isDown())
                 AbilityHandler.INSTANCE.sendClientToServerJumpToSectionMessage(getUser(), getAbilityType(), 1);
 
-            playAnimationActiveHand("spawn_boulder_start", Animation.LoopType.DEFAULT, true, false);
+            playAnimation("spawn_boulder_start", Animation.LoopType.DEFAULT, true, false);
             if (getUser().getUsedItemHand() == InteractionHand.MAIN_HAND) {
                 heldItemMainHandVisualOverride = getUser().getUseItem();
             }
@@ -139,10 +139,10 @@ public class SpawnBoulderAbility extends PlayerAbility {
 
     private void spawnBoulder() {
         if (spawnBoulderCharge <= 2) {
-            playAnimationActiveHand("spawn_boulder_instant", Animation.LoopType.DEFAULT, true, false);
+            playAnimation("spawn_boulder_instant", Animation.LoopType.DEFAULT, true, false);
         }
         else {
-            playAnimationActiveHand("spawn_boulder_end", Animation.LoopType.DEFAULT, true, false);
+            playAnimation("spawn_boulder_end", Animation.LoopType.DEFAULT, true, false);
         }
 
         int size = getBoulderSize();
