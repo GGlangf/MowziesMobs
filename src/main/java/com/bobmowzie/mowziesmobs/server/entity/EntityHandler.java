@@ -133,6 +133,19 @@ public class EntityHandler {
         return EntityType.Builder.of(EntityCameraShake::new, MobCategory.MISC);
     }
     public static final RegistryObject<EntityType<EntityCameraShake>> CAMERA_SHAKE = REG.register("camera_shake", () -> cameraShakeBuilder().sized(1, 1).setUpdateInterval(Integer.MAX_VALUE).build(new ResourceLocation(MowziesMobs.MODID, "camera_shake").toString()));
+    private static EntityType.Builder<EntityFissure> fissureBuilder() {
+        return EntityType.Builder.of(EntityFissure::new, MobCategory.MISC);
+    }
+    public static final RegistryObject<EntityType<EntityFissure>> FISSURE = REG.register("fissure", () -> fissureBuilder().sized(1f, 1f).setUpdateInterval(1).build(new ResourceLocation(MowziesMobs.MODID, "fissure").toString()));
+    private static EntityType.Builder<EntityFissurePiece> fissurePieceBuilder() {
+        return EntityType.Builder.of(EntityFissurePiece::new, MobCategory.MISC);
+    }
+    public static final RegistryObject<EntityType<EntityFissurePiece>> FISSURE_PIECE = REG.register("fissure_piece", () -> fissurePieceBuilder().sized(1f, 1f).build(new ResourceLocation(MowziesMobs.MODID, "fissure_piece").toString()));
+    private static EntityType.Builder<EntityEarthSpike> earthSpikeBuilder() {
+        return EntityType.Builder.of(EntityEarthSpike::new, MobCategory.MISC);
+    }
+    public static final RegistryObject<EntityType<EntityEarthSpike>> EARTH_SPIKE = REG.register("earth_spike", () -> earthSpikeBuilder().sized(1f, 1f).build(new ResourceLocation(MowziesMobs.MODID, "earth_spike").toString()));
+
 //    private static EntityType.Builder<TestEntity> testEntityBuilder() {
 //        return EntityType.Builder.of(TestEntity::new, MobCategory.MISC);
 //    }
