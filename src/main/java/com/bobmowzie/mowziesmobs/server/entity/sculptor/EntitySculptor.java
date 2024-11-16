@@ -447,9 +447,9 @@ public class EntitySculptor extends MowzieGeckoEntity {
             beardChain.setSimulating(pillar == null || pillar.isRemoved() || !getPillar().isFalling() && !getPillar().isRising());
         }
 
-//        if (getActiveAbility() == null && tickCount % 60 == 0) {
-//            sendAbilityMessage(DISAPPEAR_ABILITY);
-//        }
+        if (getActiveAbility() == null && tickCount % 60 == 0) {
+            sendAbilityMessage(DISAPPEAR_ABILITY);
+        }
 
 //        if (level().isClientSide() && dc != null && dc.p.length > 0 && dc.p[0] != null) {
 //            for (int i = 0; i < dc.p.length; i++) {
@@ -1306,6 +1306,20 @@ public class EntitySculptor extends MowzieGeckoEntity {
                             new ParticleComponent.PropertyControl(ParticleComponent.PropertyControl.EnumParticleProperty.YAW, new ParticleComponent.Constant(0.04f), true),
                             new ParticleComponent.PropertyControl(ParticleComponent.PropertyControl.EnumParticleProperty.PITCH, new ParticleComponent.Constant(0.025f), true),
                             new ParticleComponent.PropertyControl(ParticleComponent.PropertyControl.EnumParticleProperty.ROLL, new ParticleComponent.Constant(0.01f), true)
+                    });
+                }
+                for (int i = 0; i < (int)spawnRate / 2; i++) {
+                    AABB bounds = getUser().getBoundingBox();
+                    float x = (float) (getUser().getX() + getUser().random.nextGaussian() * (bounds.maxX - bounds.minX)/3.0);
+                    float y = (float) (getUser().getY() + getUser().random.nextGaussian() * (bounds.maxY - bounds.minY)/5.0 + getUser().getBbHeight()/2.0);
+                    float z = (float) (getUser().getZ() + getUser().random.nextGaussian() * (bounds.maxZ - bounds.minZ)/3.0);
+                    AdvancedParticleBase.spawnParticle(getUser().level(), ParticleHandler.PIXEL.get(), x, y, z, 0, 0, 0, true, 0, 0 ,0, 0, 1f, 255d / 256d, 248d / 256d, 148d / 256d, 1, 0.9, 35 + getUser().random.nextFloat() * 20, true, true, new ParticleComponent[]{
+                            new ParticleComponent.PropertyControl(ParticleComponent.PropertyControl.EnumParticleProperty.SCALE, new ParticleComponent.KeyTrack(
+                                    new float[]{0, 2f, 0},
+                                    new float[]{0, 0.5f, 1}
+                            ), false),
+                            new ParticleComponent.CurlNoise(0.01f, 4f),
+                            new ParticleComponent.ForceOverTime(windForce),
                     });
                 }
             }
