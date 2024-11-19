@@ -6,7 +6,6 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -97,7 +96,7 @@ public class DecalParticleData extends AdvancedParticleData {
         return bufferSize;
     }
 
-    public static Codec<DecalParticleData> CODEC_RIBBON(ParticleType<DecalParticleData> particleType) {
+    public static Codec<DecalParticleData> CODEC_DECAL(ParticleType<DecalParticleData> particleType) {
         return RecordCodecBuilder.create((codecBuilder) -> codecBuilder.group(
                 Codec.DOUBLE.fieldOf("scale").forGetter(DecalParticleData::getScale),
                 Codec.DOUBLE.fieldOf("r").forGetter(DecalParticleData::getRed),

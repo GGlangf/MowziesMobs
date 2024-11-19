@@ -9,6 +9,8 @@ import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
@@ -28,6 +30,7 @@ public class AdvancedParticleBase extends TextureSheetParticle {
     public ParticleRotation rotation;
     public boolean emissive;
     public double prevMotionX, prevMotionY, prevMotionZ;
+    public ParticleRenderType renderType = MMRenderType.PARTICLE_SHEET_TRANSLUCENT_NO_DEPTH;
 
     public ParticleComponent[] components;
 
@@ -70,7 +73,12 @@ public class AdvancedParticleBase extends TextureSheetParticle {
 
     @Override
     public ParticleRenderType getRenderType() {
-        return MMRenderType.PARTICLE_SHEET_TRANSLUCENT_NO_DEPTH;
+        return renderType;
+    }
+
+    @Override
+    public void setSprite(TextureAtlasSprite sprite) {
+        super.setSprite(sprite);
     }
 
     public int getLightColor(float partialTick)
@@ -81,6 +89,10 @@ public class AdvancedParticleBase extends TextureSheetParticle {
             return 240 | k << 16;
         }
         else return i;
+    }
+
+    public ClientLevel getLevel() {
+        return level;
     }
 
     @Override

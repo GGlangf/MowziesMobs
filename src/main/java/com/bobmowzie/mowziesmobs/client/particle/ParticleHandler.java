@@ -1,10 +1,7 @@
 package com.bobmowzie.mowziesmobs.client.particle;
 
 import com.bobmowzie.mowziesmobs.MowziesMobs;
-import com.bobmowzie.mowziesmobs.client.particle.util.AdvancedParticleBase;
-import com.bobmowzie.mowziesmobs.client.particle.util.AdvancedParticleData;
-import com.bobmowzie.mowziesmobs.client.particle.util.DecalParticleData;
-import com.bobmowzie.mowziesmobs.client.particle.util.RibbonParticleData;
+import com.bobmowzie.mowziesmobs.client.particle.util.*;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
@@ -74,6 +71,8 @@ public class ParticleHandler {
     public static final RegistryObject<ParticleType<AdvancedParticleData>> ARROW_HEAD = register("arrow_head", AdvancedParticleData.DESERIALIZER);
     public static final RegistryObject<ParticleType<AdvancedParticleData>> LEAF = register("leaf", AdvancedParticleData.DESERIALIZER);
 
+    public static final RegistryObject<ParticleType<TerrainParticleData>> TERRAIN = registerTerrain("terrain", TerrainParticleData.DESERIALIZER);
+
     public static final RegistryObject<ParticleType<DecalParticleData>> STRIX_FOOTPRINT = registerDecal("strix_footprint", DecalParticleData.DESERIALIZER);
     public static final RegistryObject<ParticleType<DecalParticleData>> GROUND_CRACK = registerDecal("crack", DecalParticleData.DESERIALIZER);
 
@@ -108,6 +107,7 @@ public class ParticleHandler {
         event.registerSpriteSet(ParticleHandler.GLOW.get(), AdvancedParticleBase.Factory::new);
         event.registerSpriteSet(ParticleHandler.ARROW_HEAD.get(), AdvancedParticleBase.Factory::new);
         event.registerSpriteSet(ParticleHandler.LEAF.get(), AdvancedParticleBase.Factory::new);
+        event.registerSpriteSet(ParticleHandler.TERRAIN.get(), AdvancedTerrainParticle.Factory::new);
         event.registerSpriteSet(ParticleHandler.STRIX_FOOTPRINT.get(), ParticleDecal.Factory::new);
         event.registerSpriteSet(ParticleHandler.GROUND_CRACK.get(), ParticleDecal.Factory::new);
 
@@ -132,7 +132,7 @@ public class ParticleHandler {
     private static RegistryObject<ParticleType<DecalParticleData>> registerDecal(String key, ParticleOptions.Deserializer<DecalParticleData> deserializer) {
         return REG.register(key, () -> new ParticleType<DecalParticleData>(false, deserializer) {
             public Codec<DecalParticleData> codec() {
-                return DecalParticleData.CODEC_RIBBON(this);
+                return DecalParticleData.CODEC_DECAL(this);
             }
         });
     }
@@ -141,6 +141,14 @@ public class ParticleHandler {
         return REG.register(key, () -> new ParticleType<RibbonParticleData>(false, deserializer) {
             public Codec<RibbonParticleData> codec() {
                 return RibbonParticleData.CODEC_RIBBON(this);
+            }
+        });
+    }
+
+    private static RegistryObject<ParticleType<TerrainParticleData>> registerTerrain(String key, ParticleOptions.Deserializer<TerrainParticleData> deserializer) {
+        return REG.register(key, () -> new ParticleType<TerrainParticleData>(false, deserializer) {
+            public Codec<TerrainParticleData> codec() {
+                return TerrainParticleData.CODEC_TERRAIN(this);
             }
         });
     }
