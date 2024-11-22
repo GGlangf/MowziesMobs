@@ -447,9 +447,9 @@ public class EntitySculptor extends MowzieGeckoEntity {
             beardChain.setSimulating(pillar == null || pillar.isRemoved() || !getPillar().isFalling() && !getPillar().isRising());
         }
 
-        if (getActiveAbility() == null && tickCount % 60 == 0) {
-            sendAbilityMessage(DISAPPEAR_ABILITY);
-        }
+//        if (getActiveAbility() == null && tickCount % 60 == 0) {
+//            sendAbilityMessage(DISAPPEAR_ABILITY);
+//        }
 
 //        if (level().isClientSide() && dc != null && dc.p.length > 0 && dc.p[0] != null) {
 //            for (int i = 0; i < dc.p.length; i++) {
