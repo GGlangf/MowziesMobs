@@ -39,7 +39,7 @@ public class EntityFissure extends Projectile {
 
         if (!level().isClientSide()) {
             float blocksTraveled = speed * tickCount;
-            if (blocksTraveled % 1f == 0f) {
+            if (tickCount == 2) {//blocksTraveled % 1f == 0f) {
                 EntityFissurePiece piece = new EntityFissurePiece(EntityHandler.FISSURE_PIECE.get(), level());
                 piece.setPos(position());
                 piece.setOwner(this);
