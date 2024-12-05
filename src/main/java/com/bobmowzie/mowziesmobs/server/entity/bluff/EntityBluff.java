@@ -107,7 +107,7 @@ public class EntityBluff extends MowzieGeckoEntity {
         return MowzieEntity.createAttributes().add(Attributes.ATTACK_DAMAGE, 8)
                 .add(Attributes.MAX_HEALTH, 30)
                 .add(Attributes.MOVEMENT_SPEED, 0.23f)
-                .add(Attributes.KNOCKBACK_RESISTANCE, 0.3f)
+                .add(Attributes.KNOCKBACK_RESISTANCE, 1f)
                 .add(Attributes.FOLLOW_RANGE, 32);
     }
 
