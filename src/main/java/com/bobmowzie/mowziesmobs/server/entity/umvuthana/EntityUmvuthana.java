@@ -434,7 +434,7 @@ public abstract class EntityUmvuthana extends MowzieGeckoEntity {
             }
             return;
         }
-        if (getActiveAbilityType() != HURT_ABILITY) {
+        if (getActiveAbilityType() != null && getActiveAbilityType() != HURT_ABILITY) {
             getNavigation().stop();
             yHeadRot = yBodyRot = getYRot();
         }
