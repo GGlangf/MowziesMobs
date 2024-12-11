@@ -1,22 +1,31 @@
 package com.bobmowzie.mowziesmobs.server.entity.effects.geomancy;
 
 import com.bobmowzie.mowziesmobs.server.entity.EntityHandler;
+import com.bobmowzie.mowziesmobs.server.potion.EffectGeomancy;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.ClientboundTeleportEntityPacket;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
 public class EntityFissure extends Projectile {
-    public static int TICKS_PER_PIECE = 7;
-    public boolean traveling = true;
+    public static int TICKS_PER_PIECE = 5;
+    private static final EntityDataAccessor<Boolean> TRAVELLING = SynchedEntityData.defineId(EntityFissure.class, EntityDataSerializers.BOOLEAN);
+    private int despawnTimer = 0;
 
     public EntityFissure(EntityType<? extends EntityFissure> type, Level worldIn) {
         super(type, worldIn);
@@ -24,38 +33,58 @@ public class EntityFissure extends Projectile {
 
     @Override
     protected void defineSynchedData() {
+        getEntityData().define(TRAVELLING, true);
+    }
 
+    public boolean isTravelling() {
+        return getEntityData().get(TRAVELLING);
+    }
+
+    public void setTravelling(boolean travelling) {
+        getEntityData().set(TRAVELLING, travelling);
+    }
+
+    public void shoot(double vx, double vz) {
+        float speed = EntityFissurePiece.PIECE_SIZE / (float) TICKS_PER_PIECE;
+        Vec3 vec3 = (new Vec3(vx, 0, vz)).normalize().scale(speed);
+        this.setDeltaMovement(vec3);
+        this.setYRot(-(float)(Mth.atan2(vec3.x, vec3.z) * (double)(180F / (float)Math.PI)));
+        this.yRotO = this.getYRot();
     }
 
     @Override
     public void tick() {
         super.tick();
-        if (traveling) {
-            float speed = EntityFissurePiece.PIECE_SIZE / (float) TICKS_PER_PIECE;
-            Vec3 moveVec = getForward().scale(speed);
-            setDeltaMovement(moveVec);
+        if (isTravelling()) {
             stepForwardTrace();
         }
 
-        if (tickCount > 60) traveling = false;
-        if (tickCount > 180) discard();
+        if (tickCount > 60 && isTravelling()) spawnSpike();
+        if (despawnTimer > 0) {
+            despawnTimer--;
+            if (despawnTimer == 1) discard();
+        }
 
         if (!level().isClientSide()) {
-            if (traveling && tickCount % TICKS_PER_PIECE == 1f) {
+            if (isTravelling() && tickCount % TICKS_PER_PIECE == 1f) {
                 EntityFissurePiece piece = new EntityFissurePiece(EntityHandler.FISSURE_PIECE.get(), level());
-                piece.setPos(position());
+                piece.setPos(position().add(getDeltaMovement().scale(TICKS_PER_PIECE/3f)));
                 piece.setYRot(getYRot());
                 piece.setOwner(this);
                 level().addFreshEntity(piece);
             }
+
+            if (isTravelling() && !level().getEntities(this, getBoundingBox().inflate(0.5), e -> e.canBeHitByProjectile() && e != getOwner()).isEmpty()) {
+                spawnSpike();
+            }
         }
         else {
-            if (traveling) {
+            if (isTravelling()) {
                 BlockState blockBeneath = level().getBlockState(getOnPos());
                 for (byte i = 0; i < 8; i++) {
                     Vec3 offset = new Vec3(0.3, 0, 0).yRot(random.nextFloat() * (float) Math.PI * 2f);
                     Vec3 vel = offset.normalize().scale(60).yRot(random.nextFloat() * 0.5f - 0.25f).add(0, random.nextDouble() * 2 + 0.5, 0);
-                    level().addParticle(new BlockParticleOption(ParticleTypes.BLOCK, blockBeneath), getX() + offset.x - getDeltaMovement().x() * 2.2, getY(), getZ() + offset.z - getDeltaMovement().z() * 2.2, vel.x, vel.y, vel.z);
+                    level().addParticle(new BlockParticleOption(ParticleTypes.BLOCK, blockBeneath), getX() + offset.x, getY(), getZ() + offset.z, vel.x, vel.y, vel.z);
                 }
             }
         }
@@ -68,12 +97,40 @@ public class EntityFissure extends Projectile {
         BlockHitResult result = level().clip(new ClipContext(startPos, endPos, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
 
         if (result.getType() != HitResult.Type.BLOCK || result.isInside()) {
-            discard();
+            spawnSpike();
             return;
         }
         setPos(result.getLocation());
         if (this.level() instanceof ServerLevel) {
             ((ServerLevel) this.level()).getChunkSource().broadcast(this, new ClientboundTeleportEntityPacket(this));
         }
+    }
+
+    private void spawnSpike() {
+        if (isTravelling()) {
+            if (!level().isClientSide()) {
+                BlockState state = level().getBlockState(getOnPos());
+                if (!EffectGeomancy.isBlockUseable(state)) {
+                    state = Blocks.DIRT.defaultBlockState();
+                }
+                EntityEarthSpike spike = new EntityEarthSpike(EntityHandler.EARTH_SPIKE.get(), level(), (LivingEntity) getOwner(), state);
+                spike.setPos(position());
+                spike.setYRot(getYRot());
+                level().addFreshEntity(spike);
+            }
+            setTravelling(false);
+            despawnTimer = 120;
+            setDeltaMovement(0,0,0);
+        }
+    }
+
+    public void addAdditionalSaveData(CompoundTag compound) {
+        super.addAdditionalSaveData(compound);
+        compound.putShort("despawnTimer", (short)this.despawnTimer);
+    }
+
+    public void readAdditionalSaveData(CompoundTag compound) {
+        super.readAdditionalSaveData(compound);
+        this.despawnTimer = compound.getShort("despawnTimer");
     }
 }

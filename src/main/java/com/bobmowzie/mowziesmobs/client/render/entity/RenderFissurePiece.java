@@ -50,8 +50,8 @@ public class RenderFissurePiece extends EntityRenderer<EntityFissurePiece> {
     @Override
     public ResourceLocation getTextureLocation(EntityFissurePiece entity) {
         int fullGrownTick = EntityFissure.TICKS_PER_PIECE;
-        if (entity.tickCount < fullGrownTick) {
-            int whichTex = (int) (5 * (double) entity.tickCount / (double) fullGrownTick);
+        if (entity.getGrowTick() < fullGrownTick) {
+            int whichTex = (int) (5 * (double) entity.getGrowTick() / (double) fullGrownTick);
             return TEXTURES[whichTex];
         }
         return TEXTURE5;

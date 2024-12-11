@@ -48,7 +48,6 @@ public class ModelBluff extends MowzieGeoModel<EntityBluff> {
         MowzieGeoBone rotation3 = getMowzieBone("rotation3");
         MowzieGeoBone core = getMowzieBone("core");
 
-
         if (entity.isAlive()) {
             rotation1.addRotY((frame % 360 / 4f));
             rotation2.addRotY((frame % 360 / 4f));
@@ -57,5 +56,14 @@ public class ModelBluff extends MowzieGeoModel<EntityBluff> {
             core.addPosY((float) (Math.sin(frame / 5f) *0.8f));
             core.addRotX((float) (Math.sin(frame / 9f) *1f));
         }
+
+        MowzieGeoBone head = getMowzieBone("head");
+        MowzieGeoBone root = getMowzieBone("root");
+
+        EntityModelData entityData = animationState.getData(DataTickets.ENTITY_MODEL_DATA);
+        float headYaw = Mth.wrapDegrees(entityData.netHeadYaw());
+        float headPitch = Mth.wrapDegrees(entityData.headPitch());
+        head.addRotX(headPitch * (float) Math.PI / 180F);
+        root.addRotY(headYaw * (float) Math.PI / 180F);
     }
 }

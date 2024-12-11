@@ -22,10 +22,10 @@ import java.util.TreeMap;
 
 @OnlyIn(Dist.CLIENT)
 public class RenderBoulder extends EntityRenderer<EntityBoulderBase> {
-    private static final ResourceLocation TEXTURE_DIRT = new ResourceLocation("textures/blocks/dirt.png");
-    private static final ResourceLocation TEXTURE_STONE = new ResourceLocation("textures/blocks/stone.png");
-    private static final ResourceLocation TEXTURE_SANDSTONE = new ResourceLocation("textures/blocks/sandstone.png");
-    private static final ResourceLocation TEXTURE_CLAY = new ResourceLocation("textures/blocks/clay.png");
+    private static final ResourceLocation TEXTURE_DIRT = new ResourceLocation("textures/block/dirt.png");
+    private static final ResourceLocation TEXTURE_STONE = new ResourceLocation("textures/block/stone.png");
+    private static final ResourceLocation TEXTURE_SANDSTONE = new ResourceLocation("textures/block/sandstone.png");
+    private static final ResourceLocation TEXTURE_CLAY = new ResourceLocation("textures/block/clay.png");
     Map<String, ResourceLocation> texMap;
 
     ModelBoulder model;

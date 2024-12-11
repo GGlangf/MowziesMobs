@@ -14,13 +14,18 @@ import com.bobmowzie.mowziesmobs.server.ai.UseAbilityAI;
 import com.bobmowzie.mowziesmobs.server.entity.EntityHandler;
 import com.bobmowzie.mowziesmobs.server.entity.MowzieEntity;
 import com.bobmowzie.mowziesmobs.server.entity.MowzieGeckoEntity;
+import com.bobmowzie.mowziesmobs.server.entity.effects.EntitySunstrike;
+import com.bobmowzie.mowziesmobs.server.entity.effects.geomancy.EntityBoulderProjectile;
 import com.bobmowzie.mowziesmobs.server.entity.effects.geomancy.EntityFissure;
+import com.bobmowzie.mowziesmobs.server.entity.effects.geomancy.EntityFissurePiece;
 import com.bobmowzie.mowziesmobs.server.loot.LootTableHandler;
 import com.bobmowzie.mowziesmobs.server.potion.EffectGeomancy;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -165,9 +170,9 @@ public class EntityBluff extends MowzieGeckoEntity {
             }
         }
 
-        if (getActiveAbility() == null && tickCount % 120 == 0){
-            sendAbilityMessage(ATTACK_ABILITY);
-        }
+//        if (getActiveAbility() == null && tickCount % 120 == 0){
+//            sendAbilityMessage(ATTACK_ABILITY);
+//        }
     }
 
     @Override
@@ -215,6 +220,10 @@ public class EntityBluff extends MowzieGeckoEntity {
     }
 
     public static class BluffAttackAbility extends Ability<EntityBluff> {
+        private static int STARTUP_DURATION = 9;
+
+        private Vec3 prevTargetPos;
+
         public static AbilitySection[] SECTION_TRACK = new AbilitySection[] {
             new AbilitySection.AbilitySectionDuration(AbilitySection.AbilitySectionType.STARTUP, 11),
             new AbilitySection.AbilitySectionInfinite(AbilitySection.AbilitySectionType.MISC),
@@ -232,12 +241,22 @@ public class EntityBluff extends MowzieGeckoEntity {
         @Override
         public void start() {
             super.start();
+            LivingEntity entityTarget = getUser().getTarget();
+            if (entityTarget != null) {
+                prevTargetPos = entityTarget.position().add(0, entityTarget.getBbHeight() / 2.0, 0);
+            }
             playAnimation(ATTACK_START_ANIMATION);
         }
 
         @Override
         public void tickUsing() {
             super.tickUsing();
+
+            LivingEntity entityTarget = getUser().getTarget();
+            if (entityTarget != null) {
+                getUser().getLookControl().setLookAt(entityTarget, 30, 30);
+                getUser().setYRot(getUser().getYHeadRot());
+            }
             if (getCurrentSection().sectionType == AbilitySection.AbilitySectionType.STARTUP) {
                 getUser().setDeltaMovement(0, 0, 0);
             }
@@ -266,11 +285,7 @@ public class EntityBluff extends MowzieGeckoEntity {
             super.beginSection(section);
             if (section.sectionType == AbilitySection.AbilitySectionType.ACTIVE) {
                 if (!getLevel().isClientSide()) {
-                    EntityFissure fissure = new EntityFissure(EntityHandler.FISSURE.get(), getLevel());
-                    fissure.setOwner(getUser());
-                    fissure.setPos(getUser().position().add(0, 0, 0));
-                    fissure.setYRot(getUser().getYRot());
-                    getLevel().addFreshEntity(fissure);
+                    shootFissureAtTarget(getUser().getTarget(), prevTargetPos, 0.1f);
                 }
 
                 playAnimation(ATTACK_END_ANIMATION);
@@ -281,6 +296,30 @@ public class EntityBluff extends MowzieGeckoEntity {
                     }
                 }
             }
+        }
+
+        public void shootFissureAtTarget(LivingEntity target, Vec3 prevTargetPos, float timeScale) {
+            EntityFissure fissure = new EntityFissure(EntityHandler.FISSURE.get(), getLevel());
+            fissure.setOwner(getUser());
+            fissure.setPos(getUser().position());
+
+            Vec3 shootVec;
+            if (target != null) {
+                float speed = EntityFissurePiece.PIECE_SIZE / (float) EntityFissure.TICKS_PER_PIECE;
+                Vec3 targetPos = target.position().add(0, target.getBbHeight() / 2.0, 0);
+                double timeToReach = fissure.position().subtract(targetPos).length() / speed;
+                Vec3 targetMovement = targetPos.subtract(prevTargetPos).scale(timeToReach * timeScale * 1.0 / 4.0);
+                targetMovement = targetMovement.multiply(1, 0, 1);
+                Vec3 futureTargetPos = targetPos.add(targetMovement);
+                Vec3 projectileMid = fissure.position().add(0, fissure.getBbHeight() / 2.0, 0);
+                shootVec = futureTargetPos.subtract(projectileMid).normalize();
+            }
+            else {
+                shootVec = getUser().getForward();
+            }
+
+            fissure.shoot(shootVec.x, shootVec.z);
+            getLevel().addFreshEntity(fissure);
         }
     }
 
