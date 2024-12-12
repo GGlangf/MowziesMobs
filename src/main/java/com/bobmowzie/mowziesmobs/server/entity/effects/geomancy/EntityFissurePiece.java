@@ -1,6 +1,9 @@
 package com.bobmowzie.mowziesmobs.server.entity.effects.geomancy;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -11,7 +14,7 @@ import java.util.UUID;
 
 public class EntityFissurePiece extends Entity {
     public static final float PIECE_SIZE = 2f;
-    private int growTick = 0;
+    private static final EntityDataAccessor<Integer> GROW_TICK = SynchedEntityData.defineId(EntityFissurePiece.class, EntityDataSerializers.INT);
 
     @Nullable
     private EntityFissure owner;
@@ -25,16 +28,20 @@ public class EntityFissurePiece extends Entity {
     @Override
     public void tick() {
         super.tick();
-        if (!level().isClientSide() && (getOwner() == null || getOwner().isRemoved())) discard();
+        if (!level().isClientSide()) {
+            if (getOwner() == null || getOwner().isRemoved()) {
+                discard();
+            }
+        }
 
-        if (growTick < EntityFissure.TICKS_PER_PIECE) {
-            growTick++;
+        if (!level().isClientSide() && getGrowTick() < EntityFissure.TICKS_PER_PIECE) {
+            getEntityData().set(GROW_TICK, getGrowTick() + 1);
         }
     }
 
     @Override
     protected void defineSynchedData() {
-
+        getEntityData().define(GROW_TICK, 0);
     }
 
     public void setOwner(@Nullable EntityFissure owner) {
@@ -59,7 +66,7 @@ public class EntityFissurePiece extends Entity {
         if (compound.hasUUID("Owner")) {
             this.ownerUUID = compound.getUUID("Owner");
         }
-        growTick = compound.getInt("growTick");
+        getEntityData().set(GROW_TICK, compound.getInt("growTick"));
 
     }
 
@@ -68,10 +75,10 @@ public class EntityFissurePiece extends Entity {
         if (this.ownerUUID != null) {
             compound.putUUID("Owner", this.ownerUUID);
         }
-        compound.putInt("growTick", growTick);
+        compound.putInt("growTick", getGrowTick());
     }
 
     public int getGrowTick() {
-        return growTick;
+        return getEntityData().get(GROW_TICK);
     }
 }

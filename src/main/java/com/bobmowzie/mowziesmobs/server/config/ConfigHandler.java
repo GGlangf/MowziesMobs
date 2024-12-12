@@ -512,6 +512,26 @@ public final class ConfigHandler {
         public final BooleanValue disappearAfterReward;
     }
 
+    public static class Bluff {
+        Bluff(final ForgeConfigSpec.Builder builder) {
+            builder.push("bluff");
+            spawnConfig = new SpawnConfig(builder,
+                    0, 1, 2, 1,
+                    new BiomeConfig(builder, Collections.emptyList(), Collections.emptyList(), Collections.emptyList()),
+                    Collections.emptyList(),
+                    Arrays.asList("minecraft:animals_spawnable_on", "minecraft:base_stone_overworld"),
+                    -65, 68, true, false, false,
+                    Collections.emptyList()
+            );
+            combatConfig = new CombatConfig(builder,1, 1);
+            builder.pop();
+        }
+
+        public final SpawnConfig spawnConfig;
+
+        public final CombatConfig combatConfig;
+    }
+
     public static class WroughtHelm {
         WroughtHelm(final ForgeConfigSpec.Builder builder) {
             builder.push("wrought_helm");
@@ -722,6 +742,7 @@ public final class ConfigHandler {
             UMVUTHANA = new Umvuthana(builder);
             NAGA = new Naga(builder);
             FOLIAATH = new Foliaath(builder);
+            BLUFF = new Bluff(builder);
             builder.pop();
         }
 
@@ -742,6 +763,8 @@ public final class ConfigHandler {
         public final Naga NAGA;
 
         public final Foliaath FOLIAATH;
+
+        public final Bluff BLUFF;
     }
 
     public static class ToolsAndAbilities {

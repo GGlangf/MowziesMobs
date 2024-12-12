@@ -1,5 +1,8 @@
 package com.bobmowzie.mowziesmobs.server.entity.effects.geomancy;
 
+import com.bobmowzie.mowziesmobs.client.particle.AdvancedTerrainParticle;
+import com.bobmowzie.mowziesmobs.client.particle.ParticleHandler;
+import com.bobmowzie.mowziesmobs.client.particle.util.ParticleComponent;
 import com.bobmowzie.mowziesmobs.server.entity.EntityHandler;
 import com.bobmowzie.mowziesmobs.server.potion.EffectGeomancy;
 import net.minecraft.core.particles.BlockParticleOption;
@@ -74,17 +77,19 @@ public class EntityFissure extends Projectile {
                 level().addFreshEntity(piece);
             }
 
-            if (isTravelling() && !level().getEntities(this, getBoundingBox().inflate(0.5), e -> e.canBeHitByProjectile() && e != getOwner()).isEmpty()) {
+            if (isTravelling() && !level().getEntities(this, getBoundingBox().inflate(0.3), e -> e.canBeHitByProjectile() && e != getOwner()).isEmpty()) {
                 spawnSpike();
             }
         }
         else {
             if (isTravelling()) {
                 BlockState blockBeneath = level().getBlockState(getOnPos());
-                for (byte i = 0; i < 8; i++) {
-                    Vec3 offset = new Vec3(0.3, 0, 0).yRot(random.nextFloat() * (float) Math.PI * 2f);
-                    Vec3 vel = offset.normalize().scale(60).yRot(random.nextFloat() * 0.5f - 0.25f).add(0, random.nextDouble() * 2 + 0.5, 0);
-                    level().addParticle(new BlockParticleOption(ParticleTypes.BLOCK, blockBeneath), getX() + offset.x, getY(), getZ() + offset.z, vel.x, vel.y, vel.z);
+                for (int i = 0; i < 10; i++) {
+                    Vec3 offset = new Vec3(random.nextFloat() * 0.45, 0, 0).yRot(random.nextFloat() * (float) Math.PI * 2f);
+                    Vec3 vel = offset.normalize().scale(random.nextGaussian() * 0.12).yRot(random.nextFloat() * 0.2f - 0.1f).add(0, random.nextDouble() * 0.25 + 0.02, 0).add(getDeltaMovement().scale(0.4));
+                    AdvancedTerrainParticle.spawnTerrainParticle(level(), ParticleHandler.TERRAIN.get(), getX() + offset.x, getY(), getZ() + offset.z, vel.x, vel.y, vel.z, 0, 0.4f + random.nextGaussian() * 0.3, 0.94f, 20 + random.nextFloat() * 5, blockBeneath, new ParticleComponent[]{
+                            new ParticleComponent.Gravity(1)
+                    });
                 }
             }
         }
@@ -119,7 +124,7 @@ public class EntityFissure extends Projectile {
                 level().addFreshEntity(spike);
             }
             setTravelling(false);
-            despawnTimer = 120;
+            despawnTimer = 180;
             setDeltaMovement(0,0,0);
         }
     }
@@ -127,10 +132,12 @@ public class EntityFissure extends Projectile {
     public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
         compound.putShort("despawnTimer", (short)this.despawnTimer);
+        compound.putBoolean("travelling", isTravelling());
     }
 
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
         this.despawnTimer = compound.getShort("despawnTimer");
+        setTravelling(compound.getBoolean("travelling"));
     }
 }

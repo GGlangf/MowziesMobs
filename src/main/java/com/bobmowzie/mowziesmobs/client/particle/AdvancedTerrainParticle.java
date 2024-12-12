@@ -25,7 +25,6 @@ public class AdvancedTerrainParticle extends AdvancedParticleBase {
         super(worldIn, xCoordIn, yCoordIn, zCoordIn, motionX, motionY, motionZ, new ParticleRotation.FaceCamera(0), scale, 1.0, 1.0, 1.0, 1.0, drag, duration, false, canCollide, components);
         this.pos = pos;
         this.setSprite(Minecraft.getInstance().getBlockRenderer().getBlockModelShaper().getParticleIcon(state));
-        this.gravity = 1.0F;
         this.red = 0.6F;
         this.green = 0.6F;
         this.blue = 0.6F;
