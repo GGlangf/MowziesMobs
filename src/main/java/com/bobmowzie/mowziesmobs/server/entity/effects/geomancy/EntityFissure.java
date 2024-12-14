@@ -4,6 +4,7 @@ import com.bobmowzie.mowziesmobs.client.particle.AdvancedTerrainParticle;
 import com.bobmowzie.mowziesmobs.client.particle.ParticleHandler;
 import com.bobmowzie.mowziesmobs.client.particle.util.ParticleComponent;
 import com.bobmowzie.mowziesmobs.server.entity.EntityHandler;
+import com.bobmowzie.mowziesmobs.server.entity.bluff.EntityBluff;
 import com.bobmowzie.mowziesmobs.server.potion.EffectGeomancy;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
@@ -77,7 +78,7 @@ public class EntityFissure extends Projectile {
                 level().addFreshEntity(piece);
             }
 
-            if (isTravelling() && !level().getEntities(this, getBoundingBox().inflate(0.3), e -> e.canBeHitByProjectile() && e != getOwner()).isEmpty()) {
+            if (isTravelling() && !level().getEntities(this, getBoundingBox().inflate(0.3), e -> e.canBeHitByProjectile() && e != getOwner() && !(e instanceof EntityBluff)).isEmpty()) {
                 spawnSpike();
             }
         }
