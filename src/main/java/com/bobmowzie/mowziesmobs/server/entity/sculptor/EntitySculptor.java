@@ -1511,6 +1511,7 @@ public class EntitySculptor extends MowzieGeckoEntity {
                 if (aActualMotion.length() < 0.1 || target.tickCount < 0) {
                     return false;
                 }
+                if (aActualMotion.length() * 9 < target.position().distanceTo(sculptor.position())) return false;
                 if (!sculptor.getSensing().hasLineOfSight(target)) return false;
                 float dot = (float) target.getDeltaMovement().normalize().dot(sculptor.position().subtract(target.position()).normalize());
                 return !(dot < 0.8);
