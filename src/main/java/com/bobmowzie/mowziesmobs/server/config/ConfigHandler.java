@@ -334,7 +334,7 @@ public final class ConfigHandler {
             builder.push("grottol");
             this.spawnConfig = new SpawnConfig(builder,
                     2, 1, 1, 1,
-                    new BiomeConfig(builder,  Collections.singletonList("!forge:is_mushroom"), Collections.emptyList(), Collections.emptyList()),
+                    new BiomeConfig(builder, Collections.singletonList("!forge:is_mushroom"), Collections.emptyList(), Collections.emptyList()),
                     Collections.emptyList(),
                     Collections.singletonList("minecraft:base_stone_overworld"),
                     16, -65, true, false, true,
@@ -516,11 +516,11 @@ public final class ConfigHandler {
         Bluff(final ForgeConfigSpec.Builder builder) {
             builder.push("bluff");
             spawnConfig = new SpawnConfig(builder,
-                    0, 1, 2, 1,
+                    100, 1, 2, 1,
                     new BiomeConfig(builder, Collections.emptyList(), Collections.emptyList(), Collections.emptyList()),
                     Collections.emptyList(),
-                    Arrays.asList("minecraft:animals_spawnable_on", "minecraft:base_stone_overworld"),
-                    -65, 68, true, false, false,
+                    Collections.emptyList(),
+                    -65, -65, false, false, false,
                     Collections.emptyList()
             );
             combatConfig = new CombatConfig(builder,1, 1);

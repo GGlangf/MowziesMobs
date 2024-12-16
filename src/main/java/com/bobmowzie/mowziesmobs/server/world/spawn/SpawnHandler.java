@@ -29,6 +29,7 @@ public class SpawnHandler {
     public static BiomeChecker GROTTOL_BIOME_CHECKER;
     public static BiomeChecker LANTERN_BIOME_CHECKER;
     public static BiomeChecker NAGA_BIOME_CHECKER;
+    public static BiomeChecker BLUFF_BIOME_CHECKER;
 
     public static final Map<EntityType<?>, ConfigHandler.SpawnConfig> spawnConfigs = new HashMap<>();
     static {
@@ -37,6 +38,7 @@ public class SpawnHandler {
         spawnConfigs.put(EntityHandler.LANTERN.get(), ConfigHandler.COMMON.MOBS.LANTERN.spawnConfig);
         spawnConfigs.put(EntityHandler.NAGA.get(), ConfigHandler.COMMON.MOBS.NAGA.spawnConfig);
         spawnConfigs.put(EntityHandler.GROTTOL.get(), ConfigHandler.COMMON.MOBS.GROTTOL.spawnConfig);
+        spawnConfigs.put(EntityHandler.BLUFF.get(), ConfigHandler.COMMON.MOBS.BLUFF.spawnConfig);
     }
 
     public static void registerSpawnPlacementTypes() {
@@ -60,6 +62,7 @@ public class SpawnHandler {
             SpawnPlacements.register(EntityHandler.NAGA.get(), mmSpawn, Heightmap.Types.MOTION_BLOCKING, MowzieEntity::spawnPredicate);
             SpawnPlacements.register(EntityHandler.GROTTOL.get(), mmSpawn, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, MowzieEntity::spawnPredicate);
             SpawnPlacements.register(EntityHandler.UMVUTHANA_CRANE.get(), mmSpawn, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, MowzieEntity::spawnPredicate);
+            SpawnPlacements.register(EntityHandler.BLUFF.get(), mmSpawn, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, MowzieEntity::spawnPredicate);
         }
     }
 
@@ -92,6 +95,12 @@ public class SpawnHandler {
         if (ConfigHandler.COMMON.MOBS.NAGA.spawnConfig.spawnRate.get() > 0 && NAGA_BIOME_CHECKER.isBiomeInConfig(biomeKey)) {
 //              System.out.println("Added naga biome: " + biomeName.toString());
             registerEntityWorldSpawn(builder, EntityHandler.NAGA.get(), ConfigHandler.COMMON.MOBS.NAGA.spawnConfig, MobCategory.MONSTER);
+        }
+
+        if (BLUFF_BIOME_CHECKER == null) BLUFF_BIOME_CHECKER = new BiomeChecker(ConfigHandler.COMMON.MOBS.BLUFF.spawnConfig.biomeConfig);
+        if (ConfigHandler.COMMON.MOBS.BLUFF.spawnConfig.spawnRate.get() > 0 && BLUFF_BIOME_CHECKER.isBiomeInConfig(biomeKey)) {
+//              System.out.println("Added bluff biome: " + biomeName.toString());
+            registerEntityWorldSpawn(builder, EntityHandler.BLUFF.get(), ConfigHandler.COMMON.MOBS.BLUFF.spawnConfig, MobCategory.MONSTER);
         }
     }
 
