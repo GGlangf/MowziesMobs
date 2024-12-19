@@ -21,6 +21,7 @@ import com.bobmowzie.mowziesmobs.server.entity.sculptor.EntitySculptor;
 import com.bobmowzie.mowziesmobs.server.loot.LootTableHandler;
 import com.bobmowzie.mowziesmobs.server.potion.EffectGeomancy;
 import com.bobmowzie.mowziesmobs.server.sound.MMSounds;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket;
@@ -36,15 +37,21 @@ import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.control.FlyingMoveControl;
+import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
+import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -67,14 +74,23 @@ public class EntityBluff extends MowzieGeckoEntity {
     @OnlyIn(Dist.CLIENT)
     public Vec3[] corePos;
 
+    private GroundPathNavigation groundNav;
+    private MoveControl groundMoveControl;
+    private FlyingPathNavigation flyingNav;
+    private FlyingMoveControl flyingMoveControl;
+
     // -- ABILITIES -- //
     public static final AbilityType<EntityBluff, HurtAbility<EntityBluff>> HURT_ABILITY = new AbilityType<>("bluff_hurt", (type, entity) -> new HurtAbility<>(type, entity, RawAnimation.begin().thenPlay("hurt"), 7, 0));
-    public static final AbilityType<EntityBluff, DieAbility<EntityBluff>> DIE_ABILITY = new AbilityType<>("bluff_die", (type, entity) -> new DieAbility<>(type, entity, RawAnimation.begin().thenPlay("death"), 30));
+    public static final AbilityType<EntityBluff, DieAbility<EntityBluff>> DIE_ABILITY = new AbilityType<>("bluff_die", (type, entity) -> new DieAbility<>(type, entity, RawAnimation.begin().thenPlay("death"), 50));
     public static final AbilityType<EntityBluff, BluffAttackAbility> ATTACK_ABILITY = new AbilityType<>("bluff_attack", BluffAttackAbility::new);
 
     public EntityBluff(EntityType<? extends MowzieEntity> type, Level world) {
         super(type, world);
         this.xpReward = 14;
+
+        groundMoveControl = this.moveControl;
+        flyingMoveControl = new FlyingMoveControl(this, 10, true);
+
         if (world.isClientSide) {
             feetPos = new Vec3[]{new Vec3(0, 0, 0)};
             corePos = new Vec3[]{new Vec3(0, 0, 0)};
@@ -100,7 +116,8 @@ public class EntityBluff extends MowzieGeckoEntity {
     @Nullable
     @Override
     protected SoundEvent getDeathSound() {
-        return MMSounds.ENTITY_BLUFF_DEATH.get();
+        playSound(MMSounds.ENTITY_BLUFF_DEATH.get(), 1, 1.1f);
+        return null;
     }
 
     @Nullable
@@ -115,6 +132,7 @@ public class EntityBluff extends MowzieGeckoEntity {
         goalSelector.addGoal(2, new UseAbilityAI<>(this, ATTACK_ABILITY));
         this.goalSelector.addGoal(1, new UseAbilityAI<>(this, DIE_ABILITY));
         this.goalSelector.addGoal(2, new UseAbilityAI<>(this, HURT_ABILITY, false));
+        this.goalSelector.addGoal(3, new BluffNoPathGoal(this));
         this.goalSelector.addGoal(4, new BluffAttackGoal(this));
         this.goalSelector.addGoal(5, new MoveTowardsRestrictionGoal(this, 1.0D));
         this.goalSelector.addGoal(7, new WaterAvoidingRandomStrollGoal(this, 1.0D, 0.0F));
@@ -145,20 +163,46 @@ public class EntityBluff extends MowzieGeckoEntity {
         return MowzieEntity.createAttributes().add(Attributes.ATTACK_DAMAGE, 10)
                 .add(Attributes.MAX_HEALTH, 30)
                 .add(Attributes.MOVEMENT_SPEED, 0.23f)
+                .add(Attributes.FLYING_SPEED, 0.23f)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 1f)
                 .add(Attributes.FOLLOW_RANGE, 32);
+    }
+
+    @Override
+    protected PathNavigation createNavigation(Level level) {
+        groundNav = new GroundPathNavigation(this, level) {
+            @Override
+            protected boolean canUpdatePath() {
+                return super.canUpdatePath() || navigation == flyingNav;
+            }
+        };
+        flyingNav = new FlyingPathNavigation(this, level);
+        return groundNav;
+    }
+
+    public void setFlying(boolean flying) {
+        if (flying) {
+            moveControl = flyingMoveControl;
+            navigation = flyingNav;
+            setNoGravity(true);
+        }
+        else {
+            moveControl = groundMoveControl;
+            navigation = groundNav;
+            setNoGravity(false);
+        }
     }
 
     @Override
     public void tick() {
         super.tick();
 
-        if (getActiveAbilityType() == DIE_ABILITY){
+        if (getActiveAbilityType() == DIE_ABILITY && getActiveAbility().getTicksInUse() < 14) {
             this.yBodyRot = this.yHeadRot = this.yRotO;
-            if (level().isClientSide){
-                for (int i = 0; i < 3; i++) {
+            if (level().isClientSide) {
+                for (int i = 0; i < 4; i++) {
                     if (random.nextFloat() < 0.1f) {
-                        AdvancedParticleBase.spawnParticle(level(), ParticleHandler.PIXEL.get(), getRandomX(0.4f), getY() + 1f, getRandomZ(0.4f), 0f, random.nextFloat() / 15f, 0f, true, 0f, 0, 0f, 0, 2 + (random.nextFloat()*2f), 163d / 256d, 247d / 256d, 74d / 256d, 0.5, 0.9, 17 + random.nextFloat() * 10, true, true, new ParticleComponent[]{
+                        AdvancedParticleBase.spawnParticle(level(), ParticleHandler.PIXEL.get(), getRandomX(0.4f), getY() + 1f, getRandomZ(0.4f), 0f, random.nextFloat() / 15f, 0f, true, 0f, 0, 0f, 0, 1.3 + (random.nextFloat()*1f), 163d / 256d, 247d / 256d, 74d / 256d, 0.5, 0.9, 17 + random.nextFloat() * 10, true, true, new ParticleComponent[]{
                                 new ParticleComponent.PropertyControl(ParticleComponent.PropertyControl.EnumParticleProperty.ALPHA, new ParticleComponent.KeyTrack(
                                         new float[]{1f, 0},
                                         new float[]{0.0f, 1}
@@ -237,6 +281,9 @@ public class EntityBluff extends MowzieGeckoEntity {
         return super.checkSpawnRules(world, reason) && getEntitiesNearby(EntitySculptor.class, 8,  8, 8, 8).isEmpty() && world.getDifficulty() != Difficulty.PEACEFUL;
     }
 
+    protected void checkFallDamage(double p_29370_, boolean p_29371_, BlockState p_29372_, BlockPos p_29373_) {
+    }
+
     public static class BluffAttackAbility extends Ability<EntityBluff> {
         private static int STARTUP_DURATION = 9;
 
@@ -259,6 +306,7 @@ public class EntityBluff extends MowzieGeckoEntity {
         @Override
         public void start() {
             super.start();
+            getUser().setFlying(false);
             LivingEntity entityTarget = getUser().getTarget();
             if (entityTarget != null) {
                 prevTargetPos = entityTarget.position().add(0, entityTarget.getBbHeight() / 2.0, 0);
@@ -355,54 +403,61 @@ public class EntityBluff extends MowzieGeckoEntity {
         }
     }
 
-    public static class BluffChaseAbility extends Ability<EntityBluff> {
-        public static AbilitySection[] SECTION_TRACK = new AbilitySection[] {
-                new AbilitySection.AbilitySectionInfinite(AbilitySection.AbilitySectionType.MISC),
-                new AbilitySection.AbilitySectionInstant(AbilitySection.AbilitySectionType.RECOVERY)
-        };
+    public static class BluffNoPathGoal extends Goal {
+        private final EntityBluff bluff;
 
-        public BluffChaseAbility(AbilityType abilityType, EntityBluff user) {
-            super(abilityType, user, SECTION_TRACK);
+        public BluffNoPathGoal(EntityBluff bluff) {
+            this.bluff = bluff;
+            this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
         }
 
-        private static final RawAnimation WALK = RawAnimation.begin().then("idle", Animation.LoopType.LOOP);
+        @Override
+        public boolean canUse() {
+            LivingEntity target = this.bluff.getTarget();
+            if (target == null) return false;
+            if (!bluff.onGround()) return false;
+
+            Path path = bluff.groundNav.createPath(target, 0);
+            return path == null || path.getEndNode() == null || path.getEndNode().asVec3().add(0.5, 0.5, 0.5).distanceToSqr(path.getTarget().getCenter()) > 4;
+        }
+
+        @Override
+        public boolean canContinueToUse() {
+            LivingEntity target = this.bluff.getTarget();
+            if (target == null) return false;
+
+            Path path = bluff.groundNav.createPath(target, 0);
+            return path == null || path.getEndNode() == null || path.getEndNode().asVec3().add(0.5, 0.5, 0.5).distanceToSqr(path.getTarget().getCenter()) > 4;
+        }
 
         @Override
         public void start() {
             super.start();
-            playAnimation(WALK);
+            bluff.setFlying(true);
         }
 
         @Override
-        public <E extends GeoEntity> PlayState animationPredicate(AnimationState<E> e, GeckoPlayer.Perspective perspective) {
-            e.getController().transitionLength(5);
-            return super.animationPredicate(e, perspective);
-
-        }
-
-        @Override
-        protected void beginSection(AbilitySection section) {
-            super.beginSection(section);
-
-            if (section.sectionType == AbilitySection.AbilitySectionType.MISC && getUser().getTarget() != null) {
-                EntityBluff entity = getUser();
-                LivingEntity target = getUser().getTarget();
-
-                if (entity.tickCount % 5 == 0){
-                    entity.moveTo(target.position());
-                }
-
-                if (entity.distanceTo(target) < 5f){
-
-                }
+        public void tick() {
+            super.tick();
+            LivingEntity target = this.bluff.getTarget();
+            if (target != null) {
+                this.bluff.getNavigation().moveTo(target, 1.2);
+                this.bluff.getLookControl().setLookAt(target, 30.0F, 30.0F);
             }
+        }
+
+        @Override
+        public void stop() {
+            super.stop();
+            this.bluff.getNavigation().stop();
+            bluff.setFlying(false);
         }
     }
 
     static class BluffAttackGoal extends Goal {
         private final EntityBluff bluff;
         private final double speedModifier = 1.0;
-        private int attackIntervalMin = 100;
+        private int attackIntervalMin = 60;
         private final float attackMaxRadiusSqr = 12 * 12;
         private final float attackMinRadiusSqr = 6 * 6;
         private int attackTime = -1;
@@ -491,20 +546,15 @@ public class EntityBluff extends MowzieGeckoEntity {
                         this.bluff.getMoveControl().strafe(0, 0);
                     }
                     this.bluff.lookAt(livingentity, 30.0F, 30.0F);
-                } else {
-                    this.bluff.getLookControl().setLookAt(livingentity, 30.0F, 30.0F);
                 }
+                this.bluff.getLookControl().setLookAt(livingentity, 30.0F, 30.0F);
 
                 if (--this.attackTime <= 0 && this.seeTime >= -60 && d0 < attackMaxRadiusSqr) {
                     bluff.sendAbilityMessage(ATTACK_ABILITY);
                     attackIntervalMin = 100;
-                    this.attackTime = this.attackIntervalMin + bluff.random.nextInt(100);
+                    this.attackTime = attackIntervalMin + bluff.random.nextInt(50);
                 }
             }
-        }
-
-        private double getFollowDistance() {
-            return 12;
         }
     }
 }
