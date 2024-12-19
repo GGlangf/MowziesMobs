@@ -11,6 +11,7 @@ import com.bobmowzie.mowziesmobs.server.config.ConfigHandler;
 import com.bobmowzie.mowziesmobs.server.entity.MowzieGeckoEntity;
 import com.bobmowzie.mowziesmobs.server.entity.bluff.EntityBluff;
 import com.bobmowzie.mowziesmobs.server.entity.effects.EntityMagicEffect;
+import com.bobmowzie.mowziesmobs.server.sound.MMSounds;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket;
 import net.minecraft.server.level.ServerPlayer;
@@ -33,6 +34,7 @@ import java.util.List;
 
 public class EntityEarthSpike extends EntityGeomancyBase {
     private boolean emerged = false;
+    private int damageDelay = -1;
     protected MowzieAnimationController<EntityEarthSpike> controller = new MowzieAnimationController<>(this, "controller", 0, this::predicate, 0);
 
     public EntityEarthSpike(EntityType<? extends EntityMagicEffect> type, Level worldIn) {
@@ -42,13 +44,19 @@ public class EntityEarthSpike extends EntityGeomancyBase {
     public EntityEarthSpike(EntityType<? extends EntityMagicEffect> type, Level worldIn, LivingEntity caster, BlockState blockState) {
         super(type, worldIn, caster, blockState, null);
         setDeathTime(180);
+        setTier(GeomancyTier.SMALL);
     }
 
     @Override
     public void tick() {
         super.tick();
+
+        if (damageDelay >= 0) --damageDelay;
+
         if (!emerged) {
             emerged = true;
+            damageDelay = 2;
+            playSound(MMSounds.ENTITY_BLUFF_SPIKE_EMERGE.get(), 1, (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F);
             if (level().isClientSide()) {
                 for (int i = 0; i < 30; i++) {
                     Vec3 offset = new Vec3(0.6 + random.nextFloat() * 0.2, 0.1, 0).yRot(random.nextFloat() * (float) Math.PI * 2f);
@@ -58,33 +66,35 @@ public class EntityEarthSpike extends EntityGeomancyBase {
                     });
                 }
             }
-            else {
-                List<Entity> entitiesHit = level().getEntities(this, getBoundingBox().inflate(0.4), e -> e.canBeHitByProjectile() && e != getCaster());
-                for (Entity entity : entitiesHit) {
-                    double damage = 10;
-                    if (getCaster() != null) {
-                        if (getCaster() instanceof EntityBluff) {
-                            if (entity instanceof EntityBluff) continue;
-                            AttributeInstance attrib = getCaster().getAttribute(Attributes.ATTACK_DAMAGE);
-                            if (attrib != null) {
-                                damage = attrib.getValue();
-                            }
-                            damage = damage * ConfigHandler.COMMON.MOBS.BLUFF.combatConfig.attackMultiplier.get();
-                        }
+        }
+
+        if (damageDelay == 0 && !level().isClientSide()) {
+            damageDelay = -1;
+            List<Entity> entitiesHit = level().getEntities(this, getBoundingBox().inflate(0.4), e -> e.canBeHitByProjectile() && e != getCaster());
+            double damage = 10;
+            if (getCaster() != null) {
+                if (getCaster() instanceof EntityBluff) {
+                    AttributeInstance attrib = getCaster().getAttribute(Attributes.ATTACK_DAMAGE);
+                    if (attrib != null) {
+                        damage = attrib.getValue();
                     }
-                    entity.hurt(damageSources().mobProjectile(this, getCaster()), (float) damage);
-                    float applyKnockbackResistance = 0;
-                    if (entity instanceof LivingEntity) {
-                        applyKnockbackResistance = (float) ((LivingEntity) entity).getAttribute(Attributes.KNOCKBACK_RESISTANCE).getValue();
-                    }
-                    double y = 0;
-                    if (entity.onGround()) {
-                        y += 0.15 * (1 - applyKnockbackResistance);
-                    }
-                    entity.setDeltaMovement(entity.getDeltaMovement().add(0, y, 0));
-                    if (entity instanceof ServerPlayer) {
-                        ((ServerPlayer) entity).connection.send(new ClientboundSetEntityMotionPacket(entity));
-                    }
+                    damage = damage * ConfigHandler.COMMON.MOBS.BLUFF.combatConfig.attackMultiplier.get();
+                }
+            }
+            for (Entity entity : entitiesHit) {
+                if (getCaster() instanceof EntityBluff && entity instanceof EntityBluff) continue;
+                entity.hurt(damageSources().mobProjectile(this, getCaster()), (float) damage);
+                float applyKnockbackResistance = 0;
+                if (entity instanceof LivingEntity) {
+                    applyKnockbackResistance = (float) ((LivingEntity) entity).getAttribute(Attributes.KNOCKBACK_RESISTANCE).getValue();
+                }
+                double y = 0;
+                if (entity.onGround()) {
+                    y += 0.15 * (1 - applyKnockbackResistance);
+                }
+                entity.setDeltaMovement(entity.getDeltaMovement().add(0, y, 0));
+                if (entity instanceof ServerPlayer) {
+                    ((ServerPlayer) entity).connection.send(new ClientboundSetEntityMotionPacket(entity));
                 }
             }
         }
@@ -112,5 +122,11 @@ public class EntityEarthSpike extends EntityGeomancyBase {
     protected <E extends GeoEntity> PlayState predicate(AnimationState<E> event) {
         event.getController().setAnimation(EMERGE);
         return PlayState.CONTINUE;
+    }
+
+    @Override
+    protected void explode() {
+        super.explode();
+//        playSound(MMSounds.EFFECT_GEOMANCY_BREAK.get(), 1, (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F);
     }
 }

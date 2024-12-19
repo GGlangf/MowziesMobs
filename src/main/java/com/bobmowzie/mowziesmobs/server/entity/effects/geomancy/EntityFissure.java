@@ -1,8 +1,10 @@
 package com.bobmowzie.mowziesmobs.server.entity.effects.geomancy;
 
+import com.bobmowzie.mowziesmobs.MowziesMobs;
 import com.bobmowzie.mowziesmobs.client.particle.AdvancedTerrainParticle;
 import com.bobmowzie.mowziesmobs.client.particle.ParticleHandler;
 import com.bobmowzie.mowziesmobs.client.particle.util.ParticleComponent;
+import com.bobmowzie.mowziesmobs.client.sound.IGeomancyRumbler;
 import com.bobmowzie.mowziesmobs.server.entity.EntityHandler;
 import com.bobmowzie.mowziesmobs.server.entity.bluff.EntityBluff;
 import com.bobmowzie.mowziesmobs.server.potion.EffectGeomancy;
@@ -26,7 +28,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
-public class EntityFissure extends Projectile {
+public class EntityFissure extends Projectile implements IGeomancyRumbler {
     public static int TICKS_PER_PIECE = 5;
     private static final EntityDataAccessor<Boolean> TRAVELLING = SynchedEntityData.defineId(EntityFissure.class, EntityDataSerializers.BOOLEAN);
     private int despawnTimer = 0;
@@ -83,6 +85,9 @@ public class EntityFissure extends Projectile {
             }
         }
         else {
+            if (tickCount == 1) {
+                MowziesMobs.PROXY.playGeomancyRumbleSound(this);
+            }
             if (isTravelling()) {
                 BlockState blockBeneath = level().getBlockState(getOnPos());
                 for (int i = 0; i < 10; i++) {
@@ -140,5 +145,40 @@ public class EntityFissure extends Projectile {
         super.readAdditionalSaveData(compound);
         this.despawnTimer = compound.getShort("despawnTimer");
         setTravelling(compound.getBoolean("travelling"));
+    }
+
+    @Override
+    public boolean isRumbling() {
+        return isTravelling();
+    }
+
+    @Override
+    public boolean isFinishedRumbling() {
+        return !isTravelling();
+    }
+
+    @Override
+    public float getRumblerX() {
+        return (float) getX();
+    }
+
+    @Override
+    public float getRumblerY() {
+        return (float) getY();
+    }
+
+    @Override
+    public float getRumblerZ() {
+        return (float) getZ();
+    }
+
+    @Override
+    public float getRumblePitch() {
+        return 1.3f;
+    }
+
+    @Override
+    public float getRumbleVolume() {
+        return 0.5f;
     }
 }

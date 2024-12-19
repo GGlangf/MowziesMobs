@@ -727,6 +727,44 @@
 		],
 		"subtitle": "subtitles.mowziesmobs.sculptor.clap"
 	},
+	"bluff.attack": {
+		"sounds": [ "mowziesmobs:entity/bluff/attack" ],
+		"subtitle": "subtitles.mowziesmobs.bluff.attack"
+	},
+	"bluff.death": {
+		"sounds": [ "mowziesmobs:entity/bluff/death" ],
+		"subtitle": "subtitles.mowziesmobs.bluff.death"
+	},
+	"bluff.hurt": {
+		"sounds": [
+			"mowziesmobs:entity/bluff/hurt1",
+			"mowziesmobs:entity/bluff/hurt2",
+			"mowziesmobs:entity/bluff/hurt3",
+			"mowziesmobs:entity/bluff/hurt4"
+		],
+		"subtitle": "subtitles.mowziesmobs.bluff.hurt"
+	},
+	"bluff.idle": {
+		"sounds": [
+			"mowziesmobs:entity/bluff/idle1",
+			"mowziesmobs:entity/bluff/idle2",
+			"mowziesmobs:entity/bluff/idle3",
+			"mowziesmobs:entity/bluff/idle4",
+			"mowziesmobs:entity/bluff/idle5",
+			"mowziesmobs:entity/bluff/idle6",
+			"mowziesmobs:entity/bluff/idle7",
+			"mowziesmobs:entity/bluff/idle8"
+		],
+		"subtitle": "subtitles.mowziesmobs.bluff.idle"
+	},
+	"bluff.spike_emerge": {
+		"sounds": [ "mowziesmobs:entity/bluff/spike_emerge" ],
+		"subtitle": "subtitles.mowziesmobs.bluff.spike_emerge"
+	},
+	"bluff.spike_explode": {
+		"sounds": [ "mowziesmobs:entity/bluff/spike_explode" ],
+		"subtitle": "subtitles.mowziesmobs.bluff.spike_explode"
+	},
 	"misc.groundhit1": {
 		"sounds": [ "mowziesmobs:entity/misc/ground_hit1" ],
 		"subtitle": "subtitles.mowziesmobs.ground_hit"

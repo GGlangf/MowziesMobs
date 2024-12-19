@@ -44,7 +44,7 @@ public class EntityBoulderBase extends EntityGeomancyBase {
     public int risingTick = 0;
     public boolean active = false;
 
-    private static final EntityDataAccessor<Integer> RISING_TICK = SynchedEntityData.defineId(EntityGeomancyBase.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> RISING_TICK = SynchedEntityData.defineId(EntityBoulderBase.class, EntityDataSerializers.INT);
 
     public static final HashMap<GeomancyTier, EntityDimensions> SIZE_MAP = new HashMap<>();
     static {

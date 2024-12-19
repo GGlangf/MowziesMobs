@@ -11,6 +11,7 @@ import com.bobmowzie.mowziesmobs.server.ability.AbilityType;
 import com.bobmowzie.mowziesmobs.server.ability.abilities.mob.DieAbility;
 import com.bobmowzie.mowziesmobs.server.ability.abilities.mob.HurtAbility;
 import com.bobmowzie.mowziesmobs.server.ai.UseAbilityAI;
+import com.bobmowzie.mowziesmobs.server.config.ConfigHandler;
 import com.bobmowzie.mowziesmobs.server.entity.EntityHandler;
 import com.bobmowzie.mowziesmobs.server.entity.MowzieEntity;
 import com.bobmowzie.mowziesmobs.server.entity.MowzieGeckoEntity;
@@ -19,20 +20,30 @@ import com.bobmowzie.mowziesmobs.server.entity.effects.geomancy.EntityFissurePie
 import com.bobmowzie.mowziesmobs.server.entity.sculptor.EntitySculptor;
 import com.bobmowzie.mowziesmobs.server.loot.LootTableHandler;
 import com.bobmowzie.mowziesmobs.server.potion.EffectGeomancy;
+import com.bobmowzie.mowziesmobs.server.sound.MMSounds;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
+import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
@@ -45,6 +56,7 @@ import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.object.PlayState;
 
 import java.util.EnumSet;
+import java.util.List;
 
 public class EntityBluff extends MowzieGeckoEntity {
     private float allowedHeightOffset = 0.5F;
@@ -56,7 +68,7 @@ public class EntityBluff extends MowzieGeckoEntity {
     public Vec3[] corePos;
 
     // -- ABILITIES -- //
-    public static final AbilityType<EntityBluff, HurtAbility<EntityBluff>> HURT_ABILITY = new AbilityType<>("bluff_hurt", (type, entity) -> new HurtAbility<>(type, entity, RawAnimation.begin().thenPlay("hurt"), 5, 0));
+    public static final AbilityType<EntityBluff, HurtAbility<EntityBluff>> HURT_ABILITY = new AbilityType<>("bluff_hurt", (type, entity) -> new HurtAbility<>(type, entity, RawAnimation.begin().thenPlay("hurt"), 7, 0));
     public static final AbilityType<EntityBluff, DieAbility<EntityBluff>> DIE_ABILITY = new AbilityType<>("bluff_die", (type, entity) -> new DieAbility<>(type, entity, RawAnimation.begin().thenPlay("death"), 30));
     public static final AbilityType<EntityBluff, BluffAttackAbility> ATTACK_ABILITY = new AbilityType<>("bluff_attack", BluffAttackAbility::new);
 
@@ -77,6 +89,24 @@ public class EntityBluff extends MowzieGeckoEntity {
     @Override
     public AbilityType getDeathAbility() {
         return DIE_ABILITY;
+    }
+
+    @Nullable
+    @Override
+    protected SoundEvent getHurtSound(DamageSource p_21239_) {
+        return MMSounds.ENTITY_BLUFF_HURT.get();
+    }
+
+    @Nullable
+    @Override
+    protected SoundEvent getDeathSound() {
+        return MMSounds.ENTITY_BLUFF_DEATH.get();
+    }
+
+    @Nullable
+    @Override
+    protected SoundEvent getAmbientSound() {
+        return MMSounds.ENTITY_BLUFF_IDLE.get();
     }
 
     @Override
@@ -202,6 +232,11 @@ public class EntityBluff extends MowzieGeckoEntity {
         return true;
     }
 
+    @Override
+    public boolean checkSpawnRules(LevelAccessor world, MobSpawnType reason) {
+        return super.checkSpawnRules(world, reason) && getEntitiesNearby(EntitySculptor.class, 8,  8, 8, 8).isEmpty() && world.getDifficulty() != Difficulty.PEACEFUL;
+    }
+
     public static class BluffAttackAbility extends Ability<EntityBluff> {
         private static int STARTUP_DURATION = 9;
 
@@ -229,6 +264,7 @@ public class EntityBluff extends MowzieGeckoEntity {
                 prevTargetPos = entityTarget.position().add(0, entityTarget.getBbHeight() / 2.0, 0);
             }
             playAnimation(ATTACK_START_ANIMATION);
+            getUser().playSound(MMSounds.ENTITY_BLUFF_ATTACK.get(), 1, 1.2f);
         }
 
         @Override
@@ -267,8 +303,21 @@ public class EntityBluff extends MowzieGeckoEntity {
         protected void beginSection(AbilitySection section) {
             super.beginSection(section);
             if (section.sectionType == AbilitySection.AbilitySectionType.ACTIVE) {
+                getUser().playSound(MMSounds.EFFECT_GEOMANCY_HIT_MEDIUM.get(0).get(), 1, 1.2f);
                 if (!getLevel().isClientSide()) {
                     shootFissureAtTarget(getUser().getTarget(), prevTargetPos, 0.1f);
+
+                    List<Entity> entitiesHit = getLevel().getEntities(getUser(), getUser().getBoundingBox().inflate(0.4), e -> e != getUser());
+                    double damage = 10;
+                    AttributeInstance attrib = getUser().getAttribute(Attributes.ATTACK_DAMAGE);
+                    if (attrib != null) {
+                        damage = attrib.getValue();
+                    }
+                    damage = damage * ConfigHandler.COMMON.MOBS.BLUFF.combatConfig.attackMultiplier.get();
+                    for (Entity entity : entitiesHit) {
+                        if (entity instanceof EntityBluff) continue;
+                        entity.hurt(getUser().damageSources().mobAttack(getUser()), (float) damage);
+                    }
                 }
 
                 playAnimation(ATTACK_END_ANIMATION);

@@ -32,7 +32,8 @@ public class EarthRumbleLoopSound extends AbstractTickableSoundInstance {
     public void tick() {
         if (active) volumeControl.increaseTimer();
         else volumeControl.decreaseTimer();
-        volume = volumeControl.getAnimationFraction() * 3;
+        volume = volumeControl.getAnimationFraction() * 3 * rumbler.getRumbleVolume();
+        pitch = rumbler.getRumblePitch();
         if (volumeControl.getAnimationFraction() <= 0.05 && (rumbler == null || rumbler.isFinishedRumbling()))
             stop();
         if (rumbler != null && rumbler.isRumbling()) {
