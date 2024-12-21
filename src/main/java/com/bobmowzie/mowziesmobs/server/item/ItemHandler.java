@@ -54,7 +54,7 @@ public class ItemHandler {
     public static final RegistryObject<MowzieArmorItem> GEOMANCER_ROBE = REG.register("geomancer_robe", () -> new ItemGeomancerArmor(ArmorItem.Type.CHESTPLATE, new Item.Properties().rarity(Rarity.UNCOMMON)));
     public static final RegistryObject<MowzieArmorItem> GEOMANCER_BELT = REG.register("geomancer_belt", () -> new ItemGeomancerArmor(ArmorItem.Type.LEGGINGS, new Item.Properties().rarity(Rarity.UNCOMMON)));
     public static final RegistryObject<MowzieArmorItem> GEOMANCER_SANDALS = REG.register("geomancer_sandals", () -> new ItemGeomancerArmor(ArmorItem.Type.BOOTS, new Item.Properties().rarity(Rarity.UNCOMMON)));
-    public static final RegistryObject<Item> BLUFF_ROD = REG.register("bluff_rod", () -> new ItemNagaFang(new Item.Properties()));
+    public static final RegistryObject<ItemBluffRod> BLUFF_ROD = REG.register("bluff_rod", () -> new ItemBluffRod(new Item.Properties()));
 
     public static final RegistryObject<Item> LOGO = REG.register("logo", () -> new Item(new Item.Properties()));
     public static final RegistryObject<RecordItem> PETIOLE_MUSIC_DISC = REG.register("music_disc_petiole", () -> new RecordItem(14, MMSounds.MUSIC_PETIOLE, new Item.Properties().stacksTo(1).rarity(Rarity.RARE), 2800));
