@@ -516,11 +516,11 @@ public final class ConfigHandler {
         Bluff(final ForgeConfigSpec.Builder builder) {
             builder.push("bluff");
             spawnConfig = new SpawnConfig(builder,
-                    100, 1, 2, 1,
+                    10, 2, 3, 1,
                     new BiomeConfig(builder, Collections.emptyList(), Collections.emptyList(), Collections.emptyList()),
                     Collections.emptyList(),
                     Collections.emptyList(),
-                    -65, -65, false, false, false,
+                    -65, -65, true, false, true,
                     Collections.emptyList()
             );
             combatConfig = new CombatConfig(builder,1, 1);
