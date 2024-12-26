@@ -78,7 +78,7 @@
               }
             }
           ],
-          "name": "minecraft:cooked_porkchop"
+          "name": "minecraft:cooked_mutton"
         },
         {
           "type": "minecraft:item",
@@ -159,6 +159,36 @@
             }
           ],
           "name": "minecraft:torch"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 10,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 1.0,
+                "max": 4.0,
+                "type": "minecraft:uniform"
+              }
+            }
+          ],
+          "name": "minecraft:rabbit_foot"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 10,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 1.0,
+                "max": 4.0,
+                "type": "minecraft:uniform"
+              }
+            }
+          ],
+          "name": "minecraft:sugar"
         },
         {
           "type": "minecraft:item",
