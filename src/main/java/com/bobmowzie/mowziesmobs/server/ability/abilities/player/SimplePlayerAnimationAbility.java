@@ -44,10 +44,20 @@ public class SimplePlayerAnimationAbility extends PlayerAbility {
         // Held items
         if (lockHeldItemActiveHand) {
             if (usingSide) {
-                heldItemMainHandVisualOverride = getUser().getUseItem();
+                if (getUser().isUsingItem()) {
+                    heldItemMainHandVisualOverride = getUser().getUseItem();
+                }
+                else {
+                    heldItemMainHandVisualOverride = getUser().getMainHandItem();
+                }
             }
             else {
-                heldItemOffHandVisualOverride = getUser().getUseItem();
+                if (getUser().isUsingItem()) {
+                    heldItemOffHandVisualOverride = getUser().getUseItem();
+                }
+                else {
+                    heldItemOffHandVisualOverride = getUser().getOffhandItem();
+                }
             }
         }
     }
