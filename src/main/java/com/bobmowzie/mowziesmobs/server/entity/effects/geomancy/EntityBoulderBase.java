@@ -119,6 +119,16 @@ public class EntityBoulderBase extends EntityGeomancyBase {
         return risingTick >= finishedRisingTick;
     }
 
+    protected void doPopupEntities() {
+        List<Entity> popUpEntities = level().getEntities(this, getBoundingBox());
+        for (Entity entity:popUpEntities) {
+            if (entity.isPickable() && !(entity instanceof EntityBoulderBase)) {
+                if (boulderSize != GeomancyTier.HUGE) entity.move(MoverType.SHULKER_BOX, new Vec3(0, 2 * (Math.pow(2, -risingTick * (0.6 - 0.1 * boulderSize.ordinal()))), 0));
+                else entity.move(MoverType.SHULKER_BOX, new Vec3(0, 0.6f, 0));
+            }
+        }
+    }
+
     @Override
     public void tick() {
         if (firstTick) {
@@ -139,13 +149,7 @@ public class EntityBoulderBase extends EntityGeomancyBase {
         }
 
         if (active && risingTick < finishedRisingTick + 2) {
-            List<Entity> popUpEntities = level().getEntities(this, getBoundingBox());
-            for (Entity entity:popUpEntities) {
-                if (entity.isPickable() && !(entity instanceof EntityBoulderBase)) {
-                    if (boulderSize != GeomancyTier.HUGE) entity.move(MoverType.SHULKER_BOX, new Vec3(0, 2 * (Math.pow(2, -risingTick * (0.6 - 0.1 * boulderSize.ordinal()))), 0));
-                    else entity.move(MoverType.SHULKER_BOX, new Vec3(0, 0.6f, 0));
-                }
-            }
+            doPopupEntities();
         }
 
         if (risingTick == 1) {

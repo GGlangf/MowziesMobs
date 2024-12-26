@@ -67,8 +67,13 @@ public class EntityBoulderProjectile extends EntityBoulderBase {
             speed = 0.8f;
         }
 
-        if (getCaster() instanceof Player) damage *= ConfigHandler.COMMON.TOOLS_AND_ABILITIES.EARTHREND_GAUNTLET.attackMultiplier.get();
-        else if (getCaster() instanceof EntitySculptor) damage *= ConfigHandler.COMMON.MOBS.SCULPTOR.combatConfig.attackMultiplier.get();
+        damage *= getDamageMult();
+    }
+
+    protected double getDamageMult() {
+        if (getCaster() instanceof Player) return ConfigHandler.COMMON.TOOLS_AND_ABILITIES.EARTHREND_GAUNTLET.attackMultiplier.get();
+        else if (getCaster() instanceof EntitySculptor) return ConfigHandler.COMMON.MOBS.SCULPTOR.combatConfig.attackMultiplier.get();
+        return 1;
     }
 
     public float getSpeed() {
@@ -91,7 +96,7 @@ public class EntityBoulderProjectile extends EntityBoulderBase {
             if (ridingEntities != null) ridingEntities.clear();
             List<Entity> onTopOfEntities = level().getEntities(this, getBoundingBox().contract(0, getBbHeight() - 1, 0).move(new Vec3(0, getBbHeight() - 0.5, 0)).inflate(0.6, 0.5, 0.6));
             for (Entity entity : onTopOfEntities) {
-                if (entity != null && entity.isPickable() && !(entity instanceof EntityBoulderProjectile) && entity.getY() >= this.getY() + 0.2)
+                if (entity != null && entity.isPickable() && !(entity instanceof EntityBoulderProjectile) && entity.getY() >= this.getY() + 0.2 && entity.isPushable())
                     ridingEntities.add(entity);
             }
         }

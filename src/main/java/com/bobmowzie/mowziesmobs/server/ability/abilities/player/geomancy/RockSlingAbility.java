@@ -34,7 +34,7 @@ public class RockSlingAbility extends PlayerAbility {
                 new AbilitySection.AbilitySectionDuration(AbilitySection.AbilitySectionType.STARTUP, 5),
                 new AbilitySection.AbilitySectionDuration(AbilitySection.AbilitySectionType.ACTIVE, 10),
                 new AbilitySection.AbilitySectionDuration(AbilitySection.AbilitySectionType.RECOVERY, 5)
-        });
+        }, 15);
     }
 
     @Override
@@ -51,20 +51,12 @@ public class RockSlingAbility extends PlayerAbility {
         this.spawnBoulderBlock = getUser().level().getBlockState(spawnBoulderPos);
         playAnimation("rock_sling", Animation.LoopType.DEFAULT, true, true);
 
-        if(getUser().level().isClientSide()){
-            AdvancedParticleBase.spawnParticle(getUser().level(), ParticleHandler.RING2.get(), (float) getUser().getX(), (float) getUser().getY() + 0.01f, (float) getUser().getZ(), 0, 0, 0, false, 0, Math.PI / 2f, 0, 0, 3.5F, 0.83f, 1, 0.39f, 1, 1, 10, true, true, new ParticleComponent[]{
-                    new ParticleComponent.PropertyControl(ParticleComponent.PropertyControl.EnumParticleProperty.ALPHA, ParticleComponent.KeyTrack.startAndEnd(0.7f, 0f), false),
-                    new ParticleComponent.PropertyControl(ParticleComponent.PropertyControl.EnumParticleProperty.SCALE, ParticleComponent.KeyTrack.startAndEnd(0, (0.8f + 2.7f * 20f / 60f) * 10f), false)
-            });
-        }
-        else{
+        if (!getUser().level().isClientSide()) {
             for(int i = 0; i < 3; i++) {
-                Vec3 spawnPos = new Vec3(0D, -1D, 2D).yRot((float) Math.toRadians(-getUser().getYRot())).yRot((float) Math.toRadians(-90 + (i * 80))).add(getUser().position());
+                Vec3 spawnPos = new Vec3(0D, -1D, 2.5D).yRot((float) Math.toRadians(-getUser().getYRot())).yRot((float) Math.toRadians(-45 + (i * 45))).add(getUser().position());
                 EntityRockSling boulder = new EntityRockSling(EntityHandler.ROCK_SLING.get(), getUser().level(), getUser(), spawnBoulderBlock, spawnBoulderPos, EntityGeomancyBase.GeomancyTier.values()[1]);
                 boulder.setPos(spawnPos.x() + 0.5F, spawnPos.y() + 2, spawnPos.z() + 0.5F);
                 boulder.setLaunchVec(getUser().getViewVector(1f).multiply(1f,0.9f,1f));
-                boulder.setTravelling(true);
-                boulder.setDamage(4);
                 if (!getUser().level().isClientSide && boulder.checkCanSpawn()) {
                     getUser().level().addFreshEntity(boulder);
                 }

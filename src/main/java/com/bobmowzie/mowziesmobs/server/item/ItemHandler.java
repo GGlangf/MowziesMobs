@@ -85,6 +85,7 @@ public class ItemHandler {
         SPEAR.get().getAttributesFromConfig();
         NAGA_FANG_DAGGER.get().getAttributesFromConfig();
         EARTHREND_GAUNTLET.get().getAttributesFromConfig();
+        SCULPTOR_STAFF.get().getAttributesFromConfig();
     }
 
     public static void initializeDispenserBehaviors() {

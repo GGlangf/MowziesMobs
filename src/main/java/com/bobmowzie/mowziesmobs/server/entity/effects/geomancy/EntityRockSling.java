@@ -1,16 +1,23 @@
 package com.bobmowzie.mowziesmobs.server.entity.effects.geomancy;
 
+import com.bobmowzie.mowziesmobs.server.config.ConfigHandler;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.object.PlayState;
+
+import java.util.List;
 
 public class EntityRockSling extends EntityBoulderProjectile implements GeoEntity {
     private Vec3 launchVec;
@@ -20,10 +27,19 @@ public class EntityRockSling extends EntityBoulderProjectile implements GeoEntit
         setDamage(3);
     }
 
-
     public EntityRockSling(EntityType<? extends EntityBoulderProjectile> type, Level world, LivingEntity caster, BlockState blockState, BlockPos pos, GeomancyTier tier) {
         super(type, world, caster, blockState, pos, tier);
         setDamage(3);
+    }
+
+    @Override
+    protected @NotNull AABB makeBoundingBox() {
+        return this.dimensions.makeBoundingBox(this.position());
+    }
+
+    @Override
+    public boolean canBeHitByProjectile() {
+        return false;
     }
 
     @Override
@@ -32,16 +48,33 @@ public class EntityRockSling extends EntityBoulderProjectile implements GeoEntit
 
         if(tickCount > 30 + random.nextInt(35) && launchVec != null) {
             setDeltaMovement(launchVec.normalize().multiply(2f + random.nextFloat()/5, 2f, 2f + random.nextFloat()/5));
-
+            setTravelling(true);
         }
+    }
 
+    @Override
+    protected double getDamageMult() {
+        return ConfigHandler.COMMON.TOOLS_AND_ABILITIES.SCULPTOR_STAFF.attackMultiplier.get();
     }
 
     public void setLaunchVec(Vec3 vec){
         this.launchVec = vec;
     }
 
-    private static RawAnimation ROLL_ANIM = RawAnimation.begin().thenLoop("roll");
+    @Override
+    public boolean canBeCollidedWith() {
+        return false;
+    }
+
+    @Override
+    protected void findRidingEntities() {
+    }
+
+    @Override
+    protected void doPopupEntities() {
+    }
+
+    private static final RawAnimation ROLL_ANIM = RawAnimation.begin().thenLoop("roll");
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {

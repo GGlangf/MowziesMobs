@@ -730,6 +730,20 @@ public final class ConfigHandler {
         public final IntValue supernovaCost;
     }
 
+    public static class SculptorStaff {
+        SculptorStaff(final ForgeConfigSpec.Builder builder) {
+            builder.push("sculptor_staff");
+            toolConfig = new ToolConfig(builder, 3, 1f);
+            attackMultiplier = builder.comment("Multiply all damage done with the Sculptor Staff by this amount.")
+                    .translation(LANG_PREFIX + "attack_multiplier")
+                    .defineInRange("attack_multiplier", 1f, 0d, Double.MAX_VALUE);
+            builder.pop();
+        }
+        public final DoubleValue attackMultiplier;
+
+        public final ToolConfig toolConfig;
+    }
+
     public static class Mobs {
         Mobs(final ForgeConfigSpec.Builder builder) {
             builder.push("mobs");
@@ -781,6 +795,7 @@ public final class ConfigHandler {
             NAGA_FANG_DAGGER = new NagaFangDagger(builder);
             BLOW_GUN = new Blowgun(builder);
             EARTHREND_GAUNTLET = new EarthrendGauntlet(builder);
+            SCULPTOR_STAFF = new SculptorStaff(builder);
             builder.pop();
         }
 
@@ -805,6 +820,8 @@ public final class ConfigHandler {
         public final Blowgun BLOW_GUN;
 
         public final EarthrendGauntlet EARTHREND_GAUNTLET;
+
+        public final SculptorStaff SCULPTOR_STAFF;
     }
 
     public static class Client {

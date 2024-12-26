@@ -38,7 +38,7 @@ public class ItemSculptorStaff extends MowzieToolItem implements GeoItem {
     public static final String DISAPPEAR_ANIM_NAME = "disappear";
 
     public ItemSculptorStaff(Properties properties) {
-        super(1f,2f, Tiers.STONE, BlockTags.MINEABLE_WITH_HOE, properties);
+        super(-2 + ConfigHandler.COMMON.TOOLS_AND_ABILITIES.SCULPTOR_STAFF.toolConfig.attackDamageValue, -4f + ConfigHandler.COMMON.TOOLS_AND_ABILITIES.SCULPTOR_STAFF.toolConfig.attackSpeedValue, Tiers.STONE, BlockTags.MINEABLE_WITH_HOE, properties);
 
         SingletonGeoAnimatable.registerSyncedAnimatable(this);
     }
@@ -92,7 +92,7 @@ public class ItemSculptorStaff extends MowzieToolItem implements GeoItem {
 
     @Override
     public ConfigHandler.ToolConfig getConfig() {
-        return ConfigHandler.COMMON.TOOLS_AND_ABILITIES.EARTHREND_GAUNTLET.toolConfig;
+        return ConfigHandler.COMMON.TOOLS_AND_ABILITIES.SCULPTOR_STAFF.toolConfig;
     }
 
     @Override
