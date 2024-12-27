@@ -219,6 +219,7 @@ public final class MMSounds {
     public static final RegistryObject<SoundEvent> ENTITY_SCULPTOR_DISAPPEAR = create("sculptor.disappear");
     public static final RegistryObject<SoundEvent> ENTITY_SCULPTOR_DISAPPEAR_EFFECTS = create("sculptor.disappear_effects");
     public static final RegistryObject<SoundEvent> ENTITY_SCULPTOR_CLAP = create("sculptor.clap");
+    public static final RegistryObject<SoundEvent> ENTITY_SCULPTOR_PLATFORM_CRUMBLE = create("sculptor.platform_crumble");
 
     public static final RegistryObject<SoundEvent> ENTITY_BLUFF_ATTACK = create("bluff.attack");
     public static final RegistryObject<SoundEvent> ENTITY_BLUFF_DEATH = create("bluff.death");

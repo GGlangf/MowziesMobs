@@ -1,19 +1,28 @@
 package com.bobmowzie.mowziesmobs.server.entity.effects.geomancy;
 
+import com.bobmowzie.mowziesmobs.MowziesMobs;
 import com.bobmowzie.mowziesmobs.client.model.tools.MathUtils;
+import com.bobmowzie.mowziesmobs.client.sound.IGeomancyRumbler;
 import com.bobmowzie.mowziesmobs.server.entity.EntityHandler;
 import com.bobmowzie.mowziesmobs.server.entity.sculptor.EntitySculptor;
+import com.bobmowzie.mowziesmobs.server.sound.MMSounds;
 import com.google.common.collect.Iterables;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
+import net.royawesome.jlibnoise.MathHelper;
 import org.jetbrains.annotations.NotNull;
+import org.joml.Vector3f;
 
 import java.util.List;
 
@@ -30,7 +39,7 @@ public class EntityBoulderSculptor extends EntityBoulderProjectile {
 
     protected boolean descending = false;
 
-    private boolean replacementBoulder = false;
+    protected boolean replacementBoulder = false;
     private boolean spawnedNextBoulders = false;
 
     private int timeUntilActivation = -1;
@@ -158,11 +167,20 @@ public class EntityBoulderSculptor extends EntityBoulderProjectile {
         return false;
     }
 
-    public boolean nextSingleBoulder() {
+    public EntityBoulderSculptor getNextBoulderInstance() {
         int whichTierIndex = (int) (Math.pow(random.nextFloat(), 2) * (GeomancyTier.values().length - 2) + 1);
         if (getHeightFrac() > 0.85 && whichTierIndex == 3) whichTierIndex = 1;
         GeomancyTier nextTier = GeomancyTier.values()[whichTierIndex];
-        EntityBoulderSculptor nextBoulder = new EntityBoulderSculptor(EntityHandler.BOULDER_SCULPTOR.get(), level(), getCaster(), getBlock(), blockPosition(), nextTier);
+        if (getHeightFrac() > 0.5 && random.nextFloat() < 0.15) {
+            return new EntityBoulderSculptorCrumbling(EntityHandler.BOULDER_SCULPTOR_CRUMBLING.get(), level(), getCaster(), blockPosition(), nextTier, random.nextInt(2));
+        }
+        else {
+            return new EntityBoulderSculptor(EntityHandler.BOULDER_SCULPTOR.get(), level(), getCaster(), Blocks.STONE.defaultBlockState(), blockPosition(), nextTier);
+        }
+    }
+
+    public boolean nextSingleBoulder() {
+        EntityBoulderSculptor nextBoulder = getNextBoulderInstance();
 
         // Try many times to find a good placement for the next boulder
         for (int j = 0; j < MAX_TRIES; j++) {
@@ -354,5 +372,88 @@ public class EntityBoulderSculptor extends EntityBoulderProjectile {
         spawnedNextBoulders = compound.getBoolean("SpawnedNext");
         descending = compound.getBoolean("Descending");
         isMainPath = compound.getBoolean("MainPath");
+    }
+
+    public static class EntityBoulderSculptorCrumbling extends EntityBoulderSculptor {
+        public static final int CRUMBLE_DURATION = 35;
+        private int crumbleTick = CRUMBLE_DURATION;
+
+        private int consecutiveCrumblers;
+
+        private static final EntityDataAccessor<Boolean> CRUMBLING = SynchedEntityData.defineId(EntityBoulderSculptorCrumbling.class, EntityDataSerializers.BOOLEAN);
+
+        public EntityBoulderSculptorCrumbling(EntityType<? extends EntityBoulderSculptor> type, Level world) {
+            super(type, world);
+        }
+
+        public EntityBoulderSculptorCrumbling(EntityType<? extends EntityBoulderSculptorCrumbling> type, Level world, LivingEntity caster, BlockPos pos, GeomancyTier tier, int consecutiveCrumblers) {
+            super(type, world, caster, Blocks.DIRT.defaultBlockState(), pos, tier);
+            this.consecutiveCrumblers = consecutiveCrumblers;
+        }
+
+        public EntityBoulderSculptorCrumbling(EntityType<? extends EntityBoulderSculptorCrumbling> type, EntityBoulderSculptorCrumbling other) {
+            super(type, other.level(), other.getCaster(), other.storedBlock, other.blockPosition(), other.getTier());
+        }
+
+        @Override
+        public EntityBoulderSculptor getNextBoulderInstance() {
+            int whichTierIndex = (int) (Math.pow(random.nextFloat(), 2) * (GeomancyTier.values().length - 2) + 1);
+            if (getHeightFrac() > 0.85 && whichTierIndex == 3) whichTierIndex = 1;
+            GeomancyTier nextTier = GeomancyTier.values()[whichTierIndex];
+            if (consecutiveCrumblers > 0) {
+                return new EntityBoulderSculptorCrumbling(EntityHandler.BOULDER_SCULPTOR_CRUMBLING.get(), level(), getCaster(), blockPosition(), nextTier, consecutiveCrumblers - 1);
+            }
+            else {
+                return new EntityBoulderSculptor(EntityHandler.BOULDER_SCULPTOR.get(), level(), getCaster(), Blocks.STONE.defaultBlockState(), blockPosition(), nextTier);
+            }
+        }
+
+        @Override
+        protected void defineSynchedData() {
+            super.defineSynchedData();
+            getEntityData().define(CRUMBLING, false);
+        }
+
+        @Override
+        public void tick() {
+            super.tick();
+            if (!level().isClientSide() && !isCrumbling()) {
+                List<Entity> onTopOfEntities = level().getEntities(this, getBoundingBox().contract(0, getBbHeight() - 1, 0).move(new Vec3(0, getBbHeight() - 0.5, 0)).inflate(0.6, 0.5, 0.6));
+                for (Entity entity : onTopOfEntities) {
+                    if (entity != null && entity.isPickable() && !(entity instanceof EntityBoulderProjectile) && entity.getY() >= this.getY() + 0.2 && entity.onGround()) {
+                        setCrumbling(true);
+                        playSound(MMSounds.ENTITY_SCULPTOR_PLATFORM_CRUMBLE.get(), 1, 1);
+                    }
+                }
+            }
+
+            if (isCrumbling()) {
+                crumbleTick -= 1;
+                if (crumbleTick == 0) crumble();
+            }
+        }
+
+        private void crumble() {
+            explode();
+            if (!level().isClientSide()) {
+                EntityBoulderSculptorCrumbling boulderSculptor = new EntityBoulderSculptorCrumbling(EntityHandler.BOULDER_SCULPTOR_CRUMBLING.get(), this);
+                boulderSculptor.setPos(this.position());
+                boulderSculptor.replacementBoulder = true;
+                boulderSculptor.delayActivation(40);
+                level().addFreshEntity(boulderSculptor);
+            }
+        }
+
+        public void setCrumbling(boolean crumbling) {
+            getEntityData().set(CRUMBLING, crumbling);
+        }
+
+        public boolean isCrumbling() {
+            return getEntityData().get(CRUMBLING);
+        }
+
+        public int getCrumbleTick() {
+            return crumbleTick;
+        }
     }
 }

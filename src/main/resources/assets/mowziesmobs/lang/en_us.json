@@ -325,7 +325,7 @@
   "advancements.mowziesmobs.kill_grottol_fortune.description": "Kill a Grottol with a fortune pickaxe",
   "advancements.mowziesmobs.kill_grottol_silk_touch.title": "You're Coming With Me",
   "advancements.mowziesmobs.kill_grottol_silk_touch.description": "Kill a Grottol with a silk touch pickaxe",
-  "advancements.mowziesmobs.sculptor_challenge.title": "You Must Believe",
+  "advancements.mowziesmobs.sculptor_challenge.title": "Geomancer",
   "advancements.mowziesmobs.sculptor_challenge.description": "Complete the Sculptor's challenge",
 
   "subtitles.mowziesmobs.foliaath.bite": "Foliaath bites",
@@ -434,6 +434,7 @@
   "subtitles.mowziesmobs.sculptor.disappear": "Sculptor disappears",
   "subtitles.mowziesmobs.sculptor.disappear_effects": "Sculptor disappears",
   "subtitles.mowziesmobs.sculptor.clap": "Sculptor claps",
+  "subtitles.mowziesmobs.sculptor.platform_crumble": "Platform crumbles",
   "subtitles.mowziesmobs.bluff.attack": "Bluff attacks",
   "subtitles.mowziesmobs.bluff.death": "Bluff dies",
   "subtitles.mowziesmobs.bluff.hurt": "Bluff takes damage",
