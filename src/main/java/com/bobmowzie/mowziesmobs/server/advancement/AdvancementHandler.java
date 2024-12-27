@@ -7,6 +7,7 @@ public class AdvancementHandler {
     public static final GrottolKillFortuneTrigger GROTTOL_KILL_FORTUNE_TRIGGER = CriteriaTriggers.register(new GrottolKillFortuneTrigger());
     public static final GrottolKillSilkTouchTrigger GROTTOL_KILL_SILK_TOUCH_TRIGGER = CriteriaTriggers.register(new GrottolKillSilkTouchTrigger());
     public static final SneakGroveTrigger SNEAK_VILLAGE_TRIGGER = CriteriaTriggers.register(new SneakGroveTrigger());
+    public static final SculptorChallengeTrigger SCULPTOR_CHALLENGE_TRIGGER = CriteriaTriggers.register(new SculptorChallengeTrigger());
 
     public static void preInit() { }
 }
