@@ -2,6 +2,7 @@ package com.bobmowzie.mowziesmobs.server.entity.sculptor;
 
 import com.bobmowzie.mowziesmobs.MowziesMobs;
 import com.bobmowzie.mowziesmobs.client.model.tools.dynamics.GeckoDynamicChain;
+import com.bobmowzie.mowziesmobs.client.model.tools.geckolib.MowzieAnimationController;
 import com.bobmowzie.mowziesmobs.client.particle.ParticleHandler;
 import com.bobmowzie.mowziesmobs.client.particle.util.AdvancedParticleBase;
 import com.bobmowzie.mowziesmobs.client.particle.util.ParticleComponent;
@@ -305,7 +306,7 @@ public class EntitySculptor extends MowzieGeckoEntity {
 //        if (event.getController() instanceof MowzieAnimationController mowzieAnimationController) {
 //            mowzieAnimationController.checkAndReloadAnims();
 //        }
-//        event.getController().setAnimation(RawAnimation.begin().thenLoop("dynamicsTest"));
+//        event.getController().setAnimation(RawAnimation.begin().thenLoop("testStart"));
 //        event.getController().setAnimationSpeed(1.0f);
     }
 
