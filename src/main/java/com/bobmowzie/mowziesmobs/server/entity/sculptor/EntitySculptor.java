@@ -1132,7 +1132,7 @@ public class EntitySculptor extends MowzieGeckoEntity {
                     if (boulder.isTravelling()) continue;
                     if (boulder.isRemoved()) continue;
                     if (!boulder.isFinishedRising()) continue;
-                    if (!boulder.active) continue;
+                    if (!boulder.isActive()) continue;
                     if (boulder.position().add(0, boulder.getBbHeight(), 0).distanceToSqr(target.position()) < 9) continue;
                     Vec3 vecBetweenSculptorAndTarget = getUser().getTarget().position().subtract(getUser().position()).normalize();
                     Vec3 vecBetweenSculptorAndBoulder = boulder.position().subtract(getUser().position()).normalize();

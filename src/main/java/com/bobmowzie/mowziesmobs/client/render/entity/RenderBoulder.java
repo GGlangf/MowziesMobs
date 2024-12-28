@@ -57,7 +57,7 @@ public class RenderBoulder extends EntityRenderer<EntityBoulderBase> {
 
     @Override
     public void render(EntityBoulderBase entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn) {
-        if (entityIn.active) {
+        if (entityIn.isActive()) {
             float frame = entityIn.risingTick + partialTicks;
             matrixStackIn.pushPose();
             model.setupAnim(entityIn, 0, 0, frame, 0, 0);
