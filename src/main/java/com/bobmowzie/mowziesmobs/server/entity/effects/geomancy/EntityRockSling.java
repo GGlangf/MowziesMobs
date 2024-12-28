@@ -50,6 +50,8 @@ public class EntityRockSling extends EntityBoulderProjectile implements GeoEntit
             setDeltaMovement(launchVec.normalize().multiply(2f + random.nextFloat()/5, 2f, 2f + random.nextFloat()/5));
             setTravelling(true);
         }
+
+        if (tickCount > 60) discard();
     }
 
     @Override
