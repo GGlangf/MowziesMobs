@@ -12,6 +12,7 @@ public class ProcessorHandler {
     public static StructureProcessorType<RootsProcessor> ROOTS_PROCESSOR = () -> RootsProcessor.CODEC;
     public static StructureProcessorType<BaseDecoProcessor> BASE_DECO_PROCESSOR = () -> BaseDecoProcessor.CODEC;
     public static StructureProcessorType<ChestProcessor> CHEST_PROCESSOR = () -> ChestProcessor.CODEC;
+    public static StructureProcessorType<MonasteryStairsProcessor> STAIRS_PROCESSOR = () -> MonasteryStairsProcessor.CODEC;
 
     public static void registerStructureProcessors() {
         register("base_processor", BASE_PROCESSOR);
@@ -19,6 +20,7 @@ public class ProcessorHandler {
         register("roots_processor", ROOTS_PROCESSOR);
         register("base_deco_processor", BASE_DECO_PROCESSOR);
         register("chest_processor", CHEST_PROCESSOR);
+        register("stairs_processor", STAIRS_PROCESSOR);
     }
 
     private static void register(String name, StructureProcessorType<?> codec) {
