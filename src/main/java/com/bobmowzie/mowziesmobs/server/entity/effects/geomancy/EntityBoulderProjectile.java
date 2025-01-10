@@ -184,9 +184,9 @@ public class EntityBoulderProjectile extends EntityBoulderBase {
     protected void handleHitOtherBoulders() {
         List<EntityBoulderProjectile> bouldersHit = level().getEntitiesOfClass(EntityBoulderProjectile.class, getBoundingBox().inflate(0.2, 0.2, 0.2).move(getDeltaMovement().normalize().scale(0.5)));
         if (travelling && !bouldersHit.isEmpty()) {
-            for (EntityBoulderProjectile entity : bouldersHit) {
-                if (!entity.travelling && this.travellingBlockedBy(entity)) {
-                    entity.skipAttackInteraction(this);
+            for (EntityBoulderProjectile otherBoulder : bouldersHit) {
+                if (otherBoulder.getCaster() == this.getCaster() && !otherBoulder.travelling && this.travellingBlockedBy(otherBoulder)) {
+                    otherBoulder.skipAttackInteraction(this);
                     explode();
                 }
             }
