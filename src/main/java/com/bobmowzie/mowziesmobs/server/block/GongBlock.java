@@ -314,6 +314,8 @@ public class GongBlock extends BaseEntityBlock {
                 level.setBlock(basePos, Blocks.AIR.defaultBlockState(), 35);
                 level.levelEvent(player, 2001, basePos, Block.getId(state));
             }
+
+            super.playerWillDestroy(level, pos, state, player);
         }
 
         public BlockState updateShape(BlockState state, Direction direction, BlockState state1, LevelAccessor level, BlockPos pos, BlockPos pos1) {
