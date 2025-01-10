@@ -22,7 +22,7 @@ import software.bernie.geckolib.util.RenderUtils;
 
 @OnlyIn(Dist.CLIENT)
 public class RenderPillar extends RenderGeomancyBase<EntityPillar> {
-    private static final ResourceLocation TEXTURE_DIRT = new ResourceLocation("textures/blocks/dirt.png");
+    private static final ResourceLocation TEXTURE_DIRT = new ResourceLocation("textures/block/dirt.png");
 
     public RenderPillar(EntityRendererProvider.Context mgr) {
         super(mgr, new ModelPillar());

@@ -6,6 +6,7 @@ import com.bobmowzie.mowziesmobs.server.ability.Ability;
 import com.bobmowzie.mowziesmobs.server.ability.AbilityHandler;
 import com.bobmowzie.mowziesmobs.server.ability.PlayerAbility;
 import com.bobmowzie.mowziesmobs.server.config.ConfigHandler;
+import com.bobmowzie.mowziesmobs.server.entity.sculptor.EntitySculptor;
 import com.bobmowzie.mowziesmobs.server.entity.umvuthana.EntityUmvuthanaFollowerToPlayer;
 import com.bobmowzie.mowziesmobs.server.item.ItemEarthrendGauntlet;
 import com.bobmowzie.mowziesmobs.server.item.ItemHandler;
@@ -110,6 +111,10 @@ public class PlayerCapability {
 
         @OnlyIn(Dist.CLIENT)
         GeckoPlayer.GeckoPlayerThirdPerson getGeckoPlayer();
+
+        EntitySculptor getTestingSculptor();
+
+        void setTestingSculptor(EntitySculptor sculptor);
     }
 
     public static class PlayerCapabilityImp implements IPlayerCapability {
@@ -129,6 +134,8 @@ public class PlayerCapability {
 
         @OnlyIn(Dist.CLIENT)
         private GeckoPlayer.GeckoPlayerThirdPerson geckoPlayer;
+
+        private EntitySculptor testingSculptor;
 
         public boolean isVerticalSwing() {
             return verticalSwing;
@@ -480,6 +487,16 @@ public class PlayerCapability {
             untilAxeSwing = compound.getInt("untilAxeSwing");
             prevTime = compound.getInt("prevTime");
             time = compound.getInt("time");
+        }
+
+        @Override
+        public EntitySculptor getTestingSculptor() {
+            return testingSculptor;
+        }
+
+        @Override
+        public void setTestingSculptor(EntitySculptor sculptor) {
+            testingSculptor = sculptor;
         }
     }
 

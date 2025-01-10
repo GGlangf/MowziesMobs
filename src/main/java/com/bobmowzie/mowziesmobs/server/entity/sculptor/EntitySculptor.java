@@ -19,6 +19,8 @@ import com.bobmowzie.mowziesmobs.server.advancement.AdvancementHandler;
 import com.bobmowzie.mowziesmobs.server.ai.UseAbilityAI;
 import com.bobmowzie.mowziesmobs.server.bossinfo.BossInfoSculptor;
 import com.bobmowzie.mowziesmobs.server.bossinfo.MMBossInfoServer;
+import com.bobmowzie.mowziesmobs.server.capability.CapabilityHandler;
+import com.bobmowzie.mowziesmobs.server.capability.PlayerCapability;
 import com.bobmowzie.mowziesmobs.server.config.ConfigHandler;
 import com.bobmowzie.mowziesmobs.server.entity.EntityHandler;
 import com.bobmowzie.mowziesmobs.server.entity.MowzieEntity;
@@ -656,6 +658,10 @@ public class EntitySculptor extends MowzieGeckoEntity {
     public void setTestingPlayer(Player testingPlayer) {
         this.testingPlayer = testingPlayer;
         setTestingPlayerID(testingPlayer == null ? null : testingPlayer.getUUID());
+        PlayerCapability.IPlayerCapability playerCapability = CapabilityHandler.getCapability(testingPlayer, CapabilityHandler.PLAYER_CAPABILITY);
+        if (playerCapability != null) {
+            playerCapability.setTestingSculptor(this);
+        }
     }
 
     public Player getTestingPlayer() {
