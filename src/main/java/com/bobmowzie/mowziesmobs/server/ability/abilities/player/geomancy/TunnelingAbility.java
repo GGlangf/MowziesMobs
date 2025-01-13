@@ -20,6 +20,7 @@ import com.bobmowzie.mowziesmobs.server.item.ItemEarthrendGauntlet;
 import com.bobmowzie.mowziesmobs.server.item.ItemHandler;
 import com.bobmowzie.mowziesmobs.server.potion.EffectGeomancy;
 import com.bobmowzie.mowziesmobs.server.sound.MMSounds;
+import com.bobmowzie.mowziesmobs.server.tag.TagHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -196,7 +197,7 @@ public class TunnelingAbility extends PlayerAbility implements IGeomancyRumbler 
                             posVec = posVec.add(motionScaled);
                             BlockPos pos = new BlockPos((int) posVec.x, (int) posVec.y, (int) posVec.z);
                             BlockState blockState = getUser().level().getBlockState(pos);
-                            if (EffectGeomancy.isBlockUseable(blockState) && blockState.getBlock() != Blocks.BEDROCK) {
+                            if (EffectGeomancy.checkBlock(blockState, TagHandler.GEOMANCY_TUNNELABLE) && blockState.getBlock() != Blocks.BEDROCK) {
                                 justDug = blockState;
                                 if (!getLevel().isClientSide) {
                                     EntityBlockSwapper.EntityBlockSwapperTunneling swapper = new EntityBlockSwapper.EntityBlockSwapperTunneling(EntityHandler.BLOCK_SWAPPER_TUNNELING.get(), getLevel(), pos, Blocks.AIR.defaultBlockState(), 15, false, false, getUser());

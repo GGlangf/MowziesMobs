@@ -16,6 +16,7 @@ public class TagHandler {
 
     public static final TagKey<Block> CAN_GROTTOL_DIG = TagKey.create(Registries.BLOCK, new ResourceLocation(MowziesMobs.MODID, "can_grottol_dig"));
     public static final TagKey<Block> GEOMANCY_USEABLE = TagKey.create(Registries.BLOCK, new ResourceLocation(MowziesMobs.MODID, "geomancy_useable"));
+    public static final TagKey<Block> GEOMANCY_TUNNELABLE = TagKey.create(Registries.BLOCK, new ResourceLocation(MowziesMobs.MODID, "geomancy_tunnelable"));
 
     public static final TagKey<EntityType<?>> UMVUTHANA = TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation(MowziesMobs.MODID, "umvuthana"));
     public static final TagKey<EntityType<?>> UMVUTHANA_UMVUTHI_ALIGNED = TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation(MowziesMobs.MODID, "umvuthana_umvuthi_aligned"));
