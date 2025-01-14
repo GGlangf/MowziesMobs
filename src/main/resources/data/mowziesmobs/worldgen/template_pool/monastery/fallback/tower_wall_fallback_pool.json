@@ -4,7 +4,7 @@
   "elements": [
 
     {
-      "weight": 4,
+      "weight": 2,
       "element": {
         "location": "mowziesmobs:monastery/monastery_tower_blank",
         "processors": "mowziesmobs:monastery",
@@ -17,7 +17,7 @@
     },
 
     {
-      "weight": 4,
+      "weight": 2,
       "element": {
         "location": "mowziesmobs:monastery/monastery_tower_window1",
         "processors": "mowziesmobs:monastery",
@@ -35,7 +35,7 @@
     },
 
     {
-      "weight": 12,
+      "weight": 6,
       "element": {
         "location": "mowziesmobs:monastery/monastery_tower_window1",
         "processors": "mowziesmobs:monastery",
@@ -56,7 +56,7 @@
     },
 
     {
-      "weight": 4,
+      "weight": 2,
       "element": {
         "location": "mowziesmobs:monastery/monastery_tower_window_short",
         "processors": "mowziesmobs:monastery",
@@ -78,7 +78,7 @@
     },
 
     {
-      "weight": 12,
+      "weight": 6,
       "element": {
         "location": "mowziesmobs:monastery/monastery_tower_window_tall",
         "processors": "mowziesmobs:monastery",
@@ -100,7 +100,7 @@
     },
 
     {
-      "weight": 4,
+      "weight": 2,
       "element": {
         "location": "mowziesmobs:monastery/monastery_tower_door",
         "processors": "mowziesmobs:monastery",
@@ -123,7 +123,7 @@
     },
 
     {
-      "weight": 3,
+      "weight": 1,
       "element": {
         "location": "mowziesmobs:monastery/monastery_balcony",
         "processors": "mowziesmobs:monastery",
@@ -139,7 +139,7 @@
         "conditions": {
           "forbidden_parents": [
             "mowziesmobs:monastery/monastery_tower_base",
-            "mowziesmobs:monastery/monastery_room_extension"
+            "mowziesmobs:monastery/monastery_tower"
           ],
           "min_height": 10
         },

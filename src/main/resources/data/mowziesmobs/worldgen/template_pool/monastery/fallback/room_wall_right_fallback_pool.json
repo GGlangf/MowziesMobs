@@ -75,7 +75,8 @@
         "conditions": {
           "forbidden_parents": [
             "mowziesmobs:monastery/monastery_room_base",
-            "mowziesmobs:monastery/monastery_room_extension"
+            "mowziesmobs:monastery/monastery_room_extension",
+            "mowziesmobs:monastery/monastery_room"
           ],
           "min_height": 10
         },
