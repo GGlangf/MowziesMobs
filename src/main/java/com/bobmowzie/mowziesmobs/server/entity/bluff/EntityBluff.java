@@ -160,8 +160,8 @@ public class EntityBluff extends MowzieGeckoEntity {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return MowzieEntity.createAttributes().add(Attributes.ATTACK_DAMAGE, 10)
-                .add(Attributes.MAX_HEALTH, 30)
+        return MowzieEntity.createAttributes().add(Attributes.ATTACK_DAMAGE, 18)
+                .add(Attributes.MAX_HEALTH, 45)
                 .add(Attributes.MOVEMENT_SPEED, 0.23f)
                 .add(Attributes.FLYING_SPEED, 0.23f)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 1f)
@@ -464,7 +464,7 @@ public class EntityBluff extends MowzieGeckoEntity {
     static class BluffAttackGoal extends Goal {
         private final EntityBluff bluff;
         private final double speedModifier = 1.0;
-        private int attackIntervalMin = 60;
+        private int attackIntervalMin = 80;
         private final float attackMaxRadiusSqr = 12 * 12;
         private final float attackMinRadiusSqr = 6 * 6;
         private int attackTime = -1;
@@ -558,8 +558,7 @@ public class EntityBluff extends MowzieGeckoEntity {
 
                 if (--this.attackTime <= 0 && this.seeTime >= -60 && d0 < attackMaxRadiusSqr) {
                     bluff.sendAbilityMessage(ATTACK_ABILITY);
-                    attackIntervalMin = 100;
-                    this.attackTime = attackIntervalMin + bluff.random.nextInt(50);
+                    this.attackTime = attackIntervalMin + bluff.random.nextInt(40);
                 }
             }
         }
