@@ -23,6 +23,7 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.Parrot;
 import net.minecraft.world.entity.item.FallingBlockEntity;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
@@ -159,6 +160,7 @@ public class EntityAxeAttack extends EntityMagicEffect {
         boolean hit = false;
         List<Entity> entitiesHit = getEntitiesNearby(range, 2, range, range);
         for (Entity entityHit : entitiesHit) {
+            if (entityHit instanceof ItemEntity) continue;
             float entityHitAngle = (float) ((Math.atan2(entityHit.getZ() - getZ(), entityHit.getX() - getX()) * (180 / Math.PI) - 90) % 360);
             float entityAttackingAngle = getYRot() % 360;
             if (entityHitAngle < 0) {

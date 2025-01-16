@@ -29,6 +29,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
@@ -205,6 +206,7 @@ public class EntitySolarBeam extends Entity {
                     if (caster instanceof EntityUmvuthi && target instanceof LeaderSunstrikeImmune) {
                         continue;
                     }
+                    if (target instanceof ItemEntity) continue;
                     float damageFire = 1f;
                     float damageMob = 1.5f;
                     if (caster instanceof EntityUmvuthi) {

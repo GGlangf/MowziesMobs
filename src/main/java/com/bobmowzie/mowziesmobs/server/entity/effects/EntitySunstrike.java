@@ -21,6 +21,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
@@ -195,6 +196,7 @@ public class EntitySunstrike extends Entity implements IEntityAdditionalSpawnDat
         List<Entity> entities = level().getEntities(this, region);
         double radiusSq = radius * radius;
         for (Entity entity : entities) {
+            if (entity instanceof ItemEntity) continue;
             if (getDistanceSqXZToEntity(entity) < radiusSq) {
                 if (caster instanceof EntityUmvuthi && (entity instanceof LeaderSunstrikeImmune)) {
                     continue;

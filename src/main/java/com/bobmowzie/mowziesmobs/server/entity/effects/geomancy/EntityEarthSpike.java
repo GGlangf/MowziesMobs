@@ -20,6 +20,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -83,6 +84,7 @@ public class EntityEarthSpike extends EntityGeomancyBase {
             }
             for (Entity entity : entitiesHit) {
                 if (getCaster() instanceof EntityBluff && entity instanceof EntityBluff) continue;
+                if (entity instanceof ItemEntity) continue;
                 entity.hurt(damageSources().mobProjectile(this, getCaster()), (float) damage);
                 float applyKnockbackResistance = 0;
                 if (entity instanceof LivingEntity) {
