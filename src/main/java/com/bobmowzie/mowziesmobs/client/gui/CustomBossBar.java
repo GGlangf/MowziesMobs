@@ -11,6 +11,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.BossEvent;
 import net.neoforged.neoforge.client.event.CustomizeGuiOverlayEvent;
+import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,13 +20,17 @@ public class CustomBossBar {
     public static Map<ResourceLocation, CustomBossBar> customBossBars = new HashMap<>();
     static {
         customBossBars.put(BuiltInRegistries.ENTITY_TYPE.getKey(EntityHandler.UMVUTHI.get()), new CustomBossBar(
-                ResourceLocation.fromNamespaceAndPath(MMCommon.MODID, "textures/gui/boss_bar/umvuthi_bar_base.png"),
-                ResourceLocation.fromNamespaceAndPath(MMCommon.MODID, "textures/gui/boss_bar/umvuthi_bar_overlay.png"),
+                MMCommon.resource("textures/gui/boss_bar/umvuthi_bar_base.png"),
+                MMCommon.resource("textures/gui/boss_bar/umvuthi_bar_overlay.png"),
                 4, 8, 2, -12, -6, 256, 16, 21, ChatFormatting.GOLD));
         customBossBars.put(BuiltInRegistries.ENTITY_TYPE.getKey(EntityHandler.FROSTMAW.get()), new CustomBossBar(
-                ResourceLocation.fromNamespaceAndPath(MMCommon.MODID, "textures/gui/boss_bar/frostmaw_bar_base.png"),
-                ResourceLocation.fromNamespaceAndPath(MMCommon.MODID, "textures/gui/boss_bar/frostmaw_bar_overlay.png"),
+                MMCommon.resource("textures/gui/boss_bar/frostmaw_bar_base.png"),
+                MMCommon.resource("textures/gui/boss_bar/frostmaw_bar_overlay.png"),
                 10, 32, 2, -4, -3, 256, 32, 25, ChatFormatting.WHITE));
+        customBossBars.put(BuiltInRegistries.ENTITY_TYPE.getKey(EntityHandler.WROUGHTNAUT.get()), new CustomBossBar(
+                MMCommon.resource("textures/gui/boss_bar/wroughtnaut_bar_base.png"),
+                MMCommon.resource("textures/gui/boss_bar/wroughtnaut_bar_overlay.png"),
+                4, 8, 5, -5, -6, 256, 16, 25, ChatFormatting.RED));
     }
 
     private final ResourceLocation baseTexture;
@@ -108,6 +113,8 @@ public class CustomBossBar {
     }
 
     public void renderBossBar(CustomizeGuiOverlayEvent.BossEventProgress event) {
+        int baseYOffset = getBaseOffsetY();
+
         GuiGraphics guiGraphics = event.getGuiGraphics();
         int y = event.getY();
         int i = Minecraft.getInstance().getWindow().getGuiScaledWidth();
@@ -117,7 +124,7 @@ public class CustomBossBar {
 
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, getBaseTexture());
-        drawBar(guiGraphics, event.getX() + 1, y + getBaseOffsetY(), event.getBossEvent());
+        drawBar(guiGraphics, event.getX() + 1, y + baseYOffset, event.getBossEvent());
         Component component = event.getBossEvent().getName().copy().withStyle(getTextColor());
         Minecraft.getInstance().getProfiler().pop();
 
@@ -129,7 +136,7 @@ public class CustomBossBar {
         if (hasOverlay()) {
             Minecraft.getInstance().getProfiler().push("customBossBarOverlay");
             RenderSystem.setShaderTexture(0, getOverlayTexture());
-            event.getGuiGraphics().blit(getOverlayTexture(), event.getX() + 1 + getOverlayOffsetX(), y + getOverlayOffsetY() + getBaseOffsetY(), 0, 0, getOverlayWidth(), getOverlayHeight(), getOverlayWidth(), getOverlayHeight());
+            event.getGuiGraphics().blit(getOverlayTexture(), event.getX() + 1 + getOverlayOffsetX(), y + getOverlayOffsetY() + baseYOffset, 0, 0, getOverlayWidth(), getOverlayHeight(), getOverlayWidth(), getOverlayHeight());
             Minecraft.getInstance().getProfiler().pop();
         }
 
