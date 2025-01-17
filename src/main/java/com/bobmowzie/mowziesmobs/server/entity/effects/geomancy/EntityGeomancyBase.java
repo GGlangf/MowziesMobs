@@ -31,6 +31,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.Tags;
+import net.minecraftforge.fluids.FluidType;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
@@ -70,6 +71,11 @@ public abstract class EntityGeomancyBase extends EntityMagicEffect implements Ge
             BlockState newBlock = changeBlock(blockState);
             setBlock(newBlock);
         }
+    }
+
+    @Override
+    public boolean isPushedByFluid(FluidType type) {
+        return false;
     }
 
     // Change the specified block to its geomancy version. I.E. Grass blocks turn to dirt, stairs and slabs turn to base versions.
