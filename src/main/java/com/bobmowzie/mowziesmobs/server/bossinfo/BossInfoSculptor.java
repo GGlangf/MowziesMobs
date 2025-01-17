@@ -19,12 +19,17 @@ public class BossInfoSculptor extends MMBossInfoServer {
 
     public void update() {
         if (sculptor.isTesting() && !sculptor.isTestPassed() && !sculptor.isTestFailed()) {
-            this.setProgress(1.0f - this.sculptor.getTestTimePassed() / (float) this.sculptor.getMaxTestTime());
-            if (this.sculptor.getTestingPlayer() instanceof ServerPlayer) {
-                this.addPlayer((ServerPlayer) this.sculptor.getTestingPlayer());
+            if (sculptor.isRemoved() || sculptor.isDeadOrDying()) {
+                setVisible(false);
             }
-            setDisplayName(TESTING_NAME);
-            setVisible(true);
+            else {
+                this.setProgress(1.0f - this.sculptor.getTestTimePassed() / (float) this.sculptor.getMaxTestTime());
+                if (this.sculptor.getTestingPlayer() instanceof ServerPlayer) {
+                    this.addPlayer((ServerPlayer) this.sculptor.getTestingPlayer());
+                }
+                setDisplayName(TESTING_NAME);
+                setVisible(true);
+            }
         }
         else {
             setVisible(sculptor.hasBossBar() && sculptor.isFighting());
