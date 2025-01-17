@@ -34,7 +34,6 @@ public class NetworkHandler {
         registrar.playToClient(MessageUpdateBossBar.TYPE, MessageUpdateBossBar.STREAM_CODEC, MessageUpdateBossBar::handleClient);
         registrar.playToClient(MessageSunblockEffect.TYPE, MessageSunblockEffect.STREAM_CODEC, MessageSunblockEffect::handleClient);
         registrar.playToClient(MessageLinkEntities.TYPE, MessageLinkEntities.STREAM_CODEC, MessageLinkEntities::handleClient);
-        registrar.playToClient(MessageJumpToAbilitySection.TYPE, MessageJumpToAbilitySection.STREAM_CODEC, MessageJumpToAbilitySection::handleClient);
         registrar.playToClient(MessageInterruptAbility.TYPE, MessageInterruptAbility.STREAM_CODEC, MessageInterruptAbility::handleClient);
         registrar.playToClient(MessageFreezeEffect.TYPE, MessageFreezeEffect.STREAM_CODEC, MessageFreezeEffect::handleClient);
         registrar.playToClient(MessageBlackPinkInYourArea.TYPE, MessageBlackPinkInYourArea.STREAM_CODEC, MessageBlackPinkInYourArea::handleClient);
@@ -51,6 +50,9 @@ public class NetworkHandler {
         registrar.playToServer(MessageRightMouseDown.TYPE, MessageRightMouseDown.STREAM_CODEC, MessageRightMouseDown::handleServer);
         registrar.playToServer(MessageLeftMouseUp.TYPE, MessageLeftMouseUp.STREAM_CODEC, MessageLeftMouseUp::handleServer);
         registrar.playToServer(MessageLeftMouseDown.TYPE, MessageLeftMouseDown.STREAM_CODEC, MessageLeftMouseDown::handleServer);
+
+        // -> Client & -> Server
+        registrar.playBidirectional(MessageJumpToAbilitySection.TYPE, MessageJumpToAbilitySection.STREAM_CODEC, MessageJumpToAbilitySection::handleCommon);
     }
 
     public static StreamCodec<FriendlyByteBuf, Vec3[]> VEC3_ARRAY = new StreamCodec<>() {

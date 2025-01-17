@@ -11,27 +11,21 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.jetbrains.annotations.NotNull;
 
 public record MessageJumpToAbilitySection(int entityId, int index, int sectionIndex) implements CustomPacketPayload {
     public static final CustomPacketPayload.Type<MessageJumpToAbilitySection> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(MMCommon.MODID, "message_jump_to_ability_section"));
     public static final StreamCodec<ByteBuf, MessageJumpToAbilitySection> STREAM_CODEC = StreamCodec.composite(
-            ByteBufCodecs.INT,
-            MessageJumpToAbilitySection::entityId,
-            ByteBufCodecs.INT,
-            MessageJumpToAbilitySection::index,
-            ByteBufCodecs.INT,
-            MessageJumpToAbilitySection::sectionIndex,
+            ByteBufCodecs.INT, MessageJumpToAbilitySection::entityId,
+            ByteBufCodecs.INT, MessageJumpToAbilitySection::index,
+            ByteBufCodecs.INT, MessageJumpToAbilitySection::sectionIndex,
             MessageJumpToAbilitySection::new
     );
 
-    public static void handleClient(final MessageJumpToAbilitySection packet, final IPayloadContext context) {
+    public static void handleCommon(final MessageJumpToAbilitySection packet, final IPayloadContext context) {
         context.enqueueWork(() -> {
-            Level level = MMCommon.PROXY.getClientLevel();
-
-            if (level != null && level.getEntity(packet.entityId()) instanceof LivingEntity living) {
+            if (context.player().level().getEntity(packet.entityId()) instanceof LivingEntity living) {
                 AbilityData data = DataHandler.getData(living, DataHandler.ABILITY_DATA);
                 AbilityType<?, ?> abilityType = data.getAbilityTypesOnEntity(living)[packet.index()];
                 Ability<?> instance = data.getAbilityMap().get(abilityType);

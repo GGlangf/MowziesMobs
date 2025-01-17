@@ -1,7 +1,17 @@
 package com.bobmowzie.mowziesmobs.server.ability;
 
-import com.bobmowzie.mowziesmobs.server.ability.abilities.player.*;
-import com.bobmowzie.mowziesmobs.server.ability.abilities.player.geomancy.*;
+import com.bobmowzie.mowziesmobs.server.ability.abilities.player.FireballAbility;
+import com.bobmowzie.mowziesmobs.server.ability.abilities.player.IceBreathAbility;
+import com.bobmowzie.mowziesmobs.server.ability.abilities.player.SimplePlayerAnimationAbility;
+import com.bobmowzie.mowziesmobs.server.ability.abilities.player.WroughtAxeSlamAbility;
+import com.bobmowzie.mowziesmobs.server.ability.abilities.player.WroughtAxeSwingAbility;
+import com.bobmowzie.mowziesmobs.server.ability.abilities.player.geomancy.BoulderRollAbility;
+import com.bobmowzie.mowziesmobs.server.ability.abilities.player.geomancy.FissureAbility;
+import com.bobmowzie.mowziesmobs.server.ability.abilities.player.geomancy.GroundSlamAbility;
+import com.bobmowzie.mowziesmobs.server.ability.abilities.player.geomancy.RockSlingAbility;
+import com.bobmowzie.mowziesmobs.server.ability.abilities.player.geomancy.SpawnBoulderAbility;
+import com.bobmowzie.mowziesmobs.server.ability.abilities.player.geomancy.SpawnPillarAbility;
+import com.bobmowzie.mowziesmobs.server.ability.abilities.player.geomancy.TunnelingAbility;
 import com.bobmowzie.mowziesmobs.server.ability.abilities.player.heliomancy.SolarBeamAbility;
 import com.bobmowzie.mowziesmobs.server.ability.abilities.player.heliomancy.SolarFlareAbility;
 import com.bobmowzie.mowziesmobs.server.ability.abilities.player.heliomancy.SunstrikeAbility;
@@ -104,16 +114,17 @@ public enum AbilityHandler {
 
 
     public <T extends LivingEntity> void sendJumpToSectionMessage(T entity, AbilityType<?, ?> abilityType, int sectionIndex) {
-        if (entity.level().isClientSide) {
-            return;
-        }
-
         AbilityData data = DataHandler.getData(entity, DataHandler.ABILITY_DATA);
         Ability<?> instance = data.getAbilityMap().get(abilityType);
 
         if (instance.isUsing()) {
             instance.jumpToSection(sectionIndex);
-            PacketDistributor.sendToPlayersTrackingEntityAndSelf(entity, new MessageJumpToAbilitySection(entity.getId(), ArrayUtils.indexOf(data.getAbilityTypesOnEntity(entity), abilityType), sectionIndex));
+
+            if (entity.level().isClientSide()) {
+                PacketDistributor.sendToServer(new MessageJumpToAbilitySection(entity.getId(), ArrayUtils.indexOf(data.getAbilityTypesOnEntity(entity), abilityType), sectionIndex));
+            } else {
+                PacketDistributor.sendToPlayersTrackingEntityAndSelf(entity, new MessageJumpToAbilitySection(entity.getId(), ArrayUtils.indexOf(data.getAbilityTypesOnEntity(entity), abilityType), sectionIndex));
+            }
         }
     }
 }
