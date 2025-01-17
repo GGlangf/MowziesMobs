@@ -69,7 +69,7 @@ public class MMRecipes extends RecipeProvider {
                 .pattern("S")
                 .define('S', BlockHandler.PAINTED_ACACIA_SLAB.value())
                 .unlockedBy(getHasName(BlockHandler.PAINTED_ACACIA_SLAB.value()), has(BlockHandler.PAINTED_ACACIA_SLAB.value()))
-                .save(output, MMCommon.location("painted_acacia_block_from_slab"));
+                .save(output, MMCommon.resource("painted_acacia_block_from_slab"));
 
         ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, BlockHandler.PAINTED_ACACIA_SLAB.value())
                 .pattern("###")
@@ -81,7 +81,7 @@ public class MMRecipes extends RecipeProvider {
         ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, Items.JUNGLE_PLANKS, 4)
                 .requires(BlockHandler.CLAWED_LOG.value())
                 .unlockedBy(getHasName(BlockHandler.CLAWED_LOG.value()), has(BlockHandler.CLAWED_LOG.value()))
-                .save(output, MMCommon.location("jungle_planks_from_clawed_log"));
+                .save(output, MMCommon.resource("jungle_planks_from_clawed_log"));
 
         ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, BlockHandler.PAINTED_ACACIA.value(), 4)
                 .requires(Items.ACACIA_PLANKS, 4)
@@ -105,18 +105,18 @@ public class MMRecipes extends RecipeProvider {
         SimpleCookingRecipeBuilder
                 .smelting(Ingredient.of(BlockHandler.CLAWED_LOG.value()), RecipeCategory.MISC, Items.CHARCOAL, 0.15f, 200)
                 .unlockedBy(getHasName(BlockHandler.CLAWED_LOG.value()), has(BlockHandler.CLAWED_LOG.value()))
-                .save(output, MMCommon.location("charcoal"));
+                .save(output, MMCommon.resource("charcoal"));
 
         SimpleCookingRecipeBuilder
                 .smelting(Ingredient.of(ItemHandler.CAPTURED_GROTTOL.value()), RecipeCategory.MISC, Items.DIAMOND, 1, 200)
                 .unlockedBy(getHasName(ItemHandler.CAPTURED_GROTTOL.value()), has(ItemHandler.CAPTURED_GROTTOL.value()))
-                .save(output, MMCommon.location("grottol_smelt"));
+                .save(output, MMCommon.resource("grottol_smelt"));
 
         // Blasting
         SimpleCookingRecipeBuilder
                 .blasting(Ingredient.of(ItemHandler.CAPTURED_GROTTOL.value()), RecipeCategory.MISC, Items.DIAMOND, 1, 200)
                 .unlockedBy(getHasName(ItemHandler.CAPTURED_GROTTOL.value()), has(ItemHandler.CAPTURED_GROTTOL.value()))
-                .save(output, MMCommon.location("grottol_blast"));
+                .save(output, MMCommon.resource("grottol_blast"));
     }
 
     protected static @NotNull Criterion<InventoryChangeTrigger.TriggerInstance> has(ItemLike... items) {

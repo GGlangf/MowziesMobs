@@ -39,6 +39,7 @@ public class ClientEventBusSubscriber {
             EntityRenderers.register(EntityHandler.LANTERN.get(), RenderLantern::new);
             EntityRenderers.register(EntityHandler.NAGA.get(), RenderNaga::new);
             EntityRenderers.register(EntityHandler.SCULPTOR.get(), RenderSculptor::new);
+            EntityRenderers.register(EntityHandler.BLUFF.get(), RenderBluff::new);
 
             EntityRenderers.register(EntityHandler.DART.get(), RenderDart::new);
             EntityRenderers.register(EntityHandler.SUNSTRIKE.get(), RenderSunstrike::new);

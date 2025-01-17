@@ -146,7 +146,7 @@ public final class MMCommon {
         BlockHandler.init();
     }
 
-    public static ResourceLocation location(String path) {
+    public static ResourceLocation resource(String path) {
         return ResourceLocation.fromNamespaceAndPath(MODID, path);
     }
 
