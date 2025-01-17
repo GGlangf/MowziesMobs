@@ -2,6 +2,8 @@ package com.bobmowzie.mowziesmobs.server.ability;
 
 import com.bobmowzie.mowziesmobs.client.model.tools.geckolib.MowzieAnimationController;
 import com.bobmowzie.mowziesmobs.client.render.entity.player.GeckoPlayer;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
@@ -67,9 +69,37 @@ public class PlayerAbility extends Ability<Player> {
         playAnimation(RawAnimation.begin().then(animationName, loopType), perspective);
     }
 
-        public void playAnimation(RawAnimation animation) {
+    public void playAnimation(RawAnimation animation) {
         playAnimation(animation, GeckoPlayer.Perspective.FIRST_PERSON);
         playAnimation(animation, GeckoPlayer.Perspective.THIRD_PERSON);
+    }
+
+    public void playAnimation3rdPerson(RawAnimation animation) {
+        playAnimation(animation, GeckoPlayer.Perspective.THIRD_PERSON);
+    }
+
+    public InteractionHand getActiveHand() {
+        return getUser().getUsedItemHand();
+    }
+
+    public void playAnimationActiveHand(String animationName, Animation.LoopType loopType, boolean separateLeftAndRight1stPerson, boolean separateLeftAndRight3rdPerson) {
+        boolean usingMainHand = getActiveHand() == InteractionHand.MAIN_HAND;
+        boolean isRightHanded = getUser().getMainArm() == HumanoidArm.RIGHT;
+        // 1st person
+        if (separateLeftAndRight1stPerson) {
+            playAnimation(animationName + (usingMainHand ? "_right" : "_left"), GeckoPlayer.Perspective.FIRST_PERSON, loopType);
+        }
+        else {
+            playAnimation(animationName, GeckoPlayer.Perspective.FIRST_PERSON, loopType);
+        }
+
+        // 3rd person
+        if (separateLeftAndRight3rdPerson) {
+            playAnimation(animationName + "_" + (usingMainHand == isRightHanded ? "right" : "left"), GeckoPlayer.Perspective.THIRD_PERSON, loopType);
+        }
+        else {
+            playAnimation(RawAnimation.begin().then(animationName, loopType), GeckoPlayer.Perspective.THIRD_PERSON);
+        }
     }
 
     @Override

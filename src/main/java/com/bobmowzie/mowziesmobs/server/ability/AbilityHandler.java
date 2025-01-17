@@ -8,6 +8,7 @@ import com.bobmowzie.mowziesmobs.server.ability.abilities.player.WroughtAxeSwing
 import com.bobmowzie.mowziesmobs.server.ability.abilities.player.geomancy.BoulderRollAbility;
 import com.bobmowzie.mowziesmobs.server.ability.abilities.player.geomancy.FissureAbility;
 import com.bobmowzie.mowziesmobs.server.ability.abilities.player.geomancy.GroundSlamAbility;
+import com.bobmowzie.mowziesmobs.server.ability.abilities.player.geomancy.HitBoulderAbility;
 import com.bobmowzie.mowziesmobs.server.ability.abilities.player.geomancy.RockSlingAbility;
 import com.bobmowzie.mowziesmobs.server.ability.abilities.player.geomancy.SpawnBoulderAbility;
 import com.bobmowzie.mowziesmobs.server.ability.abilities.player.geomancy.SpawnPillarAbility;
@@ -42,16 +43,14 @@ public enum AbilityHandler {
     public static final AbilityType<Player, IceBreathAbility> ICE_BREATH_ABILITY = new AbilityType<>("ice_breath", IceBreathAbility::new);
     public static final AbilityType<Player, SpawnBoulderAbility> SPAWN_BOULDER_ABILITY = new AbilityType<>("spawn_boulder", SpawnBoulderAbility::new);
     public static final AbilityType<Player, TunnelingAbility> TUNNELING_ABILITY = new AbilityType<>("tunneling", TunnelingAbility::new);
-    public static final AbilityType<Player, SimplePlayerAnimationAbility> HIT_BOULDER_ABILITY = new AbilityType<>("hit_boulder", (type, player) ->
-            new SimplePlayerAnimationAbility(type, (Player) player, "hit_boulder", 10, false, false)
-    );
+    public static final AbilityType<Player, HitBoulderAbility> HIT_BOULDER_ABILITY = new AbilityType<>("hit_boulder", HitBoulderAbility::new);
     public static final AbilityType<Player, SpawnPillarAbility> SPAWN_PILLAR_ABILITY = new AbilityType<>("spawn_pillar", SpawnPillarAbility::new);
     public static final AbilityType<Player, GroundSlamAbility> GROUND_SLAM_ABILITY = new AbilityType<>("ground_slam", GroundSlamAbility::new);
     public static final AbilityType<Player, BoulderRollAbility> BOULDER_ROLL_ABILITY = new AbilityType<>("boulder_roll", BoulderRollAbility::new);
     public static final AbilityType<Player, FissureAbility> FISSURE_ABILITY = new AbilityType<>("fissure", FissureAbility::new);
 
     public static final AbilityType<Player, SimplePlayerAnimationAbility> BACKSTAB_ABILITY = new AbilityType<>("backstab", (type, player) ->
-            new SimplePlayerAnimationAbility(type, (Player) player, "backstab", 12, true, true)
+            new SimplePlayerAnimationAbility(type, player, "backstab", 12, false, true, true)
     );
 
     public static final AbilityType<Player, RockSlingAbility> ROCK_SLING = new AbilityType<>("rock_sling", RockSlingAbility::new);
