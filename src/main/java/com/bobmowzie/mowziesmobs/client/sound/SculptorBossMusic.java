@@ -21,6 +21,7 @@ public class SculptorBossMusic extends BossMusic<EntitySculptor> {
     protected static SoundEvent soundEventLevel3_2 = MMSounds.MUSIC_SCULPTOR_THEME_LEVEL3_2.get();
     protected static SoundEvent soundEventEnding = MMSounds.MUSIC_SCULPTOR_THEME_ENDING.get();
     protected static SoundEvent soundEventOutro = MMSounds.MUSIC_SCULPTOR_THEME_OUTRO.get();
+    protected static SoundEvent soundEventCombat = MMSounds.MUSIC_SCULPTOR_THEME_COMBAT.get();
 
     protected BossMusicSound soundIntro;
     protected BossMusicSound soundTransition;
@@ -31,6 +32,7 @@ public class SculptorBossMusic extends BossMusic<EntitySculptor> {
     private int ticksInSection;
 
     private enum SculptorMusicSection {
+        COMBAT(-1),
         INTRO(0),
         LEVEL1_1(1),
         LEVEL1_2(2),
@@ -75,6 +77,7 @@ public class SculptorBossMusic extends BossMusic<EntitySculptor> {
         SECTION_SOUNDS.put(SculptorMusicSection.LEVEL3_2, soundEventLevel3_2);
         SECTION_SOUNDS.put(SculptorMusicSection.ENDING, soundEventEnding);
         SECTION_SOUNDS.put(SculptorMusicSection.OUTRO, soundEventOutro);
+        SECTION_SOUNDS.put(SculptorMusicSection.COMBAT, soundEventCombat);
     }
 
     private SculptorMusicSection currentSection;
@@ -128,12 +131,21 @@ public class SculptorBossMusic extends BossMusic<EntitySculptor> {
                     measureBreak();
                 }
             }
+
+            if (currentSection != SculptorMusicSection.COMBAT && ticksInSection % 128 == 0 && getBoss().isFighting()) {
+                changeLevelSection(SculptorMusicSection.COMBAT);
+            }
         }
     }
 
     private void startMainTrack() {
         ticksInSection = 0;
-        changeLevelSection(SculptorMusicSection.LEVEL1_1);
+        if (getBoss() != null && getBoss().isFighting()) {
+            changeLevelSection(SculptorMusicSection.COMBAT);
+        }
+        else {
+            changeLevelSection(SculptorMusicSection.LEVEL1_1);
+        }
     }
 
     private void measureBreak() {

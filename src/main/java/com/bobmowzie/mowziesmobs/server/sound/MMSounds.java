@@ -280,6 +280,7 @@ public final class MMSounds {
     public static final DeferredHolder<SoundEvent, SoundEvent> MUSIC_SCULPTOR_THEME_LEVEL3_2 = create("music.sculptor_theme_level3_2");
     public static final DeferredHolder<SoundEvent, SoundEvent> MUSIC_SCULPTOR_THEME_ENDING = create("music.sculptor_theme_ending");
     public static final DeferredHolder<SoundEvent, SoundEvent> MUSIC_SCULPTOR_THEME_OUTRO = create("music.sculptor_theme_outro");
+    public static final DeferredHolder<SoundEvent, SoundEvent> MUSIC_SCULPTOR_THEME_COMBAT = create("music.sculptor_theme_combat");
 
     private static DeferredHolder<SoundEvent, SoundEvent> create(String name) {
         return REG.register(name, () -> SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(MMCommon.MODID, name)));

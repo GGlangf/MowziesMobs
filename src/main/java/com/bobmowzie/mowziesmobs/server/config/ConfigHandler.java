@@ -623,7 +623,7 @@ public final class ConfigHandler {
                     .defineInRange("durability", 400, 1, Integer.MAX_VALUE);
             enableTunneling = builder.comment("Set to false to disable the Earthrend Gauntlet's tunneling ability.")
                     .translation(LANG_PREFIX + "enable_tunneling")
-                    .define("enable_tunneling", false);
+                    .define("enable_tunneling", true);
             toolConfig = new ToolConfig(builder, 6, 1.2f);
             builder.pop();
         }
