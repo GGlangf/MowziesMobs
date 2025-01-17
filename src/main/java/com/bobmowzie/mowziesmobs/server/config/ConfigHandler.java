@@ -478,7 +478,7 @@ public final class ConfigHandler {
                     .defineInRange("test_height", 60, 1, 500);
             this.testTimeLimit = builder.comment("The time limit (in seconds) for completing the Sculptor's test")
                     .translation(LANG_PREFIX + "test_time_limit")
-                    .defineInRange("test_time_limit", 360, 1, 36000);
+                    .defineInRange("test_time_limit", 400, 1, 36000);
             this.healsOutOfBattle = builder.comment("Disable/enable the Sculptor healing while not in combat")
                     .translation(LANG_PREFIX + "heals_out_of_battle")
                     .define("heals_out_of_battle", true);
