@@ -10,15 +10,17 @@ import org.spongepowered.asm.mixin.injection.At;
 import software.bernie.geckolib.animatable.GeoAnimatable;
 import software.bernie.geckolib.model.GeoModel;
 
-/** Calls from the inventory rendering sometimes are returned early and this seems to cause issues in animating the entity in the inventory */
 @Mixin(value = GeoModel.class, remap = false)
 public abstract class GeoModelMixin {
     @Shadow private long lastRenderedInstance;
 
-    // FIXME 1.21 :: currently the rendering seems to switch between doing the animation and doing no animation (the umvuthana mob is less likely to be impacted)
-    // FIXME 1.21 :: depending on when you open the inventory (a higher tick rate seems to help?) this issue does not occur
-    // FIXME 1.21 :: maybe a problem with the 'adjustTick' logic or sth. similar?
-    // FIXME 1.21 :: with this it only plays one set of animation but it has a visible repeat point (of the animation, as in animation stops and then repeats)
+    /* TODO 1.21
+        Unsure what the exact problem is - maybe the manager falsely thinks the inventory-rendered entity is a re-render because it already rendered the in-world variant?
+        Either way it seems that inventory rendering doesn't properly work with the current rendering setup
+        - The temporary changes to the rotation seem to have lasting effects on the in-world entity
+        - The entity may diverge into two java objects with their tick count diverging
+        - The inventory partial tick is always 1 but for normal rendering 'Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false)' is used
+    */
     @WrapOperation(method = "handleAnimations", at = @At(value = "FIELD", target = "Lsoftware/bernie/geckolib/model/GeoModel;lastRenderedInstance:J", ordinal = 0))
     private <T extends GeoAnimatable> long test(GeoModel<?> instance, Operation<Long> original, @Local(argsOnly = true) T animatable) {
         if (animatable instanceof MowzieEntity entity && entity.renderingInGUI) {

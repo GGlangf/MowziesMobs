@@ -240,7 +240,6 @@ public class GeckoRenderPlayer extends PlayerRenderer implements GeoRenderer<Gec
             long instanceId = getInstanceId(animatable);
 
             AnimatableManager<GeckoPlayer> animatableManager = animatable.getAnimatableInstanceCache().getManagerForId(instanceId);
-            // FIXME 1.21 :: 'Minecraft#getFrameTime()' replaced with partialTick
             animationState.setData(DataTickets.TICK, animatable.getTick(animatable) + animatableManager.getFirstTickTime() + partialTick);
             animationState.setData(DataTickets.ENTITY, entity);
             animationState.setData(DataTickets.ENTITY_MODEL_DATA, new EntityModelData(shouldSit, entity.isBaby(), -f2_netHeadYaw, -headPitch));

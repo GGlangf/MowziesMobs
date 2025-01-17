@@ -44,7 +44,7 @@ public class ItemWroughtAxe extends AxeItem {
     }
 
     @Override
-    public boolean onEntitySwing(ItemStack stack, LivingEntity entity, InteractionHand hand) { // FIXME 1.21 :: now has the hand -> the point where this is called seems to be the same though ('LivingEntity#swing' always had hand context)
+    public boolean onEntitySwing(ItemStack stack, LivingEntity entity, InteractionHand hand) {
         if (entity instanceof Player) {
             return DataHandler.getData(entity, DataHandler.PLAYER_DATA).getUntilAxeSwing() > 0;
         }

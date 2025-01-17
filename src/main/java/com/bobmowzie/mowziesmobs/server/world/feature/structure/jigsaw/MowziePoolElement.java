@@ -73,7 +73,6 @@ public class MowziePoolElement extends SinglePoolElement {
     protected MowziePoolElement(Either<ResourceLocation, StructureTemplate> p_210415_, Holder<StructureProcessorList> p_210416_, StructureTemplatePool.Projection p_210417_,
                                 BoundsParams bounds, ConditionsParams conditions, TagsParams tags,
                                 boolean twoWay, int genOrder, int priority) {
-        // FIXME 1.21 :: set to ignore waterlogging -> check if intention is correct
         super(p_210415_, p_210416_, p_210417_, Optional.of(LiquidSettings.IGNORE_WATERLOGGING));
         this.bounds = bounds;
         this.conditions = conditions;

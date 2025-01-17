@@ -117,7 +117,6 @@ public class ItemUmvuthanaMask extends ArmorItem implements UmvuthanaMask, GeoIt
 
     @Override
     public @Nullable ResourceLocation getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, ArmorMaterial.Layer layer, boolean innerModel) {
-        // String s = ChatFormatting.stripFormatting(stack.getHoverName().getString()); // FIXME 1.21 :: was unused
         return ResourceLocation.fromNamespaceAndPath(MMCommon.MODID, "textures/item/umvuthana_mask_" + this.type.name + ".png");
     }
 

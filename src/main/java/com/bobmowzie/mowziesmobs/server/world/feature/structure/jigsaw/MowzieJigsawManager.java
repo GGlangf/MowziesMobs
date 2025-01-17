@@ -59,7 +59,6 @@ public class MowzieJigsawManager {
         if (structurepoolelement == EmptyPoolElement.INSTANCE) {
             return Optional.empty();
         } else {
-            // FIXME 1.21 :: set to ignore waterlogging -> check if intention is correct
             PoolElementStructurePiece poolelementstructurepiece = new PoolElementStructurePiece(structuremanager, structurepoolelement, genPos, structurepoolelement.getGroundLevelDelta(), rotation, structurepoolelement.getBoundingBox(structuremanager, genPos, rotation), LiquidSettings.IGNORE_WATERLOGGING);
             BoundingBox pieceBoundingBox = poolelementstructurepiece.getBoundingBox();
             BlockPos offset = BlockPos.ZERO;
@@ -442,7 +441,6 @@ public class MowzieJigsawManager {
                                     k2 = nextPieceCandidate.getGroundLevelDelta();
                                 }
 
-                                // FIXME 1.21 :: set to ignore waterlogging -> check if intention is correct
                                 PoolElementStructurePiece poolelementstructurepiece = new PoolElementStructurePiece(this.structureManager, nextPieceCandidate, blockpos5, k2, nextPieceRotation, nextPieceBoundingBoxPlaced, LiquidSettings.IGNORE_WATERLOGGING);
                                 int l2;
                                 if (thisPieceIsRigid) {

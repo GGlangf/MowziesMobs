@@ -1231,7 +1231,6 @@ public class ModelNaga<T extends EntityNaga> extends MowzieEntityModel<T> {
             jawControls();
             wingFoldControls();
 
-            // FIXME 1.21 :: 'Minecraft#getFrameTime' previously returned 'Timer#partialTick' - unsure if 'TickRateManager#isEntityFrozen' needs to be considered
             entity.dc.updateChain(Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false), tailOriginal, tailDynamic, 0.5f, 0.5f, 0.5f, 0.97f, 30, true);
 
             computeWingWebbing();

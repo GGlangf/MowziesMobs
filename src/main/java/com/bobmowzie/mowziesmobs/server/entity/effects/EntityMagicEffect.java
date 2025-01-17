@@ -151,7 +151,7 @@ public abstract class EntityMagicEffect extends Entity implements ILinkedEntity 
         return false;
     }
 
-    @Override // FIXME 1.21 :: correct? takes position and rotation info from the server entity
+    @Override
     public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket(@NotNull ServerEntity entity) {
         return new ClientboundAddEntityPacket(this, entity, cachedCaster == null ? 0 : cachedCaster.getId());
     }

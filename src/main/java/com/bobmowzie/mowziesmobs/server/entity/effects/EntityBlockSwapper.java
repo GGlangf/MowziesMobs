@@ -266,7 +266,7 @@ public class EntityBlockSwapper extends Entity {
             }
         }
 
-        @Override // FIXME 1.21 :: correct? takes position and rotation info from the server entity
+        @Override
         public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket(@NotNull ServerEntity entity) {
             return new ClientboundAddEntityPacket(this, entity, cachedTunneler == null ? 0 : cachedTunneler.getId());
         }

@@ -7,7 +7,7 @@ import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.client.event.RenderFrameEvent;
 
 public class AbilityClientEventHandler {
-    public static void onRenderTick(RenderFrameEvent.Post event) { // FIXME 1.21 :: Post correct here?
+    public static void onRenderTick(RenderFrameEvent.Post event) {
         Player player = Minecraft.getInstance().player;
         if (player != null) {
             AbilityData data = DataHandler.getData(player, DataHandler.ABILITY_DATA);

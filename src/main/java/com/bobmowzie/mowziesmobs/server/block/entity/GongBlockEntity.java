@@ -7,7 +7,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
-// FIXME 1.21 :: if you look at the top part it stops rendering
 public class GongBlockEntity extends BlockEntity {
     public int ticks;
     public boolean shaking;

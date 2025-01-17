@@ -371,7 +371,7 @@ public abstract class MowzieEntity extends PathfinderMob implements IEntityWithC
             }
 
             setLastHurtMob(target);
-            playAttackSound(); // FIXME 1.21 :: was not previously used
+            playAttackSound();
         }
 
         return wasHurt;

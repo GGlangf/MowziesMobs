@@ -35,10 +35,6 @@ public class DamageUtil {
         target.lastHurt = Math.max(target.lastHurt - amount1, 0);
         data.setLastDamage(-1);
         boolean hit2 = target.hurt(source2, amount2);
-        boolean hit2Registered = hit2;
-        if (data.getLastDamage() != -1) {
-            hit2Registered = true; // FIXME 1.21 :: unused
-        }
         if (data.getLastDamage() != 0) {
             damageSoFar += amount2;
         }

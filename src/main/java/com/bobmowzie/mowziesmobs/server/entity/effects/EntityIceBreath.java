@@ -53,7 +53,6 @@ public class EntityIceBreath extends EntityMagicEffect {
         if (getCaster() != null && !getCaster().isAlive()) this.discard() ;
         if (tickCount == 1) playSound(MMSounds.ENTITY_FROSTMAW_ICEBREATH_START.get(), 1, 0.6f);
         if (getCaster() instanceof Player player) {
-            // FIXME 1.21 :: is the -0.5 still needed (was previously y + standing eye height)?
             absMoveTo(player.getX(), player.getEyeY() - 0.5f, player.getZ(), player.getYRot(), player.getXRot());
             AbilityData abilityData = DataHandler.getData(player, DataHandler.ABILITY_DATA);
             if (!abilityData.getAbilityFromType(AbilityHandler.ICE_BREATH_ABILITY).isUsing()) {

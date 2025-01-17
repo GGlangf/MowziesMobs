@@ -127,7 +127,7 @@ public class BasicModelRenderer {
     }
 
     public void render(PoseStack p_228308_1_, VertexConsumer p_228308_2_, int p_228308_3_, int p_228308_4_) {
-        this.render(p_228308_1_, p_228308_2_, p_228308_3_, p_228308_4_, -1); // FIXME 1.21 :: check (1 to all -> -1?)
+        this.render(p_228308_1_, p_228308_2_, p_228308_3_, p_228308_4_, -1);
     }
 
     public void render(PoseStack pose, VertexConsumer consumer, int packedLight, int packedOverlay, int color) {

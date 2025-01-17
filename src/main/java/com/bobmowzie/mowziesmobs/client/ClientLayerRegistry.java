@@ -24,7 +24,6 @@ public class ClientLayerRegistry {
         entityTypes.forEach((entityType -> addLayerIfApplicable(entityType, event)));
 
         for (PlayerSkin.Model skin : event.getSkins()){
-            // FIXME 1.21 :: should work?
             if (event.getSkin(skin) instanceof LivingEntityRenderer<?, ?> renderer) {
                 renderer.addLayer(new FrozenRenderHandler.LayerFrozen(renderer));
                 renderer.addLayer(new SunblockLayer(renderer));

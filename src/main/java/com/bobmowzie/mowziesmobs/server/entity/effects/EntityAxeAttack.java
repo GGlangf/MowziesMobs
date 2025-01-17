@@ -242,7 +242,6 @@ public class EntityAxeAttack extends EntityMagicEffect {
             return;
         }
 
-        // FIXME 1.21 :: new logic from 1.21 - should this be checked here?
         if (targetEntity.getType().is(EntityTypeTags.REDIRECTABLE_PROJECTILE) && targetEntity instanceof Projectile projectile && projectile.deflect(ProjectileDeflection.AIM_DEFLECT, this, this, true)) {
             this.level().playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.PLAYER_ATTACK_NODAMAGE, this.getSoundSource());
             resetModifiers(player, newStack, oldStack);

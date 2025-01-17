@@ -139,7 +139,7 @@ public class ClientEventHandler {
     }
 
     @SubscribeEvent
-    public static void onRenderTick(RenderFrameEvent.Post event) { // FIXME 1.21 :: Post correct here?
+    public static void onRenderTick(RenderFrameEvent.Pre event) {
         Player player = Minecraft.getInstance().player;
         
         if (player == null) {
@@ -237,7 +237,6 @@ public class ClientEventHandler {
     @SubscribeEvent
     public static void onSetupCamera(ViewportEvent.ComputeCameraAngles event) {
         Player player = Minecraft.getInstance().player;
-        // FIXME 1.21 :: this is used for screens (incl. 'EnchantmentScreen#render' which previously also used 'Minecraft#getFrameTime()')
         float delta = Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false);
         float ticksExistedDelta = player.tickCount + delta;
 
@@ -273,24 +272,21 @@ public class ClientEventHandler {
     public static void onRenderLevelStage(RenderLevelStageEvent event) {
         if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_BLOCK_ENTITIES) {
             ClientLevel level = Minecraft.getInstance().level;
-            if (Minecraft.getInstance().player != null && level != null && level.getModelDataManager() != null) {
+            if (Minecraft.getInstance().player != null && level != null) {
                 Vec3 cameraPos = event.getCamera().getPosition();
                 double d0 = cameraPos.x();
                 double d1 = cameraPos.y();
                 double d2 = cameraPos.z();
                 for (Long2ObjectMap.Entry<SculptorBlockMarking> entry : ClientProxy.sculptorMarkedBlocks.long2ObjectEntrySet()) {
                     BlockPos blockpos2 = BlockPos.of(entry.getLongKey());
-                    SculptorBlockMarking blockMarking = entry.getValue();
-                    float alpha = 1f - (float) blockMarking.getTicks() / (float) blockMarking.getDuration();
                     event.getPoseStack().pushPose();
                     event.getPoseStack().translate((double) blockpos2.getX() - d0, (double) blockpos2.getY() - d1, (double) blockpos2.getZ() - d2);
                     PoseStack.Pose posestack$pose1 = event.getPoseStack().last();
-                    // FIXME 1.21 :: 'Minecraft#getPartialTick' seemed to previously return the value of 'pausePartialTick' or 'Timer#partialTick'
-                    float f = (float) Minecraft.getInstance().player.tickCount + Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false);
+                    float tick = event.getRenderTick();
                     float blockOffset = (blockpos2.getX() + blockpos2.getY() + blockpos2.getZ()) * 0.25f;
-                    VertexConsumer vertexconsumer1 = new SheetedDecalTextureGenerator(Minecraft.getInstance().renderBuffers().bufferSource().getBuffer(MMRenderType.highlight(SCULPTOR_BLOCK_GLOW, f * 0.02f + blockOffset, f * 0.01f + blockOffset)), posestack$pose1, 0.25F);
+                    VertexConsumer vertexconsumer1 = new SheetedDecalTextureGenerator(Minecraft.getInstance().renderBuffers().bufferSource().getBuffer(MMRenderType.highlight(SCULPTOR_BLOCK_GLOW, tick * 0.02f + blockOffset, tick * 0.01f + blockOffset)), posestack$pose1, 0.25F);
                     ModelData modelData = level.getModelDataManager().getAt(blockpos2);
-                    renderBreakingTexture(level.getBlockState(blockpos2), blockpos2, level, event.getPoseStack(), level.random, vertexconsumer1, modelData == null ? ModelData.EMPTY : modelData);
+                    renderBreakingTexture(level.getBlockState(blockpos2), blockpos2, level, event.getPoseStack(), level.random, vertexconsumer1, modelData);
 
                     event.getPoseStack().popPose();
                 }

@@ -123,6 +123,6 @@ public final class InventoryUmvuthana implements Container {
     }
 
     private static boolean areItemsEqual(ItemStack s1, ItemStack s2) {
-        return ItemStack.isSameItemSameComponents(s1, s2); // FIXME 1.21 :: should certain components be excluded?
+        return ItemStack.isSameItemSameComponents(s1, s2);
     }
 }

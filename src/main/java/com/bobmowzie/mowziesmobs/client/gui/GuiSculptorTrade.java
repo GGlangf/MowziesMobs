@@ -20,7 +20,6 @@ import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
 
@@ -28,20 +27,16 @@ public final class GuiSculptorTrade extends AbstractContainerScreen<ContainerScu
     private static final ResourceLocation TEXTURE_TRADE = ResourceLocation.fromNamespaceAndPath(MMCommon.MODID, "textures/gui/container/umvuthi_trade.png");
 
     private final EntitySculptor sculptor;
-    private final Player player;
-
     private final InventorySculptor inventory;
 
     private final ItemStack output = new ItemStack(ItemHandler.EARTHREND_GAUNTLET.get());
 
     private Button beginButton;
-
     private boolean prevBlocked;
 
     public GuiSculptorTrade(ContainerSculptorTrade screenContainer, Inventory inv, Component titleIn) {
         super(screenContainer, inv, titleIn);
         this.sculptor = screenContainer.getSculptor();
-        this.player = inv.player;
         this.inventory = screenContainer.getInventorySculptor();
         inventory.addListener(this);
     }
@@ -54,7 +49,7 @@ public final class GuiSculptorTrade extends AbstractContainerScreen<ContainerScu
         updateButton();
     }
 
-    protected void actionPerformed(Button button) {
+    private void actionPerformed(Button button) {
     	if (button == beginButton) {
             PacketDistributor.sendToServer(new MessageSculptorTrade(sculptor.getId()));
     	}

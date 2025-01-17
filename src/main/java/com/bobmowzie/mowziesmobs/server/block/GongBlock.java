@@ -78,9 +78,6 @@ public class GongBlock extends BaseEntityBlock {
         this.onHit(p_49708_, p_49709_, p_49710_, player, true);
     }
 
-    // FIXME 1.21 :: gets checked first (if it doesnt consume the action then usewithoutitem is called but only for the main hand (i.e. left click?))
-    // FIXME 1.21 :: there doesn't seem to be a check for an item for either of them (they always get called) it's just about what the method gets as parameters
-    // FIXME 1.21 :: so just using this since it's called first and for both interaction hands
     @Override
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         return onHit(level, state, hitResult, player, true) ? ItemInteractionResult.sidedSuccess(level.isClientSide()) : ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
@@ -339,7 +336,7 @@ public class GongBlock extends BaseEntityBlock {
                 level.levelEvent(player, 2001, basePos, Block.getId(state));
             }
 
-            return super.playerWillDestroy(level, pos, state, player); // FIXME 1.21 :: did previously not call super (i.e. no game event or particles) -> intended?
+            return super.playerWillDestroy(level, pos, state, player);
         }
 
         @Override
