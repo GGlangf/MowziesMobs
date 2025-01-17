@@ -42,7 +42,7 @@ public class BossMusic<T extends MowzieEntity> {
         }
 
         if (ticksPlaying % 100 == 0) {
-            MMCommon.PROXY.process(minecraft -> minecraft.getMusicManager().stopPlaying());
+            MMCommon.PROXY.stopMusic();
         }
         ticksPlaying++;
     }
@@ -53,7 +53,7 @@ public class BossMusic<T extends MowzieEntity> {
         ticksPlaying = 0;
         if (sound != null) {
             sound = new BossMusicSound(soundEvent, getBoss(), this);
-            MMCommon.PROXY.process(minecraft -> minecraft.getSoundManager().play(sound));
+            MMCommon.PROXY.playMusic(sound);
         }
     }
 

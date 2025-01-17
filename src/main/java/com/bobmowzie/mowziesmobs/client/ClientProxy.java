@@ -1,7 +1,16 @@
 package com.bobmowzie.mowziesmobs.client;
 
 import com.bobmowzie.mowziesmobs.client.render.block.SculptorBlockMarking;
-import com.bobmowzie.mowziesmobs.client.sound.*;
+import com.bobmowzie.mowziesmobs.client.sound.BlackPinkSound;
+import com.bobmowzie.mowziesmobs.client.sound.BossMusicSound;
+import com.bobmowzie.mowziesmobs.client.sound.EarthRumbleLoopSound;
+import com.bobmowzie.mowziesmobs.client.sound.IGeomancyRumbler;
+import com.bobmowzie.mowziesmobs.client.sound.IceBreathSound;
+import com.bobmowzie.mowziesmobs.client.sound.NagaSwoopSound;
+import com.bobmowzie.mowziesmobs.client.sound.SolarBeamSound;
+import com.bobmowzie.mowziesmobs.client.sound.SpawnBoulderChargeSound;
+import com.bobmowzie.mowziesmobs.client.sound.SunblockSound;
+import com.bobmowzie.mowziesmobs.client.sound.SunstrikeSound;
 import com.bobmowzie.mowziesmobs.server.ServerProxy;
 import com.bobmowzie.mowziesmobs.server.config.ConfigHandler;
 import com.bobmowzie.mowziesmobs.server.entity.effects.EntitySolarBeam;
@@ -23,8 +32,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
-import java.util.function.Consumer;
+import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 public class ClientProxy extends ServerProxy {
     private static final List<SunblockSound> sunblockSounds = new ArrayList<>();
@@ -158,7 +172,12 @@ public class ClientProxy extends ServerProxy {
     }
 
     @Override
-    public void process(Consumer<Minecraft> consumer) {
-        consumer.accept(Minecraft.getInstance());
+    public void stopMusic() {
+        Minecraft.getInstance().getMusicManager().stopPlaying();
+    }
+
+    @Override
+    public void playMusic(final BossMusicSound music) {
+        Minecraft.getInstance().getSoundManager().play(music);
     }
 }
