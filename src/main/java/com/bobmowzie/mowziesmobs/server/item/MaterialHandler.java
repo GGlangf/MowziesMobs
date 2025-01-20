@@ -9,6 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ArmorMaterials;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -79,7 +80,7 @@ public class MaterialHandler { // FIXME 1.21 :: unsure if or where the layer res
             map.put(ArmorItem.Type.BOOTS, ArmorMaterials.DIAMOND.value().getDefense(ArmorItem.Type.BOOTS));
         }), ArmorMaterials.DIAMOND.value().enchantmentValue(),
                 ArmorMaterials.DIAMOND.value().equipSound(),
-                ArmorMaterials.DIAMOND.value().repairIngredient(),
+                () -> Ingredient.of(ItemHandler.BLUFF_ROD.value()),
                 List.of(new ArmorMaterial.Layer(ResourceLocation.fromNamespaceAndPath(MMCommon.MODID, "geomancer_armor"))),
                 ArmorMaterials.DIAMOND.value().toughness(),
                 0

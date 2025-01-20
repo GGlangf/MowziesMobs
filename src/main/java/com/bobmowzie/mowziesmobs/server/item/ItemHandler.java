@@ -121,7 +121,7 @@ public class ItemHandler {
         });
 
         // Durability initially gets set in 'TieredItem' based on the tier
-        event.modify(SCULPTOR_STAFF.get(), builder -> builder.set(DataComponents.MAX_DAMAGE, 1000));
+        event.modify(SCULPTOR_STAFF.get(), builder -> builder.set(DataComponents.MAX_DAMAGE, 200));
     }
 
     public static void initializeDispenserBehaviors() {
