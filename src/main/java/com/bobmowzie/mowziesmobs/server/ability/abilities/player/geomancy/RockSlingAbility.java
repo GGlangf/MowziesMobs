@@ -18,25 +18,21 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import software.bernie.geckolib.animation.RawAnimation;
-
+import software.bernie.geckolib.animation.Animation;
 
 public class RockSlingAbility extends PlayerAbility {
     public static final double SPAWN_BOULDER_REACH = 5;
     public BlockPos spawnBoulderPos = new BlockPos(0, 0, 0);
     public Vec3 lookPos = new Vec3(0, 0, 0);
     private BlockState spawnBoulderBlock = Blocks.DIRT.defaultBlockState();
-    private int damage = 3;
 
-    public RockSlingAbility(AbilityType<Player, ? extends Ability> abilityType, Player user) {
+    public RockSlingAbility(AbilityType<Player, ? extends Ability<?>> abilityType, Player user) {
         super(abilityType, user, new AbilitySection[] {
                 new AbilitySection.AbilitySectionDuration(AbilitySection.AbilitySectionType.STARTUP, 5),
                 new AbilitySection.AbilitySectionDuration(AbilitySection.AbilitySectionType.ACTIVE, 10),
                 new AbilitySection.AbilitySectionDuration(AbilitySection.AbilitySectionType.RECOVERY, 5)
         });
     }
-
-    private static final RawAnimation ROCK_SLING_ANIM = RawAnimation.begin().thenPlay("rock_sling_right");
 
     @Override
     public void start() {
@@ -50,11 +46,11 @@ public class RockSlingAbility extends PlayerAbility {
 
         spawnBoulderPos = result.getBlockPos();
         this.spawnBoulderBlock = getUser().level().getBlockState(spawnBoulderPos);
-        playAnimation(ROCK_SLING_ANIM);
+        playAnimation("rock_sling", Animation.LoopType.DEFAULT, true, true);
 
         if(getUser().level().isClientSide()){
             AdvancedParticleBase.spawnParticle(getUser().level(), ParticleHandler.RING2, (float) getUser().getX(), (float) getUser().getY() + 0.01f, (float) getUser().getZ(), 0, 0, 0, false, 0, Math.PI / 2f, 0, 0, 3.5F, 0.83f, 1, 0.39f, 1, 1, 10, true, true, new ParticleComponent[]{
-                    new ParticleComponent.PropertyControl(ParticleComponent.PropertyControl.EnumParticleProperty.ALPHA, ParticleComponent.KeyTrack.startAndEnd(0f, 0.7f), false),
+                    new ParticleComponent.PropertyControl(ParticleComponent.PropertyControl.EnumParticleProperty.ALPHA, ParticleComponent.KeyTrack.startAndEnd(0.7f, 0f), false),
                     new ParticleComponent.PropertyControl(ParticleComponent.PropertyControl.EnumParticleProperty.SCALE, ParticleComponent.KeyTrack.startAndEnd(0, (0.8f + 2.7f * 20f / 60f) * 10f), false)
             });
         }

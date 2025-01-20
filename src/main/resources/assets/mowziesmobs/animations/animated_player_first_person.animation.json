@@ -681,6 +681,206 @@
 				}
 			}
 		},
+		"rock_sling_right": {
+			"animation_length": 1.64,
+			"bones": {
+				"RightArm": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.04": {
+							"vector": [-15.27, 0, 0],
+							"easing": "easeInOutQuad"
+						},
+						"0.12": {
+							"vector": [0, 0, 0],
+							"easing": "easeInExpo"
+						},
+						"0.36": {
+							"vector": [-2.5, 0, 0],
+							"easing": "easeOutSine"
+						},
+						"0.6": {
+							"vector": [-2.5, 0, 0],
+							"easing": "easeOutSine"
+						},
+						"1.0": {
+							"vector": [0, 0, 0],
+							"easing": "easeInOutQuad"
+						}
+					},
+					"position": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.04": {
+							"vector": [0, 3.33, -4.36],
+							"easing": "easeInOutQuad"
+						},
+						"0.12": {
+							"vector": [0, -13.5, -7.5],
+							"easing": "easeInExpo"
+						},
+						"0.36": {
+							"vector": [0, -11.5, -7.5],
+							"easing": "easeOutSine"
+						},
+						"0.6": {
+							"vector": [0, -11.5, -7.5],
+							"easing": "easeOutSine"
+						},
+						"1.0": {
+							"vector": [0, 0, 0],
+							"easing": "easeInOutQuad"
+						}
+					},
+					"scale": {
+						"0.0": {
+							"vector": [1, 1, 1]
+						},
+						"0.04": {
+							"vector": [1.0036, 1.0036, 1.0036]
+						},
+						"0.12": {
+							"vector": [1.2, 1.2, 1.2],
+							"easing": "easeInCubic"
+						},
+						"0.36": {
+							"vector": [1.2, 1.2, 1.2],
+							"easing": "easeOutCubic"
+						},
+						"0.6": {
+							"vector": [1.2, 1.2, 1.2],
+							"easing": "easeOutCubic"
+						},
+						"1.0": {
+							"vector": [1, 1, 1],
+							"easing": "easeInOutQuad"
+						}
+					}
+				},
+				"FixedPitchControllerRight": {
+					"position": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.12": {
+							"vector": [1, 0, 0],
+							"easing": "easeInOutSine"
+						},
+						"0.6": {
+							"vector": [1, 0, 0],
+							"easing": "easeInOutSine"
+						},
+						"1.0": {
+							"vector": [0, 0, 0],
+							"easing": "easeInOutSine"
+						}
+					}
+				}
+			}
+		},
+		"rock_sling_left": {
+			"animation_length": 1.64,
+			"bones": {
+				"FixedPitchControllerRight": {
+					"position": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.12": {
+							"vector": [1, 0, 0],
+							"easing": "easeInOutSine"
+						},
+						"0.6": {
+							"vector": [1, 0, 0],
+							"easing": "easeInOutSine"
+						},
+						"1.0": {
+							"vector": [0, 0, 0],
+							"easing": "easeInOutSine"
+						}
+					}
+				},
+				"LeftArm": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.04": {
+							"vector": [-15.27, 0, 0],
+							"easing": "easeInOutQuad"
+						},
+						"0.12": {
+							"vector": [0, 0, 0],
+							"easing": "easeInExpo"
+						},
+						"0.36": {
+							"vector": [-2.5, 0, 0],
+							"easing": "easeOutSine"
+						},
+						"0.6": {
+							"vector": [-2.5, 0, 0],
+							"easing": "easeOutSine"
+						},
+						"1.0": {
+							"vector": [0, 0, 0],
+							"easing": "easeInOutQuad"
+						}
+					},
+					"position": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.04": {
+							"vector": [0, 3.33, -4.36],
+							"easing": "easeInOutQuad"
+						},
+						"0.12": {
+							"vector": [0, -13.5, -7.5],
+							"easing": "easeInExpo"
+						},
+						"0.36": {
+							"vector": [0, -11.5, -7.5],
+							"easing": "easeOutSine"
+						},
+						"0.6": {
+							"vector": [0, -11.5, -7.5],
+							"easing": "easeOutSine"
+						},
+						"1.0": {
+							"vector": [0, 0, 0],
+							"easing": "easeInOutQuad"
+						}
+					},
+					"scale": {
+						"0.0": {
+							"vector": [1, 1, 1]
+						},
+						"0.04": {
+							"vector": [1.0036, 1.0036, 1.0036]
+						},
+						"0.12": {
+							"vector": [1.2, 1.2, 1.2],
+							"easing": "easeInCubic"
+						},
+						"0.36": {
+							"vector": [1.2, 1.2, 1.2],
+							"easing": "easeOutCubic"
+						},
+						"0.6": {
+							"vector": [1.2, 1.2, 1.2],
+							"easing": "easeOutCubic"
+						},
+						"1.0": {
+							"vector": [1, 1, 1],
+							"easing": "easeInOutQuad"
+						}
+					}
+				}
+			}
+		},
 		"spawn_boulder_instant_right": {
 			"animation_length": 0.68,
 			"bones": {

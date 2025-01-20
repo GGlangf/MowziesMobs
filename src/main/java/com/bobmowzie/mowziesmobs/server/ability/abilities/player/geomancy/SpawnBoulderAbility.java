@@ -4,7 +4,11 @@ import com.bobmowzie.mowziesmobs.MMCommon;
 import com.bobmowzie.mowziesmobs.client.particle.ParticleHandler;
 import com.bobmowzie.mowziesmobs.client.particle.util.AdvancedParticleBase;
 import com.bobmowzie.mowziesmobs.client.particle.util.ParticleComponent;
-import com.bobmowzie.mowziesmobs.server.ability.*;
+import com.bobmowzie.mowziesmobs.server.ability.Ability;
+import com.bobmowzie.mowziesmobs.server.ability.AbilityHandler;
+import com.bobmowzie.mowziesmobs.server.ability.AbilitySection;
+import com.bobmowzie.mowziesmobs.server.ability.AbilityType;
+import com.bobmowzie.mowziesmobs.server.ability.PlayerAbility;
 import com.bobmowzie.mowziesmobs.server.entity.EntityHandler;
 import com.bobmowzie.mowziesmobs.server.entity.effects.geomancy.EntityBoulderBase;
 import com.bobmowzie.mowziesmobs.server.entity.effects.geomancy.EntityBoulderProjectile;
@@ -32,7 +36,7 @@ import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import software.bernie.geckolib.animation.Animation;
 
 public class SpawnBoulderAbility extends PlayerAbility {
-    private static int MAX_CHARGE = 60;
+    private static final int MAX_CHARGE = 60;
     public static final double SPAWN_BOULDER_REACH = 5;
 
     public BlockPos spawnBoulderPos = new BlockPos(0, 0, 0);
@@ -40,8 +44,8 @@ public class SpawnBoulderAbility extends PlayerAbility {
     private BlockState spawnBoulderBlock = Blocks.DIRT.defaultBlockState();
     private int spawnBoulderCharge = 0;
 
-    public SpawnBoulderAbility(AbilityType<Player, ? extends Ability> abilityType, Player user) {
-        super(abilityType, user,  new AbilitySection[] {
+    public SpawnBoulderAbility(AbilityType<Player, ? extends Ability<?>> abilityType, Player user) {
+        super(abilityType, user, new AbilitySection[]{
                 new AbilitySection.AbilitySectionDuration(AbilitySection.AbilitySectionType.STARTUP, MAX_CHARGE),
                 new AbilitySection.AbilitySectionInstant(AbilitySection.AbilitySectionType.ACTIVE),
                 new AbilitySection.AbilitySectionDuration(AbilitySection.AbilitySectionType.RECOVERY, 12)
@@ -67,8 +71,7 @@ public class SpawnBoulderAbility extends PlayerAbility {
             AbilityHandler.INSTANCE.sendJumpToSectionMessage(getUser(), getAbilityType(), 1);
         }
 
-        playAnimationActiveHand("spawn_boulder_start", Animation.LoopType.DEFAULT, true, false);
-
+        playAnimation("spawn_boulder_start", Animation.LoopType.DEFAULT, true, false);
         if (getUser().getUsedItemHand() == InteractionHand.MAIN_HAND) {
             heldItemMainHandVisualOverride = getUser().getUseItem();
         } else {
@@ -143,10 +146,10 @@ public class SpawnBoulderAbility extends PlayerAbility {
 
     private void spawnBoulder() {
         if (spawnBoulderCharge <= 2) {
-            playAnimationActiveHand("spawn_boulder_instant", Animation.LoopType.DEFAULT, true, false);
+            playAnimation("spawn_boulder_instant", Animation.LoopType.DEFAULT, true, false);
         }
         else {
-            playAnimationActiveHand("spawn_boulder_end", Animation.LoopType.DEFAULT, true, false);
+            playAnimation("spawn_boulder_end", Animation.LoopType.DEFAULT, true, false);
         }
 
         int size = getBoulderSize();

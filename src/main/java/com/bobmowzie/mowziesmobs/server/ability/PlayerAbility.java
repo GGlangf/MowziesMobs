@@ -32,9 +32,9 @@ public class PlayerAbility extends Ability<Player> {
     protected HandDisplay firstPersonMainHandDisplay;
     protected HandDisplay firstPersonOffHandDisplay;
 
-    private static RawAnimation IDLE_ANIM = RawAnimation.begin().thenLoop("idle");
+    private static final RawAnimation IDLE_ANIM = RawAnimation.begin().thenLoop("idle");
 
-    public PlayerAbility(AbilityType<Player, ? extends Ability> abilityType, Player user, AbilitySection[] sectionTrack, int cooldownMax) {
+    public PlayerAbility(AbilityType<Player, ? extends Ability<?>> abilityType, Player user, AbilitySection[] sectionTrack, int cooldownMax) {
         super(abilityType, user, sectionTrack, cooldownMax);
         if (user.level().isClientSide) {
             this.activeAnimation = IDLE_ANIM;
@@ -82,7 +82,7 @@ public class PlayerAbility extends Ability<Player> {
         return getUser().getUsedItemHand();
     }
 
-    public void playAnimationActiveHand(String animationName, Animation.LoopType loopType, boolean separateLeftAndRight1stPerson, boolean separateLeftAndRight3rdPerson) {
+    public void playAnimation(String animationName, Animation.LoopType loopType, boolean separateLeftAndRight1stPerson, boolean separateLeftAndRight3rdPerson) {
         boolean usingMainHand = getActiveHand() == InteractionHand.MAIN_HAND;
         boolean isRightHanded = getUser().getMainArm() == HumanoidArm.RIGHT;
         // 1st person

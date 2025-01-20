@@ -39,7 +39,7 @@ public class SimplePlayerAnimationAbility extends PlayerAbility {
         boolean usingSide = getActiveHand() == InteractionHand.MAIN_HAND;
         boolean mainSide = getUser().getMainArm() == HumanoidArm.RIGHT;
 
-        playAnimationActiveHand(animationName, Animation.LoopType.DEFAULT, separateLeftAndRight1stPerson, separateLeftAndRight3rdPerson);
+        playAnimation(animationName, Animation.LoopType.DEFAULT, separateLeftAndRight1stPerson, separateLeftAndRight3rdPerson);
 
         // Held items
         if (lockHeldItemActiveHand) {
