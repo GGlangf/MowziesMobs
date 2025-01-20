@@ -1,5 +1,6 @@
 package com.bobmowzie.mowziesmobs.client.particle;
 
+import com.bobmowzie.mowziesmobs.client.particle.types.AdvancedTypeBase;
 import com.bobmowzie.mowziesmobs.client.particle.types.DecalParticleType;
 import com.bobmowzie.mowziesmobs.client.particle.util.AdvancedParticleBase;
 import com.bobmowzie.mowziesmobs.client.particle.util.ParticleComponent;
@@ -156,6 +157,7 @@ public class ParticleDecal extends AdvancedParticleBase {
     }
 
     public static void spawnDecal(Level world, Holder<ParticleType<?>> particle, double x, double y, double z, double motionX, double motionY, double motionZ, double angle, double scale, double red, double green, double blue, double alpha, double airDrag, double duration, boolean emissive, int spriteSize, int bufferSize, ParticleComponent[] components) {
-        world.addParticle(new DecalParticleType(particle, (float) red, (float) green, (float) blue, (float) alpha, (float) scale, (float) duration, (float) airDrag, emissive, (float) angle, spriteSize, bufferSize, components), x, y, z, motionX, motionY, motionZ);
+        AdvancedTypeBase base = new AdvancedTypeBase(particle, new ParticleRotation.FaceCamera((float) angle), components, (float) red, (float) green, (float) blue, (float) alpha, (float) scale, (float) duration, (float) airDrag, emissive, false);
+        world.addParticle(new DecalParticleType(base, spriteSize, bufferSize), x, y, z, motionX, motionY, motionZ);
     }
 }

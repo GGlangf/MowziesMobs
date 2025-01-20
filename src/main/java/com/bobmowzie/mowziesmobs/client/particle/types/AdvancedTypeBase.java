@@ -2,38 +2,74 @@ package com.bobmowzie.mowziesmobs.client.particle.types;
 
 import com.bobmowzie.mowziesmobs.client.particle.util.ParticleComponent;
 import com.bobmowzie.mowziesmobs.client.particle.util.ParticleRotation;
+import com.bobmowzie.mowziesmobs.server.message.NetworkHandler;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
-public abstract class AdvancedTypeBase implements ParticleOptions {
+public class AdvancedTypeBase implements ParticleOptions {
+    public static final MapCodec<AdvancedTypeBase> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+            BuiltInRegistries.PARTICLE_TYPE.holderByNameCodec().fieldOf("type").forGetter(AdvancedTypeBase::type),
+            ParticleRotation.CODEC.fieldOf("rotation").forGetter(AdvancedTypeBase::rotation),
+            Codec.FLOAT.fieldOf("red").forGetter(AdvancedTypeBase::red),
+            Codec.FLOAT.fieldOf("green").forGetter(AdvancedTypeBase::green),
+            Codec.FLOAT.fieldOf("blue").forGetter(AdvancedTypeBase::blue),
+            Codec.FLOAT.fieldOf("alpha").forGetter(AdvancedTypeBase::alpha),
+            Codec.FLOAT.fieldOf("scale").forGetter(AdvancedTypeBase::scale),
+            Codec.FLOAT.fieldOf("duration").forGetter(AdvancedTypeBase::duration),
+            Codec.FLOAT.fieldOf("air_drag").forGetter(AdvancedTypeBase::airDrag),
+            Codec.BOOL.fieldOf("emissive").forGetter(AdvancedTypeBase::emissive),
+            Codec.BOOL.fieldOf("can_collide").forGetter(AdvancedTypeBase::canCollide)
+    ).apply(instance, AdvancedTypeBase::new));
+
+    public static final StreamCodec<RegistryFriendlyByteBuf, AdvancedTypeBase> STREAM_CODEC = NetworkHandler.composite(
+            ByteBufCodecs.holderRegistry(Registries.PARTICLE_TYPE), AdvancedTypeBase::type,
+            ByteBufCodecs.fromCodecWithRegistries(ParticleRotation.CODEC), AdvancedTypeBase::rotation,
+            ByteBufCodecs.FLOAT, AdvancedTypeBase::red,
+            ByteBufCodecs.FLOAT, AdvancedTypeBase::green,
+            ByteBufCodecs.FLOAT, AdvancedTypeBase::blue,
+            ByteBufCodecs.FLOAT, AdvancedTypeBase::alpha,
+            ByteBufCodecs.FLOAT, AdvancedTypeBase::scale,
+            ByteBufCodecs.FLOAT, AdvancedTypeBase::duration,
+            ByteBufCodecs.FLOAT, AdvancedTypeBase::airDrag,
+            ByteBufCodecs.BOOL, AdvancedTypeBase::emissive,
+            ByteBufCodecs.BOOL, AdvancedTypeBase::canCollide,
+            AdvancedTypeBase::new
+    );
+
     private final @NotNull Holder<ParticleType<?>> type;
     private final @NotNull ParticleRotation rotation;
     private final @NotNull ParticleComponent[] components;
 
-    private float red, green, blue, alpha;
-    private float scale;
-    private float duration;
-    private float airDrag;
-    private boolean emissive;
+    private final float red;
+    private final float green;
+    private final float blue;
+    private final float alpha;
+    
+    private final float scale;
+    private final float duration;
+    private final float airDrag;
+    private final boolean emissive;
+    private final boolean canCollide;
 
-    public static final StreamCodec<RegistryFriendlyByteBuf, Holder<ParticleType<?>>> TYPE_STREAM_CODEC = StreamCodec.of(
-            (buffer, type) -> buffer.writeInt(BuiltInRegistries.PARTICLE_TYPE.getId(type.value())),
-            buffer -> BuiltInRegistries.PARTICLE_TYPE.getHolder(buffer.readInt()).orElseThrow()
-    );
-
-    public AdvancedTypeBase(@NotNull Holder<ParticleType<?>> type) {
-        this.type = type;
-        this.rotation = new ParticleRotation.FaceCamera(0);
-        this.components = new ParticleComponent[]{};
+    public AdvancedTypeBase(final AdvancedTypeBase base) {
+        this(base.type(), base.rotation(), base.components(), base.red(), base.green(), base.blue(), base.alpha(), base.scale(), base.duration(), base.airDrag(), base.emissive(), base.canCollide());
     }
 
-    public AdvancedTypeBase(@NotNull Holder<ParticleType<?>> type, @NotNull ParticleRotation rotation, @NotNull ParticleComponent[] components, float red, float green, float blue, float alpha, float scale, float duration, float airDrag, boolean emissive) {
+    public AdvancedTypeBase(@NotNull Holder<ParticleType<?>> type, @NotNull ParticleRotation rotation, float red, float green, float blue, float alpha, float scale, float duration, float airDrag, boolean emissive, boolean canCollide) {
+        this(type, rotation, new ParticleComponent[]{}, red, green, blue, alpha, scale, duration, airDrag, emissive, canCollide);
+    }
+
+    public AdvancedTypeBase(@NotNull Holder<ParticleType<?>> type, @NotNull ParticleRotation rotation, @NotNull ParticleComponent[] components, float red, float green, float blue, float alpha, float scale, float duration, float airDrag, boolean emissive, boolean canCollide) {
         this.type = type;
         this.rotation = rotation;
         this.components = components;
@@ -45,19 +81,7 @@ public abstract class AdvancedTypeBase implements ParticleOptions {
         this.duration = duration;
         this.airDrag = airDrag;
         this.emissive = emissive;
-    }
-
-    public static ParticleRotation determineRotation(String rotationType, float faceCameraAngle, float yaw, float pitch, float roll) {
-        return switch (rotationType) {
-            case "face_camera":
-                yield new ParticleRotation.FaceCamera(faceCameraAngle);
-            case "euler":
-                yield new ParticleRotation.EulerAngles(yaw, pitch, roll);
-            case "orient":
-                yield new ParticleRotation.OrientVector(new Vec3(yaw, pitch, roll));
-            default:
-                throw new IllegalArgumentException("Invalid rotation type [" + rotationType + "]");
-        };
+        this.canCollide = canCollide;
     }
 
     @Override
@@ -95,6 +119,10 @@ public abstract class AdvancedTypeBase implements ParticleOptions {
 
     public boolean emissive() {
         return emissive;
+    }
+    
+    public boolean canCollide() {
+        return canCollide;
     }
 
     public float duration() {

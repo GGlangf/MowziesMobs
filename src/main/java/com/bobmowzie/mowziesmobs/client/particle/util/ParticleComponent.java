@@ -281,14 +281,18 @@ public abstract class ParticleComponent {
         }
 
         private final Vec3[] location;
-        private final float strength;
+        private final AnimData strengthData;
         private final float killDist;
         private final EnumAttractorBehavior behavior;
         private Vec3 startLocation;
 
         public Attractor(Vec3[] location, float strength, float killDist, EnumAttractorBehavior behavior) {
+            this(location, new Constant(strength), killDist, behavior);
+        }
+
+        public Attractor(Vec3[] location, AnimData strength, float killDist, EnumAttractorBehavior behavior) {
             this.location = location;
-            this.strength = strength;
+            this.strengthData = strength;
             this.killDist = killDist;
             this.behavior = behavior;
         }
@@ -301,6 +305,7 @@ public abstract class ParticleComponent {
         @Override
         public void preUpdate(AdvancedParticleBase particle) {
             float ageFrac = particle.getAge() / (particle.getLifetime() - 1);
+            double strength = strengthData.evaluate(ageFrac);
             if (location.length > 0) {
                 Vec3 destinationVec = location[0];
                 Vec3 currPos = new Vec3(particle.getPosX(), particle.getPosY(), particle.getPosZ());
@@ -422,18 +427,29 @@ public abstract class ParticleComponent {
     }
 
     public static class ForceOverTime extends ParticleComponent {
-        Vec3 force;
+        AnimData fx;
+        AnimData fy;
+        AnimData fz;
 
         public ForceOverTime(Vec3 force) {
-            this.force = force;
+            this.fx = new Constant((float) force.x());
+            this.fy = new Constant((float) force.y());
+            this.fz = new Constant((float) force.z());
+        }
+
+        public ForceOverTime(AnimData fx, AnimData fy, AnimData fz) {
+            this.fx = fx;
+            this.fy = fy;
+            this.fz = fz;
         }
 
         @Override
         public void preUpdate(AdvancedParticleBase particle) {
             super.preUpdate(particle);
-            particle.setMotionX(particle.getMotionX() + force.x());
-            particle.setMotionY(particle.getMotionY() + force.y());
-            particle.setMotionZ(particle.getMotionZ() + force.z());
+            float ageFrac = particle.getAge() / particle.getLifetime();
+            particle.setMotionX(particle.getMotionX() + fx.evaluate(ageFrac));
+            particle.setMotionY(particle.getMotionY() + fy.evaluate(ageFrac));
+            particle.setMotionZ(particle.getMotionZ() + fz.evaluate(ageFrac));
         }
     }
 

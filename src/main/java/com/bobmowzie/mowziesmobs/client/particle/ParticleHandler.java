@@ -1,9 +1,10 @@
 package com.bobmowzie.mowziesmobs.client.particle;
 
 import com.bobmowzie.mowziesmobs.MMCommon;
-import com.bobmowzie.mowziesmobs.client.particle.types.AdvancedParticleType;
+import com.bobmowzie.mowziesmobs.client.particle.types.AdvancedTypeBase;
 import com.bobmowzie.mowziesmobs.client.particle.types.DecalParticleType;
 import com.bobmowzie.mowziesmobs.client.particle.types.RibbonParticleType;
+import com.bobmowzie.mowziesmobs.client.particle.types.TerrainParticleData;
 import com.bobmowzie.mowziesmobs.client.particle.util.AdvancedParticleBase;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.particles.ParticleType;
@@ -86,23 +87,25 @@ public class ParticleHandler {
         }
     });
 
-    public static final DeferredHolder<ParticleType<?>, ParticleType<AdvancedParticleType>> RING2 = registerAdvanced("ring");
-    public static final DeferredHolder<ParticleType<?>, ParticleType<AdvancedParticleType>> RING_BIG = registerAdvanced("ring_big");
-    public static final DeferredHolder<ParticleType<?>, ParticleType<AdvancedParticleType>> PIXEL = registerAdvanced("pixel");
-    public static final DeferredHolder<ParticleType<?>, ParticleType<AdvancedParticleType>> ORB2 = registerAdvanced("orb");
-    public static final DeferredHolder<ParticleType<?>, ParticleType<AdvancedParticleType>> EYE = registerAdvanced("eye");
-    public static final DeferredHolder<ParticleType<?>, ParticleType<AdvancedParticleType>> BUBBLE = registerAdvanced("bubble");
-    public static final DeferredHolder<ParticleType<?>, ParticleType<AdvancedParticleType>> SUN = registerAdvanced("sun");
-    public static final DeferredHolder<ParticleType<?>, ParticleType<AdvancedParticleType>> SUN_NOVA = registerAdvanced("sun_nova");
-    public static final DeferredHolder<ParticleType<?>, ParticleType<AdvancedParticleType>> FLARE = registerAdvanced("flare");
-    public static final DeferredHolder<ParticleType<?>, ParticleType<AdvancedParticleType>> FLARE_RADIAL = registerAdvanced("flare_radial");
-    public static final DeferredHolder<ParticleType<?>, ParticleType<AdvancedParticleType>> BURST_IN = registerAdvanced("ring1");
-    public static final DeferredHolder<ParticleType<?>, ParticleType<AdvancedParticleType>> BURST_MESSY = registerAdvanced("burst_messy");
-    public static final DeferredHolder<ParticleType<?>, ParticleType<AdvancedParticleType>> RING_SPARKS = registerAdvanced("sparks_ring");
-    public static final DeferredHolder<ParticleType<?>, ParticleType<AdvancedParticleType>> BURST_OUT = registerAdvanced("ring2");
-    public static final DeferredHolder<ParticleType<?>, ParticleType<AdvancedParticleType>> GLOW = registerAdvanced("glow");
-    public static final DeferredHolder<ParticleType<?>, ParticleType<AdvancedParticleType>> ARROW_HEAD = registerAdvanced("arrow_head");
-    public static final DeferredHolder<ParticleType<?>, ParticleType<AdvancedParticleType>> LEAF = registerAdvanced("leaf");
+    public static final DeferredHolder<ParticleType<?>, ParticleType<AdvancedTypeBase>> RING2 = registerAdvanced("ring");
+    public static final DeferredHolder<ParticleType<?>, ParticleType<AdvancedTypeBase>> RING_BIG = registerAdvanced("ring_big");
+    public static final DeferredHolder<ParticleType<?>, ParticleType<AdvancedTypeBase>> PIXEL = registerAdvanced("pixel");
+    public static final DeferredHolder<ParticleType<?>, ParticleType<AdvancedTypeBase>> ORB2 = registerAdvanced("orb");
+    public static final DeferredHolder<ParticleType<?>, ParticleType<AdvancedTypeBase>> EYE = registerAdvanced("eye");
+    public static final DeferredHolder<ParticleType<?>, ParticleType<AdvancedTypeBase>> BUBBLE = registerAdvanced("bubble");
+    public static final DeferredHolder<ParticleType<?>, ParticleType<AdvancedTypeBase>> SUN = registerAdvanced("sun");
+    public static final DeferredHolder<ParticleType<?>, ParticleType<AdvancedTypeBase>> SUN_NOVA = registerAdvanced("sun_nova");
+    public static final DeferredHolder<ParticleType<?>, ParticleType<AdvancedTypeBase>> FLARE = registerAdvanced("flare");
+    public static final DeferredHolder<ParticleType<?>, ParticleType<AdvancedTypeBase>> FLARE_RADIAL = registerAdvanced("flare_radial");
+    public static final DeferredHolder<ParticleType<?>, ParticleType<AdvancedTypeBase>> BURST_IN = registerAdvanced("ring1");
+    public static final DeferredHolder<ParticleType<?>, ParticleType<AdvancedTypeBase>> BURST_MESSY = registerAdvanced("burst_messy");
+    public static final DeferredHolder<ParticleType<?>, ParticleType<AdvancedTypeBase>> RING_SPARKS = registerAdvanced("sparks_ring");
+    public static final DeferredHolder<ParticleType<?>, ParticleType<AdvancedTypeBase>> BURST_OUT = registerAdvanced("ring2");
+    public static final DeferredHolder<ParticleType<?>, ParticleType<AdvancedTypeBase>> GLOW = registerAdvanced("glow");
+    public static final DeferredHolder<ParticleType<?>, ParticleType<AdvancedTypeBase>> ARROW_HEAD = registerAdvanced("arrow_head");
+    public static final DeferredHolder<ParticleType<?>, ParticleType<AdvancedTypeBase>> LEAF = registerAdvanced("leaf");
+
+    public static final DeferredHolder<ParticleType<?>, ParticleType<TerrainParticleData>> TERRAIN = registerTerrain("terrain");
 
     public static final DeferredHolder<ParticleType<?>, ParticleType<DecalParticleType>> STRIX_FOOTPRINT = registerDecal("strix_footprint");
     public static final DeferredHolder<ParticleType<?>, ParticleType<DecalParticleType>> GROUND_CRACK = registerDecal("crack");
@@ -138,6 +141,9 @@ public class ParticleHandler {
         event.registerSpriteSet(ParticleHandler.GLOW.get(), AdvancedParticleBase.Factory::new);
         event.registerSpriteSet(ParticleHandler.ARROW_HEAD.get(), AdvancedParticleBase.Factory::new);
         event.registerSpriteSet(ParticleHandler.LEAF.get(), AdvancedParticleBase.Factory::new);
+
+        event.registerSpriteSet(ParticleHandler.TERRAIN.get(), AdvancedTerrainParticle.Factory::new);
+
         event.registerSpriteSet(ParticleHandler.STRIX_FOOTPRINT.get(), ParticleDecal.Provider::new);
         event.registerSpriteSet(ParticleHandler.GROUND_CRACK.get(), ParticleDecal.Provider::new);
 
@@ -147,16 +153,16 @@ public class ParticleHandler {
         event.registerSpriteSet(ParticleHandler.RIBBON_SQUIGGLE.get(), ParticleRibbon.Provider::new);
     }
 
-    private static DeferredHolder<ParticleType<?>, ParticleType<AdvancedParticleType>> registerAdvanced(String key) {
+    private static DeferredHolder<ParticleType<?>, ParticleType<AdvancedTypeBase>> registerAdvanced(String key) {
         return REG.register(key, location -> new ParticleType<>(false) {
             @Override
-            public @NotNull MapCodec<AdvancedParticleType> codec() {
-                return AdvancedParticleType.CODEC;
+            public @NotNull MapCodec<AdvancedTypeBase> codec() {
+                return AdvancedTypeBase.CODEC;
             }
 
             @Override
-            public @NotNull StreamCodec<? super RegistryFriendlyByteBuf, AdvancedParticleType> streamCodec() {
-                return AdvancedParticleType.STREAM_CODEC;
+            public @NotNull StreamCodec<? super RegistryFriendlyByteBuf, AdvancedTypeBase> streamCodec() {
+                return AdvancedTypeBase.STREAM_CODEC;
             }
         });
     }
@@ -185,6 +191,20 @@ public class ParticleHandler {
             @Override
             public @NotNull StreamCodec<? super RegistryFriendlyByteBuf, RibbonParticleType> streamCodec() {
                 return RibbonParticleType.STREAM_CODEC;
+            }
+        });
+    }
+
+    private static DeferredHolder<ParticleType<?>, ParticleType<TerrainParticleData>> registerTerrain(String key) {
+        return REG.register(key, location -> new ParticleType<>(false) {
+            @Override
+            public @NotNull MapCodec<TerrainParticleData> codec() {
+                return TerrainParticleData.CODEC;
+            }
+
+            @Override
+            public @NotNull StreamCodec<? super RegistryFriendlyByteBuf, TerrainParticleData> streamCodec() {
+                return TerrainParticleData.STREAM_CODEC;
             }
         });
     }
