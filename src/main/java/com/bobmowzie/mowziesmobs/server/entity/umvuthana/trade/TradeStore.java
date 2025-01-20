@@ -31,7 +31,7 @@ public final class TradeStore {
         }
         int w = rng.nextInt(totalWeight);
         for (Trade t : trades) {
-            w -= t.getWeight();
+            w -= t.weight();
             if (w < 0) {
                 return t;
             }
@@ -57,7 +57,7 @@ public final class TradeStore {
             Trade trade = Trade.deserialize(access, tradesList.getCompound(i));
             if (trade != null) {
                 trades.add(trade);
-                totalWeight += trade.getWeight();
+                totalWeight += trade.weight();
             }
         }
         return new TradeStore(trades.build(), totalWeight);

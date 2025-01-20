@@ -3,6 +3,8 @@ package com.bobmowzie.mowziesmobs.server.config;
 import com.bobmowzie.mowziesmobs.MMCommon;
 import com.bobmowzie.mowziesmobs.datagen.MMBiomeTags;
 import com.bobmowzie.mowziesmobs.datagen.StructureSetHandler;
+import com.bobmowzie.mowziesmobs.server.item.ItemHandler;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -487,7 +489,7 @@ public final class ConfigHandler {
                     .define("has_boss_bar", true);
             this.whichItem = builder.comment("Which item the Sculptor desires in exchange for a chance to try his challenge")
                     .translation(LANG_PREFIX + "trade_which_item")
-                    .define("trade_which_item", string(Items.CROSSBOW), ITEM_NAME_PREDICATE);
+                    .define("trade_which_item", string(ItemHandler.BLUFF_ROD), ITEM_NAME_PREDICATE);
             this.howMany = builder.comment("How many of the item the Sculptor desires in exchange for a chance to try his challenge")
                     .translation(LANG_PREFIX + "trade_how_many")
                     .defineInRange("trade_how_many", 1, 0, 64);
@@ -850,16 +852,20 @@ public final class ConfigHandler {
             return tag.location().toString();
         }
 
+        if (object instanceof Holder<?> holder) {
+            return holder.getRegisteredName();
+        }
+
         if (object instanceof ResourceKey<?> key) {
             return key.location().toString();
         }
 
         if (object instanceof Item item) {
-            return string(item.builtInRegistryHolder().key());
+            return string(item.builtInRegistryHolder());
         }
 
         if (object instanceof Block block) {
-            return string(block.builtInRegistryHolder().key());
+            return string(block.builtInRegistryHolder());
         }
 
         throw new IllegalArgumentException("Cannot handle object type [" + object.getClass() + "]");
