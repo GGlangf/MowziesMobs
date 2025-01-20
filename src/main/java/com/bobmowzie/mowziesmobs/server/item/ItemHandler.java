@@ -62,6 +62,7 @@ public class ItemHandler {
     public static final DeferredHolder<Item, ArmorItem> GEOMANCER_ROBE = REG.register("geomancer_robe", () -> new ItemGeomancerArmor(ArmorItem.Type.CHESTPLATE, new Item.Properties().rarity(Rarity.UNCOMMON).durability(/* Diamond */ ArmorItem.Type.CHESTPLATE.getDurability(33))));
     public static final DeferredHolder<Item, ArmorItem> GEOMANCER_BELT = REG.register("geomancer_belt", () -> new ItemGeomancerArmor(ArmorItem.Type.LEGGINGS, new Item.Properties().rarity(Rarity.UNCOMMON).durability(/* Diamond */ ArmorItem.Type.LEGGINGS.getDurability(33))));
     public static final DeferredHolder<Item, ArmorItem> GEOMANCER_SANDALS = REG.register("geomancer_sandals", () -> new ItemGeomancerArmor(ArmorItem.Type.BOOTS, new Item.Properties().rarity(Rarity.UNCOMMON).durability(/* Diamond */ ArmorItem.Type.BOOTS.getDurability(33))));
+    public static final DeferredHolder<Item, ItemNagaFang> BLUFF_ROD = REG.register("bluff_rod", () -> new ItemNagaFang(new Item.Properties()));
 
     public static final DeferredHolder<Item, Item> LOGO = REG.register("logo", () -> new Item(new Item.Properties()));
     public static final DeferredHolder<Item, Item> PETIOLE_MUSIC_DISC = REG.register("music_disc_petiole", () -> new Item(new Item.Properties().stacksTo(1).rarity(Rarity.RARE).jukeboxPlayable(MMSounds.JUKEBOX_PETIOLE)));

@@ -28,6 +28,7 @@ public class LootTableHandler {
     public static final ResourceKey<LootTable> UMVUTHANA_GROVE_CHEST = register("chests/umvuthana_grove_chest");
     public static final ResourceKey<LootTable> MONASTERY_CHEST = register("chests/monastery_chest");
     public static final ResourceKey<LootTable> SCULPTOR = register("entities/sculptor");
+    public static final ResourceKey<LootTable> BLUFF = register("entities/bluff");
 
     public static final DeferredRegister<LootItemFunctionType<?>> LOOT_FUNCTION_TYPE_REG = DeferredRegister.create(Registries.LOOT_FUNCTION_TYPE, MMCommon.MODID);
     public static final DeferredRegister<LootItemConditionType> LOOT_CONDITION_TYPE_REG = DeferredRegister.create(Registries.LOOT_CONDITION_TYPE, MMCommon.MODID);
