@@ -17,11 +17,13 @@ public class EntityRockSling extends EntityBoulderProjectile implements GeoEntit
 
     public EntityRockSling(EntityType<? extends EntityRockSling> type, Level worldIn) {
         super(type, worldIn);
+        setDamage(3);
     }
 
 
     public EntityRockSling(EntityType<? extends EntityBoulderProjectile> type, Level world, LivingEntity caster, BlockState blockState, BlockPos pos, GeomancyTier tier) {
         super(type, world, caster, blockState, pos, tier);
+        setDamage(3);
     }
 
     @Override
@@ -39,7 +41,7 @@ public class EntityRockSling extends EntityBoulderProjectile implements GeoEntit
         this.launchVec = vec;
     }
 
-    private static RawAnimation ROLL_ANIM = RawAnimation.begin().thenLoop("roll");
+    private static final RawAnimation ROLL_ANIM = RawAnimation.begin().thenLoop("roll");
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
