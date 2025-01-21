@@ -34,12 +34,14 @@ import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animation.Animation;
 import software.bernie.geckolib.animation.AnimationState;
@@ -90,7 +92,12 @@ public class EntityBluff extends MowzieGeckoEntity {
         this.goalSelector.addGoal(7, new WaterAvoidingRandomStrollGoal(this, 1.0D, 0.0F));
         this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
-        this.targetSelector.addGoal(1, new HurtByTargetGoal(this).setAlertOthers());
+        this.targetSelector.addGoal(1, new HurtByTargetGoal(this){
+            @Override
+            protected boolean canAttack(@Nullable LivingEntity entity, TargetingConditions conditions) {
+                return !(entity instanceof EntityBluff) && super.canAttack(entity, conditions);
+            }
+        }.setAlertOthers());
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, EntitySculptor.class, true));
     }
@@ -185,26 +192,6 @@ public class EntityBluff extends MowzieGeckoEntity {
         }
 
         super.aiStep();
-    }
-
-    protected void customServerAiStep() {
-        boolean isDoingAttack = getActiveAbilityType() == ATTACK_ABILITY;
-        if (!isDoingAttack) {
-            --this.nextHeightOffsetChangeTick;
-            if (this.nextHeightOffsetChangeTick <= 0) {
-                this.nextHeightOffsetChangeTick = 100;
-                this.allowedHeightOffset = (float) this.random.triangle(0.5D, 6.891D);
-            }
-
-            LivingEntity livingentity = this.getTarget();
-            if (livingentity != null && livingentity.getEyeY() > this.getEyeY() + (double) this.allowedHeightOffset && this.canAttack(livingentity)) {
-                Vec3 vec3 = this.getDeltaMovement();
-                this.setDeltaMovement(this.getDeltaMovement().add(0.0D, ((double) 0.3F - vec3.y) * (double) 0.3F, 0.0D));
-                this.hasImpulse = true;
-            }
-        }
-
-        super.customServerAiStep();
     }
 
     @Override
@@ -367,9 +354,16 @@ public class EntityBluff extends MowzieGeckoEntity {
 
     static class BluffAttackGoal extends Goal {
         private final EntityBluff bluff;
-        private int attackStep;
-        private int attackTime;
-        private int lastSeen;
+        private final double speedModifier = 1.0;
+        private int attackIntervalMin = 100;
+        private final float attackMaxRadiusSqr = 12 * 12;
+        private final float attackMinRadiusSqr = 6 * 6;
+        private int attackTime = -1;
+        private int seeTime;
+        private boolean strafingClockwise;
+        private boolean strafingBackwards;
+        private boolean isStrafing;
+        private int strafingTime = -1;
 
         public BluffAttackGoal(EntityBluff bluff) {
             this.bluff = bluff;
@@ -382,11 +376,14 @@ public class EntityBluff extends MowzieGeckoEntity {
         }
 
         public void start() {
-            this.attackStep = 0;
+            super.start();
+            this.bluff.setAggressive(true);
         }
 
         public void stop() {
-            this.lastSeen = 0;
+            super.stop();
+            this.bluff.setAggressive(false);
+            this.seeTime = 0;
         }
 
         public boolean requiresUpdateEveryTick() {
@@ -394,44 +391,68 @@ public class EntityBluff extends MowzieGeckoEntity {
         }
 
         public void tick() {
-            --this.attackTime;
             LivingEntity livingentity = this.bluff.getTarget();
             if (livingentity != null) {
+                double d0 = this.bluff.distanceToSqr(livingentity.getX(), livingentity.getY(), livingentity.getZ());
                 boolean flag = this.bluff.getSensing().hasLineOfSight(livingentity);
-                if (flag) {
-                    this.lastSeen = 0;
-                } else {
-                    ++this.lastSeen;
+                boolean flag1 = this.seeTime > 0;
+                if (flag != flag1) {
+                    this.seeTime = 0;
                 }
 
-                double d0 = this.bluff.distanceToSqr(livingentity);
-                if (d0 < this.getFollowDistance() * this.getFollowDistance() && flag) {
-                    double d1 = livingentity.getX() - this.bluff.getX();
-                    double y = livingentity.getY(0.5D) - this.bluff.getY(0.5D);
-                    double d3 = livingentity.getZ() - this.bluff.getZ();
-                    if (this.attackTime <= 0) {
-                        ++this.attackStep;
-                        if (this.attackStep == 1) {
-                            this.attackTime = 60;
-                        } else if (this.attackStep <= 2) {
-                            this.attackTime = 6;
-                        } else {
-                            this.attackTime = 100;
-                            this.attackStep = 0;
-                        }
+                if (flag) {
+                    ++this.seeTime;
+                } else {
+                    --this.seeTime;
+                }
 
-                        if (this.attackStep > 1) {
-                            bluff.allowedHeightOffset = 1;
-                            bluff.sendAbilityMessage(ATTACK_ABILITY);
-                        }
+                if (!(d0 > (double)this.attackMaxRadiusSqr) && this.seeTime >= 20) {
+                    this.bluff.getNavigation().stop();
+                    ++this.strafingTime;
+                } else {
+                    this.bluff.getNavigation().moveTo(livingentity, this.speedModifier);
+                    this.strafingTime = -1;
+                }
+
+                if (this.strafingTime >= 20) {
+                    if ((double)this.bluff.getRandom().nextFloat() < 0.3D) {
+                        this.isStrafing = !this.isStrafing;
                     }
 
-                    this.bluff.getLookControl().setLookAt(livingentity, 10.0F, 10.0F);
-                } else if (this.lastSeen < 5) {
-                    this.bluff.getMoveControl().setWantedPosition(livingentity.getX(), livingentity.getY(), livingentity.getZ(), 1.0D);
+                    if ((double)this.bluff.getRandom().nextFloat() < 0.3D) {
+                        this.strafingClockwise = !this.strafingClockwise;
+                    }
+
+                    if ((double)this.bluff.getRandom().nextFloat() < 0.3D) {
+                        this.strafingBackwards = !this.strafingBackwards;
+                    }
+
+                    this.strafingTime = 0;
                 }
 
-                super.tick();
+                if (this.strafingTime > -1) {
+                    if (d0 > (double)(this.attackMaxRadiusSqr)) {
+                        this.strafingBackwards = false;
+                    } else if (d0 < (double)(this.attackMinRadiusSqr)) {
+                        this.strafingBackwards = true;
+                    }
+
+                    if (isStrafing) {
+                        this.bluff.getMoveControl().strafe(this.strafingBackwards ? -0.3F : 0.3F, this.strafingClockwise ? 0.3F : -0.3F);
+                    }
+                    else {
+                        this.bluff.getMoveControl().strafe(0, 0);
+                    }
+                    this.bluff.lookAt(livingentity, 30.0F, 30.0F);
+                } else {
+                    this.bluff.getLookControl().setLookAt(livingentity, 30.0F, 30.0F);
+                }
+
+                if (--this.attackTime <= 0 && this.seeTime >= -60 && d0 < attackMaxRadiusSqr) {
+                    bluff.sendAbilityMessage(ATTACK_ABILITY);
+                    attackIntervalMin = 100;
+                    this.attackTime = this.attackIntervalMin + bluff.random.nextInt(100);
+                }
             }
         }
 

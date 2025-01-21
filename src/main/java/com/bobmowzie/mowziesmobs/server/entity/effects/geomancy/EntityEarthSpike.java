@@ -54,11 +54,12 @@ public class EntityEarthSpike extends EntityGeomancyBase {
                 }
             }
             else {
-                List<Entity> entitiesHit = level().getEntities(this, getBoundingBox().inflate(0.3), e -> e.canBeHitByProjectile() && e != getCaster());
+                List<Entity> entitiesHit = level().getEntities(this, getBoundingBox().inflate(0.4), e -> e.canBeHitByProjectile() && e != getCaster());
                 for (Entity entity : entitiesHit) {
                     double damage = 10;
                     if (getCaster() != null) {
                         if (getCaster() instanceof EntityBluff) {
+                            if (entity instanceof EntityBluff) continue;
                             AttributeInstance attrib = getCaster().getAttribute(Attributes.ATTACK_DAMAGE);
                             if (attrib != null) {
                                 damage = attrib.getValue();
