@@ -166,7 +166,7 @@ public class EntityBluff extends MowzieGeckoEntity {
             }
         }
 
-        if (getActiveAbility() == null){
+        if (getActiveAbility() == null && tickCount % 120 == 0){
             sendAbilityMessage(ATTACK_ABILITY);
         }
     }

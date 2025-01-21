@@ -170,7 +170,7 @@ public class EntityHandler {
     private static EntityType.Builder<EntityFissurePiece> fissurePieceBuilder() {
         return EntityType.Builder.of(EntityFissurePiece::new, MobCategory.MISC);
     }
-    public static final DeferredHolder<EntityType<?>, EntityType<EntityFissurePiece>> FISSURE_PIECE = REG.register("fissure_piece", () -> fissurePieceBuilder().sized(1f, 1f).build(MMCommon.resource("fissure_piece").toString()));
+    public static final DeferredHolder<EntityType<?>, EntityType<EntityFissurePiece>> FISSURE_PIECE = REG.register("fissure_piece", () -> fissurePieceBuilder().sized(EntityFissurePiece.PIECE_SIZE, 1f).build(MMCommon.resource("fissure_piece").toString()));
     private static EntityType.Builder<EntityEarthSpike> earthSpikeBuilder() {
         return EntityType.Builder.of(EntityEarthSpike::new, MobCategory.MISC);
     }

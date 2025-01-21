@@ -61,7 +61,7 @@ public class ClientEventBusSubscriber {
             EntityRenderers.register(EntityHandler.CAMERA_SHAKE.get(), RenderNothing::new);
             EntityRenderers.register(EntityHandler.ROCK_SLING.get(), RenderRockSling::new);
             EntityRenderers.register(EntityHandler.FISSURE.get(), RenderNothing::new);
-            EntityRenderers.register(EntityHandler.FISSURE_PIECE.get(), RenderNothing::new);
+            EntityRenderers.register(EntityHandler.FISSURE_PIECE.get(), RenderFissurePiece::new);
             EntityRenderers.register(EntityHandler.EARTH_SPIKE.get(), RenderNothing::new);
 
             BlockEntityRenderers.register(BlockEntityHandler.GONG_BLOCK_ENTITY.get(), GongRenderer::new);

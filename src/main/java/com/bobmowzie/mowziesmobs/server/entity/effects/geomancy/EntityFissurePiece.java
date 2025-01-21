@@ -12,6 +12,8 @@ import javax.annotation.Nullable;
 import java.util.UUID;
 
 public class EntityFissurePiece extends Entity {
+    public static final float PIECE_SIZE = 2f;
+
     @Nullable
     private EntityFissure owner;
     @Nullable
@@ -25,7 +27,8 @@ public class EntityFissurePiece extends Entity {
     public void tick() {
         super.tick();
 //        if (!level().isClientSide() && (getOwner() == null || getOwner().isRemoved())) discard();
-        if (getOwner() != null) setYRot(getOwner().getYRot());
+//        setYRot(getYRot() + 1);
+        if (tickCount > 100) discard();
     }
 
     @Override
