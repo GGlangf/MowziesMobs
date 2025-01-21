@@ -417,6 +417,8 @@ public class EntitySculptor extends MowzieGeckoEntity {
     public void tick() {
         setDeltaMovement(0, getDeltaMovement().y, 0);
         super.tick();
+        setDeltaMovement(0, getDeltaMovement().y, 0);
+
         if (testingPlayer == null && getTestingPlayerID().isPresent()) {
             testingPlayer = level().getPlayerByUUID(getTestingPlayerID().get());
             if (testingPlayer != null) testing = true;
@@ -822,6 +824,11 @@ public class EntitySculptor extends MowzieGeckoEntity {
         return player != null
                 && (canAttack(player) || isTesting())
                 && distanceTo(player) < 2500;
+    }
+
+    @Override
+    public boolean canBeLeashed() {
+        return false;
     }
 
     public static class StartTestAbility extends Ability<EntitySculptor> {
