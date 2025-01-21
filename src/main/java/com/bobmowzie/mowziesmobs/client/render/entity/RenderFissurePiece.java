@@ -200,6 +200,12 @@ public class RenderFissurePiece extends EntityRenderer<EntityFissurePiece> {
 
                         Direction[] directions = new Direction[]{Direction.WEST, Direction.NORTH, Direction.EAST, Direction.SOUTH};
                         for (int i = 0; i < corners.length; i++) {
+                            Direction direction = directions[i];
+                            BlockPos overAndDown = blockpos.relative(direction).below(2);
+                            if (!level.getBlockState(overAndDown).isCollisionShapeFullBlock(level, overAndDown)) {
+                                continue;
+                            }
+
                             Vec2 corner = corners[i];
                             Vec2 uv = getRelativeUVs(corner, entity.getYRot());
 
@@ -207,7 +213,6 @@ public class RenderFissurePiece extends EntityRenderer<EntityFissurePiece> {
                             Vec2 prevCorner = corners[prevIndex];
                             Vec2 prevUv = getRelativeUVs(prevCorner, entity.getYRot());
 
-                            Direction direction = directions[i];
                             Vector3f offset = direction.step().mul(0.0015625f); // To prevent z-fighting
                             drawVertex(matrix4f, matrix3f, builder, prevCorner.x + offset.x(), d2, prevCorner.y + offset.z(), prevUv.x, prevUv.y, 0.65f, packedLightIn);
                             drawVertex(matrix4f, matrix3f, builder, corner.x + offset.x(), d2, corner.y + offset.z(), uv.x, uv.y, 0.65f, packedLightIn);
