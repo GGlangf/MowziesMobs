@@ -13,6 +13,7 @@ import java.util.UUID;
 
 public class EntityFissurePiece extends Entity {
     public static final float PIECE_SIZE = 2f;
+    private int growTick = 0;
 
     @Nullable
     private EntityFissure owner;
@@ -27,6 +28,10 @@ public class EntityFissurePiece extends Entity {
     public void tick() {
         super.tick();
         if (!level().isClientSide() && (getOwner() == null || getOwner().isRemoved())) discard();
+
+        if (growTick < EntityFissure.TICKS_PER_PIECE) {
+            growTick++;
+        }
     }
 
     @Override
@@ -54,6 +59,7 @@ public class EntityFissurePiece extends Entity {
         if (compound.hasUUID("Owner")) {
             this.ownerUUID = compound.getUUID("Owner");
         }
+        growTick = compound.getInt("growTick");
 
     }
 
@@ -62,6 +68,10 @@ public class EntityFissurePiece extends Entity {
         if (this.ownerUUID != null) {
             compound.putUUID("Owner", this.ownerUUID);
         }
+        compound.putInt("growTick", growTick);
+    }
 
+    public int getGrowTick() {
+        return growTick;
     }
 }

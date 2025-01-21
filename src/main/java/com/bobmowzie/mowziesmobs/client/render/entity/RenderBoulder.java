@@ -19,10 +19,10 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class RenderBoulder extends EntityRenderer<EntityBoulderBase> {
-    private static final ResourceLocation TEXTURE_DIRT = ResourceLocation.withDefaultNamespace("textures/blocks/dirt.png");
-    private static final ResourceLocation TEXTURE_STONE = ResourceLocation.withDefaultNamespace("textures/blocks/stone.png");
-    private static final ResourceLocation TEXTURE_SANDSTONE = ResourceLocation.withDefaultNamespace("textures/blocks/sandstone.png");
-    private static final ResourceLocation TEXTURE_CLAY = ResourceLocation.withDefaultNamespace("textures/blocks/clay.png");
+    private static final ResourceLocation TEXTURE_DIRT = ResourceLocation.withDefaultNamespace("textures/block/dirt.png");
+    private static final ResourceLocation TEXTURE_STONE = ResourceLocation.withDefaultNamespace("textures/block/stone.png");
+    private static final ResourceLocation TEXTURE_SANDSTONE = ResourceLocation.withDefaultNamespace("textures/block/sandstone.png");
+    private static final ResourceLocation TEXTURE_CLAY = ResourceLocation.withDefaultNamespace("textures/block/clay.png");
     Map<String, ResourceLocation> texMap;
 
     ModelBoulder model;
