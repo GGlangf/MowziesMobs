@@ -428,7 +428,7 @@ public class EntityBoulderSculptor extends EntityBoulderProjectile {
                 }
             }
 
-            if (isCrumbling()) {
+            if (isCrumbling() && !descending) {
                 crumbleTick -= 1;
                 if (crumbleTick == 0) crumble();
             }
