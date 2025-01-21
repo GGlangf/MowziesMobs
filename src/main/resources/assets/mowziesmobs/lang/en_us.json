@@ -115,7 +115,7 @@
   "item.mowziesmobs.sculptor_staff.text.0": "Spawns three small rocks that fire as projectiles after a delay.",
 
   "item.mowziesmobs.sand_rake": "Sand Rake",
-  "item.mowziesmobs.sand_rake.text.0": "Use on sand to create raked patterns.",
+  "item.mowziesmobs.sand_rake.text.0": "Use on sand to create raked patterns.\nRepair with wood planks.",
 
   "item.mowziesmobs.geomancer_beads": "Geomancer Beads",
   "item.mowziesmobs.geomancer_beads.text.0": "+3 attack when punching",

@@ -8,7 +8,6 @@ import net.minecraft.core.Holder;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.SpawnPlacementType;
-import net.minecraft.world.entity.SpawnPlacementTypes;
 import net.minecraft.world.level.NaturalSpawner;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.MobSpawnSettings;
@@ -29,6 +28,7 @@ public class SpawnHandler {
     public static BiomeChecker GROTTOL_BIOME_CHECKER;
     public static BiomeChecker LANTERN_BIOME_CHECKER;
     public static BiomeChecker NAGA_BIOME_CHECKER;
+    public static BiomeChecker BLUFF_BIOME_CHECKER;
 
     private static final SpawnPlacementType MM_SPAWN = (level, position, type) -> {
         BlockState below = level.getBlockState(position.below());
@@ -54,6 +54,7 @@ public class SpawnHandler {
         SPAWN_CONFIGS.put(EntityHandler.LANTERN.get(), ConfigHandler.COMMON.MOBS.LANTERN.spawnConfig);
         SPAWN_CONFIGS.put(EntityHandler.NAGA.get(), ConfigHandler.COMMON.MOBS.NAGA.spawnConfig);
         SPAWN_CONFIGS.put(EntityHandler.GROTTOL.get(), ConfigHandler.COMMON.MOBS.GROTTOL.spawnConfig);
+        SPAWN_CONFIGS.put(EntityHandler.BLUFF.get(), ConfigHandler.COMMON.MOBS.BLUFF.spawnConfig);
     }
 
     public static void registerSpawnPlacementTypes(RegisterSpawnPlacementsEvent event) {
@@ -63,6 +64,7 @@ public class SpawnHandler {
         event.register(EntityHandler.NAGA.get(), MM_SPAWN, Heightmap.Types.MOTION_BLOCKING, MowzieEntity::spawnPredicate, RegisterSpawnPlacementsEvent.Operation.REPLACE);
         event.register(EntityHandler.GROTTOL.get(), MM_SPAWN, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, MowzieEntity::spawnPredicate, RegisterSpawnPlacementsEvent.Operation.REPLACE);
         event.register(EntityHandler.UMVUTHANA_CRANE.get(), MM_SPAWN, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, MowzieEntity::spawnPredicate, RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        event.register(EntityHandler.BLUFF.get(), MM_SPAWN, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, MowzieEntity::spawnPredicate, RegisterSpawnPlacementsEvent.Operation.REPLACE);
     }
 
     public static void addBiomeSpawns(Holder<Biome> biomeKey, ModifiableBiomeInfo.BiomeInfo.Builder builder) {
@@ -94,6 +96,12 @@ public class SpawnHandler {
         if (ConfigHandler.COMMON.MOBS.NAGA.spawnConfig.spawnRate.get() > 0 && NAGA_BIOME_CHECKER.isBiomeInConfig(biomeKey)) {
 //              System.out.println("Added naga biome: " + biomeName.toString());
             registerEntityWorldSpawn(builder, EntityHandler.NAGA.get(), ConfigHandler.COMMON.MOBS.NAGA.spawnConfig, MobCategory.MONSTER);
+        }
+
+        if (BLUFF_BIOME_CHECKER == null) BLUFF_BIOME_CHECKER = new BiomeChecker(ConfigHandler.COMMON.MOBS.BLUFF.spawnConfig.biomeConfig);
+        if (ConfigHandler.COMMON.MOBS.BLUFF.spawnConfig.spawnRate.get() > 0 && BLUFF_BIOME_CHECKER.isBiomeInConfig(biomeKey)) {
+//              System.out.println("Added bluff biome: " + biomeName.toString());
+            registerEntityWorldSpawn(builder, EntityHandler.BLUFF.get(), ConfigHandler.COMMON.MOBS.BLUFF.spawnConfig, MobCategory.MONSTER);
         }
     }
 
