@@ -122,6 +122,30 @@ public abstract class ParticleComponent {
         return new Constant(value);
     }
 
+    public static class Gravity extends ParticleComponent {
+        private final AnimData animData;
+
+        public Gravity(AnimData gravityOverTime) {
+            animData = gravityOverTime;
+        }
+
+        public Gravity(float gravity) {
+            this(new Constant(gravity));
+        }
+
+        @Override
+        public void init(AdvancedParticleBase particle) {
+            particle.setGravity(animData.evaluate(0));
+        }
+
+        @Override
+        public void preUpdate(AdvancedParticleBase particle) {
+            super.preUpdate(particle);
+            float ageFrac = particle.getAge() / particle.getLifetime();
+            particle.setGravity(animData.evaluate(ageFrac));
+        }
+    }
+
     public static class PropertyControl extends ParticleComponent {
         public enum EnumParticleProperty {
             POS_X, POS_Y, POS_Z,

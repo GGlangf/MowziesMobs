@@ -71,6 +71,7 @@ public class AdvancedParticleBase extends TextureSheetParticle {
         this.rotation.setPrevValues();
         this.prevScale = this.scale;
         this.hasPhysics = canCollide;
+        this.gravity = 0;
     }
 
     @Override
@@ -126,7 +127,7 @@ public class AdvancedParticleBase extends TextureSheetParticle {
     }
 
     protected void updatePosition() {
-        //this.motionY -= 0.04D * (double)this.particleGravity;
+        this.yd -= 0.04D * (double)this.gravity;
         this.move(this.xd, this.yd, this.zd);
 
         if (this.onGround && hasPhysics)
@@ -138,6 +139,10 @@ public class AdvancedParticleBase extends TextureSheetParticle {
         this.xd *= airDrag;
         this.yd *= airDrag;
         this.zd *= airDrag;
+    }
+
+    public void setGravity(float gravity) {
+        this.gravity = gravity;
     }
 
     @Override
