@@ -172,7 +172,7 @@ public class EntityBoulderSculptor extends EntityBoulderProjectile {
         int whichTierIndex = (int) (Math.pow(random.nextFloat(), 2) * (GeomancyTier.values().length - 2) + 1);
         if (getHeightFrac() > 0.85 && whichTierIndex == 3) whichTierIndex = 1;
         GeomancyTier nextTier = GeomancyTier.values()[whichTierIndex];
-        if (getHeightFrac() > 0.5 && random.nextFloat() < 0.15) {
+        if (getHeightFrac() > 0.45 && random.nextFloat() < 0.15) {
             return new EntityBoulderSculptorCrumbling(EntityHandler.BOULDER_SCULPTOR_CRUMBLING.get(), level(), getCaster(), blockPosition(), nextTier, random.nextInt(2));
         }
         else {
@@ -419,7 +419,7 @@ public class EntityBoulderSculptor extends EntityBoulderProjectile {
         public void tick() {
             super.tick();
             if (!level().isClientSide() && !isCrumbling()) {
-                List<Entity> onTopOfEntities = level().getEntities(this, getBoundingBox().contract(0, getBbHeight() - 1, 0).move(new Vec3(0, getBbHeight() - 0.5, 0)).inflate(0.6, 0.5, 0.6));
+                List<Entity> onTopOfEntities = level().getEntities(this, getBoundingBox().contract(0, getBbHeight() - 1, 0).move(new Vec3(0, getBbHeight() - 0.5, 0)).inflate(-0.1, 0.5, -0.1));
                 for (Entity entity : onTopOfEntities) {
                     if (entity != null && entity.isPickable() && !(entity instanceof EntityBoulderProjectile) && entity.getY() >= this.getY() + 0.2 && entity.onGround()) {
                         setCrumbling(true);
@@ -455,6 +455,18 @@ public class EntityBoulderSculptor extends EntityBoulderProjectile {
 
         public int getCrumbleTick() {
             return crumbleTick;
+        }
+
+        @Override
+        public void addAdditionalSaveData(CompoundTag compound) {
+            super.addAdditionalSaveData(compound);
+            compound.putInt("ConsecutiveCrumblers", consecutiveCrumblers);
+        }
+
+        @Override
+        public void readAdditionalSaveData(CompoundTag compound) {
+            super.readAdditionalSaveData(compound);
+            consecutiveCrumblers = compound.getInt("ConsecutiveCrumblers");
         }
     }
 }
