@@ -217,6 +217,13 @@ public final class MMSounds {
     public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_SCULPTOR_DISAPPEAR_EFFECTS = create("sculptor.disappear_effects");
     public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_SCULPTOR_CLAP = create("sculptor.clap");
 
+    public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_BLUFF_ATTACK = create("bluff.attack");
+    public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_BLUFF_DEATH = create("bluff.death");
+    public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_BLUFF_HURT = create("bluff.hurt");
+    public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_BLUFF_IDLE = create("bluff.idle");
+    public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_BLUFF_SPIKE_EMERGE = create("bluff.spike_emerge");
+    public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_BLUFF_SPIKE_EXPLODE = create("bluff.spike_explode");
+
     public static final DeferredHolder<SoundEvent, SoundEvent> EFFECT_GEOMANCY_SMALL_CRASH = create("geomancy.smallcrash");
     public static final DeferredHolder<SoundEvent, SoundEvent> EFFECT_GEOMANCY_MAGIC_SMALL = create("geomancy.hitsmall");
     public static final DeferredHolder<SoundEvent, SoundEvent> EFFECT_GEOMANCY_MAGIC_BIG = create("geomancy.hitbig");
