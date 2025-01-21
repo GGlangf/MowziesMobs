@@ -24,7 +24,8 @@ public class EntityFissurePiece extends Entity {
     @Override
     public void tick() {
         super.tick();
-        if (!level().isClientSide() && (getOwner() == null || getOwner().isRemoved())) discard();
+//        if (!level().isClientSide() && (getOwner() == null || getOwner().isRemoved())) discard();
+        if (getOwner() != null) setYRot(getOwner().getYRot());
     }
 
     @Override
