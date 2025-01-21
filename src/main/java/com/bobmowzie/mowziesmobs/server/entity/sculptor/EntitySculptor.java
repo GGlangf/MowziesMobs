@@ -1478,7 +1478,7 @@ public class EntitySculptor extends MowzieGeckoEntity {
 
         @Override
         public boolean canUse() {
-            return sculptor.testingPlayer != null;
+            return sculptor.testingPlayer != null && sculptor.testingPlayer.isAlive() && !sculptor.testingPlayer.isRemoved();
         }
 
         @Override

@@ -197,6 +197,11 @@ public class EntityBluff extends MowzieGeckoEntity {
     public void tick() {
         super.tick();
 
+        if (!this.level().isClientSide && this.level().getDifficulty() == Difficulty.PEACEFUL)
+        {
+            this.discard() ;
+        }
+
         if (getActiveAbilityType() == DIE_ABILITY && getActiveAbility().getTicksInUse() < 14) {
             this.yBodyRot = this.yHeadRot = this.yRotO;
             if (level().isClientSide) {

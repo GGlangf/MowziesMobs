@@ -522,11 +522,11 @@ public final class ConfigHandler {
         Bluff(final ModConfigSpec.Builder builder) {
             builder.push("bluff");
             spawnConfig = new SpawnConfig(builder,
-                    0, 1, 2, 1,
-                    new BiomeConfig(builder, Collections.singletonList(inverted(Tags.Biomes.IS_MUSHROOM)), Collections.emptyList(), Collections.emptyList()),
+                    10, 2, 3, 1,
+                    new BiomeConfig(builder, Collections.emptyList(), Collections.emptyList(), Collections.emptyList()),
                     Collections.emptyList(),
-                    Arrays.asList(string(BlockTags.ANIMALS_SPAWNABLE_ON), string(BlockTags.BASE_STONE_OVERWORLD)),
-                    -65, 68, true, false, false,
+                    Collections.emptyList(),
+                    -65, -65, true, false, true,
                     Collections.emptyList()
             );
             combatConfig = new CombatConfig(builder,1, 1);
