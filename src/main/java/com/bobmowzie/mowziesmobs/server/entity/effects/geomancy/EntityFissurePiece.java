@@ -35,7 +35,7 @@ public class EntityFissurePiece extends Entity {
             }
         }
 
-        if (!level().isClientSide() && getGrowTick() < EntityFissure.TICKS_PER_PIECE) {
+        if (!level().isClientSide() && getGrowTick() < EntityFissure.TICKS_PER_PIECE && owner != null && owner.isTravelling()) {
             getEntityData().set(GROW_TICK, getGrowTick() + 1);
         }
     }

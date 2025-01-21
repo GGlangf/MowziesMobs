@@ -158,6 +158,7 @@ public class EntityBoulderProjectile extends EntityBoulderBase {
 
     protected boolean travellingBlockedBy(Entity entity) {
         if (this.getCaster() instanceof EntitySculptor) {
+            if (entity instanceof EntityEarthSpike) return false;
             return !(entity instanceof EntityBoulderBase && ((EntityBoulderProjectile)entity).getCaster() == getCaster());
         }
         return true;
@@ -166,6 +167,7 @@ public class EntityBoulderProjectile extends EntityBoulderBase {
     @Override
     public boolean canCollideWith(Entity entity) {
         if (this.getCaster() instanceof EntitySculptor) {
+            if (travelling && entity instanceof EntityEarthSpike) return false;
             return super.canCollideWith(entity) && !(entity instanceof EntityBoulderBase && ((EntityBoulderProjectile)entity).getCaster() == getCaster());
         }
         return super.canCollideWith(entity);
