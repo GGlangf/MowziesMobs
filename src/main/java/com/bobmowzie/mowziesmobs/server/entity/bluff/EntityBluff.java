@@ -11,8 +11,10 @@ import com.bobmowzie.mowziesmobs.server.ability.AbilityType;
 import com.bobmowzie.mowziesmobs.server.ability.abilities.mob.DieAbility;
 import com.bobmowzie.mowziesmobs.server.ability.abilities.mob.HurtAbility;
 import com.bobmowzie.mowziesmobs.server.ai.UseAbilityAI;
+import com.bobmowzie.mowziesmobs.server.entity.EntityHandler;
 import com.bobmowzie.mowziesmobs.server.entity.MowzieEntity;
 import com.bobmowzie.mowziesmobs.server.entity.MowzieGeckoEntity;
+import com.bobmowzie.mowziesmobs.server.entity.effects.geomancy.EntityFissure;
 import com.bobmowzie.mowziesmobs.server.loot.LootTableHandler;
 import com.bobmowzie.mowziesmobs.server.potion.EffectGeomancy;
 import net.minecraft.core.particles.BlockParticleOption;
@@ -164,14 +166,9 @@ public class EntityBluff extends MowzieGeckoEntity {
             }
         }
 
-
-//        if (getTarget() != null) {
-//            LivingEntity target = getTarget();
-//
-//            if (getActiveAbility() == null && targetDistance < 5.0f && random.nextInt(5) == 0){
-//                sendAbilityMessage(ATTACK_ABILITY);
-//            }
-//        }
+        if (getActiveAbility() == null){
+            sendAbilityMessage(ATTACK_ABILITY);
+        }
     }
 
     @Override
@@ -189,17 +186,20 @@ public class EntityBluff extends MowzieGeckoEntity {
     }
 
     protected void customServerAiStep() {
-        --this.nextHeightOffsetChangeTick;
-        if (this.nextHeightOffsetChangeTick <= 0) {
-            this.nextHeightOffsetChangeTick = 100;
-            this.allowedHeightOffset = (float)this.random.triangle(0.5D, 6.891D);
-        }
+        boolean isDoingAttack = getActiveAbilityType() == ATTACK_ABILITY;
+        if (!isDoingAttack) {
+            --this.nextHeightOffsetChangeTick;
+            if (this.nextHeightOffsetChangeTick <= 0) {
+                this.nextHeightOffsetChangeTick = 100;
+                this.allowedHeightOffset = (float) this.random.triangle(0.5D, 6.891D);
+            }
 
-        LivingEntity livingentity = this.getTarget();
-        if (livingentity != null && livingentity.getEyeY() > this.getEyeY() + (double)this.allowedHeightOffset && this.canAttack(livingentity) && !(getActiveAbilityType() == ATTACK_ABILITY && getActiveAbility().getCurrentSection().sectionType == AbilitySection.AbilitySectionType.MISC)) {
-            Vec3 vec3 = this.getDeltaMovement();
-            this.setDeltaMovement(this.getDeltaMovement().add(0.0D, ((double)0.3F - vec3.y) * (double)0.3F, 0.0D));
-            this.hasImpulse = true;
+            LivingEntity livingentity = this.getTarget();
+            if (livingentity != null && livingentity.getEyeY() > this.getEyeY() + (double) this.allowedHeightOffset && this.canAttack(livingentity)) {
+                Vec3 vec3 = this.getDeltaMovement();
+                this.setDeltaMovement(this.getDeltaMovement().add(0.0D, ((double) 0.3F - vec3.y) * (double) 0.3F, 0.0D));
+                this.hasImpulse = true;
+            }
         }
 
         super.customServerAiStep();
@@ -210,9 +210,14 @@ public class EntityBluff extends MowzieGeckoEntity {
         return LootTableHandler.BLUFF;
     }
 
+    @Override
+    public boolean canBeCollidedWith() {
+        return true;
+    }
+
     public static class BluffAttackAbility extends Ability<EntityBluff> {
         public static AbilitySection[] SECTION_TRACK = new AbilitySection[] {
-            new AbilitySection.AbilitySectionDuration(AbilitySection.AbilitySectionType.STARTUP, 14),
+            new AbilitySection.AbilitySectionDuration(AbilitySection.AbilitySectionType.STARTUP, 11),
             new AbilitySection.AbilitySectionInfinite(AbilitySection.AbilitySectionType.MISC),
             new AbilitySection.AbilitySectionInstant(AbilitySection.AbilitySectionType.ACTIVE),
             new AbilitySection.AbilitySectionDuration(AbilitySection.AbilitySectionType.RECOVERY, 34)
@@ -234,6 +239,9 @@ public class EntityBluff extends MowzieGeckoEntity {
         @Override
         public void tickUsing() {
             super.tickUsing();
+            if (getCurrentSection().sectionType == AbilitySection.AbilitySectionType.STARTUP) {
+                getUser().setDeltaMovement(0, 0, 0);
+            }
             if (getCurrentSection().sectionType == AbilitySection.AbilitySectionType.MISC) {
                 double fallSpeed = getUser().getDeltaMovement().y;
                 fallSpeed -= 2;
@@ -258,13 +266,18 @@ public class EntityBluff extends MowzieGeckoEntity {
         protected void beginSection(AbilitySection section) {
             super.beginSection(section);
             if (section.sectionType == AbilitySection.AbilitySectionType.ACTIVE) {
+                if (!getLevel().isClientSide()) {
+                    EntityFissure fissure = new EntityFissure(EntityHandler.FISSURE.get(), getLevel());
+                    fissure.setOwner(getUser());
+                    fissure.setPos(getUser().position().add(0, 0, 0));
+                    fissure.setYRot(getUser().getYRot());
+                    getLevel().addFreshEntity(fissure);
+                }
+
                 playAnimation(ATTACK_END_ANIMATION);
-
-                EntityBluff entity = getUser();
-                BlockState blockBeneath = getUser().level().getBlockState(getUser().getBlockPosBelowThatAffectsMyMovement());
-
                 if (getLevel().isClientSide()) {
-                    for (byte i = 0; i < 80; i++) {
+                    BlockState blockBeneath = getUser().level().getBlockState(getUser().getOnPos());
+                    for (byte i = 0; i < 30; i++) {
                         getLevel().addParticle(new BlockParticleOption(ParticleTypes.BLOCK, blockBeneath), getUser().getX(), getUser().getBlockY() + 0.1f, getUser().getZ(), getUser().random.nextFloat() * 3f - 1.5f, 2.2d, getUser().random.nextFloat() * 3f - 1.5f);
                     }
                 }
@@ -372,6 +385,7 @@ public class EntityBluff extends MowzieGeckoEntity {
                         }
 
                         if (this.attackStep > 1) {
+                            bluff.allowedHeightOffset = 1;
                             bluff.sendAbilityMessage(ATTACK_ABILITY);
                         }
                     }

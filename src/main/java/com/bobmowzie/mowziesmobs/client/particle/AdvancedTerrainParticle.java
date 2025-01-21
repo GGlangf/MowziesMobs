@@ -92,14 +92,14 @@ public class AdvancedTerrainParticle extends AdvancedParticleBase {
         }
 
         @Override
-        public Particle createParticle(TerrainParticleData typeIn, ClientLevel worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+        public Particle createParticle(TerrainParticleData typeIn, @NotNull ClientLevel worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
             BlockState blockstate = typeIn.state();
 
             if (blockstate.isAir() || blockstate.is(Blocks.MOVING_PISTON)) {
                 return null;
             }
 
-            AdvancedTerrainParticle particle = new AdvancedTerrainParticle(worldIn, x, y, z, xSpeed, ySpeed, zSpeed, typeIn.scale(), typeIn.airDrag(), typeIn.duration(), typeIn.canCollide(), typeIn.state(), new BlockPos(0, -61, 0), typeIn.components());
+            AdvancedTerrainParticle particle = new AdvancedTerrainParticle(worldIn, x, y, z, xSpeed, ySpeed, zSpeed, typeIn.scale(), typeIn.airDrag(), typeIn.duration(), typeIn.canCollide(), typeIn.state(), BlockPos.ZERO, typeIn.components());
             particle.setColor(typeIn.red(), typeIn.green(), typeIn.blue());
             particle.updateSprite(blockstate, typeIn.position());
             return particle;
