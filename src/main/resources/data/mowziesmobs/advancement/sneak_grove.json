@@ -13,7 +13,7 @@
   },
   "parent": "mowziesmobs:kill_umvuthi",
   "criteria": {
-    "steal_crystal": {
+    "sneak_grove": {
       "trigger": "mowziesmobs:sneak_grove"
     }
   }

@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
-public class GrottolKillSilkTouchTrigger extends SimpleCriterionTrigger<GrottolKillSilkTouchTrigger.Instance> {
+public class SculptorChallengeTrigger extends SimpleCriterionTrigger<SculptorChallengeTrigger.Instance> {
     public record Instance(Optional<ContextAwarePredicate> player) implements SimpleCriterionTrigger.SimpleInstance {
         public static final Codec<Instance> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 EntityPredicate.ADVANCEMENT_CODEC.optionalFieldOf("player").forGetter(Instance::player)

@@ -11,6 +11,12 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Optional;
 
 public class SneakGroveTrigger extends SimpleCriterionTrigger<SneakGroveTrigger.Instance> {
+    public record Instance(Optional<ContextAwarePredicate> player) implements SimpleCriterionTrigger.SimpleInstance {
+        public static final Codec<Instance> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+                EntityPredicate.ADVANCEMENT_CODEC.optionalFieldOf("player").forGetter(Instance::player)
+        ).apply(instance, Instance::new));
+    }
+
     public void trigger(@NotNull ServerPlayer player) {
         super.trigger(player, instance -> true);
     }
@@ -18,11 +24,5 @@ public class SneakGroveTrigger extends SimpleCriterionTrigger<SneakGroveTrigger.
     @Override
     public @NotNull Codec<Instance> codec() {
         return Instance.CODEC;
-    }
-
-    public record Instance(Optional<ContextAwarePredicate> player) implements SimpleCriterionTrigger.SimpleInstance {
-        public static final Codec<Instance> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-                EntityPredicate.ADVANCEMENT_CODEC.optionalFieldOf("player").forGetter(Instance::player)
-        ).apply(instance, Instance::new));
     }
 }

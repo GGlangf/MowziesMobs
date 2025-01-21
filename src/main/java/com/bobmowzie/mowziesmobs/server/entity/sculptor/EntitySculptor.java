@@ -14,6 +14,7 @@ import com.bobmowzie.mowziesmobs.server.ability.AbilitySection;
 import com.bobmowzie.mowziesmobs.server.ability.AbilityType;
 import com.bobmowzie.mowziesmobs.server.ability.abilities.mob.HurtAbility;
 import com.bobmowzie.mowziesmobs.server.ability.abilities.player.SimpleAnimationAbility;
+import com.bobmowzie.mowziesmobs.server.advancement.AdvancementHandler;
 import com.bobmowzie.mowziesmobs.server.ai.UseAbilityAI;
 import com.bobmowzie.mowziesmobs.server.bossinfo.BossInfoSculptor;
 import com.bobmowzie.mowziesmobs.server.bossinfo.MMBossInfoServer;
@@ -43,6 +44,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
@@ -692,7 +694,13 @@ public class EntitySculptor extends MowzieGeckoEntity {
     @Override
     protected InteractionResult mobInteract(Player player, InteractionHand hand) {
         if (isTesting() && getPillar() != null && !getPillar().isRising()) {
-            if (player == testingPlayer && getActiveAbilityType() != FAIL_TEST) sendAbilityMessage(PASS_TEST);
+            if (player == testingPlayer && getActiveAbilityType() != FAIL_TEST) {
+                sendAbilityMessage(PASS_TEST);
+
+                if (player instanceof ServerPlayer serverPlayer) {
+                    AdvancementHandler.SCULPTOR_CHALLENGE_TRIGGER.get().trigger(serverPlayer);
+                }
+            }
         }
         else {
             if (canTradeWith(player) && getTarget() == null && isAlive()) {

@@ -193,9 +193,6 @@
   "_comment": "Death Messages",
   "death.attack.dart": "%1$s was shot by %2$s",
 
-  "_comment": "Sounds",
-  "jukebox_song.mowziesmobs.14": "LudoCrypt - Petiole",
-
   "_comment": "Config",
   "config.mowziesmobs.mobs": "Mobs",
   "config.mowziesmobs.mobs.tooltip": "Controls for all of Mowzie's Mobs mobs",
@@ -316,6 +313,8 @@
   "advancements.mowziesmobs.kill_naga.description": "Kill a Naga",
   "advancements.mowziesmobs.kill_grottol.title": "You Monster...",
   "advancements.mowziesmobs.kill_grottol.description": "Kill a Grottol",
+  "advancements.mowziesmobs.kill_bluff.title": "Called Your Bluff",
+  "advancements.mowziesmobs.kill_bluff.description": "Kill a Bluff",
   "advancements.mowziesmobs.sneak_grove.title": "Birds of a Feather",
   "advancements.mowziesmobs.sneak_grove.description": "Sneak into an Umvuthana grove in disguise",
   "advancements.mowziesmobs.suns_blessing.title": "Heliomancer",
@@ -326,6 +325,8 @@
   "advancements.mowziesmobs.kill_grottol_fortune.description": "Kill a Grottol with a fortune pickaxe",
   "advancements.mowziesmobs.kill_grottol_silk_touch.title": "You're Coming With Me",
   "advancements.mowziesmobs.kill_grottol_silk_touch.description": "Kill a Grottol with a silk touch pickaxe",
+  "advancements.mowziesmobs.sculptor_challenge.title": "You Must Believe",
+  "advancements.mowziesmobs.sculptor_challenge.description": "Complete the Sculptor's challenge",
 
   "subtitles.mowziesmobs.foliaath.bite": "Foliaath bites",
   "subtitles.mowziesmobs.foliaath.pant": "Foliaath pants",
