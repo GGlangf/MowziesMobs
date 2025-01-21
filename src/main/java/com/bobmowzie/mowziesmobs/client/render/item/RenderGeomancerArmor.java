@@ -1,10 +1,8 @@
 package com.bobmowzie.mowziesmobs.client.render.item;
 
 import com.bobmowzie.mowziesmobs.client.model.armor.ModelGeomancerArmor;
-import com.bobmowzie.mowziesmobs.client.model.armor.SolVisageModel;
 import com.bobmowzie.mowziesmobs.client.render.entity.MowzieGeoArmorRenderer;
 import com.bobmowzie.mowziesmobs.server.item.ItemGeomancerArmor;
-import com.bobmowzie.mowziesmobs.server.item.ItemSolVisage;
 import net.minecraft.world.entity.EquipmentSlot;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.cache.object.GeoBone;
@@ -40,25 +38,25 @@ public class RenderGeomancerArmor extends MowzieGeoArmorRenderer<ItemGeomancerAr
 
         switch (currentSlot) {
             case HEAD -> {
-                setBoneVisible(this.body, true);
+                setBoneVisible(this.getBodyBone(model), true);
                 setBoneVisible(this.beads, true);
-                setBoneVisible(this.head, true);
+                setBoneVisible(this.getHeadBone(model), true);
             }
             case CHEST -> {
-                setBoneVisible(this.body, true);
+                setBoneVisible(this.getBodyBone(model), true);
                 setBoneVisible(this.robe, true);
-                setBoneVisible(this.rightArm, true);
-                setBoneVisible(this.leftArm, true);
+                setBoneVisible(this.getRightArmBone(model), true);
+                setBoneVisible(this.getLeftArmBone(model), true);
             }
             case LEGS -> {
-                setBoneVisible(this.body, true);
+                setBoneVisible(this.getBodyBone(model), true);
                 setBoneVisible(this.belt, true);
-                setBoneVisible(this.rightLeg, true);
-                setBoneVisible(this.leftLeg, true);
+                setBoneVisible(this.getRightLegBone(model), true);
+                setBoneVisible(this.getLeftLegBone(model), true);
             }
             case FEET -> {
-                setBoneVisible(this.rightBoot, true);
-                setBoneVisible(this.leftBoot, true);
+                setBoneVisible(this.getRightBootBone(model), true);
+                setBoneVisible(this.getLeftBootBone(model), true);
             }
             default -> {
             }
