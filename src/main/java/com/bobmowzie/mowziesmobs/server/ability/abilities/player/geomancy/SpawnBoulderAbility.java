@@ -43,10 +43,21 @@ public class SpawnBoulderAbility extends PlayerAbility {
     public Vec3 lookPos = new Vec3(0, 0, 0);
     private BlockState spawnBoulderBlock = Blocks.DIRT.defaultBlockState();
     private int spawnBoulderCharge = 0;
+    private EntityGeomancyBase.GeomancyTier boulderSize = EntityGeomancyBase.GeomancyTier.SMALL;
 
-    public SpawnBoulderAbility(AbilityType<Player, ? extends Ability<?>> abilityType, Player user) {
-        super(abilityType, user, new AbilitySection[]{
-                new AbilitySection.AbilitySectionDuration(AbilitySection.AbilitySectionType.STARTUP, MAX_CHARGE),
+    private static final AbilitySection NO_CHARGE_SECTION = new AbilitySection.AbilitySectionDuration(AbilitySection.AbilitySectionType.STARTUP, 5);
+    private static final AbilitySection SMALL_CHARGE_SECTION = new AbilitySection.AbilitySectionDuration(AbilitySection.AbilitySectionType.STARTUP, 10);
+    private static final AbilitySection MEDIUM_CHARGE_SECTION = new AbilitySection.AbilitySectionDuration(AbilitySection.AbilitySectionType.STARTUP, 10);
+    private static final AbilitySection LARGE_CHARGE_SECTION = new AbilitySection.AbilitySectionDuration(AbilitySection.AbilitySectionType.STARTUP, 10);
+    private static final AbilitySection HUGE_CHARGE_SECTION = new AbilitySection.AbilitySectionDuration(AbilitySection.AbilitySectionType.STARTUP, 20);
+
+    public SpawnBoulderAbility(AbilityType<Player, ? extends Ability> abilityType, Player user) {
+        super(abilityType, user,  new AbilitySection[] {
+                NO_CHARGE_SECTION,
+                SMALL_CHARGE_SECTION,
+                MEDIUM_CHARGE_SECTION,
+                LARGE_CHARGE_SECTION,
+                HUGE_CHARGE_SECTION,
                 new AbilitySection.AbilitySectionInstant(AbilitySection.AbilitySectionType.ACTIVE),
                 new AbilitySection.AbilitySectionDuration(AbilitySection.AbilitySectionType.RECOVERY, 12)
         });
@@ -62,12 +73,9 @@ public class SpawnBoulderAbility extends PlayerAbility {
     @Override
     public void start() {
         super.start();
+        boulderSize = EntityGeomancyBase.GeomancyTier.SMALL;
 
-        if (!getLevel().isClientSide()) {
-            return;
-        }
-
-        if (!Minecraft.getInstance().options.keyUse.isDown()) {
+        if (getLevel().isClientSide() && !Minecraft.getInstance().options.keyUse.isDown()) {
             AbilityHandler.INSTANCE.sendJumpToSectionMessage(getUser(), getAbilityType(), 1);
         }
 
@@ -102,16 +110,8 @@ public class SpawnBoulderAbility extends PlayerAbility {
         super.tickUsing();
         if (getCurrentSection().sectionType == AbilitySection.AbilitySectionType.STARTUP) {
             spawnBoulderCharge++;
-            if (spawnBoulderCharge > 2) getUser().addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 3, 3, false, false));
+            if (spawnBoulderCharge > 2) getUser().addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 3, 2, false, false));
             if (spawnBoulderCharge == 1 && getUser().level().isClientSide) MMCommon.PROXY.playBoulderChargeSound(getUser());
-            if ((spawnBoulderCharge + 10) % 10 == 0 && spawnBoulderCharge < 40) {
-                if (getUser().level().isClientSide) {
-                    AdvancedParticleBase.spawnParticle(getUser().level(), ParticleHandler.RING2, (float) getUser().getX(), (float) getUser().getY() + getUser().getBbHeight() / 2f, (float) getUser().getZ(), 0, 0, 0, false, 0, Math.PI / 2f, 0, 0, 3.5F, 0.83f, 1, 0.39f, 1, 1, 10, true, true, new ParticleComponent[]{
-                            new ParticleComponent.PropertyControl(ParticleComponent.PropertyControl.EnumParticleProperty.ALPHA, ParticleComponent.KeyTrack.startAndEnd(0f, 0.7f), false),
-                            new ParticleComponent.PropertyControl(ParticleComponent.PropertyControl.EnumParticleProperty.SCALE, ParticleComponent.KeyTrack.startAndEnd((0.8f + 2.7f * spawnBoulderCharge / 60f) * 10f, 0), false)
-                    });
-                }
-            }
             if (spawnBoulderCharge == 50) {
                 if (getUser().level().isClientSide) {
                     AdvancedParticleBase.spawnParticle(getUser().level(), ParticleHandler.RING2, (float) getUser().getX(), (float) getUser().getY() + getUser().getBbHeight() / 2f, (float) getUser().getZ(), 0, 0, 0, true, 0, 0, 0, 0, 3.5F, 0.83f, 1, 0.39f, 1, 1, 20, true, true, new ParticleComponent[]{
@@ -122,26 +122,44 @@ public class SpawnBoulderAbility extends PlayerAbility {
                 getUser().playSound(MMSounds.EFFECT_GEOMANCY_MAGIC_SMALL.get(), 1, 1f);
             }
 
-            int size = getBoulderSize() + 1;
-            EntityDimensions dim = EntityBoulderBase.SIZE_MAP.get(EntityGeomancyBase.GeomancyTier.values()[size + 1]);
+            int size = getBoulderSize().index + 1;
+            if (size > 4) size = 4;
+            EntityDimensions dim = EntityBoulderBase.SIZE_MAP.get(EntityGeomancyBase.GeomancyTier.values()[size]);
             if (
                     !getUser().level().noCollision(dim.makeBoundingBox(spawnBoulderPos.getX() + 0.5F, spawnBoulderPos.getY() + 2, spawnBoulderPos.getZ() + 0.5F))
                     || getUser().distanceToSqr(spawnBoulderPos.getX(), spawnBoulderPos.getY(), spawnBoulderPos.getZ()) > 36
             ) {
-                nextSection();
+                jumpToSection(5);
             }
         }
     }
 
     @Override
     protected void beginSection(AbilitySection section) {
+        if (section.sectionType == AbilitySection.AbilitySectionType.STARTUP && section != NO_CHARGE_SECTION) {
+            if (getUser().level().isClientSide) {
+                float scale = 5;
+                if (section == MEDIUM_CHARGE_SECTION) scale = 8;
+                else if (section == LARGE_CHARGE_SECTION) scale = 12;
+                else if (section == HUGE_CHARGE_SECTION) scale = 16;
+
+                AdvancedParticleBase.spawnParticle(getUser().level(), ParticleHandler.RING2, (float) spawnBoulderPos.getX() + 0.5f, (float) spawnBoulderPos.getY() + 1.01, (float) spawnBoulderPos.getZ() + 0.5f, 0, 0, 0, false, 0, Math.PI / 2f, 0, 0, scale, 0.83f, 1, 0.39f, 1, 1, 10, true, true, new ParticleComponent[]{
+                        new ParticleComponent.PropertyControl(ParticleComponent.PropertyControl.EnumParticleProperty.ALPHA, ParticleComponent.KeyTrack.startAndEnd(0.7f, 0.0f), false)
+                });
+            }
+        }
+
+        if (section == MEDIUM_CHARGE_SECTION) boulderSize = EntityGeomancyBase.GeomancyTier.MEDIUM;
+        if (section == LARGE_CHARGE_SECTION) boulderSize = EntityGeomancyBase.GeomancyTier.LARGE;
+        if (section == HUGE_CHARGE_SECTION) boulderSize = EntityGeomancyBase.GeomancyTier.HUGE;
+
         if (section.sectionType == AbilitySection.AbilitySectionType.ACTIVE) {
             spawnBoulder();
         }
     }
 
-    private int getBoulderSize() {
-        return (int) Math.min(Math.max(0, Math.floor(spawnBoulderCharge/10.f) - 1), 2);
+    private EntityGeomancyBase.GeomancyTier getBoulderSize() {
+        return boulderSize;
     }
 
     private void spawnBoulder() {
@@ -152,9 +170,7 @@ public class SpawnBoulderAbility extends PlayerAbility {
             playAnimation("spawn_boulder_end", Animation.LoopType.DEFAULT, true, false);
         }
 
-        int size = getBoulderSize();
-        if (spawnBoulderCharge >= 60) size = 3;
-        EntityBoulderProjectile boulder = new EntityBoulderProjectile(EntityHandler.BOULDER_PROJECTILE.get(), getUser().level(), getUser(), spawnBoulderBlock, spawnBoulderPos, EntityGeomancyBase.GeomancyTier.values()[size + 1]);
+        EntityBoulderProjectile boulder = new EntityBoulderProjectile(EntityHandler.BOULDER_PROJECTILE.get(), getUser().level(), getUser(), spawnBoulderBlock, spawnBoulderPos, getBoulderSize());
         boulder.setPos(spawnBoulderPos.getX() + 0.5F, spawnBoulderPos.getY() + 2, spawnBoulderPos.getZ() + 0.5F);
         if (!getUser().level().isClientSide && boulder.checkCanSpawn()) {
             getUser().level().addFreshEntity(boulder);
@@ -174,9 +190,9 @@ public class SpawnBoulderAbility extends PlayerAbility {
     @Override
     public void onRightMouseUp(Player player) {
         super.onRightMouseUp(player);
-        if (isUsing() && getCurrentSection().sectionType == AbilitySection.AbilitySectionType.STARTUP) {
+        if (isUsing() && getCurrentSection().sectionType == AbilitySection.AbilitySectionType.STARTUP && getCurrentSection() != HUGE_CHARGE_SECTION) {
             if (player.distanceToSqr(spawnBoulderPos.getX(), spawnBoulderPos.getY(), spawnBoulderPos.getZ()) < 36) {
-                nextSection();
+                jumpToSection(5);
             } else {
                 spawnBoulderCharge = 0;
             }

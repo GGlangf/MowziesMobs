@@ -46,11 +46,16 @@ public abstract class EntityGeomancyBase extends EntityMagicEffect implements Ge
     private static final EntityDataAccessor<Integer> DEATH_TIME = SynchedEntityData.defineId(EntityGeomancyBase.class, EntityDataSerializers.INT);
 
     public enum GeomancyTier {
-        NONE,
-        SMALL,
-        MEDIUM,
-        LARGE,
-        HUGE
+        NONE(0),
+        SMALL(1),
+        MEDIUM(2),
+        LARGE(3),
+        HUGE(4);
+
+        public final int index;
+        GeomancyTier(int i) {
+            index = i;
+        }
     }
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
