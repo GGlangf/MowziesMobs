@@ -7058,18 +7058,7 @@
 				},
 				"LegWalkController": {
 					"position": {
-						"0.0": {
-							"vector": [0, 0, 0]
-						},
-						"0.0417": {
-							"vector": [1, 0, 0]
-						},
-						"0.4583": {
-							"vector": [1, 0, 0]
-						},
-						"0.6667": {
-							"vector": [0, 0, 0]
-						}
+						"vector": [0, 0, 0]
 					}
 				},
 				"CrouchController": {
@@ -7649,7 +7638,7 @@
 				},
 				"HeadLookController": {
 					"position": {
-						"vector": [1, 0, 0]
+						"vector": [0, 0, 0]
 					}
 				},
 				"ArmSwingController": {
@@ -7670,18 +7659,7 @@
 				},
 				"LegWalkController": {
 					"position": {
-						"0.0": {
-							"vector": [0, 0, 0]
-						},
-						"0.0417": {
-							"vector": [1, 0, 0]
-						},
-						"0.4583": {
-							"vector": [1, 0, 0]
-						},
-						"0.6667": {
-							"vector": [0, 0, 0]
-						}
+						"vector": [0, 0, 0]
 					}
 				},
 				"CrouchController": {

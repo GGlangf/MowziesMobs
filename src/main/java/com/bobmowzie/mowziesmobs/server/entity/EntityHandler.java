@@ -101,7 +101,7 @@ public class EntityHandler {
     private static EntityType.Builder<EntityRockSling> rockSlingBuilder() {
         return EntityType.Builder.of(EntityRockSling::new, MobCategory.MISC);
     }
-    public static final DeferredHolder<EntityType<?>, EntityType<EntityRockSling>> ROCK_SLING = REG.register("rock_sling", () -> rockSlingBuilder().sized(1, 1).setUpdateInterval(1).build(MMCommon.resource("rock_sling").toString()));
+    public static final DeferredHolder<EntityType<?>, EntityType<EntityRockSling>> ROCK_SLING = REG.register("rock_sling", () -> rockSlingBuilder().sized(0.5f, 0.5f).setUpdateInterval(1).build(MMCommon.resource("rock_sling").toString()));
     private static EntityType.Builder<EntityBoulderSculptor> boulderPlatformBuilder() {
         return EntityType.Builder.of(EntityBoulderSculptor::new, MobCategory.MISC);
     }

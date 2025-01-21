@@ -784,25 +784,6 @@
 		"rock_sling_left": {
 			"animation_length": 1.64,
 			"bones": {
-				"FixedPitchControllerRight": {
-					"position": {
-						"0.0": {
-							"vector": [0, 0, 0]
-						},
-						"0.12": {
-							"vector": [1, 0, 0],
-							"easing": "easeInOutSine"
-						},
-						"0.6": {
-							"vector": [1, 0, 0],
-							"easing": "easeInOutSine"
-						},
-						"1.0": {
-							"vector": [0, 0, 0],
-							"easing": "easeInOutSine"
-						}
-					}
-				},
 				"LeftArm": {
 					"rotation": {
 						"0.0": {
@@ -876,6 +857,25 @@
 						"1.0": {
 							"vector": [1, 1, 1],
 							"easing": "easeInOutQuad"
+						}
+					}
+				},
+				"FixedPitchControllerLeft": {
+					"position": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.12": {
+							"vector": [1, 0, 0],
+							"easing": "easeInOutSine"
+						},
+						"0.6": {
+							"vector": [1, 0, 0],
+							"easing": "easeInOutSine"
+						},
+						"1.0": {
+							"vector": [0, 0, 0],
+							"easing": "easeInOutSine"
 						}
 					}
 				}

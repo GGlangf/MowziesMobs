@@ -490,6 +490,11 @@ public class EntitySculptor extends MowzieGeckoEntity {
         return super.isInvulnerable();
     }
 
+    @Override
+    public boolean isPushable() {
+        return false;
+    }
+
     public boolean checkTestObstructed() {
         int height = EntitySculptor.TEST_HEIGHT + 3;
         for (int i = 1; i < height; i++) {
