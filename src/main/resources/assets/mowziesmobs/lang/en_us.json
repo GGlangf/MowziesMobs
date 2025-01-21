@@ -19,6 +19,7 @@
   "entity.mowziesmobs.naga": "Naga",
   "entity.mowziesmobs.sculptor": "Tongbi, the Sculptor",
   "entity.mowziesmobs.boulder": "Boulder",
+  "entity.mowziesmobs.bluff": "Bluff",
 
   "_comment": "Items",
   "item.mowziesmobs.foliaath_seed": "Foliaath Seed",
@@ -129,6 +130,9 @@
   "item.mowziesmobs.geomancer_sandals": "Geomancer Sandals",
   "item.mowziesmobs.geomancer_sandals.text.0": "Gain increased movement speed for 3 seconds after falling more than 4 blocks",
 
+  "item.mowziesmobs.bluff_rod": "Geomancer Sandals",
+  "item.mowziesmobs.bluff_rod.text.0": "Use to repair Geomancy items, or give to the Sculptor to begin his challenge",
+
   "item.mowziesmobs.music_disc_petiole": "Music Disc",
   "item.mowziesmobs.music_disc_petiole.desc": "LudoCrypt - Petiole",
 
@@ -143,6 +147,7 @@
   "item.mowziesmobs.lantern_spawn_egg": "Lantern Spawn Egg",
   "item.mowziesmobs.naga_spawn_egg": "Naga Spawn Egg",
   "item.mowziesmobs.sculptor_spawn_egg": "Tongbi, the Sculptor Spawn Egg",
+  "item.mowziesmobs.bluff_spawn_egg": "Bluff Spawn Egg",
 
   "_comment": "Blocks",
   "block.mowziesmobs.painted_acacia": "Painted Acacia Wood",

@@ -327,12 +327,14 @@ public class EntityBluff extends MowzieGeckoEntity {
             if (getCurrentSection().sectionType == AbilitySection.AbilitySectionType.STARTUP) {
                 getUser().setDeltaMovement(0, 0, 0);
             }
-            if (getCurrentSection().sectionType == AbilitySection.AbilitySectionType.MISC) {
+            if (getCurrentSection().sectionType == AbilitySection.AbilitySectionType.MISC || getCurrentSection().sectionType == AbilitySection.AbilitySectionType.ACTIVE) {
                 double fallSpeed = getUser().getDeltaMovement().y;
                 fallSpeed -= 2;
                 fallSpeed = Math.max(fallSpeed, -7);
                 getUser().setDeltaMovement(0, fallSpeed, 0);
                 getUser().hasImpulse = true;
+            }
+            if (getCurrentSection().sectionType == AbilitySection.AbilitySectionType.MISC) {
                 if (getUser().onGround()) {
                     jumpToSection(2);
                 }
