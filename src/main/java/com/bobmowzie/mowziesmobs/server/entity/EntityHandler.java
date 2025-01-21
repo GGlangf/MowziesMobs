@@ -109,6 +109,10 @@ public class EntityHandler {
     private static EntityType.Builder<EntityPillar> pillarBuilder() {
         return EntityType.Builder.of(EntityPillar::new, MobCategory.MISC);
     }
+    private static EntityType.Builder<EntityBoulderSculptor.EntityBoulderSculptorCrumbling> boulderPlatformCrumblingBuilder() {
+        return EntityType.Builder.of(EntityBoulderSculptor.EntityBoulderSculptorCrumbling::new, MobCategory.MISC);
+    }
+    public static final DeferredHolder<EntityType<?>, EntityType<EntityBoulderSculptor.EntityBoulderSculptorCrumbling>> BOULDER_SCULPTOR_CRUMBLING = REG.register("boulder_platform_crumbling", () -> boulderPlatformCrumblingBuilder().sized(1, 1).setUpdateInterval(1).build(MMCommon.resource("boulder_platform_crumbling").toString()));
     public static final DeferredHolder<EntityType<?>, EntityType<EntityPillar>> PILLAR = REG.register("pillar", () -> pillarBuilder().sized(1f, 1f).setUpdateInterval(1).build(MMCommon.resource("pillar").toString()));
     private static EntityType.Builder<EntityPillar.EntityPillarSculptor> sculptorPillarBuilder() {
         return EntityType.Builder.of(EntityPillar.EntityPillarSculptor::new, MobCategory.MISC);

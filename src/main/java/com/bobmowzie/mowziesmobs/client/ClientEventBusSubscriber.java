@@ -46,6 +46,7 @@ public class ClientEventBusSubscriber {
             EntityRenderers.register(EntityHandler.SOLAR_BEAM.get(), RenderSolarBeam::new);
             EntityRenderers.register(EntityHandler.BOULDER_PROJECTILE.get(), RenderBoulder::new);
             EntityRenderers.register(EntityHandler.BOULDER_SCULPTOR.get(), RenderBoulder::new);
+            EntityRenderers.register(EntityHandler.BOULDER_SCULPTOR_CRUMBLING.get(), RenderBoulder::new);
             EntityRenderers.register(EntityHandler.PILLAR.get(), RenderPillar::new);
             EntityRenderers.register(EntityHandler.PILLAR_SCULPTOR.get(), RenderPillar::new);
             EntityRenderers.register(EntityHandler.PILLAR_PIECE.get(), RenderNothing::new);

@@ -727,6 +727,10 @@
 		],
 		"subtitle": "subtitles.mowziesmobs.sculptor.clap"
 	},
+	"sculptor.platform_crumble": {
+		"sounds": [ "mowziesmobs:entity/sculptor/platform_crumble" ],
+		"subtitle": "subtitles.mowziesmobs.sculptor.platform_crumble"
+	},
 	"bluff.attack": {
 		"sounds": [ "mowziesmobs:entity/bluff/attack" ],
 		"subtitle": "subtitles.mowziesmobs.bluff.attack"

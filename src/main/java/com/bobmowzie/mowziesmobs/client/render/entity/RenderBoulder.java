@@ -3,6 +3,7 @@ package com.bobmowzie.mowziesmobs.client.render.entity;
 import com.bobmowzie.mowziesmobs.client.model.entity.ModelBoulder;
 import com.bobmowzie.mowziesmobs.client.render.entity.layer.BlockLayer;
 import com.bobmowzie.mowziesmobs.server.entity.effects.geomancy.EntityBoulderBase;
+import com.bobmowzie.mowziesmobs.server.entity.effects.geomancy.EntityBoulderSculptor;
 import com.bobmowzie.mowziesmobs.server.entity.effects.geomancy.EntityGeomancyBase;
 import com.ilexiconn.llibrary.client.model.tools.AdvancedModelRenderer;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -14,6 +15,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Blocks;
+import org.joml.Quaternionf;
 
 import java.util.Map;
 import java.util.TreeMap;
@@ -53,8 +55,14 @@ public class RenderBoulder extends EntityRenderer<EntityBoulderBase> {
     @Override
     public void render(EntityBoulderBase entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn) {
         if (entityIn.active) {
+            float frame = entityIn.risingTick + partialTicks;
             matrixStackIn.pushPose();
-            model.setupAnim(entityIn, 0, 0, entityIn.risingTick + partialTicks, 0, 0);
+            model.setupAnim(entityIn, 0, 0, frame, 0, 0);
+            if (entityIn instanceof EntityBoulderSculptor.EntityBoulderSculptorCrumbling crumbling) {
+                if (crumbling.isCrumbling()) {
+                    matrixStackIn.mulPose(new Quaternionf().rotationXYZ(0.03f * (float) Math.cos(frame * 4f + 234f), 0.03f * (float) Math.cos(frame * 2.2f + 45), 0.03f * (float) Math.cos(frame * 3.5f + 409)));
+                }
+            }
             BlockRenderDispatcher blockrendererdispatcher = Minecraft.getInstance().getBlockRenderer();
             AdvancedModelRenderer root;
             if (entityIn.boulderSize == EntityGeomancyBase.GeomancyTier.SMALL) root = model.boulder0block1;
