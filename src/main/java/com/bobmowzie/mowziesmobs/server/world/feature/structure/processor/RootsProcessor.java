@@ -2,6 +2,7 @@ package com.bobmowzie.mowziesmobs.server.world.feature.structure.processor;
 
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
@@ -9,6 +10,7 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.TrapDoorBlock;
+import net.minecraft.world.level.block.WallBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Half;
 import net.minecraft.world.level.block.state.properties.SlabType;
@@ -49,7 +51,11 @@ public class RootsProcessor extends StructureProcessor {
                             blockInfoGlobal.state().getValue(TrapDoorBlock.HALF) == Half.TOP &&
                             !blockInfoGlobal.state().getValue(TrapDoorBlock.OPEN)
             ) {
-                blockInfoGlobal = new StructureTemplate.StructureBlockInfo(blockInfoGlobal.pos(), Blocks.HANGING_ROOTS.defaultBlockState(), blockInfoGlobal.nbt());
+                BlockPos pos = blockInfoGlobal.pos().above();
+                BlockState aboveState = levelReader.getBlockState(pos);
+                if (!aboveState.isAir() && aboveState.isFaceSturdy(levelReader, pos, Direction.DOWN) && !(aboveState.getBlock() instanceof WallBlock)) {
+                    blockInfoGlobal = new StructureTemplate.StructureBlockInfo(blockInfoGlobal.pos(), Blocks.HANGING_ROOTS.defaultBlockState(), blockInfoGlobal.nbt());
+                }
             }
         }
         return blockInfoGlobal;

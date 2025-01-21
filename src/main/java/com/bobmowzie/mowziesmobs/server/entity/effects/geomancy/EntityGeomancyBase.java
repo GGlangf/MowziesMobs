@@ -31,9 +31,10 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.fluids.FluidType;
+import software.bernie.geckolib.animatable.GeoEntity;
 import net.neoforged.neoforge.common.Tags;
 import org.jetbrains.annotations.NotNull;
-import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
@@ -72,6 +73,11 @@ public abstract class EntityGeomancyBase extends EntityMagicEffect implements Ge
             BlockState newBlock = changeBlock(blockState);
             setBlock(newBlock);
         }
+    }
+
+    @Override
+    public boolean isPushedByFluid(final FluidType type) {
+        return false;
     }
 
     // Change the specified block to its geomancy version. I.E. Grass blocks turn to dirt, stairs and slabs turn to base versions.

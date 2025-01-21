@@ -327,6 +327,8 @@
   "advancements.mowziesmobs.kill_grottol_silk_touch.description": "Kill a Grottol with a silk touch pickaxe",
   "advancements.mowziesmobs.sculptor_challenge.title": "You Must Believe",
   "advancements.mowziesmobs.sculptor_challenge.description": "Complete the Sculptor's challenge",
+  "advancements.mowziesmobs.sculptor_failure.title": "No One Jumps for the Beef",
+  "advancements.mowziesmobs.sculptor_failure.description": "Fall to your death during the Sculptor's challenge",
 
   "subtitles.mowziesmobs.foliaath.bite": "Foliaath bites",
   "subtitles.mowziesmobs.foliaath.pant": "Foliaath pants",

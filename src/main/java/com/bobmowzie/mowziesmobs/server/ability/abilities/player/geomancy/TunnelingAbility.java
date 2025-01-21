@@ -8,6 +8,7 @@ import com.bobmowzie.mowziesmobs.client.particle.util.AdvancedParticleBase;
 import com.bobmowzie.mowziesmobs.client.particle.util.ParticleComponent;
 import com.bobmowzie.mowziesmobs.client.render.entity.player.GeckoPlayer;
 import com.bobmowzie.mowziesmobs.client.sound.IGeomancyRumbler;
+import com.bobmowzie.mowziesmobs.datagen.MMBlockTags;
 import com.bobmowzie.mowziesmobs.server.ability.Ability;
 import com.bobmowzie.mowziesmobs.server.ability.AbilitySection;
 import com.bobmowzie.mowziesmobs.server.ability.AbilityType;
@@ -191,7 +192,7 @@ public class TunnelingAbility extends PlayerAbility implements IGeomancyRumbler 
                             posVec = posVec.add(motionScaled);
                             BlockPos pos = new BlockPos((int) posVec.x, (int) posVec.y, (int) posVec.z);
                             BlockState blockState = getUser().level().getBlockState(pos);
-                            if (EffectGeomancy.isBlockUseable(blockState) && blockState.getBlock() != Blocks.BEDROCK) {
+                            if (EffectGeomancy.checkBlock(blockState, MMBlockTags.GEOMANCY_TUNNELABLE) && blockState.getBlock() != Blocks.BEDROCK) {
                                 justDug = blockState;
                                 if (!getLevel().isClientSide) {
                                     EntityBlockSwapper.EntityBlockSwapperTunneling swapper = new EntityBlockSwapper.EntityBlockSwapperTunneling(EntityHandler.BLOCK_SWAPPER_TUNNELING.get(), getLevel(), pos, Blocks.AIR.defaultBlockState(), 15, false, false, getUser());

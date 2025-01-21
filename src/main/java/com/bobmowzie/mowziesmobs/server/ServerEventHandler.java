@@ -8,6 +8,7 @@ import com.bobmowzie.mowziesmobs.client.particle.util.ParticleComponent;
 import com.bobmowzie.mowziesmobs.client.particle.util.ParticleRotation;
 import com.bobmowzie.mowziesmobs.datagen.MMItemTags;
 import com.bobmowzie.mowziesmobs.server.ability.AbilityHandler;
+import com.bobmowzie.mowziesmobs.server.advancement.AdvancementHandler;
 import com.bobmowzie.mowziesmobs.server.ai.AvoidEntityIfNotTamedGoal;
 import com.bobmowzie.mowziesmobs.server.block.BlockHandler;
 import com.bobmowzie.mowziesmobs.server.capability.DataHandler;
@@ -349,6 +350,20 @@ public final class ServerEventHandler {
                         block.getBlock() == Blocks.CACTUS
                 ) {
                     aggroUmvuthana((Player) entity);
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void onLivingDeath(LivingDeathEvent event) {
+        if (event.getEntity() instanceof Player player) {
+            PlayerData data = DataHandler.getData(player, DataHandler.PLAYER_DATA);
+            EntitySculptor sculptor = data.getTestingSculptor();
+
+            if (sculptor != null && sculptor.getTestingPlayer() == player && event.getSource() == player.damageSources().fall()) {
+                if (player instanceof ServerPlayer serverPlayer) {
+                    AdvancementHandler.SCULPTOR_FAILURE_TRIGGER.get().trigger(serverPlayer);
                 }
             }
         }

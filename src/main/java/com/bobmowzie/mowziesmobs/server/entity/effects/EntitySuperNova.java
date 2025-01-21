@@ -15,6 +15,7 @@ import com.bobmowzie.mowziesmobs.server.sound.MMSounds;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -68,6 +69,7 @@ public class EntitySuperNova extends EntityMagicEffect {
             setPos(xo, yo, zo);
             List<Entity> hitList = getEntitiesNearbyCube(Entity.class, scale);
             for (Entity entity : hitList) {
+                if (entity instanceof ItemEntity) continue;
             	if (getCaster() == entity) continue;
                 if (getCaster() instanceof EntityUmvuthi && entity instanceof LeaderSunstrikeImmune) continue;
                 if (entity instanceof LivingEntity livingEntity) {

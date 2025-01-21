@@ -118,7 +118,7 @@ public class MowziePoolElement extends SinglePoolElement {
         if (minDepth != -1 && pieceState.depth < minDepth) return false;
 
         MowzieJigsawManager.PieceState parent = pieceState;
-        for (int i = 0; i < this.conditions.forbiddenParentsDepth; i++) {
+        for (int i = 0; i < this.conditions.forbiddenParentsDepth && parent != null; i++) {
             String parentName = parent.piece.getElement().toString().split("[\\[\\]]")[2];
             if (this.conditions.forbiddenParents.contains(parentName)) {
                 return false;

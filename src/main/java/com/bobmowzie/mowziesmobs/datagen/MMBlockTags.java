@@ -20,6 +20,7 @@ import java.util.concurrent.CompletableFuture;
 public class MMBlockTags extends BlockTagsProvider {
     public static final TagKey<Block> GEOMANCY_USEABLE = key("geomancy_useable");
     public static final TagKey<Block> CAN_GROTTOL_DIG = key("can_grottol_dig");
+    public static final TagKey<Block> GEOMANCY_TUNNELABLE = key("geomancy_tunnelable");
 
     public MMBlockTags(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, @Nullable ExistingFileHelper existingFileHelper) {
         super(output, lookupProvider, MMCommon.MODID, existingFileHelper);
@@ -51,9 +52,19 @@ public class MMBlockTags extends BlockTagsProvider {
         // Blocks that copy their properties from these tagged blocks will also be allowed
         tag(CAN_GROTTOL_DIG).addTag(GEOMANCY_USEABLE);
 
+        // These blocks can be used with Geomancy abilities. Blocks that copy their properties from these tagged blocks will also be useable.
+        tag(GEOMANCY_TUNNELABLE)
+                .addTag(GEOMANCY_USEABLE)
+                .add(Blocks.SNOW)
+                .add(Blocks.SNOW_BLOCK)
+                .add(Blocks.PACKED_ICE);
     }
 
     private void addToVanillaTags() {
+        tag(BlockTags.MINEABLE_WITH_PICKAXE)
+                .add(BlockHandler.GONG.value())
+                .add(BlockHandler.GONG_PART.value());
+
         tag(BlockTags.MINEABLE_WITH_SHOVEL)
                 .add(BlockHandler.RAKED_SAND.value())
                 .add(BlockHandler.RED_RAKED_SAND.value());

@@ -6,6 +6,7 @@ import com.bobmowzie.mowziesmobs.server.ability.Ability;
 import com.bobmowzie.mowziesmobs.server.ability.AbilityHandler;
 import com.bobmowzie.mowziesmobs.server.ability.PlayerAbility;
 import com.bobmowzie.mowziesmobs.server.config.ConfigHandler;
+import com.bobmowzie.mowziesmobs.server.entity.sculptor.EntitySculptor;
 import com.bobmowzie.mowziesmobs.server.entity.umvuthana.EntityUmvuthanaFollowerToPlayer;
 import com.bobmowzie.mowziesmobs.server.item.ItemEarthrendGauntlet;
 import com.bobmowzie.mowziesmobs.server.item.ItemHandler;
@@ -51,6 +52,8 @@ public class PlayerData implements INBTSerializable<CompoundTag> {
     public int tribePackRadius = 3;
 
     private GeckoPlayer.GeckoPlayerThirdPerson geckoPlayer;
+
+    private EntitySculptor testingSculptor;
 
     public boolean isVerticalSwing() {
         return verticalSwing;
@@ -382,6 +385,14 @@ public class PlayerData implements INBTSerializable<CompoundTag> {
 
     public Power[] getPowers() {
         return powers;
+    }
+
+    public EntitySculptor getTestingSculptor() {
+        return testingSculptor;
+    }
+
+    public void setTestingSculptor(EntitySculptor sculptor) {
+        testingSculptor = sculptor;
     }
 
     @Override

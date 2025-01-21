@@ -13,6 +13,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
@@ -55,6 +56,7 @@ public class EntityPoisonBall extends EntityMagicEffect {
         List<Entity> entitiesHit = getEntitiesNearby(1);
         if (!entitiesHit.isEmpty()) {
             for (Entity entity : entitiesHit) {
+                if (entity instanceof ItemEntity) continue;
                 if (entity == getCaster()) continue;
                 if (entity instanceof EntityNaga) continue;
                 if (entity.hurt(damageSources().indirectMagic(this, getCaster()), 3 * ConfigHandler.COMMON.MOBS.NAGA.combatConfig.attackMultiplier.get().floatValue()) && entity instanceof LivingEntity) {

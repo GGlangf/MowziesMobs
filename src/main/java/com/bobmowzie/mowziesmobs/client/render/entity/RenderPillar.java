@@ -19,7 +19,7 @@ import software.bernie.geckolib.cache.object.GeoCube;
 import software.bernie.geckolib.util.RenderUtil;
 
 public class RenderPillar extends RenderGeomancyBase<EntityPillar> {
-    private static final ResourceLocation TEXTURE_DIRT = ResourceLocation.withDefaultNamespace("textures/blocks/dirt.png");
+    private static final ResourceLocation TEXTURE_DIRT = ResourceLocation.withDefaultNamespace("textures/block/dirt.png");
 
     public RenderPillar(EntityRendererProvider.Context mgr) {
         super(mgr, new ModelPillar());

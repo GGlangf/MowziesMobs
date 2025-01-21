@@ -14,4 +14,5 @@ public class ProcessorHandler {
     public static final DeferredHolder<StructureProcessorType<?>, StructureProcessorType<RootsProcessor>> ROOTS_PROCESSOR = MM_STRUCTURE_PROCESSORS.register("roots_processor", () -> () -> RootsProcessor.CODEC);
     public static final DeferredHolder<StructureProcessorType<?>, StructureProcessorType<BaseDecoProcessor>> BASE_DECO_PROCESSOR = MM_STRUCTURE_PROCESSORS.register("base_deco_processor", () -> () -> BaseDecoProcessor.CODEC);
     public static final DeferredHolder<StructureProcessorType<?>, StructureProcessorType<ChestProcessor>> CHEST_PROCESSOR = MM_STRUCTURE_PROCESSORS.register("chest_processor", () -> () -> ChestProcessor.CODEC);
+    public static final DeferredHolder<StructureProcessorType<?>, StructureProcessorType<MonasteryStairsProcessor>> STAIRS_PROCESSOR = MM_STRUCTURE_PROCESSORS.register("chest_processor", () -> () -> MonasteryStairsProcessor.CODEC);
 }

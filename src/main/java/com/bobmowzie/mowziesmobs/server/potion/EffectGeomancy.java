@@ -3,6 +3,7 @@ package com.bobmowzie.mowziesmobs.server.potion;
 import com.bobmowzie.mowziesmobs.datagen.MMBlockTags;
 import com.bobmowzie.mowziesmobs.server.block.ICopiedBlockProperties;
 import com.bobmowzie.mowziesmobs.server.item.ItemHandler;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.block.Block;
@@ -14,9 +15,16 @@ public class EffectGeomancy extends MowzieEffect {
     }
 
     public static boolean isBlockUseable(BlockState blockState) {
-        if (blockState.is(MMBlockTags.GEOMANCY_USEABLE)) return true;
+        return checkBlock(blockState, MMBlockTags.GEOMANCY_USEABLE);
+    }
+
+    public static boolean checkBlock(BlockState blockState, TagKey<Block> blockTag) {
+        if (blockState.is(blockTag)) {
+            return true;
+        }
+
         Block block = ((ICopiedBlockProperties) blockState.getBlock().properties()).mowziesMobs$getBaseBlock();
-        return block != null && block.builtInRegistryHolder().is(MMBlockTags.GEOMANCY_USEABLE);
+        return block != null && block.builtInRegistryHolder().is(blockTag);
     }
 
     public static boolean canUse(LivingEntity entity) {

@@ -25,6 +25,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
@@ -195,6 +196,7 @@ public class EntitySolarBeam extends Entity {
             }
             if (!level().isClientSide) {
                 for (Entity target : hit) {
+                    if (target instanceof ItemEntity) continue;
                     if (caster instanceof EntityUmvuthi && target instanceof LeaderSunstrikeImmune) {
                         continue;
                     }

@@ -20,9 +20,10 @@ import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+
+import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -86,6 +87,11 @@ public abstract class EntityMagicEffect extends Entity implements ILinkedEntity 
 
     @Override
     public void push(Entity entityIn) {
+    }
+
+    @Override
+    public boolean isPushedByFluid(FluidType type) {
+        return false;
     }
 
     @Override
