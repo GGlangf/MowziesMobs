@@ -115,8 +115,8 @@ public class EntityBoulderSculptor extends EntityBoulderProjectile {
         }
 
         if (!replacementBoulder && pillar != null && !level().isClientSide()) {
-            if (pillar.getY() + pillar.getHeight() >= this.getY() && !active) activate();
-            else if (!pillar.isRising() && !active && this.getY() - pillar.getY() < pillar.tickCount) activate();
+            if (pillar.getY() + pillar.getHeight() >= this.getY() && !isActive()) activate();
+            else if (!pillar.isRising() && !isActive() && this.getY() - pillar.getY() < pillar.tickCount) activate();
         }
 
         if (descending) {

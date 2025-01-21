@@ -27,16 +27,14 @@ import java.util.List;
  * Created by BobMowzie on 4/14/2017.
  */
 public class EntityBoulderBase extends EntityGeomancyBase {
-    private static final byte ACTIVATE_ID = 67;
-
     public BlockState storedBlock;
     public float animationOffset = 0;
     public GeomancyTier boulderSize = GeomancyTier.SMALL;
     protected int finishedRisingTick = 4;
     public int risingTick = 0;
-    public boolean active = false;
 
     private static final EntityDataAccessor<Integer> RISING_TICK = SynchedEntityData.defineId(EntityBoulderBase.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> ACTIVE = SynchedEntityData.defineId(EntityBoulderBase.class, EntityDataSerializers.BOOLEAN);
 
     public static final HashMap<GeomancyTier, EntityDimensions> SIZE_MAP = new HashMap<>();
     static {
@@ -66,7 +64,7 @@ public class EntityBoulderBase extends EntityGeomancyBase {
 
     @Override
     public boolean canBeCollidedWith() {
-        return active;
+        return isActive();
     }
 
     public boolean checkCanSpawn() {
@@ -95,16 +93,11 @@ public class EntityBoulderBase extends EntityGeomancyBase {
     }
 
     public void activate() {
-        active = true;
-        level().broadcastEntityEvent(this, ACTIVATE_ID);
+        getEntityData().set(ACTIVE, true);
     }
 
-    @Override
-    public void handleEntityEvent(byte id) {
-        super.handleEntityEvent(id);
-        if (id == ACTIVATE_ID) {
-            active = true;
-        }
+    public boolean isActive() {
+        return getEntityData().get(ACTIVE);
     }
 
     public boolean isFinishedRising() {
@@ -140,7 +133,7 @@ public class EntityBoulderBase extends EntityGeomancyBase {
             setBoundingBox(aabb);
         }
 
-        if (active && risingTick < finishedRisingTick + 2) {
+        if (isActive() && risingTick < finishedRisingTick + 2) {
             doPopupEntities();
         }
 
@@ -190,14 +183,14 @@ public class EntityBoulderBase extends EntityGeomancyBase {
                 level().addParticle(new BlockParticleOption(ParticleTypes.BLOCK, storedBlock), getX() + particlePos.x, getY() + offsetY, getZ() + particlePos.z, 0, -1, 0);
             }
         }
-        if (active) {
+        if (isActive()) {
             risingTick++;
         }
     }
 
     @Override
     public void explode() {
-        if (active) super.explode();
+        if (isActive()) super.explode();
         else discard();
     }
 
@@ -230,8 +223,9 @@ public class EntityBoulderBase extends EntityGeomancyBase {
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.@NotNull Builder builder) {
+    protected void defineSynchedData(@NotNull final SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
         builder.define(RISING_TICK, 0);
+        builder.define(ACTIVE, false);
     }
 }

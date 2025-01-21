@@ -75,7 +75,7 @@ public class EntityPillar extends EntityGeomancyBase implements IGeomancyRumbler
 
         if (firstTick) {
             playSound(MMSounds.EFFECT_GEOMANCY_BREAK_LARGE_1.get(), 2, 1);
-            startRising();
+            if (!isFalling()) startRising();
             if (level().isClientSide())
                 MMCommon.PROXY.playGeomancyRumbleSound(this);
         }
