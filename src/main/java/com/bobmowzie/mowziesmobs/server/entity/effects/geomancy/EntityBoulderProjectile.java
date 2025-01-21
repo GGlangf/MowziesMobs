@@ -105,7 +105,9 @@ public class EntityBoulderProjectile extends EntityBoulderBase {
     public void tick() {
         if (startActive() && tickCount == 1) activate();
         super.tick();
-        if (!level().isClientSide() && (getCaster() == null || getCaster().isRemoved())) explode();
+        if (level().isLoaded(blockPosition()) && !level().isClientSide() && (getCaster() == null || getCaster().isRemoved())) {
+            explode();
+        }
         findRidingEntities();
         if (travelling){
             for (Entity entity : ridingEntities) {
