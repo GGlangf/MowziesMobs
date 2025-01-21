@@ -18,7 +18,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class MonasteryStairsProcessor extends StructureProcessor {
     public static final MonasteryStairsProcessor INSTANCE = new MonasteryStairsProcessor();
-    public static final MapCodec<MonasteryStairsProcessor> CODEC = MapCodec.unit(INSTANCE);
+    public static final MapCodec<MonasteryStairsProcessor> CODEC = MapCodec.unit(() -> INSTANCE);
 
     private static final BlockState andesiteStairs = Blocks.ANDESITE_STAIRS.defaultBlockState();
     private static final BlockState cobbledDeepslate = Blocks.COBBLED_DEEPSLATE.defaultBlockState();

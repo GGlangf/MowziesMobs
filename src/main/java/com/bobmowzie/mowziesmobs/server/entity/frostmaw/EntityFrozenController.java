@@ -53,14 +53,6 @@ public class EntityFrozenController extends Entity {
         return false;
     }
 
-    /* FIXME 1.21 :: unsure what the replacement is - there is now 'Entity#getPassengerRidingPosition' / 'Entity#getPassengerAttachmentPoint' / 'Entity#getDefaultPassengerAttachmentPoint'
-    // FIXME 1.21 :: the entity dimension now has attachment points with fallbacks see 'EntityAttachments'
-    @Override
-    public double getPassengersRidingOffset() {
-        return 0;
-    }
-    */
-    
     @Override
     public boolean canBeRiddenUnderFluidType(FluidType type, Entity rider) {
     	return true;

@@ -146,16 +146,6 @@ public class EntityUmvuthanaFollowerToPlayer extends EntityUmvuthanaFollower<Pla
         return BuiltInLootTables.EMPTY;
     }
 
-    @Nullable // FIXME 1.21 :: unused -> maybe parent method was renamed or sth.
-    public UUID getOwnerId() {
-        return getLeader() == null ? null : getLeader().getUUID();
-    }
-
-    @Nullable // FIXME 1.21 :: unused -> maybe parent method was renamed or sth.
-    public Entity getOwner() {
-        return leader;
-    }
-
     public boolean isTeleportFriendlyBlock(int x, int z, int y, int xOffset, int zOffset)
     {
         BlockPos blockpos = new BlockPos(x + xOffset, y - 1, z + zOffset);

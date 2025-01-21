@@ -155,10 +155,6 @@ public class EntityBoulderProjectile extends EntityBoulderBase {
         }
     }
 
-    public List<Entity> getRidingEntities() { // FIXME 1.21 :: unused
-        return ridingEntities;
-    }
-
     protected boolean startActive() {
         return true;
     }

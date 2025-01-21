@@ -125,7 +125,7 @@ public class GeckoFirstPersonRenderer extends ItemInHandRenderer implements GeoR
 
                 if (stack.isEmpty() && !flag && handDisplay == PlayerAbility.HandDisplay.FORCE_RENDER && !player.isInvisible()) {
                     newMatrixStack.translate(0, -1 * offHandEquipProgress, 0);
-                    super.renderPlayerArm(newMatrixStack, bufferIn, combinedLightIn, 0.0f, 0.0f, handside); // FIXME 1.21 :: accesstransformer
+                    super.renderPlayerArm(newMatrixStack, bufferIn, combinedLightIn, 0.0f, 0.0f, handside);
                 } else {
                     super.renderArmWithItem(player, partialTicks, pitch, handIn, 0.0f, stack, 0.0f, newMatrixStack, bufferIn, combinedLightIn);
                 }

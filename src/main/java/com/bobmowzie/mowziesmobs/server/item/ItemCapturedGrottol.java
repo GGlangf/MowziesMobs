@@ -86,7 +86,7 @@ public class ItemCapturedGrottol extends Item {
 
     public ItemStack create(EntityGrottol grottol) {
         ItemStack stack = new ItemStack(this);
-        // FIXME 1.21 :: will need to use data attachments in the future
+        // FIXME 1.21 :: will need to use item component in the future
         stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).update(tag -> tag.put("EntityTag", grottol.serializeNBT(grottol.registryAccess())));
         return stack;
     }

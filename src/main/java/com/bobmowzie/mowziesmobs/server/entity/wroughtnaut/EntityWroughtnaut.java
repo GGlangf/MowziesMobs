@@ -135,14 +135,6 @@ public class EntityWroughtnaut extends MowzieLLibraryEntity implements Enemy {
         targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, 0, true, false, null));
     }
 
-
-    /* FIXME 1.21 :: AT to remove final? (was previously 'getStandingEyeHeight')
-    @Override
-    public float getEyeHeight() {
-        return getDimensions(getPose()).height() * 0.98F;
-    }
-    */
-
     @Override
     protected PathNavigation createNavigation(Level world) {
         return new MMPathNavigateGround(this, world);

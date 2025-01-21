@@ -37,16 +37,4 @@ public class FrostmawStructure extends MowzieStructure {
 	public StructureType<?> type() {
 		return StructureTypeHandler.FROSTMAW.get();
 	}
-
-    // FIXME 1.21 :: unused?
-    public static FrostmawStructure buildStructureConfig(BootstrapContext<Structure> context) {
-        return new FrostmawStructure(
-                new Structure.StructureSettings(
-                        context.lookup(Registries.BIOME).getOrThrow(MMBiomeTags.HAS_MOWZIE_STRUCTURE),
-                        new HashMap<>(),
-                        GenerationStep.Decoration.SURFACE_STRUCTURES,
-                        TerrainAdjustment.BEARD_THIN
-                )
-        );
-    }
 }
