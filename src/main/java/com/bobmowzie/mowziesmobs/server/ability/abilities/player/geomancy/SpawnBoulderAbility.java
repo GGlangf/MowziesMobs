@@ -45,9 +45,9 @@ public class SpawnBoulderAbility extends PlayerAbility {
     private EntityGeomancyBase.GeomancyTier boulderSize = EntityGeomancyBase.GeomancyTier.SMALL;
 
     private static final AbilitySection NO_CHARGE_SECTION = new AbilitySection.AbilitySectionDuration(AbilitySection.AbilitySectionType.STARTUP, 5);
-    private static final AbilitySection SMALL_CHARGE_SECTION = new AbilitySection.AbilitySectionDuration(AbilitySection.AbilitySectionType.STARTUP, 10);
-    private static final AbilitySection MEDIUM_CHARGE_SECTION = new AbilitySection.AbilitySectionDuration(AbilitySection.AbilitySectionType.STARTUP, 10);
-    private static final AbilitySection LARGE_CHARGE_SECTION = new AbilitySection.AbilitySectionDuration(AbilitySection.AbilitySectionType.STARTUP, 10);
+    private static final AbilitySection SMALL_CHARGE_SECTION = new AbilitySection.AbilitySectionDuration(AbilitySection.AbilitySectionType.STARTUP, 8);
+    private static final AbilitySection MEDIUM_CHARGE_SECTION = new AbilitySection.AbilitySectionDuration(AbilitySection.AbilitySectionType.STARTUP, 8);
+    private static final AbilitySection LARGE_CHARGE_SECTION = new AbilitySection.AbilitySectionDuration(AbilitySection.AbilitySectionType.STARTUP, 8);
     private static final AbilitySection HUGE_CHARGE_SECTION = new AbilitySection.AbilitySectionDuration(AbilitySection.AbilitySectionType.STARTUP, 20);
 
     public SpawnBoulderAbility(AbilityType<Player, ? extends Ability> abilityType, Player user) {
@@ -110,9 +110,9 @@ public class SpawnBoulderAbility extends PlayerAbility {
         super.tickUsing();
         if (getCurrentSection().sectionType == AbilitySection.AbilitySectionType.STARTUP) {
             spawnBoulderCharge++;
-            if (spawnBoulderCharge > 2) getUser().addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 3, 2, false, false));
+            if (spawnBoulderCharge > 2) getUser().addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 3, 0, false, false));
             if (spawnBoulderCharge == 1 && getUser().level().isClientSide) MowziesMobs.PROXY.playBoulderChargeSound(getUser());
-            if (spawnBoulderCharge == 50) {
+            if (spawnBoulderCharge == 45) {
                 if (getUser().level().isClientSide) {
                     AdvancedParticleBase.spawnParticle(getUser().level(), ParticleHandler.RING2.get(), (float) getUser().getX(), (float) getUser().getY() + getUser().getBbHeight() / 2f, (float) getUser().getZ(), 0, 0, 0, true, 0, 0, 0, 0, 3.5F, 0.83f, 1, 0.39f, 1, 1, 20, true, true, new ParticleComponent[]{
                             new ParticleComponent.PropertyControl(ParticleComponent.PropertyControl.EnumParticleProperty.ALPHA, ParticleComponent.KeyTrack.startAndEnd(0.7f, 0f), false),
@@ -213,7 +213,7 @@ public class SpawnBoulderAbility extends PlayerAbility {
     @Override
     public void readNBT(Tag nbt) {
         super.readNBT(nbt);
-        if (getCurrentSection().sectionType == AbilitySection.AbilitySectionType.STARTUP) spawnBoulderCharge = getTicksInSection();
+        if (getCurrentSection().sectionType == AbilitySection.AbilitySectionType.STARTUP) spawnBoulderCharge = getTicksInUse();
     }
 
     @Override
@@ -231,7 +231,7 @@ public class SpawnBoulderAbility extends PlayerAbility {
     @Override
     public void onRenderTick(TickEvent.RenderTickEvent event) {
         super.onRenderTick(event);
-        if (isUsing() && getCurrentSection().sectionType == AbilitySection.AbilitySectionType.STARTUP && getTicksInSection() > 1) {
+        if (isUsing() && getCurrentSection().sectionType == AbilitySection.AbilitySectionType.STARTUP && getTicksInUse() > 1) {
             Vec3 playerEyes = getUser().getEyePosition(Minecraft.getInstance().getFrameTime());
             Vec3 vec = playerEyes.subtract(lookPos).normalize();
             float yaw = (float) Math.atan2(vec.z, vec.x);

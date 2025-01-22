@@ -55,16 +55,16 @@ public class EntityBoulderProjectile extends EntityBoulderBase {
         super.setSizeParams();
         GeomancyTier size = getTier();
         if (size == GeomancyTier.MEDIUM) {
-            damage = 13;
-            speed = 1.2f;
+            damage = 14;
+            speed = 1.4f;
         }
         else if (size == GeomancyTier.LARGE) {
-            damage = 16;
-            speed = 1f;
+            damage = 18;
+            speed = 1.2f;
         }
         else if (size == GeomancyTier.HUGE) {
-            damage = 20;
-            speed = 0.8f;
+            damage = 25;
+            speed = 1.1f;
         }
 
         damage *= getDamageMult();
