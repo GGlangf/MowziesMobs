@@ -46,12 +46,12 @@ public class EntityRockSling extends EntityBoulderProjectile implements GeoEntit
     public void tick() {
         super.tick();
 
-        if(tickCount > 30 + random.nextInt(35) && launchVec != null) {
+        if(tickCount > 15 + random.nextInt(10) && launchVec != null) {
             setDeltaMovement(launchVec.normalize().multiply(2f + random.nextFloat()/5, 2f, 2f + random.nextFloat()/5));
             setTravelling(true);
         }
 
-        if (tickCount > 60) discard();
+        if (tickCount > 45) discard();
     }
 
     @Override

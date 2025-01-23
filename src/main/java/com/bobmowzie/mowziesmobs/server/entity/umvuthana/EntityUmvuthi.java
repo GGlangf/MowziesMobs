@@ -940,6 +940,11 @@ public class EntityUmvuthi extends MowzieGeckoEntity implements LeaderSunstrikeI
     }
 
     @Override
+    public boolean hasBossMusic() {
+        return true;
+    }
+
+    @Override
     public boolean resetHealthOnPlayerRespawn() {
         return ConfigHandler.COMMON.MOBS.UMVUTHI.resetHealthWhenRespawn.get();
     }

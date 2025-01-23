@@ -331,6 +331,7 @@ public class EntitySculptor extends MowzieGeckoEntity {
                     sendAbilityMessage(IDLE_ABILITY);
                 }
                 else if (getLookControl().isLookingAtTarget()) {
+                    if (isTrading() && random.nextFloat() > 0.5) return;
                     if (random.nextFloat() > 0.4) {
                         if (!isTesting()) {
                             sendAbilityMessage(TALK_ABILITY);
@@ -538,7 +539,6 @@ public class EntitySculptor extends MowzieGeckoEntity {
 
     private void checkIfPlayerCheats() {
         if (testingPlayer == null) return;
-        prevPlayerPosition = Optional.of(testingPlayer.position());
         if (!isTesting() || testingPlayer.isCreative()) return;
 
         // Check if player moved too far away
@@ -582,11 +582,13 @@ public class EntitySculptor extends MowzieGeckoEntity {
         if (testingPlayer != null) {
             Vec3 currPosition = testingPlayer.position();
             if (prevPlayerPosition != null && prevPlayerPosition.isPresent()) {
+                System.out.println(currPosition.distanceTo(prevPlayerPosition.get()));
                 if (currPosition.distanceTo(prevPlayerPosition.get()) > 3.0) {
                     playerCheated();
                     return;
                 }
             }
+            prevPlayerPosition = Optional.of(testingPlayer.position());
         }
     }
 
@@ -870,6 +872,8 @@ public class EntitySculptor extends MowzieGeckoEntity {
         public void start() {
             super.start();
             playAnimation(TEST_START_ANIM);
+            getUser().prevPlayerPosition = Optional.empty();
+            getUser().prevPlayerVelY = Optional.empty();
         }
 
         public static void placeStartingBoulders(EntitySculptor sculptor) {

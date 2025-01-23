@@ -54,7 +54,7 @@ public class BossMusic<T extends MowzieEntity> {
         volumeControl.setTimer(20);
         isPlaying = true;
         ticksPlaying = 0;
-        if (sound != null) {
+        if (sound == null) {
             sound = new BossMusicSound(soundEvent, getBoss(), this);
             Minecraft.getInstance().getSoundManager().play(sound);
         }
@@ -65,6 +65,7 @@ public class BossMusic<T extends MowzieEntity> {
         isPlaying = false;
         BossMusicPlayer.currentMusic = null;
         ticksPlaying = 0;
+        sound = null;
     }
 
     public boolean isPlaying() {
