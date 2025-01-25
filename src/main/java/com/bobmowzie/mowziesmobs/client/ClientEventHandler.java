@@ -99,6 +99,7 @@ public enum ClientEventHandler {
             if (!ConfigHandler.CLIENT.customPlayerAnims.get()) return;
             Player player = (Player) event.getEntity();
             if (player == null) return;
+            if (player == Minecraft.getInstance().player && Minecraft.getInstance().options.getCameraType() == CameraType.FIRST_PERSON) return;
             float delta = event.getPartialTick();
             AbilityCapability.IAbilityCapability abilityCapability = AbilityHandler.INSTANCE.getAbilityCapability(player);
 //            if ((player.tickCount / 20) % 2 == 0) {
