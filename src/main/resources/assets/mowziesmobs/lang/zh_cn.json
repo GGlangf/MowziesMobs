@@ -1,7 +1,7 @@
 {
   "_comment": "创造模式标签",
-  "itemGroup.mowziesmobs.creativeTab": "Mowzie的怪物",
-  
+  "itemGroup.mowziesmobs.creativeTab": "Mowzie的生物",
+
   "_comment": "实体",
   "entity.mowziesmobs.foliaath": "巨噬叶",
   "entity.mowziesmobs.ferrous_wroughtnaut": "钢铁守护者",
@@ -18,9 +18,9 @@
   "entity.mowziesmobs.lantern": "荧光浮灯",
   "entity.mowziesmobs.naga": "娜迦",
   "entity.mowziesmobs.sculptor": "雕刻家-通臂大师",
-  "entity.mowziesmobs.boulder": "漂砾",
-  "entity.mowziesmobs.bluff": "悬木人",
-  
+  "entity.mowziesmobs.boulder": "浮砾",
+  "entity.mowziesmobs.bluff": "泥峭人",
+
   "_comment": "物品",
   "item.mowziesmobs.foliaath_seed": "巨噬叶芽",
   "item.mowziesmobs.mob_remover": "生物移除器",
@@ -39,20 +39,20 @@
   "item.mowziesmobs.grant_suns_blessing": "接受太阳祝福",
   "item.mowziesmobs.test_structure": "结构测试器",
   "item.mowziesmobs.ice_crystal": "冰霜结晶",
-  "item.mowziesmobs.earthrend_gauntlet": "土质手套",
-  
+  "item.mowziesmobs.earthrend_gauntlet": "大地手套",
+
   "item.mowziesmobs.blowgun.text.0": "快速装填",
   "item.mowziesmobs.blowgun.text.1": "短射程",
   "item.mowziesmobs.blowgun.text.2": "仅能发射吹镖",
-  
-  "item.mowziesmobs.wrought_axe.text.0": "坚不可摧",
+
+  "item.mowziesmobs.wrought_axe.text.0": "不可破坏",
   "item.mowziesmobs.wrought_axe.text.1": "右击横扫攻击",
   "item.mowziesmobs.wrought_axe.text.2": "潜行右击震撼大地并释放冲击波",
-  
-  "item.mowziesmobs.sol_visage.text.0": "坚不可摧",
-  "item.mowziesmobs.sol_visage.text.1": "装备后右键乌姆塔纳护卫面具以召唤随从",
+
+  "item.mowziesmobs.sol_visage.text.0": "不可破坏",
+  "item.mowziesmobs.sol_visage.text.1": "装备后，手持任意乌姆塔纳面具右键以召唤随从",
   "item.mowziesmobs.sol_visage.text.2": "右键随从可将其送回面具",
-  
+
   "item.mowziesmobs.umvuthana_mask_fear.text.0": "穿戴后获得 速度",
   "item.mowziesmobs.umvuthana_mask_fear.text.1": "或许还有什么用......?",
   "item.mowziesmobs.umvuthana_mask_rage.text.0": "穿戴后获得 急迫",
@@ -65,15 +65,15 @@
   "item.mowziesmobs.umvuthana_mask_fury.text.1": "或许还有什么用......?",
   "item.mowziesmobs.umvuthana_mask_faith.text.0": "穿戴后获得 生命提升",
   "item.mowziesmobs.umvuthana_mask_faith.text.1": "或许还有什么用......?",
-  
-  "item.mowziesmobs.dart.text.0": "仅用于吹筒",
+
+  "item.mowziesmobs.dart.text.0": "仅适用于吹筒",
   "item.mowziesmobs.dart.text.1": "使目标中毒",
-  
+
   "item.mowziesmobs.foliaath_seed.text.0": "种植在草方块上",
   "item.mowziesmobs.foliaath_seed.text.1": "每隔半天，巨噬叶幼苗就会变得饥饿",
   "item.mowziesmobs.foliaath_seed.text.2": "向它丢肉来喂养它",
   "item.mowziesmobs.foliaath_seed.text.3": "经过两天，巨噬叶就会完全长大",
-  
+
  "item.mowziesmobs.grant_suns_blessing.text.0": "获得太阳祝福",
   "item.mowziesmobs.grant_suns_blessing.text.1": "分钟",
   "item.mowziesmobs.grant_suns_blessing.text.2": "倒计时只会在你使用技能时开始\n",
@@ -84,40 +84,40 @@
   "item.mowziesmobs.grant_suns_blessing.text.7": "§l超新星燃烧§r§7\n空手时, 潜行, 然后左右键同时按,在你周围创造一个巨大的冲击波(消耗所有时间)",
   "item.mowziesmobs.grant_suns_blessing.text.8": " 所有的祝福",
   "item.mowziesmobs.grant_suns_blessing.text.9": ")",
-   
+
   "item.mowziesmobs.earthrend_gauntlet.text.0": "§l巨石攀升§r§7\n右击地面，举起巨石\n击打巨石，将其作为弹射物发射\n长按右键可以举起更大的巨石\n",
   "item.mowziesmobs.earthrend_gauntlet.text.1": "§l隧道§r§7\n右击空气在地面上挖隧道\n按住右键，看向你想要挖掘的方向\n松开右键回到地面并停止挖掘隧道",
   "item.mowziesmobs.earthrend_gauntlet.text.2": "在背包中自动恢复耐久度",
 
   "item.mowziesmobs.mob_remover.text.0": "左键移除 Mowzie的怪物 模组的生物",
-  
+
   "item.mowziesmobs.wrought_helmet.text.0": "无法破坏",
-  
+
   "item.mowziesmobs.spear.text.0": "扩大 1.5格攻击范围",
   "item.mowziesmobs.spear.text.1": "1/3 概率秒杀生命少于30的动物",
-  
+
   "item.mowziesmobs.ice_crystal.text.0": "按住右键以发出冰霜旋风",
   "item.mowziesmobs.ice_crystal.text.1": "在背包中自动恢复耐久度",
-  
+
   "item.mowziesmobs.captured_grottol": "捕获的岩壳居蟹",
-  
+
   "item.mowziesmobs.glowing_jelly": "荧光胶冻",
   "item.mowziesmobs.glowing_jelly.text.0": "吃下能获得短暂的夜视效果",
-  
+
   "item.mowziesmobs.naga_fang": "娜迦毒牙",
   "item.mowziesmobs.naga_fang.text.0": "用于酿造抗毒药水或制作娜迦毒牙匕首",
-  
+
   "item.mowziesmobs.naga_fang_dagger": "娜迦毒牙匕首",
   "item.mowziesmobs.naga_fang_dagger.text.0": "使目标中毒",
   "item.mowziesmobs.naga_fang_dagger.text.1": "从背后造成双倍伤害",
-  
+
   "item.mowziesmobs.sculptor_staff": "地卜师法杖",
-  "item.mowziesmobs.sculptor_staff.text.0": "生成三个小石块，等待一会后作为弹射物发射.",
+  "item.mowziesmobs.sculptor_staff.text.0": "生成三个小石块，一段时间后会像弹射物一样发射出去",
 
   "item.mowziesmobs.sand_rake": "沙耙",
   "item.mowziesmobs.sand_rake.text.0": "在沙子上使用得到耕过的沙子.",
 
-  "item.mowziesmobs.geomancer_beads": "地卜师的念珠",
+  "item.mowziesmobs.geomancer_beads": "地卜师念珠",
   "item.mowziesmobs.geomancer_beads.text.0": "攻击时+3攻击伤害",
 
   "item.mowziesmobs.geomancer_robe": "地卜师长袍",
@@ -127,13 +127,13 @@
   "item.mowziesmobs.geomancer_belt.text.0": "当你拥有缓慢效果时，+4护甲和+1击退抗性",
 
   "item.mowziesmobs.geomancer_sandals": "地卜师拖鞋",
-  "item.mowziesmobs.geomancer_sandals.text.0": "从超过4格的高度坠落后，获得 3 秒的移动速度提升",
+  "item.mowziesmobs.geomancer_sandals.text.0": "从超过4格的高度坠落后，获得3秒的移动速度提升",
 
-  "item.mowziesmobs.bluff_rod": "悬木棒",
-  "item.mowziesmobs.bluff_rod.text.0": "用于修复地卜用具, 或交给雕刻家去开始他的挑战",
+  "item.mowziesmobs.bluff_rod": "泥峭棒",
+  "item.mowziesmobs.bluff_rod.text.0": "用于修复地卜类装备, 或交给雕刻家去开始挑战",
 
   "item.mowziesmobs.music_disc_petiole": "音乐唱片",
-  "item.mowziesmobs.music_disc_petiole.desc": "LudoCrypt - 叶柄繁茂",
+  "item.mowziesmobs.music_disc_petiole.desc": "LudoCrypt - 柄竹夜游",
 
   "item.mowziesmobs.foliaath_spawn_egg": "巨噬叶刷怪蛋",
   "item.mowziesmobs.wroughtnaut_spawn_egg": "钢铁守护者刷怪蛋",
@@ -146,7 +146,7 @@
   "item.mowziesmobs.lantern_spawn_egg": "荧光浮灯刷怪蛋",
   "item.mowziesmobs.naga_spawn_egg": "娜迦刷怪蛋",
   "item.mowziesmobs.sculptor_spawn_egg": "雕刻家-通臂大师刷怪蛋",
-  "item.mowziesmobs.bluff_spawn_egg": "悬木人刷怪蛋",
+  "item.mowziesmobs.bluff_spawn_egg": "泥峭人刷怪蛋",
 
   "_comment": "方块",
   "block.mowziesmobs.painted_acacia": "彩绘金合欢木板",
@@ -189,8 +189,8 @@
   "entity.mowziesmobs.sculptor.trade.blocked": "测试受阻!",
 
   "_comment": "死亡消息",
-  "death.attack.dart": "%1$s 被 %2$s 射死了",
-  
+  "death.attack.dart": "%1$s被%2$s射死了",
+
   "_comment": "配置",
   "config.mowziesmobs.mobs": "生物",
   "config.mowziesmobs.mobs.tooltip": "针对所有Mowzie的怪物的控制",
@@ -199,24 +199,24 @@
   "config.mowziesmobs.has_boss_bar": "显示Boss生命槽",
   "config.mowziesmobs.heals_out_of_battle": "未处于战斗时回复血量",
   "config.mowziesmobs.reset_health_when_respawn": "当玩家在附近重生时重置生命值",
-  "config.mowziesmobs.ferrous_wroughtnaut": "钢铁守护者", 
+  "config.mowziesmobs.ferrous_wroughtnaut": "钢铁守护者",
   "config.mowziesmobs.ferrous_wroughtnaut.tooltip": "",
   "config.mowziesmobs.umvuthana": "乌姆塔纳",
   "config.mowziesmobs.umvuthana.tooltip": "控制Abavuthana",
   "config.mowziesmobs.umvuthi": "乌姆塔纳, 太阳鸟",
   "config.mowziesmobs.umvuthi.tooltip": "控制乌姆塔纳, 太阳鸟",
-  "config.mowziesmobs.trade_which_item": "太阳祝福交易物品",
-  "config.mowziesmobs.trade_how_many": "太阳祝福交易物品数量",
+  "config.mowziesmobs.trade_which_item": "太阳祝福所需交易物品",
+  "config.mowziesmobs.trade_how_many": "触发太阳祝福交易物品所需数量",
   "config.mowziesmobs.frostmaw": "霜冻巨兽",
   "config.mowziesmobs.frostmaw.tooltip": "",
-  "config.mowziesmobs.stealable_ice_crystal": "可窃取冰霜结晶",
+  "config.mowziesmobs.stealable_ice_crystal": "是否允许玩家可窃取冰霜结晶",
   "config.mowziesmobs.grottol": "岩壳居蟹",
   "config.mowziesmobs.grottol.tooltip": "",
   "config.mowziesmobs.lantern": "荧光浮灯",
   "config.mowziesmobs.lantern.tooltip": "",
   "config.mowziesmobs.naga": "娜迦",
   "config.mowziesmobs.naga.tooltip": "",
-  
+
   "config.mowziesmobs.spawn_data": "生成控制",
   "config.mowziesmobs.spawn_data.tooltip": "",
   "config.mowziesmobs.spawn_rate": "生成几率",
@@ -229,17 +229,17 @@
   "config.mowziesmobs.requires_cant_see_sky": "需要天空不可见",
   "config.mowziesmobs.allowed_blocks": "允许方块",
   "config.mowziesmobs.allowed_block_tags": "允许方块标签",
-    
+
   "config.mowziesmobs.generation_data": "生成控制",
   "config.mowziesmobs.generation_data.tooltip": "",
   "config.mowziesmobs.generation_distance": "生成距离",
   "config.mowziesmobs.generation_separation": "生成间隔",
-  
+
   "config.mowziesmobs.combat_data": "战斗控制",
   "config.mowziesmobs.combat_data.tooltip": "",
   "config.mowziesmobs.attack_multiplier": "攻击伤害倍数",
   "config.mowziesmobs.health_multiplier": "生命值倍数",
-  
+
   "config.mowziesmobs.tools_and_abilities": "工具与能力",
   "config.mowziesmobs.tools_and_abilities.tooltip": "针对生物掉落、武器、能力和其他可由玩家使用之战利品的控制",
   "config.mowziesmobs.axe_of_a_thousand_metals": "千锻巨斧",
@@ -272,23 +272,23 @@
   "config.mowziesmobs.suns_blessing_duration": "太阳祝福持续时间",
   "config.mowziesmobs.solar_beam_cost": "太阳光束消耗",
   "config.mowziesmobs.supernova_cost": "超新星燃烧消耗",
-  "config.mowziesmobs.earthrend_gauntlet": "土质手套",
+  "config.mowziesmobs.earthrend_gauntlet": "大地手套",
   "config.mowziesmobs.earthrend_gauntlet.tooltip": "",
 
   "config.mowziesmobs.tool_data": "工具控制",
   "config.mowziesmobs.tool_data.tooltip": "",
   "config.mowziesmobs.attack_damage": "攻击伤害",
   "config.mowziesmobs.attack_speed": "攻击速度",
-  
+
   "config.mowziesmobs.armor_data": "护甲控制",
   "config.mowziesmobs.armor_data.tooltip": "",
   "config.mowziesmobs.damage_reduction": "伤害削减",
   "config.mowziesmobs.toughness": "坚韧",
-  
+
   "config.mowziesmobs.general": "常规",
   "config.mowziesmobs.general.tooltip": "杂项控制与设置",
   "config.mowziesmobs.freeze_blacklist": "免疫冰冻的生物",
-  
+
   "_comment": "成就",
   "advancements.mowziesmobs.root.title": "Mowzie的怪物",
   "advancements.mowziesmobs.root.description": "欢迎游玩Mowzie的怪物模组！",
@@ -306,17 +306,23 @@
   "advancements.mowziesmobs.kill_naga.description": "击杀娜迦",
   "advancements.mowziesmobs.kill_grottol.title": "你这个怪物...",
   "advancements.mowziesmobs.kill_grottol.description": "击杀岩壳居蟹",
+  "advancements.mowziesmobs.kill_bluff.title": "拆穿你的虚张声势",
+  "advancements.mowziesmobs.kill_bluff.description": "杀死一只泥峭人",
   "advancements.mowziesmobs.sneak_grove.title": "一丘之貉",
-  "advancements.mowziesmobs.sneak_grove.description": "乔装潜入乌姆塔纳的树林",
+  "advancements.mowziesmobs.sneak_grove.description": "乔装潜入乌姆塔纳的村落",
   "advancements.mowziesmobs.suns_blessing.title": "法厄同纪事",
   "advancements.mowziesmobs.suns_blessing.description": "接受太阳祝福",
   "advancements.mowziesmobs.steal_ice_crystal.title": "没头脑时间",
   "advancements.mowziesmobs.steal_ice_crystal.description": "从霜冻巨兽处偷走冰霜结晶",
   "advancements.mowziesmobs.kill_grottol_fortune.title": "所有或一无所有！",
-  "advancements.mowziesmobs.kill_grottol_fortune.description": "使用时运附魔镐击杀一只岩壳居蟹",
+  "advancements.mowziesmobs.kill_grottol_fortune.description": "使用带有时运附魔的镐击杀一只岩壳居蟹",
   "advancements.mowziesmobs.kill_grottol_silk_touch.title": "跟我走吧",
-  "advancements.mowziesmobs.kill_grottol_silk_touch.description": "使用精准采集附魔镐击杀岩壳居蟹",
-  
+  "advancements.mowziesmobs.kill_grottol_silk_touch.description": "使用带有精准采集附魔的镐击杀岩壳居蟹",
+  "advancements.mowziesmobs.sculptor_challenge.title": "你必须相信...",
+  "advancements.mowziesmobs.sculptor_challenge.description": "完成雕刻家-通臂大师的挑战",
+  "advancements.mowziesmobs.sculptor_failure.title": "欲获其果，首担其责",
+  "advancements.mowziesmobs.sculptor_failure.description": "在雕刻家-通臂大师的挑战从高处坠落致死",
+
   "subtitles.mowziesmobs.foliaath.bite": "巨噬叶: 啃咬",
   "subtitles.mowziesmobs.foliaath.pant": "巨噬叶: 喘息",
   "subtitles.mowziesmobs.foliaath.grunt": "巨噬叶: 咕哝声",
@@ -406,6 +412,26 @@
   "subtitles.mowziesmobs.naga.grunt": "娜迦: 咕哝声",
   "subtitles.mowziesmobs.naga.roar": "娜迦: 咆哮",
   "subtitles.mowziesmobs.naga.swoop": "娜迦: 猛扑",
-  "subtitles.mowziesmobs.ground_hit": "物体撞到地面",
-  "subtitles.mowziesmobs.clink": "攻击偏转"
+  "subtitles.mowziesmobs.sculptor.ah": "雕刻家：问候",
+  "subtitles.mowziesmobs.sculptor.greeting": "雕刻家：问候",
+  "subtitles.mowziesmobs.sculptor.hm": "雕刻家：沉思",
+  "subtitles.mowziesmobs.sculptor.laugh": "雕刻家：笑",
+  "subtitles.mowziesmobs.sculptor.disappoint": "雕刻家：失望",
+  "subtitles.mowziesmobs.sculptor.congrats": "雕刻家：欢呼",
+  "subtitles.mowziesmobs.sculptor.death": "雕刻家：死亡",
+  "subtitles.mowziesmobs.sculptor.hurt": "雕刻家：受伤",
+  "subtitles.mowziesmobs.sculptor.attack": "雕刻家：掷弹",
+  "subtitles.mowziesmobs.sculptor.make_gauntlet": "雕刻家：凝神",
+  "subtitles.mowziesmobs.sculptor.make_gauntlet_effects": "大地手套：凝集",
+  "subtitles.mowziesmobs.sculptor.make_gauntlet_piece": "大地手套：碎片凝结",
+  "subtitles.mowziesmobs.sculptor.disappear": "雕刻家：消失",
+  "subtitles.mowziesmobs.sculptor.disappear_effects": "雕刻家：消失",
+  "subtitles.mowziesmobs.sculptor.clap": "雕刻家：鼓掌",
+  "subtitles.mowziesmobs.sculptor.platform_crumble": "平台：崩解",
+  "subtitles.mowziesmobs.ground_hit": "某物：撞到地面",
+  "subtitles.mowziesmobs.clink": "攻击偏转",
+  "subtitles.mowziesmobs.umvuthi_theme": "太阳酋长主题音乐",
+  "subtitles.mowziesmobs.ferrous_wroughtnaut_theme": "钢铁守护者主题音乐",
+  "subtitles.mowziesmobs.frostmaw_theme": "霜冻巨兽主题音乐",
+  "subtitles.mowziesmobs.sculptor_theme": "雕刻家主题音乐"
 }
