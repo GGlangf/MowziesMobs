@@ -281,7 +281,7 @@ public class EntityNaga extends MowzieLLibraryEntity implements RangedAttackMob,
         this.goalSelector.addGoal(2, new SimpleAnimationAI<EntityNaga>(this, HURT_TO_FALL_ANIMATION, true) {
             @Override
             public void tick() {
-                System.out.println("Hello");
+//                System.out.println("Hello");
             }
         });
         this.goalSelector.addGoal(2, new SimpleAnimationAI<EntityNaga>(this, LAND_ANIMATION, true) {
@@ -399,9 +399,9 @@ public class EntityNaga extends MowzieLLibraryEntity implements RangedAttackMob,
 
         if (hasEffect(MobEffects.POISON)) removeEffectNoUpdate(MobEffects.POISON);
 
-        if (tickCount == 1) {
-            System.out.println("Naga at " + position());
-        }
+//        if (tickCount == 1) {
+//            System.out.println("Naga at " + position());
+//        }
 
         if (!level().isClientSide) {
             if (getTarget() != null && targetDistance < 29.5 && movement != EnumNagaMovement.FALLEN && movement != EnumNagaMovement.FALLING) {

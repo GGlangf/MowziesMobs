@@ -582,7 +582,6 @@ public class EntitySculptor extends MowzieGeckoEntity {
         if (testingPlayer != null) {
             Vec3 currPosition = testingPlayer.position();
             if (prevPlayerPosition != null && prevPlayerPosition.isPresent()) {
-                System.out.println(currPosition.distanceTo(prevPlayerPosition.get()));
                 if (currPosition.distanceTo(prevPlayerPosition.get()) > 3.0) {
                     playerCheated();
                     return;
