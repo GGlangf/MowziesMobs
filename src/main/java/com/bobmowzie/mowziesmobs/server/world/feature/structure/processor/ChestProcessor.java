@@ -3,21 +3,14 @@ package com.bobmowzie.mowziesmobs.server.world.feature.structure.processor;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
-
-import java.util.List;
 
 public class ChestProcessor extends StructureProcessor {
     public static final Codec<ChestProcessor> CODEC = RecordCodecBuilder.create(instance -> instance

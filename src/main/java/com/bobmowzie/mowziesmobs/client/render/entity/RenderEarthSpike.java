@@ -1,33 +1,17 @@
 package com.bobmowzie.mowziesmobs.client.render.entity;
 
 import com.bobmowzie.mowziesmobs.client.model.entity.ModelEarthSpike;
-import com.bobmowzie.mowziesmobs.client.model.entity.ModelPillar;
-import com.bobmowzie.mowziesmobs.client.model.tools.geckolib.MowzieGeoBone;
-import com.bobmowzie.mowziesmobs.client.model.tools.geckolib.MowzieGeoModel;
 import com.bobmowzie.mowziesmobs.client.render.entity.layer.GeckoBlockLayer;
-import com.bobmowzie.mowziesmobs.client.render.entity.layer.ItemLayerSculptorStaff;
 import com.bobmowzie.mowziesmobs.server.entity.effects.geomancy.EntityEarthSpike;
-import com.bobmowzie.mowziesmobs.server.entity.effects.geomancy.EntityGeomancyBase;
-import com.bobmowzie.mowziesmobs.server.entity.effects.geomancy.EntityPillar;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.model.data.ModelData;
-import software.bernie.geckolib.cache.object.BakedGeoModel;
-import software.bernie.geckolib.cache.object.GeoBone;
 import software.bernie.geckolib.cache.object.GeoCube;
-import software.bernie.geckolib.renderer.layer.BlockAndItemGeoLayer;
-import software.bernie.geckolib.util.RenderUtils;
 
 @OnlyIn(Dist.CLIENT)
 public class RenderEarthSpike extends RenderGeomancyBase<EntityEarthSpike> {

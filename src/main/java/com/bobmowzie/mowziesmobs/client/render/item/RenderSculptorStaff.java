@@ -1,7 +1,6 @@
 package com.bobmowzie.mowziesmobs.client.render.item;
 
 import com.bobmowzie.mowziesmobs.client.model.item.ModelSculptorStaff;
-import com.bobmowzie.mowziesmobs.client.render.entity.RenderSculptor;
 import com.bobmowzie.mowziesmobs.server.item.ItemSculptorStaff;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.MultiBufferSource;

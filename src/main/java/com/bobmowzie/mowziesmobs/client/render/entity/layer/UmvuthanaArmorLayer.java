@@ -17,16 +17,11 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
-import org.joml.Matrix4f;
 import org.joml.Quaternionf;
-import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.cache.object.GeoBone;
-import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.renderer.GeoRenderer;
 import software.bernie.geckolib.renderer.layer.GeoRenderLayer;
 import software.bernie.geckolib.util.RenderUtils;
-
-import java.util.Optional;
 
 public class UmvuthanaArmorLayer extends GeoRenderLayer<EntityUmvuthana> {
     private final HumanoidModel defaultBipedModel;

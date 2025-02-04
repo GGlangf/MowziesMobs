@@ -1,8 +1,5 @@
 package com.bobmowzie.mowziesmobs.server.ability.abilities.player.geomancy;
 
-import com.bobmowzie.mowziesmobs.client.particle.ParticleHandler;
-import com.bobmowzie.mowziesmobs.client.particle.util.AdvancedParticleBase;
-import com.bobmowzie.mowziesmobs.client.particle.util.ParticleComponent;
 import com.bobmowzie.mowziesmobs.server.ability.Ability;
 import com.bobmowzie.mowziesmobs.server.ability.AbilitySection;
 import com.bobmowzie.mowziesmobs.server.ability.AbilityType;
@@ -19,7 +16,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import software.bernie.geckolib.core.animation.Animation;
-import software.bernie.geckolib.core.animation.RawAnimation;
 
 
 public class RockSlingAbility extends PlayerAbility {

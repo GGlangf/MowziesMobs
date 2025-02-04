@@ -1,7 +1,6 @@
 package com.bobmowzie.mowziesmobs.client.render.entity.layer;
 
 import com.bobmowzie.mowziesmobs.client.model.entity.ModelBipedAnimated;
-import com.bobmowzie.mowziesmobs.client.model.entity.ModelGeckoPlayerThirdPerson;
 import com.bobmowzie.mowziesmobs.client.render.entity.MowzieGeoArmorRenderer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -9,7 +8,6 @@ import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.Sheets;
-import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;

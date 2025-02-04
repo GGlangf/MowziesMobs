@@ -1,7 +1,6 @@
 package com.bobmowzie.mowziesmobs.server.world.feature.structure;
 
 import com.bobmowzie.mowziesmobs.server.config.ConfigHandler;
-import com.bobmowzie.mowziesmobs.datagen.StructureSetHandler;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;

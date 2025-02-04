@@ -4,7 +4,6 @@ import com.bobmowzie.mowziesmobs.server.config.ConfigHandler;
 import com.bobmowzie.mowziesmobs.server.entity.umvuthana.EntityUmvuthana;
 import com.bobmowzie.mowziesmobs.server.entity.umvuthana.EntityUmvuthanaFollowerToPlayer;
 import com.bobmowzie.mowziesmobs.server.item.ItemHandler;
-import net.minecraft.network.protocol.Packet;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -17,7 +16,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.minecraftforge.network.NetworkHooks;
 
 public class EntityDart extends Arrow {
     public EntityDart(EntityType<? extends EntityDart> type, Level world) {

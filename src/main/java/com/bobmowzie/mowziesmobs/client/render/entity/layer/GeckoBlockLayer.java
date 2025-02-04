@@ -1,21 +1,13 @@
 package com.bobmowzie.mowziesmobs.client.render.entity.layer;
 
-import com.bobmowzie.mowziesmobs.server.entity.MowzieGeckoEntity;
-import com.bobmowzie.mowziesmobs.server.entity.effects.geomancy.EntityEarthSpike;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.model.data.ModelData;
-import org.jetbrains.annotations.Nullable;
-import org.joml.Matrix4f;
-import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.cache.object.GeoBone;
 import software.bernie.geckolib.core.animatable.GeoAnimatable;
 import software.bernie.geckolib.renderer.GeoRenderer;

@@ -4,14 +4,10 @@ import com.bobmowzie.mowziesmobs.client.model.tools.SimplexNoise;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.ParticleRenderType;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.joml.AxisAngle4f;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
-import org.joml.Vector3fc;
 
 public abstract class ParticleComponent {
     public ParticleComponent() {

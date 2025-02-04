@@ -1,7 +1,6 @@
 package com.bobmowzie.mowziesmobs.server.message;
 
 import com.bobmowzie.mowziesmobs.server.ability.Ability;
-import com.bobmowzie.mowziesmobs.server.ability.AbilityHandler;
 import com.bobmowzie.mowziesmobs.server.ability.AbilityType;
 import com.bobmowzie.mowziesmobs.server.capability.AbilityCapability;
 import com.bobmowzie.mowziesmobs.server.capability.CapabilityHandler;

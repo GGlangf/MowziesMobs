@@ -8,7 +8,6 @@ import com.bobmowzie.mowziesmobs.server.ability.AbilityHandler;
 import com.bobmowzie.mowziesmobs.server.config.ConfigHandler;
 import com.bobmowzie.mowziesmobs.server.entity.effects.EntityCameraShake;
 import com.bobmowzie.mowziesmobs.server.entity.sculptor.EntitySculptor;
-import com.bobmowzie.mowziesmobs.server.item.ItemHandler;
 import com.bobmowzie.mowziesmobs.server.potion.EffectGeomancy;
 import com.bobmowzie.mowziesmobs.server.sound.MMSounds;
 import com.google.common.collect.Iterables;

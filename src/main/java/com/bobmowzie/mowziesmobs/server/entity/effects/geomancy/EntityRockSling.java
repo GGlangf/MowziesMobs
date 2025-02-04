@@ -2,8 +2,6 @@ package com.bobmowzie.mowziesmobs.server.entity.effects.geomancy;
 
 import com.bobmowzie.mowziesmobs.server.config.ConfigHandler;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
@@ -16,8 +14,6 @@ import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.object.PlayState;
-
-import java.util.List;
 
 public class EntityRockSling extends EntityBoulderProjectile implements GeoEntity {
     private Vec3 launchVec;

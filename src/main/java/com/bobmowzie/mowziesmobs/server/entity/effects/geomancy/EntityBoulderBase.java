@@ -3,7 +3,6 @@ package com.bobmowzie.mowziesmobs.server.entity.effects.geomancy;
 import com.bobmowzie.mowziesmobs.client.particle.ParticleHandler;
 import com.bobmowzie.mowziesmobs.client.particle.util.AdvancedParticleBase;
 import com.bobmowzie.mowziesmobs.client.particle.util.ParticleComponent;
-import com.bobmowzie.mowziesmobs.server.config.ConfigHandler;
 import com.bobmowzie.mowziesmobs.server.entity.effects.EntityCameraShake;
 import com.bobmowzie.mowziesmobs.server.entity.sculptor.EntitySculptor;
 import com.bobmowzie.mowziesmobs.server.sound.MMSounds;
@@ -11,26 +10,18 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.entity.IEntityAdditionalSpawnData;
-import net.minecraftforge.fluids.FluidType;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Created by BobMowzie on 4/14/2017.

@@ -11,12 +11,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.joml.Vector3d;
-import software.bernie.geckolib.renderer.layer.BlockAndItemGeoLayer;
 
 @OnlyIn(Dist.CLIENT)
 public class RenderUmvuthana extends MowzieGeoEntityRenderer<EntityUmvuthana> {

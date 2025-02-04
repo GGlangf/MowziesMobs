@@ -3,7 +3,6 @@ package com.bobmowzie.mowziesmobs.server.world.feature.structure;
 import com.bobmowzie.mowziesmobs.MowziesMobs;
 import com.bobmowzie.mowziesmobs.server.config.ConfigHandler;
 import com.bobmowzie.mowziesmobs.server.world.BiomeChecker;
-import com.bobmowzie.mowziesmobs.server.world.feature.structure.*;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.biome.Biome;

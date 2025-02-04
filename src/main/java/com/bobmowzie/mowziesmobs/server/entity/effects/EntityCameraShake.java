@@ -2,7 +2,6 @@ package com.bobmowzie.mowziesmobs.server.entity.effects;
 
 import com.bobmowzie.mowziesmobs.server.entity.EntityHandler;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -14,7 +13,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.network.NetworkHooks;
 
 public class EntityCameraShake extends Entity {
     private static final EntityDataAccessor<Float> RADIUS = SynchedEntityData.defineId(EntityCameraShake.class, EntityDataSerializers.FLOAT);

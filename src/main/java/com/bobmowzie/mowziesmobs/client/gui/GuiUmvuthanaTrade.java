@@ -5,8 +5,6 @@ import com.bobmowzie.mowziesmobs.server.entity.umvuthana.EntityUmvuthanaMinion;
 import com.bobmowzie.mowziesmobs.server.entity.umvuthana.trade.Trade;
 import com.bobmowzie.mowziesmobs.server.inventory.ContainerUmvuthanaTrade;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
@@ -18,7 +16,6 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import org.joml.Quaternionf;
 
 @OnlyIn(Dist.CLIENT)
 public final class GuiUmvuthanaTrade extends AbstractContainerScreen<ContainerUmvuthanaTrade> {

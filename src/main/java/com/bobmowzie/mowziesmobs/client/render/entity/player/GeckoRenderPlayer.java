@@ -10,7 +10,6 @@ import com.bobmowzie.mowziesmobs.client.render.entity.layer.*;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
-import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.PlayerModel;
@@ -28,29 +27,25 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.player.PlayerModelPart;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.MinecraftForge;
-import org.joml.*;
+import org.joml.Matrix3f;
+import org.joml.Matrix4f;
+import org.joml.Vector4f;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.cache.object.GeoBone;
-import software.bernie.geckolib.cache.object.GeoCube;
 import software.bernie.geckolib.cache.texture.AnimatableTexture;
 import software.bernie.geckolib.constant.DataTickets;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationState;
-import software.bernie.geckolib.event.GeoRenderEvent;
 import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.model.data.EntityModelData;
 import software.bernie.geckolib.renderer.GeoRenderer;
 import software.bernie.geckolib.util.RenderUtils;
 
-import java.lang.Math;
 import java.util.HashMap;
-import java.util.Iterator;
 
 @OnlyIn(Dist.CLIENT)
 public class GeckoRenderPlayer extends PlayerRenderer implements GeoRenderer<GeckoPlayer> {

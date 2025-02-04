@@ -14,12 +14,9 @@ import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.cache.object.GeoBone;
-import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.renderer.GeoRenderer;
 import software.bernie.geckolib.renderer.layer.GeoRenderLayer;
 import software.bernie.geckolib.util.RenderUtils;
-
-import java.util.Optional;
 
 public class UmvuthiSunLayer extends GeoRenderLayer<EntityUmvuthi> {
     protected Matrix4f dispatchedMat = new Matrix4f();

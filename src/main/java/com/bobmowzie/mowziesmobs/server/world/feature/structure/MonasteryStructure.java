@@ -2,27 +2,17 @@ package com.bobmowzie.mowziesmobs.server.world.feature.structure;
 
 import com.bobmowzie.mowziesmobs.MowziesMobs;
 import com.bobmowzie.mowziesmobs.server.config.ConfigHandler;
-import com.bobmowzie.mowziesmobs.datagen.StructureSetHandler;
 import com.bobmowzie.mowziesmobs.server.world.feature.structure.jigsaw.MowzieJigsawManager;
-import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.GenerationStep;
-import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraft.world.level.levelgen.heightproviders.HeightProvider;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
-import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
-import net.minecraftforge.common.util.Lazy;
 import org.apache.logging.log4j.Level;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;

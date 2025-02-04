@@ -2,7 +2,6 @@ package com.bobmowzie.mowziesmobs.server.entity.sculptor;
 
 import com.bobmowzie.mowziesmobs.MowziesMobs;
 import com.bobmowzie.mowziesmobs.client.model.tools.dynamics.GeckoDynamicChain;
-import com.bobmowzie.mowziesmobs.client.model.tools.geckolib.MowzieAnimationController;
 import com.bobmowzie.mowziesmobs.client.particle.ParticleHandler;
 import com.bobmowzie.mowziesmobs.client.particle.util.AdvancedParticleBase;
 import com.bobmowzie.mowziesmobs.client.particle.util.ParticleComponent;
@@ -35,7 +34,6 @@ import com.bobmowzie.mowziesmobs.server.item.ItemSculptorStaff;
 import com.bobmowzie.mowziesmobs.server.loot.LootTableHandler;
 import com.bobmowzie.mowziesmobs.server.potion.EffectGeomancy;
 import com.bobmowzie.mowziesmobs.server.sound.MMSounds;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -83,7 +81,10 @@ import org.joml.Matrix4f;
 import org.joml.Vector3d;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.GeoItem;
-import software.bernie.geckolib.core.animation.*;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.Animation;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
 
 import javax.annotation.Nullable;
 import java.util.*;

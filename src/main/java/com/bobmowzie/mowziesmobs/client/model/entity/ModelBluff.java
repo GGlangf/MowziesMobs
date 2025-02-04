@@ -4,17 +4,11 @@ import com.bobmowzie.mowziesmobs.MowziesMobs;
 import com.bobmowzie.mowziesmobs.client.model.tools.geckolib.MowzieGeoBone;
 import com.bobmowzie.mowziesmobs.client.model.tools.geckolib.MowzieGeoModel;
 import com.bobmowzie.mowziesmobs.server.entity.bluff.EntityBluff;
-import com.bobmowzie.mowziesmobs.server.entity.umvuthana.EntityUmvuthi;
-import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import org.apache.commons.lang3.tuple.Triple;
 import software.bernie.geckolib.constant.DataTickets;
 import software.bernie.geckolib.core.animation.AnimationState;
 import software.bernie.geckolib.model.data.EntityModelData;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ModelBluff extends MowzieGeoModel<EntityBluff> {
     public ModelBluff() {

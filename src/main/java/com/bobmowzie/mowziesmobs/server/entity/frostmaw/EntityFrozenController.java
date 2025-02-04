@@ -1,13 +1,11 @@
 package com.bobmowzie.mowziesmobs.server.entity.frostmaw;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.protocol.Packet;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.fluids.FluidType;
-import net.minecraftforge.network.NetworkHooks;
 
 /**
  * Created by BobMowzie on 7/20/2017.

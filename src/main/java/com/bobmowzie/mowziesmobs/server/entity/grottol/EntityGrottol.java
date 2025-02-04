@@ -31,7 +31,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
@@ -54,12 +53,10 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.FenceBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.Tags;
 
 /**
  * Created by BobMowzie on 7/3/2018.

@@ -32,17 +32,14 @@ import org.joml.Quaternionf;
 import org.joml.Vector4f;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.cache.object.GeoBone;
-import software.bernie.geckolib.cache.object.GeoCube;
 import software.bernie.geckolib.constant.DataTickets;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationState;
 import software.bernie.geckolib.model.GeoModel;
-import software.bernie.geckolib.model.data.EntityModelData;
 import software.bernie.geckolib.renderer.GeoRenderer;
 import software.bernie.geckolib.util.RenderUtils;
 
 import java.util.HashMap;
-import java.util.Iterator;
 
 @OnlyIn(Dist.CLIENT)
 public class GeckoFirstPersonRenderer extends ItemInHandRenderer implements GeoRenderer<GeckoPlayer> {

@@ -7,12 +7,9 @@ import com.bobmowzie.mowziesmobs.server.inventory.InventoryUmvuthi;
 import com.bobmowzie.mowziesmobs.server.item.ItemHandler;
 import com.bobmowzie.mowziesmobs.server.message.MessageUmvuthiTrade;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.PlainTextButton;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.renderer.GameRenderer;
@@ -26,7 +23,6 @@ import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import org.joml.Quaternionf;
 
 public final class GuiUmvuthiTrade extends AbstractContainerScreen<ContainerUmvuthiTrade> implements InventoryUmvuthi.ChangeListener {
     private static final ResourceLocation TEXTURE_TRADE = new ResourceLocation(MowziesMobs.MODID, "textures/gui/container/umvuthi_trade.png");

@@ -2,8 +2,6 @@ package com.bobmowzie.mowziesmobs.server.config;
 
 import com.bobmowzie.mowziesmobs.MowziesMobs;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.ArmorMaterials;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
 import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;

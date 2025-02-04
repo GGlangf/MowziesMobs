@@ -1,7 +1,5 @@
 package com.bobmowzie.mowziesmobs.client.render.entity;
 
-import com.bobmowzie.mowziesmobs.client.model.entity.ModelSculptor;
-import com.bobmowzie.mowziesmobs.client.model.tools.MathUtils;
 import com.bobmowzie.mowziesmobs.client.model.tools.dynamics.GeckoDynamicChain;
 import com.bobmowzie.mowziesmobs.client.model.tools.geckolib.MowzieGeoBone;
 import com.bobmowzie.mowziesmobs.client.model.tools.geckolib.MowzieGeoModel;
@@ -15,13 +13,10 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
-import org.joml.Vector3f;
 import org.joml.Vector4f;
-import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.cache.object.GeoBone;
 import software.bernie.geckolib.model.GeoModel;

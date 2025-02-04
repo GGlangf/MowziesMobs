@@ -1,8 +1,6 @@
 package com.bobmowzie.mowziesmobs.server.entity.effects.geomancy;
 
-import com.bobmowzie.mowziesmobs.MowziesMobs;
 import com.bobmowzie.mowziesmobs.client.model.tools.MathUtils;
-import com.bobmowzie.mowziesmobs.client.sound.IGeomancyRumbler;
 import com.bobmowzie.mowziesmobs.server.entity.EntityHandler;
 import com.bobmowzie.mowziesmobs.server.entity.sculptor.EntitySculptor;
 import com.bobmowzie.mowziesmobs.server.sound.MMSounds;
@@ -20,9 +18,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
-import net.royawesome.jlibnoise.MathHelper;
-import org.jetbrains.annotations.NotNull;
-import org.joml.Vector3f;
 
 import java.util.List;
 

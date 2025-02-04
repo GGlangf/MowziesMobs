@@ -8,7 +8,6 @@ import com.bobmowzie.mowziesmobs.server.ability.AbilityHandler;
 import com.bobmowzie.mowziesmobs.server.capability.AbilityCapability;
 import com.bobmowzie.mowziesmobs.server.capability.CapabilityHandler;
 import com.bobmowzie.mowziesmobs.server.capability.PlayerCapability;
-import com.bobmowzie.mowziesmobs.server.entity.IAnimationTickable;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.model.geom.EntityModelSet;

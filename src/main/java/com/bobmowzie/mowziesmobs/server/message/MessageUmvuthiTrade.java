@@ -1,6 +1,5 @@
 package com.bobmowzie.mowziesmobs.server.message;
 
-import com.bobmowzie.mowziesmobs.server.config.ConfigHandler;
 import com.bobmowzie.mowziesmobs.server.entity.umvuthana.EntityUmvuthi;
 import com.bobmowzie.mowziesmobs.server.inventory.ContainerUmvuthiTrade;
 import com.bobmowzie.mowziesmobs.server.potion.EffectHandler;

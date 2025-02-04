@@ -2,7 +2,6 @@ package com.bobmowzie.mowziesmobs.server.ability.abilities.player.geomancy;
 
 import com.bobmowzie.mowziesmobs.client.particle.ParticleDecal;
 import com.bobmowzie.mowziesmobs.client.particle.ParticleHandler;
-import com.bobmowzie.mowziesmobs.client.particle.util.AdvancedParticleBase;
 import com.bobmowzie.mowziesmobs.client.particle.util.ParticleComponent;
 import com.bobmowzie.mowziesmobs.server.ability.Ability;
 import com.bobmowzie.mowziesmobs.server.ability.AbilitySection;

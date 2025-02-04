@@ -24,7 +24,9 @@ import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Optional;
+import java.util.OptionalDouble;
 
 public class RenderFissurePiece extends EntityRenderer<EntityFissurePiece> {
     private static final ResourceLocation TEXTURE0 = new ResourceLocation(MowziesMobs.MODID, "textures/particle/crack_0.png");

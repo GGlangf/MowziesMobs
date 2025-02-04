@@ -88,8 +88,8 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.registries.ForgeRegistries;
 import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.core.animation.*;
 import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.*;
 import software.bernie.geckolib.core.object.PlayState;
 
 import javax.annotation.Nullable;

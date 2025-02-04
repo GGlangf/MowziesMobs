@@ -8,8 +8,6 @@ import com.bobmowzie.mowziesmobs.client.sound.IGeomancyRumbler;
 import com.bobmowzie.mowziesmobs.server.entity.EntityHandler;
 import com.bobmowzie.mowziesmobs.server.entity.bluff.EntityBluff;
 import com.bobmowzie.mowziesmobs.server.potion.EffectGeomancy;
-import net.minecraft.core.particles.BlockParticleOption;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.ClientboundTeleportEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;

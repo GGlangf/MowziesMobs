@@ -15,14 +15,10 @@ import net.minecraft.world.phys.Vec3;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 import org.joml.Vector4f;
-import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.cache.object.GeoBone;
-import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.renderer.GeoRenderer;
 import software.bernie.geckolib.renderer.layer.GeoRenderLayer;
 import software.bernie.geckolib.util.RenderUtils;
-
-import java.util.Optional;
 
 public class UmvuthanaSunLayer extends GeoRenderLayer<EntityUmvuthana> {
     protected final EntityRenderDispatcher entityRenderDispatcher;

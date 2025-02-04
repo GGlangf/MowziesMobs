@@ -1,7 +1,6 @@
 package com.bobmowzie.mowziesmobs.server.entity.effects.geomancy;
 
 import com.bobmowzie.mowziesmobs.MowziesMobs;
-import com.bobmowzie.mowziesmobs.client.sound.BossMusicPlayer;
 import com.bobmowzie.mowziesmobs.client.sound.IGeomancyRumbler;
 import com.bobmowzie.mowziesmobs.server.entity.EntityHandler;
 import com.bobmowzie.mowziesmobs.server.entity.effects.EntityMagicEffect;

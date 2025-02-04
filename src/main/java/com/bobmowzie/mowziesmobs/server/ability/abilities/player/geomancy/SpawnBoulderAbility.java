@@ -31,9 +31,6 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import software.bernie.geckolib.core.animation.Animation;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class SpawnBoulderAbility extends PlayerAbility {
     private static int MAX_CHARGE = 60;
     public static final double SPAWN_BOULDER_REACH = 5;

@@ -6,7 +6,6 @@ import com.bobmowzie.mowziesmobs.server.ability.AbilityType;
 import com.bobmowzie.mowziesmobs.server.ability.PlayerAbility;
 import com.bobmowzie.mowziesmobs.server.config.ConfigHandler;
 import com.bobmowzie.mowziesmobs.server.potion.EffectHandler;
-import net.minecraft.client.renderer.EffectInstance;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.player.Player;
 

@@ -18,7 +18,6 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.Event;
 import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.core.animation.Animation;
 import software.bernie.geckolib.core.animation.AnimationState;
 import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.object.PlayState;
