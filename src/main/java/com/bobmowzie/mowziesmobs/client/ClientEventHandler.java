@@ -325,4 +325,21 @@ public enum ClientEventHandler {
             BossMusicPlayer.tick();
         }
     }
+
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public void onInteractionKeyMappingTriggered(InputEvent.InteractionKeyMappingTriggered event) {
+        LocalPlayer player = Minecraft.getInstance().player;
+        if (player == null) return;
+        if (event.getKeyMapping() == Minecraft.getInstance().options.keyAttack) {
+            PlayerCapability.IPlayerCapability playerCapability = CapabilityHandler.getCapability(player, CapabilityHandler.PLAYER_CAPABILITY);
+            if (playerCapability != null) {
+                playerCapability.pressedAttackKey(player);
+            }
+        } else if (event.getKeyMapping() == Minecraft.getInstance().options.keyUse) {
+            PlayerCapability.IPlayerCapability playerCapability = CapabilityHandler.getCapability(player, CapabilityHandler.PLAYER_CAPABILITY);
+            if (playerCapability != null) {
+                playerCapability.pressedUseKey(player);
+            }
+        }
+    }
 }
