@@ -89,7 +89,6 @@ public class ServerProxy {
         this.registerMessage(MessageFreezeEffect.class, MessageFreezeEffect::serialize, MessageFreezeEffect::deserialize, new MessageFreezeEffect.Handler(), NetworkDirection.PLAY_TO_CLIENT);
         this.registerMessage(MessageUmvuthiTrade.class, MessageUmvuthiTrade::serialize, MessageUmvuthiTrade::deserialize, new MessageUmvuthiTrade.Handler(), NetworkDirection.PLAY_TO_SERVER);
         this.registerMessage(MessageBlackPinkInYourArea.class, MessageBlackPinkInYourArea::serialize, MessageBlackPinkInYourArea::deserialize, new MessageBlackPinkInYourArea.Handler(), NetworkDirection.PLAY_TO_CLIENT);
-        this.registerMessage(MessagePlayerAttackMob.class, MessagePlayerAttackMob::serialize, MessagePlayerAttackMob::deserialize, new MessagePlayerAttackMob.Handler(), NetworkDirection.PLAY_TO_SERVER);
         this.registerMessage(MessageSunblockEffect.class, MessageSunblockEffect::serialize, MessageSunblockEffect::deserialize, new MessageSunblockEffect.Handler(), NetworkDirection.PLAY_TO_CLIENT);
         this.registerMessage(MessageUseAbility.class, MessageUseAbility::serialize, MessageUseAbility::deserialize, new MessageUseAbility.Handler(), NetworkDirection.PLAY_TO_CLIENT);
         this.registerMessage(MessagePlayerUseAbility.class, MessagePlayerUseAbility::serialize, MessagePlayerUseAbility::deserialize, new MessagePlayerUseAbility.Handler(), NetworkDirection.PLAY_TO_SERVER);

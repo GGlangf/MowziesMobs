@@ -19,7 +19,11 @@ public abstract class MowzieToolItem extends DiggerItem {
         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
         builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Tool modifier", getConfig().attackDamage.get() - 1.0, AttributeModifier.Operation.ADDITION));
         builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Tool modifier", getConfig().attackSpeed.get() - 4.0, AttributeModifier.Operation.ADDITION));
+        initAttributes(builder);
         this.defaultModifiers = builder.build();
+    }
+
+    protected void initAttributes(ImmutableMultimap.Builder<Attribute, AttributeModifier> builder) {
     }
 
     @Override
