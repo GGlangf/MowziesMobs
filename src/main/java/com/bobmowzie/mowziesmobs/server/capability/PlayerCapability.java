@@ -53,6 +53,10 @@ public class PlayerCapability {
 
         void addedToWorld(EntityJoinLevelEvent event);
 
+        void pressedUseKey(Player player);
+
+        void pressedAttackKey(Player player);
+
         boolean isVerticalSwing();
 
         void setVerticalSwing(boolean verticalSwing);
@@ -312,36 +316,6 @@ public class PlayerCapability {
             useIceCrystalStack(player);
 
             if (event.side == LogicalSide.CLIENT) {
-                if (Minecraft.getInstance().options.keyAttack.isDown() && !mouseLeftDown) {
-                    mouseLeftDown = true;
-                    MowziesMobs.NETWORK.sendToServer(new MessageLeftMouseDown());
-                    for (int i = 0; i < powers.length; i++) {
-                        powers[i].onLeftMouseDown(player);
-                    }
-                    AbilityCapability.IAbilityCapability abilityCapability = AbilityHandler.INSTANCE.getAbilityCapability(player);
-                    if (abilityCapability != null) {
-                        for (Ability ability : abilityCapability.getAbilities()) {
-                            if (ability instanceof PlayerAbility) {
-                                ((PlayerAbility)ability).onLeftMouseDown(player);
-                            }
-                        }
-                    }
-                }
-                if (Minecraft.getInstance().options.keyUse.isDown() && !mouseRightDown) {
-                    mouseRightDown = true;
-                    MowziesMobs.NETWORK.sendToServer(new MessageRightMouseDown());
-                    for (int i = 0; i < powers.length; i++) {
-                        powers[i].onRightMouseDown(player);
-                    }
-                    AbilityCapability.IAbilityCapability abilityCapability = AbilityHandler.INSTANCE.getAbilityCapability(player);
-                    if (abilityCapability != null) {
-                        for (Ability ability : abilityCapability.getAbilities()) {
-                            if (ability instanceof PlayerAbility) {
-                                ((PlayerAbility)ability).onRightMouseDown(player);
-                            }
-                        }
-                    }
-                }
                 if (!Minecraft.getInstance().options.keyAttack.isDown() && mouseLeftDown) {
                     mouseLeftDown = false;
                     MowziesMobs.NETWORK.sendToServer(new MessageLeftMouseUp());
@@ -401,6 +375,44 @@ public class PlayerCapability {
                 }
             }
             prevSneaking = player.isShiftKeyDown();
+        }
+
+        @Override
+        public void pressedAttackKey(Player player) {
+            if (!mouseLeftDown) {
+                mouseLeftDown = true;
+                MowziesMobs.NETWORK.sendToServer(new MessageLeftMouseDown());
+                for (int i = 0; i < powers.length; i++) {
+                    powers[i].onLeftMouseDown(player);
+                }
+                AbilityCapability.IAbilityCapability abilityCapability = AbilityHandler.INSTANCE.getAbilityCapability(player);
+                if (abilityCapability != null) {
+                    for (Ability ability : abilityCapability.getAbilities()) {
+                        if (ability instanceof PlayerAbility) {
+                            ((PlayerAbility)ability).onLeftMouseDown(player);
+                        }
+                    }
+                }
+            }
+        }
+
+        @Override
+        public void pressedUseKey(Player player) {
+            if (!mouseRightDown) {
+                mouseRightDown = true;
+                MowziesMobs.NETWORK.sendToServer(new MessageRightMouseDown());
+                for (int i = 0; i < powers.length; i++) {
+                    powers[i].onRightMouseDown(player);
+                }
+                AbilityCapability.IAbilityCapability abilityCapability = AbilityHandler.INSTANCE.getAbilityCapability(player);
+                if (abilityCapability != null) {
+                    for (Ability ability : abilityCapability.getAbilities()) {
+                        if (ability instanceof PlayerAbility) {
+                            ((PlayerAbility)ability).onRightMouseDown(player);
+                        }
+                    }
+                }
+            }
         }
 
         private void restoreIceCrystalStack(Player entity, ItemStack stack) {

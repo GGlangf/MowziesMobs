@@ -71,9 +71,6 @@ public class SpawnBoulderAbility extends PlayerAbility {
         super.start();
         boulderSize = EntityGeomancyBase.GeomancyTier.SMALL;
         if (getLevel().isClientSide()) {
-            if (!Minecraft.getInstance().options.keyUse.isDown())
-                AbilityHandler.INSTANCE.sendClientToServerJumpToSectionMessage(getUser(), getAbilityType(), 1);
-
             playAnimation("spawn_boulder_start", Animation.LoopType.DEFAULT, true, false);
             if (getUser().getUsedItemHand() == InteractionHand.MAIN_HAND) {
                 heldItemMainHandVisualOverride = getUser().getUseItem();
