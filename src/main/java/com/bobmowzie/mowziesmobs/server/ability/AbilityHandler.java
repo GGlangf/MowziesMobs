@@ -131,18 +131,4 @@ public enum AbilityHandler {
             }
         }
     }
-
-    public <T extends Player> void sendClientToServerJumpToSectionMessage(T entity, AbilityType<?, ?> abilityType, int sectionIndex) {
-        if (!(entity.level().isClientSide && entity instanceof LocalPlayer)) {
-            return;
-        }
-        AbilityCapability.IAbilityCapability abilityCapability = getAbilityCapability(entity);
-        if (abilityCapability != null) {
-            Ability instance = abilityCapability.getAbilityMap().get(abilityType);
-            if (instance.isUsing()) {
-                instance.jumpToSection(sectionIndex);
-                MowziesMobs.NETWORK.sendToServer(new MessageJumpToAbilitySectionServerToClient(entity.getId(), ArrayUtils.indexOf(abilityCapability.getAbilityTypesOnEntity(entity), abilityType), sectionIndex));
-            }
-        }
-    }
 }
