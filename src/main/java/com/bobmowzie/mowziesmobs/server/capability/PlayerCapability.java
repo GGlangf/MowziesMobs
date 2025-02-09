@@ -400,7 +400,6 @@ public class PlayerCapability {
         public void pressedUseKey(Player player) {
             if (!mouseRightDown) {
                 mouseRightDown = true;
-                System.out.println("Right mouse down");
                 MowziesMobs.NETWORK.sendToServer(new MessageRightMouseDown());
                 for (int i = 0; i < powers.length; i++) {
                     powers[i].onRightMouseDown(player);
