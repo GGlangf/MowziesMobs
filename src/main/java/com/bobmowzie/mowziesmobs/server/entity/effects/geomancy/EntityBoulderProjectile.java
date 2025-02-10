@@ -175,7 +175,11 @@ public class EntityBoulderProjectile extends EntityBoulderBase {
     public boolean canCollideWith(Entity entity) {
         if (this.getCaster() instanceof EntitySculptor) {
             if (travelling && entity instanceof EntityEarthSpike) return false;
-            return super.canCollideWith(entity) && !(entity instanceof EntityBoulderBase && ((EntityBoulderProjectile)entity).getCaster() == getCaster());
+            // Don't collide with other boulders of the same sculptor caster
+            if (entity instanceof EntityBoulderBase && ((EntityBoulderProjectile)entity).getCaster() == getCaster()) return false;
+            // Don't collide with the sculptor that cast this boulder
+            if (entity == getCaster()) return false;
+            return super.canCollideWith(entity);
         }
         return super.canCollideWith(entity);
     }
