@@ -137,7 +137,7 @@ public class EntityBoulderSculptor extends EntityBoulderProjectile {
 
         // If it's not the main path, path has a random chance of ending. Chance is weighted by the number of live paths.
         if (!isMainPath) {
-            if (random.nextFloat() < MathUtils.fit(sculptor.numLivePaths, 3, 7, 0.0, 0.45)) {
+            if (random.nextFloat() < MathUtils.fit(sculptor.numLivePaths, 3, 7, 0.0, 0.35)) {
                 sculptor.numLivePaths--;
                 return;
             }
@@ -145,7 +145,7 @@ public class EntityBoulderSculptor extends EntityBoulderProjectile {
 
         // Path has a random chance of branching. Chance is weighted by the number of live paths.
         int numNextBoulders = 1;
-        if (random.nextFloat() < MathUtils.fit(sculptor.numLivePaths, 1, 5, 0.15, 0.0)) {
+        if (random.nextFloat() < MathUtils.fit(sculptor.numLivePaths, 1, 5, 0.27, 0.0)) {
             numNextBoulders = 2;
         }
 
@@ -163,8 +163,8 @@ public class EntityBoulderSculptor extends EntityBoulderProjectile {
     }
 
     public EntityBoulderSculptor getNextBoulderInstance() {
-        int whichTierIndex = (int) (Math.pow(random.nextFloat(), 2) * (GeomancyTier.values().length - 2) + 1);
-        if (getHeightFrac() > 0.85 && whichTierIndex == 3) whichTierIndex = 1;
+        int whichTierIndex = (int) (Math.pow(random.nextFloat(), 2.6) * (GeomancyTier.values().length - 2) + 1);
+        if (getHeightFrac() > 0.75 && whichTierIndex == 3) whichTierIndex = 1;
         GeomancyTier nextTier = GeomancyTier.values()[whichTierIndex];
         if (getHeightFrac() > 0.45 && random.nextFloat() < 0.15) {
             return new EntityBoulderSculptorCrumbling(EntityHandler.BOULDER_SCULPTOR_CRUMBLING.get(), level(), getCaster(), blockPosition(), nextTier, random.nextInt(2));
@@ -191,7 +191,7 @@ public class EntityBoulderSculptor extends EntityBoulderProjectile {
 
             // Make sure boulder has no collision, even with the future fully-grown pillar
             if (
-                    level().getEntitiesOfClass(EntityBoulderSculptor.class, nextBoulder.getBoundingBox(), (b) -> b != this).isEmpty()
+                    level().getEntitiesOfClass(EntityBoulderSculptor.class, nextBoulder.getBoundingBox().inflate(0.7, 1, 0.7), (b) -> b != this).isEmpty()
                     && Iterables.size(level().getBlockCollisions(nextBoulder, nextBoulder.getBoundingBox())) == 0
                     && !pillar.getBoundingBox().setMaxY(pillar.getY() + EntitySculptor.TEST_HEIGHT).intersects(nextBoulder.getBoundingBox())
             ) {
@@ -225,7 +225,7 @@ public class EntityBoulderSculptor extends EntityBoulderProjectile {
         EntityDimensions nextDims = SIZE_MAP.get(nextBoulder.getTier());
         Vec3 startLocation = position();
         Vec2 fromPillarPos = new Vec2((float) (getCaster().getX() - startLocation.x), (float) (getCaster().getZ() - startLocation.z));
-        float horizontalOffset = Mth.nextFloat(this.random, 1, MAX_DIST_HORIZONTAL) + thisDims.width/2f + nextDims.width/2f;
+        float horizontalOffset = Mth.nextFloat(this.random, 2, MAX_DIST_HORIZONTAL) + thisDims.width/2f + nextDims.width/2f;
         float verticalOffset = Mth.nextFloat(this.random, 0, MAX_DIST_VERTICAL) - (nextDims.height - thisDims.height);
 
         float baseAngle = (float) -Math.toDegrees(Math.atan2(fromPillarPos.y, fromPillarPos.x));
@@ -241,6 +241,14 @@ public class EntityBoulderSculptor extends EntityBoulderProjectile {
         float finalAngle = (float) Math.toRadians(Mth.wrapDegrees(baseAngle + randomAngle));
         offset = offset.yRot(finalAngle);
         Vec3 nextLocation = startLocation.add(offset);
+
+        // Clamp next location if it's too far from pillar
+        Vec3 atPillarHeight = new Vec3(getCaster().getX(), nextLocation.y(), getCaster().getZ());
+        if (nextLocation.distanceToSqr(atPillarHeight) > radius * radius) {
+            Vec3 clampedOffset = nextLocation.subtract(atPillarHeight).normalize().scale(radius);
+            nextLocation = atPillarHeight.add(clampedOffset);
+        }
+
         if (nextLocation.y() + nextDims.height > pillar.getY() + EntitySculptor.TEST_HEIGHT) {
             nextLocation = new Vec3(nextLocation.x(), pillar.getY() + EntitySculptor.TEST_HEIGHT - nextDims.height, nextLocation.z());
         }
@@ -302,6 +310,7 @@ public class EntityBoulderSculptor extends EntityBoulderProjectile {
 
     public void setMainPath() {
         isMainPath = true;
+//        setBlock(Blocks.GOLD_BLOCK.defaultBlockState());
     }
 
     public float getHeightFrac() {

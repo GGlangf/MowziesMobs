@@ -95,7 +95,7 @@ import java.util.function.Predicate;
 public class EntitySculptor extends MowzieGeckoEntity {
     public static int TEST_HEIGHT = 60;
     public static int TEST_RADIUS_BOTTOM = 6;
-    public static int TEST_RADIUS = 12;
+    public static int TEST_RADIUS = 13;
     public static int TEST_MAX_RADIUS_HEIGHT = 20;
     public static double TEST_RADIUS_FALLOFF = 5;
     private static final int HEAL_PAUSE = 75;
@@ -545,7 +545,7 @@ public class EntitySculptor extends MowzieGeckoEntity {
         if (!isTesting() || testingPlayer.isCreative()) return;
 
         // Check if player moved too far away
-        if (testingPlayer != null && testingPlayer.position().multiply(1, 0, 1).distanceTo(position().multiply(1, 0, 1)) > TEST_RADIUS + 3) {
+        if (testingPlayer != null && testingPlayer.position().multiply(1, 0, 1).distanceTo(position().multiply(1, 0, 1)) > TEST_RADIUS + 4) {
             playerCheated();
             return;
         }
@@ -585,7 +585,8 @@ public class EntitySculptor extends MowzieGeckoEntity {
         if (testingPlayer != null) {
             Vec3 currPosition = testingPlayer.position();
             if (prevPlayerPosition != null && prevPlayerPosition.isPresent()) {
-                if (currPosition.distanceTo(prevPlayerPosition.get()) > 3.0) {
+                Vec3 predictedPosition = prevPlayerPosition.get().add(testingPlayer.getDeltaMovement());
+                if (currPosition.distanceTo(predictedPosition) > 3.0) {
                     playerCheated();
                     return;
                 }
@@ -693,7 +694,7 @@ public class EntitySculptor extends MowzieGeckoEntity {
     @Override
     protected InteractionResult mobInteract(Player player, InteractionHand hand) {
         if (isTesting() && getPillar() != null && !getPillar().isRising()) {
-            if (player == testingPlayer && getActiveAbilityType() != FAIL_TEST) {
+            if (player == testingPlayer && getActiveAbilityType() != FAIL_TEST && player.distanceToSqr(this) <= 20) {
                 sendAbilityMessage(PASS_TEST);
                 if (player instanceof ServerPlayer) {
                     AdvancementHandler.SCULPTOR_CHALLENGE_TRIGGER.trigger((ServerPlayer)player);
