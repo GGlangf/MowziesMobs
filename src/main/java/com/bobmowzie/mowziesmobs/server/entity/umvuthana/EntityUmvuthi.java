@@ -934,6 +934,7 @@ public class EntityUmvuthi extends MowzieGeckoEntity implements LeaderSunstrikeI
         super.push(0, y, 0);
     }
 
+    @OnlyIn(Dist.CLIENT)
     @Override
     public BossMusic getBossMusic() {
         return BossMusicPlayer.UMVUTHI_MUSIC;

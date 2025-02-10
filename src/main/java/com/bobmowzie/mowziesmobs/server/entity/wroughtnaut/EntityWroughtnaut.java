@@ -48,6 +48,8 @@ import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 import java.util.Optional;
@@ -622,6 +624,7 @@ public class EntityWroughtnaut extends MowzieLLibraryEntity implements Enemy {
         return BossEvent.BossBarColor.RED;
     }
 
+    @OnlyIn(Dist.CLIENT)
     @Override
     public BossMusic getBossMusic() {
         return BossMusicPlayer.FERROUS_WROUGHTNAUT_MUSIC;

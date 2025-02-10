@@ -76,6 +76,8 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.*;
 import net.minecraft.world.scores.Team;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.joml.Matrix4f;
 import org.joml.Vector3d;
@@ -808,6 +810,7 @@ public class EntitySculptor extends MowzieGeckoEntity {
         return ConfigHandler.COMMON.MOBS.SCULPTOR.testTimeLimit.get() * 20;
     }
 
+    @OnlyIn(Dist.CLIENT)
     @Override
     public BossMusic getBossMusic() {
         return BossMusicPlayer.SCULPTOR_MUSIC;

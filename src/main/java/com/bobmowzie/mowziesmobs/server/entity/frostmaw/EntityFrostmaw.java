@@ -56,6 +56,8 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import javax.annotation.Nullable;
@@ -897,6 +899,7 @@ public class EntityFrostmaw extends MowzieLLibraryEntity implements Enemy {
         return super.getDeltaMovement();
     }
 
+    @OnlyIn(Dist.CLIENT)
     @Override
     public BossMusic getBossMusic() {
         return BossMusicPlayer.FROSTMAW_MUSIC;
