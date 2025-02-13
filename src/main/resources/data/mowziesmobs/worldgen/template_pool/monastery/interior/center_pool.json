@@ -206,7 +206,7 @@
     // Dojo
     // ****************************************************************************************************************
     {
-      "weight": 2,
+      "weight": 3,
       "element": {
         "location": "mowziesmobs:monastery/interior/monastery_dojo",
         "processors": "mowziesmobs:monastery",
