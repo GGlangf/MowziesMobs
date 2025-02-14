@@ -341,22 +341,6 @@ public final class ServerEventHandler {
     }
 
     @SubscribeEvent
-    public void onLivingDeath(LivingDeathEvent event) {
-        LivingEntity entity = event.getEntity();
-        if (entity instanceof Player player) {
-            PlayerCapability.IPlayerCapability playerCapability = CapabilityHandler.getCapability(player, CapabilityHandler.PLAYER_CAPABILITY);
-            if (playerCapability != null && playerCapability.getTestingSculptor() != null) {
-                EntitySculptor sculptor = playerCapability.getTestingSculptor();
-                if (sculptor.getTestingPlayer() == player && event.getSource() == player.damageSources().fall()) {
-                    if (player instanceof ServerPlayer) {
-                        AdvancementHandler.SCULPTOR_FAILURE_TRIGGER.trigger((ServerPlayer) player);
-                    }
-                }
-            }
-        }
-    }
-
-    @SubscribeEvent
     public void onUseItem(LivingEntityUseItemEvent event) {
         LivingEntity living = event.getEntity();
         if (event.isCancelable() && living.hasEffect(EffectHandler.FROZEN.get())) {
@@ -601,6 +585,18 @@ public final class ServerEventHandler {
         if (event.getAmount() > 0.0 && event.getSource().getEntity() instanceof Player player) {
             if (player.getItemBySlot(EquipmentSlot.CHEST).is(ItemHandler.GEOMANCER_ROBE.get())) {
                 spawnBoulderNearPlayer(player);
+            }
+        }
+
+        if (entity instanceof Player player && event.getSource() == player.damageSources().fall() && player.getHealth() <= event.getAmount()) {
+            PlayerCapability.IPlayerCapability playerCapability = CapabilityHandler.getCapability(player, CapabilityHandler.PLAYER_CAPABILITY);
+            if (playerCapability != null && playerCapability.getTestingSculptor() != null) {
+                EntitySculptor sculptor = playerCapability.getTestingSculptor();
+                if (sculptor.getTestingPlayer() == player) {
+                    if (player instanceof ServerPlayer) {
+                        AdvancementHandler.SCULPTOR_FAILURE_TRIGGER.trigger((ServerPlayer) player);
+                    }
+                }
             }
         }
     }
