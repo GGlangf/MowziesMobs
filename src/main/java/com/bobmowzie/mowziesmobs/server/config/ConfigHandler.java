@@ -823,6 +823,7 @@ public final class ConfigHandler {
     }
 
     public static class Client {
+
         private Client(final ForgeConfigSpec.Builder builder) {
             builder.push("client");
             this.glowEffect = builder.comment("Toggles the lantern glow effect, which may look bad with certain shaders.")
@@ -843,6 +844,9 @@ public final class ConfigHandler {
             this.customPlayerAnims = builder.comment("Use custom player animations.")
                     .translation(LANG_PREFIX + "custom_player_anims")
                     .define("custom_player_anims", true);
+            this.hidePlayerAnimsInFirstPerson = builder.comment("Set to true to hide your own 3rd-person player animations while you are in 1st-person view mode. This is useful with mods that render the 3rd-person model in 1st-person, as some of the Mowzie's Mobs 3rd-person animations can block the camera.")
+                    .translation(LANG_PREFIX + "hide_player_anims_in_first_person")
+                    .define("hide_player_anims_in_first_person", false);
             this.doUmvuthanaCraneHealSound = builder.comment("Play Umvuthana Crane heal sounds. Turn this off if you are experiencing crashes when Cranes appear during Umvuthi's boss battle.")
                     .translation(LANG_PREFIX + "crane_heal_sounds")
                     .define("crane_heal_sounds", true);
@@ -860,6 +864,8 @@ public final class ConfigHandler {
         public final BooleanValue customBossBars;
 
         public final BooleanValue customPlayerAnims;
+
+        public final BooleanValue hidePlayerAnimsInFirstPerson;
 
         public final BooleanValue doUmvuthanaCraneHealSound;
     }
