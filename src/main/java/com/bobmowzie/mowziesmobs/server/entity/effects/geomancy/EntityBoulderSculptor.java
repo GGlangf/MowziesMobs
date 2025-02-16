@@ -137,7 +137,7 @@ public class EntityBoulderSculptor extends EntityBoulderProjectile {
 
         // If it's not the main path, path has a random chance of ending. Chance is weighted by the number of live paths.
         if (!isMainPath) {
-            if (random.nextFloat() < MathUtils.fit(sculptor.numLivePaths, 3, 7, 0.0, 0.35)) {
+            if (random.nextFloat() < MathUtils.fit(sculptor.numLivePaths, 3, 7, 0.0, 0.33)) {
                 sculptor.numLivePaths--;
                 return;
             }
