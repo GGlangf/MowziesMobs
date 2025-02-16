@@ -515,7 +515,7 @@ public class EntitySculptor extends MowzieGeckoEntity {
                 double testRadius = testRadiusAtHeight(height);
                 if (offset.lengthSquared() < testRadius * testRadius) {
                     BlockState checkState = level().getBlockState(checkPos);
-                    if (!(checkState.isAir() || checkState.is(Blocks.LIGHT))) {
+                    if (!(checkState.isAir() || checkState.is(Blocks.LIGHT)) && !checkState.is(Blocks.WATER)) {
                         isTestObstructed = true;
                         isTestObstructedSoFar = true;
                         if (level().isClientSide() && isPlayerInTestZone(MowziesMobs.PROXY.getPlayer()) && blockHasExposedSide(checkPos)) {
@@ -557,6 +557,10 @@ public class EntitySculptor extends MowzieGeckoEntity {
 
         // Check if testing player is flying
         if (testingPlayer != null && testingPlayer.getAbilities().flying) {
+            playerCheated();
+            return;
+        }
+        if (testingPlayer.isInWater() && !testingPlayer.onGround()) {
             playerCheated();
             return;
         }
