@@ -24,7 +24,7 @@ import java.util.List;
 public class EntityBoulderSculptor extends EntityBoulderProjectile {
     private static final float MAX_DIST_HORIZONTAL = 4.0f;
     private static final float MAX_DIST_VERTICAL = 2.4f;
-    private static final int MAX_TRIES = 10;
+    private static final int MAX_TRIES = 12;
 
     private EntityBoulderSculptor nextBoulder;
     private EntitySculptor sculptor;

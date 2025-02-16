@@ -33,6 +33,7 @@ import com.bobmowzie.mowziesmobs.server.item.ItemHandler;
 import com.bobmowzie.mowziesmobs.server.item.ItemSculptorStaff;
 import com.bobmowzie.mowziesmobs.server.loot.LootTableHandler;
 import com.bobmowzie.mowziesmobs.server.potion.EffectGeomancy;
+import com.bobmowzie.mowziesmobs.server.potion.EffectHandler;
 import com.bobmowzie.mowziesmobs.server.sound.MMSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -54,6 +55,8 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -515,7 +518,7 @@ public class EntitySculptor extends MowzieGeckoEntity {
                 double testRadius = testRadiusAtHeight(height);
                 if (offset.lengthSquared() < testRadius * testRadius) {
                     BlockState checkState = level().getBlockState(checkPos);
-                    if (!(checkState.isAir() || checkState.is(Blocks.LIGHT)) && !checkState.is(Blocks.WATER)) {
+                    if (!(checkState.isAir() || checkState.is(Blocks.LIGHT))) {
                         isTestObstructed = true;
                         isTestObstructedSoFar = true;
                         if (level().isClientSide() && isPlayerInTestZone(MowziesMobs.PROXY.getPlayer()) && blockHasExposedSide(checkPos)) {
@@ -1048,6 +1051,8 @@ public class EntitySculptor extends MowzieGeckoEntity {
                     EntityBoulderSculptor platformBelowPlayer = platforms.get(0);
                     platformBelowPlayer.descend();
                 }
+
+                getUser().testingPlayer.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, (int) (TEST_HEIGHT / 5f) * 20, 0, false, false));
             }
             super.start();
         }
