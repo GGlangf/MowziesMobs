@@ -612,6 +612,9 @@ public final class ConfigHandler {
             durability = builder.comment("Ice crystal durability")
                     .translation(LANG_PREFIX + "durability")
                     .defineInRange("durability", 600, 1, Integer.MAX_VALUE);
+            freezeDuration = builder.comment("Freeze duration in ticks (applies to frostmaw too!)")
+                    .translation(LANG_PREFIX + "freeze_duration")
+                    .defineInRange("freeze_duration", 50, 1, Integer.MAX_VALUE);
             builder.pop();
         }
 
@@ -621,6 +624,8 @@ public final class ConfigHandler {
 
         public final IntValue durability;
         public int durabilityValue;
+
+        public final IntValue freezeDuration;
     }
 
     public static class EarthrendGauntlet {

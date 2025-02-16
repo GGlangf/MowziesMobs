@@ -4,6 +4,7 @@ import com.bobmowzie.mowziesmobs.MowziesMobs;
 import com.bobmowzie.mowziesmobs.client.particle.ParticleCloud;
 import com.bobmowzie.mowziesmobs.client.particle.ParticleHandler;
 import com.bobmowzie.mowziesmobs.client.particle.ParticleSnowFlake;
+import com.bobmowzie.mowziesmobs.server.config.ConfigHandler;
 import com.bobmowzie.mowziesmobs.server.entity.EntityHandler;
 import com.bobmowzie.mowziesmobs.server.entity.frostmaw.EntityFrozenController;
 import com.bobmowzie.mowziesmobs.server.potion.EffectHandler;
@@ -343,7 +344,7 @@ public class FrozenCapability {
         public void tick(LivingEntity entity) {
             // Freeze logic
             if (getFreezeProgress() >= 1 && !entity.hasEffect(EffectHandler.FROZEN.get())) {
-                entity.addEffect(new MobEffectInstance(EffectHandler.FROZEN.get(), 50, 0, false, false));
+                entity.addEffect(new MobEffectInstance(EffectHandler.FROZEN.get(), ConfigHandler.COMMON.TOOLS_AND_ABILITIES.ICE_CRYSTAL.freezeDuration.get(), 0, false, false));
                 freezeProgress = 1f;
             } else if (freezeProgress > 0) {
                 entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 9, Mth.floor(freezeProgress * 5 + 1), false, false));
