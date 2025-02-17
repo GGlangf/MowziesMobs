@@ -119,7 +119,7 @@
   "item.mowziesmobs.sand_rake.text.0": "Use on sand to create raked patterns\nRepair with wood planks",
 
   "item.mowziesmobs.geomancer_beads": "Geomancer Beads",
-  "item.mowziesmobs.geomancer_beads.text.0": "+3 attack when punching",
+  "item.mowziesmobs.geomancer_beads.text.0": "+3 attack when punching (including attacks with the Earthbore Gauntlet)",
 
   "item.mowziesmobs.geomancer_robe": "Geomancer Robe",
   "item.mowziesmobs.geomancer_robe.text.0": "Chance to spawn a geomancy boulder nearby when you deal or take damage",
