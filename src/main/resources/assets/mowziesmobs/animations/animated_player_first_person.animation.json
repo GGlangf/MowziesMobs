@@ -457,18 +457,22 @@
 			"bones": {
 				"RightArm": {
 					"rotation": {
-						"vector": ["easeInOutQuad", "easeInOutQuad", "easeInOutQuad"]
+						"vector": [-26, "query.anim_time * 1800", 0],
+						"easing": "easeInOutQuad"
 					},
 					"position": {
-						"vector": ["easeInOutQuad", "easeInOutQuad", "easeInOutQuad"]
+						"vector": ["8.75 - 3 * math.sin(query.anim_time * 1800)", -3, "-4 - 3 * math.cos(query.anim_time * 1800)"],
+						"easing": "easeInOutQuad"
 					}
 				},
 				"LeftArm": {
 					"rotation": {
-						"vector": ["easeInOutQuad", "easeInOutQuad", "easeInOutQuad"]
+						"vector": [-26, "query.anim_time * 1800", 0],
+						"easing": "easeInOutQuad"
 					},
 					"position": {
-						"vector": ["easeInOutQuad", "easeInOutQuad", "easeInOutQuad"]
+						"vector": ["-8.75 - 3 * math.sin(query.anim_time * 1800)", -3, "-4 - 3 * math.cos(query.anim_time * 1800)"],
+						"easing": "easeInOutQuad"
 					}
 				}
 			}
