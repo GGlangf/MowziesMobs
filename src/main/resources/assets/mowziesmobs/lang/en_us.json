@@ -86,9 +86,9 @@
   "item.mowziesmobs.grant_suns_blessing.text.9": ")",
 
   "item.mowziesmobs.earthrend_gauntlet.text.0": "§lBoulder Lift§r§7\nRight-click earthen ground to lift a boulder\nPunch boulder to fire it as projectile\nCharge right-click to lift bigger boulders\n",
-
-  "item.mowziesmobs.earthrend_gauntlet.text.1": "§lTunnel§r§7\nRight-click the air to start tunneling through the ground\nHold right-click and look in the direction you'd like to dig\nRelease right-click to surface and stop tunneling",
-  "item.mowziesmobs.earthrend_gauntlet.text.2": "Recharges while in inventory",
+  "item.mowziesmobs.earthrend_gauntlet.text.1": "§lTunnel§r§7\nRight-click the air to start tunneling through the ground\nHold right-click and look in the direction you'd like to dig\nRelease right-click to surface and stop tunneling\n",
+  "item.mowziesmobs.earthrend_gauntlet.text.2": "§lPillar Rise§r§7\nHold both Sneak and Jump to rise upward on a pillar of earth\nThe pillar's width increases if it grows through geomancy boulders",
+  "item.mowziesmobs.earthrend_gauntlet.text.3": "Recharges while in inventory",
 
   "item.mowziesmobs.mob_remover.text.0": "Left-click to remove a Mowzie's Mobs mob",
 

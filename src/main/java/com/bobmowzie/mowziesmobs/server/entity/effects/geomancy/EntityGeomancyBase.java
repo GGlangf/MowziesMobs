@@ -158,6 +158,10 @@ public abstract class EntityGeomancyBase extends EntityMagicEffect implements Ge
     protected void explode() {
         this.level().broadcastEntityEvent(this, EXPLOSION_PARTICLES_ID);
         GeomancyTier tier = getTier();
+        if (tier == GeomancyTier.NONE) {
+            playSound(MMSounds.EFFECT_GEOMANCY_MAGIC_SMALL.get(), 1.5f, 0.9f);
+            playSound(MMSounds.EFFECT_GEOMANCY_BREAK.get(), 1.5f, 1f);
+        }
         if (tier == GeomancyTier.SMALL) {
             playSound(MMSounds.EFFECT_GEOMANCY_MAGIC_SMALL.get(), 1.5f, 0.9f);
             playSound(MMSounds.EFFECT_GEOMANCY_BREAK.get(), 1.5f, 1f);
@@ -171,7 +175,7 @@ public abstract class EntityGeomancyBase extends EntityMagicEffect implements Ge
             playSound(MMSounds.EFFECT_GEOMANCY_BREAK_MEDIUM_1.get(), 1.5f, 0.9f);
             EntityCameraShake.cameraShake(level(), position(), 15, 0.05f, 0, 20);
 
-            for (int i = 0; i < 5; i++) {
+            for (int i = 0; i < 5 * fallingBlockCountMultiplier(); i++) {
                 Vec3 particlePos = new Vec3(random.nextFloat() * 2, 0, 0);
                 particlePos = particlePos.yRot((float) (random.nextFloat() * 2 * Math.PI));
                 particlePos = particlePos.xRot((float) (random.nextFloat() * 2 * Math.PI));
@@ -205,12 +209,12 @@ public abstract class EntityGeomancyBase extends EntityMagicEffect implements Ge
         return 1;
     }
 
-    private void spawnExplosionParticles() {
+    protected void spawnExplosionParticles() {
         for (int i = 0; i < 40 * getBbWidth(); i++) {
             Vec3 particlePos = new Vec3(random.nextFloat() * 0.7 * getBbWidth(), 0, 0);
             particlePos = particlePos.yRot((float) (random.nextFloat() * 2 * Math.PI));
             particlePos = particlePos.xRot((float) (random.nextFloat() * 2 * Math.PI));
-            particlePos.add(0, getBbHeight() / 2.0, 0);
+            particlePos = particlePos.add(0, getBbHeight() / 2.0, 0);
             Camera camera = Minecraft.getInstance().gameRenderer.getMainCamera();
             boolean overrideLimiter = camera.getPosition().distanceToSqr(getX(), getY(), getZ()) < 64 * 64;
             level().addAlwaysVisibleParticle(new BlockParticleOption(ParticleTypes.BLOCK, getBlock()), overrideLimiter, getX() + particlePos.x, getY() + 0.5 + particlePos.y, getZ() + particlePos.z, particlePos.x, particlePos.y, particlePos.z);

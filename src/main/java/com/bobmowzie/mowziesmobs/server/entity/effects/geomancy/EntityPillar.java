@@ -3,10 +3,15 @@ package com.bobmowzie.mowziesmobs.server.entity.effects.geomancy;
 import com.bobmowzie.mowziesmobs.MowziesMobs;
 import com.bobmowzie.mowziesmobs.client.sound.IGeomancyRumbler;
 import com.bobmowzie.mowziesmobs.server.entity.EntityHandler;
+import com.bobmowzie.mowziesmobs.server.entity.effects.EntityFallingBlock;
 import com.bobmowzie.mowziesmobs.server.entity.effects.EntityMagicEffect;
 import com.bobmowzie.mowziesmobs.server.entity.sculptor.EntitySculptor;
 import com.bobmowzie.mowziesmobs.server.sound.MMSounds;
+import net.minecraft.client.Camera;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -223,6 +228,40 @@ public class EntityPillar extends EntityGeomancyBase implements IGeomancyRumbler
     @Override
     public float getRumblerZ() {
         return (float) getZ();
+    }
+
+    @Override
+    protected void explode() {
+        super.explode();
+        for (int i = 0; i < Math.min((getTier().ordinal() + 1) * getHeight() * 0.25, 30); i++) {
+            Vec3 particlePos = new Vec3(random.nextFloat() * getTier().ordinal() + 0.1, 0, 0);
+            particlePos = particlePos.yRot((float) (random.nextFloat() * 2 * Math.PI));
+            particlePos = particlePos.add(new Vec3(0, getHeight() * random.nextFloat(), 0));
+            EntityFallingBlock fallingBlock = new EntityFallingBlock(EntityHandler.FALLING_BLOCK.get(), level(), 70, getBlock());
+            fallingBlock.setPos(getX() + particlePos.x, getY() + 0.5 + particlePos.y, getZ() + particlePos.z);
+            particlePos = particlePos.normalize();
+            fallingBlock.setDeltaMovement((float) particlePos.x, 0.2f + random.nextFloat() * 0.6f, (float) particlePos.z);
+            level().addFreshEntity(fallingBlock);
+        }
+    }
+
+    @Override
+    protected void spawnExplosionParticles() {
+        float width = (getTier().ordinal() + 1);
+        for (int i = 0; i < 10 * width * getHeight(); i++) {
+            Vec3 particlePos = new Vec3(random.nextFloat() * 0.7 * width, 0, 0);
+            particlePos = particlePos.yRot((float) (random.nextFloat() * 2 * Math.PI));
+            particlePos = particlePos.xRot((float) (random.nextFloat() * 2 * Math.PI));
+            particlePos = particlePos.add(0, getHeight() * random.nextFloat(), 0);
+            Camera camera = Minecraft.getInstance().gameRenderer.getMainCamera();
+            boolean overrideLimiter = camera.getPosition().distanceToSqr(getX(), getY(), getZ()) < 64 * 64;
+            level().addAlwaysVisibleParticle(new BlockParticleOption(ParticleTypes.BLOCK, getBlock()), overrideLimiter, getX() + particlePos.x, getY() + 0.5 + particlePos.y, getZ() + particlePos.z, particlePos.x, particlePos.y, particlePos.z);
+        }
+    }
+
+    @Override
+    protected float fallingBlockCountMultiplier() {
+        return 0;
     }
 
     public static class EntityPillarSculptor extends EntityPillar {

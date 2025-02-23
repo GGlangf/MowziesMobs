@@ -8,10 +8,8 @@ import com.bobmowzie.mowziesmobs.client.particle.util.AdvancedParticleBase;
 import com.bobmowzie.mowziesmobs.client.particle.util.ParticleComponent;
 import com.bobmowzie.mowziesmobs.client.render.entity.player.GeckoPlayer;
 import com.bobmowzie.mowziesmobs.client.sound.IGeomancyRumbler;
-import com.bobmowzie.mowziesmobs.server.ability.Ability;
-import com.bobmowzie.mowziesmobs.server.ability.AbilitySection;
-import com.bobmowzie.mowziesmobs.server.ability.AbilityType;
-import com.bobmowzie.mowziesmobs.server.ability.PlayerAbility;
+import com.bobmowzie.mowziesmobs.server.ability.*;
+import com.bobmowzie.mowziesmobs.server.capability.AbilityCapability;
 import com.bobmowzie.mowziesmobs.server.config.ConfigHandler;
 import com.bobmowzie.mowziesmobs.server.entity.EntityHandler;
 import com.bobmowzie.mowziesmobs.server.entity.effects.EntityBlockSwapper;
@@ -137,7 +135,9 @@ public class TunnelingAbility extends PlayerAbility implements IGeomancyRumbler 
     @Override
     public void tick() {
         super.tick();
-        if (!isUsing() && getUser() instanceof Player) {
+        AbilityCapability.IAbilityCapability abilityCapability = AbilityHandler.INSTANCE.getAbilityCapability(getUser());
+        if (abilityCapability == null) return;
+        if (abilityCapability.getActiveAbility() == null || (abilityCapability.getActiveAbility().getAbilityType() != AbilityHandler.SPAWN_PILLAR_ABILITY && abilityCapability.getActiveAbility().getAbilityType() != AbilityHandler.TUNNELING_ABILITY)) {
             Player player = (Player) getUser();
             for (ItemStack stack : player.getInventory().items) {
                 restoreGauntlet(stack);

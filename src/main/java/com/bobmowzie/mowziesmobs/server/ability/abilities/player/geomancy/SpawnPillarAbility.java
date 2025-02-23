@@ -1,12 +1,16 @@
 package com.bobmowzie.mowziesmobs.server.ability.abilities.player.geomancy;
 
 import com.bobmowzie.mowziesmobs.server.ability.*;
+import com.bobmowzie.mowziesmobs.server.config.ConfigHandler;
 import com.bobmowzie.mowziesmobs.server.entity.EntityHandler;
 import com.bobmowzie.mowziesmobs.server.entity.effects.geomancy.EntityPillar;
+import com.bobmowzie.mowziesmobs.server.item.ItemHandler;
 import com.bobmowzie.mowziesmobs.server.potion.EffectGeomancy;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
@@ -34,7 +38,7 @@ public class SpawnPillarAbility extends PlayerAbility {
     @Override
     public void start() {
         super.start();
-        playAnimation(PILLAR_SPAWN_ANIM);
+//        playAnimation(PILLAR_SPAWN_ANIM);
         getUser().setDeltaMovement(getUser().getDeltaMovement().add(0d,-2d,0d));
     }
 
@@ -87,7 +91,12 @@ public class SpawnPillarAbility extends PlayerAbility {
 
     @Override
     public boolean canUse() {
-        return EffectGeomancy.canUse(getUser()) && super.canUse();
+        return EffectGeomancy.canUse(getUser()) && damageGauntlet() && super.canUse();
+    }
+
+    @Override
+    protected boolean canContinueUsing() {
+        return super.canContinueUsing() && damageGauntlet();
     }
 
     @Override
@@ -105,5 +114,29 @@ public class SpawnPillarAbility extends PlayerAbility {
             if (pillar != null) pillar.stopRising();
             nextSection();
         }
+    }
+
+    public boolean damageGauntlet() {
+        ItemStack stack = getUser().getMainHandItem();
+        if (!stack.is(ItemHandler.EARTHREND_GAUNTLET.get())) {
+            stack = getUser().getOffhandItem();
+        }
+        if (!stack.is(ItemHandler.EARTHREND_GAUNTLET.get())) {
+            return false;
+        }
+        if (stack.getItem() == ItemHandler.EARTHREND_GAUNTLET.get()) {
+            InteractionHand handIn = getUser().getUsedItemHand();
+            if (stack.getDamageValue() + 6 < stack.getMaxDamage()) {
+                stack.hurtAndBreak(6, getUser(), p -> p.broadcastBreakEvent(handIn));
+                return true;
+            }
+            else {
+                if (ConfigHandler.COMMON.TOOLS_AND_ABILITIES.EARTHREND_GAUNTLET.breakable.get()) {
+                    stack.hurtAndBreak(6, getUser(), p -> p.broadcastBreakEvent(handIn));
+                }
+                return false;
+            }
+        }
+        return false;
     }
 }
