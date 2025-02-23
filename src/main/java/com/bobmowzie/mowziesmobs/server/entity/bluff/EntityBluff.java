@@ -17,6 +17,7 @@ import com.bobmowzie.mowziesmobs.server.entity.MowzieEntity;
 import com.bobmowzie.mowziesmobs.server.entity.MowzieGeckoEntity;
 import com.bobmowzie.mowziesmobs.server.entity.effects.geomancy.EntityFissure;
 import com.bobmowzie.mowziesmobs.server.entity.effects.geomancy.EntityFissurePiece;
+import com.bobmowzie.mowziesmobs.server.entity.effects.geomancy.EntityPillar;
 import com.bobmowzie.mowziesmobs.server.entity.sculptor.EntitySculptor;
 import com.bobmowzie.mowziesmobs.server.loot.LootTableHandler;
 import com.bobmowzie.mowziesmobs.server.potion.EffectGeomancy;
@@ -280,7 +281,7 @@ public class EntityBluff extends MowzieGeckoEntity {
 
     @Override
     public boolean checkSpawnRules(LevelAccessor world, MobSpawnType reason) {
-        return super.checkSpawnRules(world, reason) && getEntitiesNearby(EntitySculptor.class, 8,  8, 8, 8).isEmpty() && world.getDifficulty() != Difficulty.PEACEFUL;
+        return super.checkSpawnRules(world, reason) && getEntitiesNearby(EntityPillar.EntityPillarSculptor.class, 8,  8, 8, 8).isEmpty() && getEntitiesNearby(EntitySculptor.class, 8,  8, 8, 8).isEmpty() && world.getDifficulty() != Difficulty.PEACEFUL;
     }
 
     protected void checkFallDamage(double p_29370_, boolean p_29371_, BlockState p_29372_, BlockPos p_29373_) {
