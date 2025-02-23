@@ -25,6 +25,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -36,6 +37,8 @@ public class EntityPillar extends EntityGeomancyBase implements IGeomancyRumbler
 
     public float prevPrevHeight = 0;
     public float prevHeight = 0;
+
+    public List<Entity> popUpEntities = Collections.emptyList();
 
     public static final HashMap<GeomancyTier, Integer> SIZE_MAP = new HashMap<>();
     static {
@@ -124,12 +127,17 @@ public class EntityPillar extends EntityGeomancyBase implements IGeomancyRumbler
 
         this.setBoundingBox(this.makeBoundingBox());
 
-        AABB popUpBounds = getBoundingBox().deflate(0.1f);
-        List<Entity> popUpEntities = level().getEntities(this, popUpBounds);
-        for (Entity entity : popUpEntities) {
-            if (entity.isPickable() && !(entity instanceof EntityBoulderBase) && !(entity instanceof EntityPillar) && !(entity instanceof EntityPillarPiece)) {
-                double belowAmount = entity.getY() - (getY() + getHeight());
-                if (belowAmount < 0.0) entity.move(MoverType.PISTON, new Vec3(0, -belowAmount, 0));
+        if (isRising()) {
+            AABB popUpBounds = getBoundingBox().deflate(0.1f).inflate(0, 1, 0);
+            popUpEntities = level().getEntities(this, popUpBounds);
+            for (Entity entity : popUpEntities) {
+                if (entity.isPickable() && !(entity instanceof EntityBoulderBase) && !(entity instanceof EntityPillar) && !(entity instanceof EntityPillarPiece)) {
+                    double belowAmount = entity.getY() - (getY() + getHeight());
+                    if (belowAmount < 0.0) entity.move(MoverType.PISTON, new Vec3(0, -belowAmount, 0));
+                    else {
+                        entity.move(MoverType.PISTON, new Vec3(0, 0.1, 0));
+                    }
+                }
             }
         }
         super.tick();
@@ -300,9 +308,9 @@ public class EntityPillar extends EntityGeomancyBase implements IGeomancyRumbler
         @Override
         public void stopRising() {
             super.stopRising();
-//            if (caster instanceof EntitySculptor sculptor) {
-//                sculptor.numLivePaths = 0;
-//            }
+            if (getCaster() instanceof EntitySculptor sculptor) {
+                sculptor.setPos(this.position().add(0, getHeight(), 0));
+            }
         }
     }
 }

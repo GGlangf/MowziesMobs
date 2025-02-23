@@ -9,6 +9,8 @@ import com.bobmowzie.mowziesmobs.server.potion.EffectGeomancy;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
@@ -63,6 +65,7 @@ public class SpawnPillarAbility extends PlayerAbility {
     @Override
     public void tickUsing() {
         super.tickUsing();
+        getUser().addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 3, 2, false, false));
     }
 
     @Override
@@ -96,7 +99,7 @@ public class SpawnPillarAbility extends PlayerAbility {
 
     @Override
     protected boolean canContinueUsing() {
-        return super.canContinueUsing() && damageGauntlet();
+        return super.canContinueUsing() && damageGauntlet() && (pillar == null || getLevel().getEntities(pillar, pillar.getBoundingBox().inflate(0, 6, 0)).contains(getUser()));
     }
 
     @Override

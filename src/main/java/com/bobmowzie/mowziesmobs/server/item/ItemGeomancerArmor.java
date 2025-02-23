@@ -2,15 +2,13 @@ package com.bobmowzie.mowziesmobs.server.item;
 
 import com.bobmowzie.mowziesmobs.client.render.item.RenderGeomancerArmor;
 import com.bobmowzie.mowziesmobs.server.config.ConfigHandler;
+import net.minecraft.Util;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.ArmorMaterial;
-import net.minecraft.world.item.ArmorMaterials;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
@@ -24,6 +22,7 @@ import software.bernie.geckolib.renderer.GeoArmorRenderer;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import javax.annotation.Nullable;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -63,6 +62,12 @@ public class ItemGeomancerArmor extends MowzieArmorItem implements GeoItem {
     }
 
     private static class GeomancerArmorMaterial implements ArmorMaterial {
+        private static final EnumMap<Type, Integer> DEFENSE_MAP = Util.make(new EnumMap<>(ArmorItem.Type.class), (map) -> {
+            map.put(ArmorItem.Type.BOOTS, 2);
+            map.put(ArmorItem.Type.LEGGINGS, 6);
+            map.put(ArmorItem.Type.CHESTPLATE, 7);
+            map.put(ArmorItem.Type.HELMET, 2);
+        });
 
         @Override
         public int getDurabilityForType(Type equipmentSlotType) {
@@ -71,17 +76,17 @@ public class ItemGeomancerArmor extends MowzieArmorItem implements GeoItem {
 
         @Override
         public int getDefenseForType(Type equipmentSlotType) {
-            return (int) (ArmorMaterials.DIAMOND.getDefenseForType(equipmentSlotType) * ConfigHandler.COMMON.TOOLS_AND_ABILITIES.GEOMANCER_ARMOR.armorConfig.damageReductionMultiplierValue);
+            return (int) (DEFENSE_MAP.get(equipmentSlotType) * ConfigHandler.COMMON.TOOLS_AND_ABILITIES.GEOMANCER_ARMOR.armorConfig.damageReductionMultiplierValue);
         }
 
         @Override
         public int getEnchantmentValue() {
-            return ArmorMaterials.DIAMOND.getEnchantmentValue();
+            return ArmorMaterials.IRON.getEnchantmentValue();
         }
 
         @Override
         public SoundEvent getEquipSound() {
-            return ArmorMaterials.DIAMOND.getEquipSound();
+            return ArmorMaterials.IRON.getEquipSound();
         }
 
         @Override
@@ -96,7 +101,7 @@ public class ItemGeomancerArmor extends MowzieArmorItem implements GeoItem {
 
         @Override
         public float getToughness() {
-            return ArmorMaterials.DIAMOND.getToughness() * ConfigHandler.COMMON.TOOLS_AND_ABILITIES.WROUGHT_HELM.armorConfig.toughnessMultiplierValue;
+            return 1 * ConfigHandler.COMMON.TOOLS_AND_ABILITIES.WROUGHT_HELM.armorConfig.toughnessMultiplierValue;
         }
 
         @Override
