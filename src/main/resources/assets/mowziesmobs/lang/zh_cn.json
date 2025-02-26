@@ -251,7 +251,7 @@
   "config.mowziesmobs.wrought_helm.tooltip": "",
   "config.mowziesmobs.spear": "长矛",
   "config.mowziesmobs.spear.tooltip": "",
-  "config.mowziesmobs.umvuthana_mask": "微光鸟面具",
+  "config.mowziesmobs.umvuthana_mask": "乌伏塔纳面具",
   "config.mowziesmobs.umvuthana_mask.tooltip": "",
   "config.mowziesmobs.sol_visage": "日之尊容",
   "config.mowziesmobs.sol_visage.tooltip": "",
@@ -294,7 +294,7 @@
   "config.mowziesmobs.custom_boss_bar": "自定义首领生命条",
   "config.mowziesmobs.glow_effect": "显示发光效果",
   "config.mowziesmobs.custom_player_anims": "自定义玩家动画",
-  "config.mowziesmobs.crane_heal_sounds": "播放微光鹤祭司治疗音效",
+  "config.mowziesmobs.crane_heal_sounds": "播放乌伏塔纳鹤治疗音效",
 
   "_comment": "成就",
   "advancements.mowziesmobs.root.title": "Mowzie的怪物",
