@@ -19,6 +19,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -123,6 +124,7 @@ public class EntityBoulderProjectile extends EntityBoulderBase {
                 if (entity == getCaster()) continue;
                 if (entity.noPhysics) continue;
                 if (!entity.canBeHitByProjectile()) continue;
+                if (entity instanceof ItemEntity) continue;
                 if (!travellingBlockedBy(entity)) continue;
                 if (ridingEntities != null && ridingEntities.contains(entity)) continue;
                 if (getCaster() != null) entity.hurt(damageSources().mobProjectile(this, getCaster()), damage);

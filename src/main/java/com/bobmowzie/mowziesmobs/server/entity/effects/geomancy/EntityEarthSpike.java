@@ -66,7 +66,7 @@ public class EntityEarthSpike extends EntityGeomancyBase {
 
         if (damageDelay == 0 && !level().isClientSide()) {
             damageDelay = -1;
-            List<Entity> entitiesHit = level().getEntities(this, getBoundingBox().inflate(0.4), e -> e.canBeHitByProjectile() && e != getCaster());
+            List<Entity> entitiesHit = level().getEntities(this, getBoundingBox().inflate(0.4), e -> e.canBeHitByProjectile() && e != getCaster() && !(e instanceof ItemEntity));
             double damage = 10;
             if (getCaster() != null) {
                 if (getCaster() instanceof EntityBluff) {
