@@ -146,6 +146,7 @@ public abstract class MowzieEntity extends PathfinderMob implements IEntityAddit
     }
 
     public static boolean spawnPredicate(EntityType type, LevelAccessor world, MobSpawnType reason, BlockPos spawnPos, RandomSource rand) {
+        if (!(world instanceof ServerLevelAccessor)) return false;
         ConfigHandler.SpawnConfig spawnConfig = SpawnHandler.spawnConfigs.get(type);
         if (spawnConfig != null) {
             if (rand.nextDouble() > spawnConfig.extraRarity.get()) return false;
