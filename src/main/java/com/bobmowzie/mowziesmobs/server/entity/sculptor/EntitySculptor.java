@@ -157,8 +157,6 @@ public class EntitySculptor extends MowzieGeckoEntity {
     private static final EntityDataAccessor<Boolean> IS_FIGHTING = SynchedEntityData.defineId(EntitySculptor.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Optional<UUID>> TESTING_PLAYER = SynchedEntityData.defineId(EntitySculptor.class, EntityDataSerializers.OPTIONAL_UUID);
 
-    public boolean handLOpen = true;
-    public boolean handROpen = true;
     private Player customer;
     private Player testingPlayer;
     private Optional<Double> prevPlayerVelY;
@@ -183,6 +181,8 @@ public class EntitySculptor extends MowzieGeckoEntity {
     public ItemStack heldStaff;
 
     public GeckoDynamicChain beardChain;
+
+    private boolean hasPingedBlockThisPass = false;
 
     public EntitySculptor(EntityType<? extends MowzieEntity> type, Level world) {
         super(type, world);
@@ -439,6 +439,7 @@ public class EntitySculptor extends MowzieGeckoEntity {
             if (obstructionTestHeight == 0) {
                 isTestObstructed = isTestObstructedSoFar;
                 isTestObstructedSoFar = false;
+                hasPingedBlockThisPass = false;
             }
         }
 
@@ -497,6 +498,7 @@ public class EntitySculptor extends MowzieGeckoEntity {
 
     public boolean checkTestObstructed() {
         int height = EntitySculptor.TEST_HEIGHT + 3;
+        hasPingedBlockThisPass = false;
         for (int i = 1; i < height; i++) {
             checkTestObstructedAtHeight(i);
             if (isTestObstructed) return true;
@@ -528,6 +530,14 @@ public class EntitySculptor extends MowzieGeckoEntity {
                                     new ParticleComponent.PropertyControl(ParticleComponent.PropertyControl.EnumParticleProperty.ALPHA, ParticleComponent.KeyTrack.startAndEnd(0.7f, 0f), false),
                                     new ParticleComponent.PropertyControl(ParticleComponent.PropertyControl.EnumParticleProperty.SCALE, ParticleComponent.KeyTrack.startAndEnd(0f, 16.0f), false)
                             });
+                            if (!hasPingedBlockThisPass) {
+                                AdvancedParticleBase.spawnAlwaysVisibleParticle(level(), ParticleHandler.ORB2.get(), 64, getX(), getY() + getBbHeight() / 2.0, getZ(), 0, 0, 0, faceCamera, 6F, 0.83f, 1, 0.39f, 0.7, 1, 30, true, false, new ParticleComponent[]{
+                                        new ParticleComponent.PropertyControl(ParticleComponent.PropertyControl.EnumParticleProperty.POS_X, ParticleComponent.KeyTrack.startAndEnd((float) getX(), (float) (checkPos.getX() + 0.5)), false),
+                                        new ParticleComponent.PropertyControl(ParticleComponent.PropertyControl.EnumParticleProperty.POS_Y, ParticleComponent.KeyTrack.startAndEnd((float) getY() + getBbHeight() / 2.0f, (float) (checkPos.getY() + 0.5)), false),
+                                        new ParticleComponent.PropertyControl(ParticleComponent.PropertyControl.EnumParticleProperty.POS_Z, ParticleComponent.KeyTrack.startAndEnd((float) getZ(), (float) (checkPos.getZ() + 0.5)), false)
+                                });
+                                hasPingedBlockThisPass = true;
+                            }
                         }
                     }
                 }
