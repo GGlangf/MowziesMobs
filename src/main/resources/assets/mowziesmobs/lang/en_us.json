@@ -161,10 +161,15 @@
 
   "_comment": "Potions",
   "effect.mowziesmobs.suns_blessing": "Sun's Blessing",
+  "effect.mowziesmobs.suns_blessing.description": "§kDescription Missing§r",
   "effect.mowziesmobs.geomancy": "Geomancy",
+  "effect.mowziesmobs.geomancy.description": "§kDescription Missing§r",
   "effect.mowziesmobs.frozen": "Frozen",
+  "effect.mowziesmobs.frozen.description": "§kDescription Missing§r",
   "effect.mowziesmobs.sunblock": "Sunblock",
+  "effect.mowziesmobs.sunblock.description": "§kDescription Missing§r",
   "effect.mowziesmobs.poison_resist": "Poison Resistance",
+  "effect.mowziesmobs.poison_resist.description": "§kDescription Missing§r",
   "item.minecraft.potion.effect.poison_resist": "Potion of Poison Resistance",
   "item.minecraft.splash_potion.effect.poison_resist": "Splash Potion of Poison Resistance",
   "item.minecraft.lingering_potion.effect.poison_resist": "Lingering Potion of Poison Resistance",
@@ -175,7 +180,6 @@
   "item.minecraft.tipped_arrow.effect.long_poison_resist": "Arrow of Poison Resistance",
 
   "_comment": "Tile Entities",
-
 
   "_comment": "Containers",
   "entity.mowziesmobs.umvuthana.trade": "Umvuthana",
