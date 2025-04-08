@@ -51,7 +51,7 @@ public abstract class ContainerTradeBase extends AbstractContainerMenu {
         if (slot != null && slot.hasItem()) {
             ItemStack contained = slot.getItem();
             stack = contained.copy();
-            if (index == 1) {
+            if (index == numCustomSlots - 1) {
                 if (!moveItemStackTo(contained, numCustomSlots, playerInventoryEnd, true)) {
                     return ItemStack.EMPTY;
                 }
