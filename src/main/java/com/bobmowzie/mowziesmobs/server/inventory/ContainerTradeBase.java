@@ -1,6 +1,7 @@
 package com.bobmowzie.mowziesmobs.server.inventory;
 
 import com.bobmowzie.mowziesmobs.server.entity.MowzieEntity;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -88,9 +89,21 @@ public abstract class ContainerTradeBase extends AbstractContainerMenu {
 
     public void returnItems() {
         if (!player.level().isClientSide) {
-            ItemStack stack = inventory.removeItemNoUpdate(0);
-            if (stack != ItemStack.EMPTY) {
-                ItemHandlerHelper.giveItemToPlayer(player, stack);
+            if (!player.isAlive() || player instanceof ServerPlayer && ((ServerPlayer)player).hasDisconnected()) {
+                ItemStack itemstack = inventory.removeItemNoUpdate(0);
+                if (!itemstack.isEmpty()) {
+                    player.drop(itemstack, false);
+                }
+
+                itemstack = inventory.removeItemNoUpdate(1);
+                if (!itemstack.isEmpty()) {
+                    player.drop(itemstack, false);
+                }
+            } else if (player instanceof ServerPlayer) {
+                ItemStack stack = inventory.removeItemNoUpdate(0);
+                if (stack != ItemStack.EMPTY) {
+                    player.getInventory().placeItemBackInInventory(stack);
+                }
             }
         }
     }
