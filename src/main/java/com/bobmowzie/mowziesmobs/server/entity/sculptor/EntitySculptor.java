@@ -77,6 +77,7 @@ import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.*;
 import net.minecraft.world.scores.Team;
 import net.minecraftforge.api.distmarker.Dist;
@@ -374,6 +375,11 @@ public class EntitySculptor extends MowzieGeckoEntity {
     @Override
     public boolean canBePushedByEntity(Entity entity) {
         return false;
+    }
+
+    @Override
+    public PushReaction getPistonPushReaction() {
+        return PushReaction.BLOCK;
     }
 
     public void setDesires(ItemStack stack) {
