@@ -45,14 +45,11 @@ public class RakedSandBlock extends SandBlock {
         return state.getBlock() instanceof RakedSandBlock;
     }
 
-    public boolean canSurvive(BlockState p_49395_, LevelReader p_49396_, BlockPos p_49397_) {
-        return canSupportRigidBlock(p_49396_, p_49397_.below());
-    }
-
     public void onPlace(BlockState blockState, Level level, BlockPos pos, BlockState previousState, boolean p_49412_) {
         if (!previousState.is(blockState.getBlock())) {
             this.updateState(blockState, level, pos, p_49412_);
         }
+        level.scheduleTick(pos, this, this.getDelayAfterPlace());
     }
 
     public BlockState updateState(BlockState state, Level level, BlockPos pos, boolean p_49393_) {
