@@ -114,6 +114,10 @@ dependencies {
     implementation fg.deobf("curse.maven:worldedit-225608:4586218")
     /*implementation fg.deobf("curse.maven:yungs-api-421850:5147001")
     implementation fg.deobf("curse.maven:yungs-better-desert-temples-631016:4769439")*/
+//    implementation fg.deobf("curse.maven:irons-spells-n-spellbooks-855414:6371701")
+//    implementation fg.deobf("curse.maven:caelus-308989:5281700")
+//    implementation fg.deobf("curse.maven:curios-309927:6418456")
+//    implementation fg.deobf("curse.maven:playeranimator-658587:4587214")
     // Apply Mixin AP
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 }
