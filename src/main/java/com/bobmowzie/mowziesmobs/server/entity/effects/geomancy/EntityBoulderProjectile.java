@@ -15,6 +15,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -42,6 +43,8 @@ public class EntityBoulderProjectile extends EntityBoulderBase {
 
     private boolean didShootParticles = false;
     private static final EntityDataAccessor<Vector3f> SHOOT_DIRECTION = SynchedEntityData.defineId(EntityBoulderProjectile.class, EntityDataSerializers.VECTOR3);
+
+    private List<Entity> hitEntities = new ArrayList<>();
 
     public EntityBoulderProjectile(EntityType<? extends EntityBoulderProjectile> type, Level world) {
         super(type, world);
@@ -83,7 +86,21 @@ public class EntityBoulderProjectile extends EntityBoulderBase {
     @Override
     protected @NotNull AABB makeBoundingBox() {
         AABB boundingBox = super.makeBoundingBox();
-        if (shouldExtendBoundsDown()) boundingBox = boundingBox.expandTowards(0, -0.5, 0);
+        if (shouldExtendBoundsDown()) {
+            boundingBox = boundingBox.expandTowards(0, -0.5, 0);
+        }
+        if (isTravelling()) {
+            GeomancyTier size = getTier();
+            if (size == GeomancyTier.MEDIUM) {
+                boundingBox = boundingBox.deflate(0.15);
+            }
+            else if (size == GeomancyTier.LARGE) {
+                boundingBox = boundingBox.deflate(0.35);
+            }
+            else if (size == GeomancyTier.HUGE) {
+                boundingBox = boundingBox.deflate(0.6);
+            }
+        }
         return boundingBox;
     }
 
@@ -120,6 +137,8 @@ public class EntityBoulderProjectile extends EntityBoulderBase {
         List<Entity> entitiesHit = getEntitiesNearby(1.7);
         if (travelling && !entitiesHit.isEmpty()) {
             for (Entity entity : entitiesHit) {
+                if (entity.isRemoved()) continue;
+                if (entity instanceof LivingEntity livingEntity && livingEntity.isDeadOrDying()) continue;
                 if (level().isClientSide) continue;
                 if (entity == getCaster()) continue;
                 if (entity.noPhysics) continue;
@@ -127,9 +146,16 @@ public class EntityBoulderProjectile extends EntityBoulderBase {
                 if (entity instanceof ItemEntity) continue;
                 if (!travellingBlockedBy(entity)) continue;
                 if (ridingEntities != null && ridingEntities.contains(entity)) continue;
-                if (getCaster() != null) entity.hurt(damageSources().mobProjectile(this, getCaster()), damage);
-                else entity.hurt(damageSources().generic(), damage);
-                if (isAlive()) this.explode();
+                if (hitEntities.contains(entity)) continue;
+                boolean didHurt;
+                if (getCaster() != null) {
+                    didHurt = entity.hurt(damageSources().mobProjectile(this, getCaster()), damage);
+                }
+                else {
+                    didHurt = entity.hurt(damageSources().generic(), damage);
+                }
+                if (didHurt) hitEntities.add(entity);
+                if (isAlive() && getTier() != GeomancyTier.HUGE) this.explode();
             }
         }
 
