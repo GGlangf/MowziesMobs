@@ -1,6 +1,11 @@
 package com.bobmowzie.mowziesmobs.server.capability;
 
 import com.bobmowzie.mowziesmobs.MowziesMobs;
+import com.bobmowzie.mowziesmobs.client.model.tools.MathUtils;
+import com.bobmowzie.mowziesmobs.client.particle.ParticleDecal;
+import com.bobmowzie.mowziesmobs.client.particle.ParticleHandler;
+import com.bobmowzie.mowziesmobs.client.particle.util.AdvancedParticleBase;
+import com.bobmowzie.mowziesmobs.client.particle.util.ParticleComponent;
 import com.bobmowzie.mowziesmobs.client.render.entity.player.GeckoPlayer;
 import com.bobmowzie.mowziesmobs.server.ability.Ability;
 import com.bobmowzie.mowziesmobs.server.ability.AbilityHandler;
@@ -18,6 +23,7 @@ import com.bobmowzie.mowziesmobs.server.potion.EffectHandler;
 import com.bobmowzie.mowziesmobs.server.power.Power;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -140,6 +146,9 @@ public class PlayerCapability {
         private GeckoPlayer.GeckoPlayerThirdPerson geckoPlayer;
 
         private EntitySculptor testingSculptor;
+
+        private int footstepCounter;
+        private int footstepDelay;
 
         public boolean isVerticalSwing() {
             return verticalSwing;
@@ -375,6 +384,54 @@ public class PlayerCapability {
                 }
             }
             prevSneaking = player.isShiftKeyDown();
+
+
+            // Suns blessing footprints
+            if (player.hasEffect(EffectHandler.SUNS_BLESSING.get()) && ConfigHandler.CLIENT.umvuthanaFootprints.get()) {
+                if (player.onGround() && player.getDeltaMovement().lengthSqr() > 0.01) {
+                    footstepDelay--;
+                    if (footstepDelay <= 0) {
+                        footstepDelay = 6;
+                        footstepCounter++;
+                        double rotation = Math.toRadians(event.player.yBodyRot + 180f);
+                        Vec3 offset = new Vec3(0, 0, footstepCounter % 2 == 0 ? 0.15 : -0.15).yRot((float) -rotation+90);
+                        ParticleDecal.spawnDecal(event.player.level(), ParticleHandler.PLAYER_FOOTPRINT.get(), event.player.getX() + offset.x(), event.player.getY() + 0.01, event.player.getZ() + offset.z(), 0, 0, 0, rotation, 0.5F, 1, 0.95, 0.1, 1, 1, 100, true, 8, 32, new ParticleComponent[]{
+                                new ParticleComponent.PropertyControl(ParticleComponent.PropertyControl.EnumParticleProperty.RED, new ParticleComponent.KeyTrack(
+                                        new float[]{0.995f, 0.05f},
+                                        new float[]{0, 0.5f}
+                                ), false),
+                                new ParticleComponent.PropertyControl(ParticleComponent.PropertyControl.EnumParticleProperty.GREEN, new ParticleComponent.KeyTrack(
+                                        new float[]{0.95f, 0.05f},
+                                        new float[]{0, 0.5f}
+                                ), false),
+                                new ParticleComponent.PropertyControl(ParticleComponent.PropertyControl.EnumParticleProperty.BLUE, new ParticleComponent.KeyTrack(
+                                        new float[]{0.1f, 0.05f},
+                                        new float[]{0, 0.5f}
+                                ), false),
+                                new ParticleComponent.PropertyControl(ParticleComponent.PropertyControl.EnumParticleProperty.ALPHA, new ParticleComponent.KeyTrack(
+                                        new float[]{1f, 0.8f},
+                                        new float[]{0, 0.5f}
+                                ), false),
+                                new ParticleComponent() {
+                                    @Override
+                                    public void postUpdate(AdvancedParticleBase particle) {
+                                        super.postUpdate(particle);
+                                        if (particle.getAge() < 60 && event.player.getRandom().nextFloat() < 0.3F) {
+                                            int amount = 1;
+                                            while (amount-- > 0) {
+                                                float theta = event.player.getRandom().nextFloat() * MathUtils.TAU;
+                                                float r = event.player.getRandom().nextFloat() * 0.2F;
+                                                float x = r * Mth.cos(theta);
+                                                float z = r * Mth.sin(theta);
+                                                event.player.level().addParticle(ParticleTypes.SMOKE, particle.getPosX() + x, particle.getPosY() + 0.05, particle.getPosZ() + z, 0, 0, 0);
+                                            }
+                                        }
+                                    }
+                                }
+                        });
+                    }
+                }
+            }
         }
 
         @Override

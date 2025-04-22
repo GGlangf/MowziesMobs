@@ -75,6 +75,7 @@ public class ParticleHandler {
 
     public static final RegistryObject<ParticleType<DecalParticleData>> STRIX_FOOTPRINT = registerDecal("strix_footprint", DecalParticleData.DESERIALIZER);
     public static final RegistryObject<ParticleType<DecalParticleData>> GROUND_CRACK = registerDecal("crack", DecalParticleData.DESERIALIZER);
+    public static final RegistryObject<ParticleType<DecalParticleData>> PLAYER_FOOTPRINT = registerDecal("player_footprint", DecalParticleData.DESERIALIZER);
 
     public static final RegistryObject<ParticleType<RibbonParticleData>> RIBBON_FLAT = registerRibbon("ribbon_flat", RibbonParticleData.DESERIALIZER);
     public static final RegistryObject<ParticleType<RibbonParticleData>> RIBBON_STREAKS = registerRibbon("ribbon_streaks", RibbonParticleData.DESERIALIZER);
@@ -110,6 +111,7 @@ public class ParticleHandler {
         event.registerSpriteSet(ParticleHandler.TERRAIN.get(), AdvancedTerrainParticle.Factory::new);
         event.registerSpriteSet(ParticleHandler.STRIX_FOOTPRINT.get(), ParticleDecal.Factory::new);
         event.registerSpriteSet(ParticleHandler.GROUND_CRACK.get(), ParticleDecal.Factory::new);
+        event.registerSpriteSet(ParticleHandler.PLAYER_FOOTPRINT.get(), ParticleDecal.Factory::new);
 
         event.registerSpriteSet(ParticleHandler.RIBBON_FLAT.get(), ParticleRibbon.Factory::new);
         event.registerSpriteSet(ParticleHandler.RIBBON_STREAKS.get(), ParticleRibbon.Factory::new);
