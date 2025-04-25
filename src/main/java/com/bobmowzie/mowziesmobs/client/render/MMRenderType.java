@@ -33,6 +33,8 @@ public abstract class MMRenderType extends RenderType {
 
     public static ParticleRenderType PARTICLE_SHEET_TRANSLUCENT_NO_DEPTH = new ParticleRenderType() {
         public BufferBuilder begin(@NotNull Tesselator tesselator, @NotNull TextureManager manager) {
+            Minecraft.getInstance().gameRenderer.lightTexture().turnOnLightLayer();
+            RenderSystem.enableDepthTest();
             RenderSystem.depthMask(false);
             RenderSystem.disableCull();
             RenderSystem.setShaderTexture(0, TextureAtlas.LOCATION_PARTICLES);

@@ -2,7 +2,6 @@ package com.bobmowzie.mowziesmobs.server.world;
 
 import com.bobmowzie.mowziesmobs.server.config.ConfigHandler;
 import net.minecraft.core.Holder;
-import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;

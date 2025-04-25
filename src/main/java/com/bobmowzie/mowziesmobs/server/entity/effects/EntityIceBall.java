@@ -51,6 +51,7 @@ public class EntityIceBall extends EntityMagicEffect {
             for (Entity entity : entitiesHit) {
                 if (entity instanceof ItemEntity) continue;
                 if (entity == getCaster()) continue;
+                if (entity instanceof ItemEntity) continue;
                 if (entity.getType().is(EntityTypeTags.FREEZE_IMMUNE_ENTITY_TYPES) || entity instanceof EnderDragon) continue;
                 if (entity.hurt(damageSources().freeze(), 3f * ConfigHandler.COMMON.MOBS.FROSTMAW.combatConfig.attackMultiplier.get().floatValue())) {
                     if (entity instanceof LivingEntity) DataHandler.getData(entity, DataHandler.FROZEN_DATA).addFreezeProgress((LivingEntity) entity, 1);

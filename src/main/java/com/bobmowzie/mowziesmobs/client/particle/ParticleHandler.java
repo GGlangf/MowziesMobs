@@ -105,7 +105,10 @@ public class ParticleHandler {
     public static final DeferredHolder<ParticleType<?>, ParticleType<AdvancedTypeBase>> ARROW_HEAD = registerAdvanced("arrow_head");
     public static final DeferredHolder<ParticleType<?>, ParticleType<AdvancedTypeBase>> LEAF = registerAdvanced("leaf");
 
+    public static final RegistryObject<ParticleType<TerrainParticleData>> TERRAIN = registerTerrain("terrain", TerrainParticleData.DESERIALIZER);
+
     public static final DeferredHolder<ParticleType<?>, ParticleType<TerrainParticleData>> TERRAIN = registerTerrain("terrain");
+    public static final RegistryObject<ParticleType<DecalParticleData>> PLAYER_FOOTPRINT = registerDecal("player_footprint", DecalParticleData.DESERIALIZER);
 
     public static final DeferredHolder<ParticleType<?>, ParticleType<DecalParticleType>> STRIX_FOOTPRINT = registerDecal("strix_footprint");
     public static final DeferredHolder<ParticleType<?>, ParticleType<DecalParticleType>> GROUND_CRACK = registerDecal("crack");
@@ -141,6 +144,10 @@ public class ParticleHandler {
         event.registerSpriteSet(ParticleHandler.GLOW.get(), AdvancedParticleBase.Factory::new);
         event.registerSpriteSet(ParticleHandler.ARROW_HEAD.get(), AdvancedParticleBase.Factory::new);
         event.registerSpriteSet(ParticleHandler.LEAF.get(), AdvancedParticleBase.Factory::new);
+        event.registerSpriteSet(ParticleHandler.TERRAIN.get(), AdvancedTerrainParticle.Factory::new);
+        event.registerSpriteSet(ParticleHandler.STRIX_FOOTPRINT.get(), ParticleDecal.Factory::new);
+        event.registerSpriteSet(ParticleHandler.GROUND_CRACK.get(), ParticleDecal.Factory::new);
+        event.registerSpriteSet(ParticleHandler.PLAYER_FOOTPRINT.get(), ParticleDecal.Factory::new);
 
         event.registerSpriteSet(ParticleHandler.TERRAIN.get(), AdvancedTerrainParticle.Factory::new);
 
@@ -205,6 +212,14 @@ public class ParticleHandler {
             @Override
             public @NotNull StreamCodec<? super RegistryFriendlyByteBuf, TerrainParticleData> streamCodec() {
                 return TerrainParticleData.STREAM_CODEC;
+            }
+        });
+    }
+
+    private static RegistryObject<ParticleType<TerrainParticleData>> registerTerrain(String key, ParticleOptions.Deserializer<TerrainParticleData> deserializer) {
+        return REG.register(key, () -> new ParticleType<TerrainParticleData>(false, deserializer) {
+            public Codec<TerrainParticleData> codec() {
+                return TerrainParticleData.CODEC_TERRAIN(this);
             }
         });
     }

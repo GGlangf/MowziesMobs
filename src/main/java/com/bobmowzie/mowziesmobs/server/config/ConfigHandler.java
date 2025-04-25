@@ -340,7 +340,7 @@ public final class ConfigHandler {
             builder.push("grottol");
             this.spawnConfig = new SpawnConfig(builder,
                     2, 1, 1, 1,
-                    new BiomeConfig(builder,  Collections.singletonList(inverted(Tags.Biomes.IS_MUSHROOM)), Collections.emptyList(), Collections.emptyList()),
+                    new BiomeConfig(builder, Collections.singletonList(inverted(Tags.Biomes.IS_MUSHROOM)), Collections.emptyList(), Collections.emptyList()),
                     Collections.emptyList(),
                     Collections.singletonList(string(BlockTags.BASE_STONE_OVERWORLD)),
                     16, -65, true, false, true,
@@ -489,7 +489,7 @@ public final class ConfigHandler {
                     .define("has_boss_bar", true);
             this.whichItem = builder.comment("Which item the Sculptor desires in exchange for a chance to try his challenge")
                     .translation(LANG_PREFIX + "trade_which_item")
-                    .define("trade_which_item", string(ItemHandler.BLUFF_ROD), ITEM_NAME_PREDICATE);
+                    .define("trade_which_item", "minecraft:crossbow", ITEM_NAME_PREDICATE);
             this.howMany = builder.comment("How many of the item the Sculptor desires in exchange for a chance to try his challenge")
                     .translation(LANG_PREFIX + "trade_how_many")
                     .defineInRange("trade_how_many", 1, 0, 64);
@@ -520,6 +520,26 @@ public final class ConfigHandler {
 
     public static class Bluff {
         Bluff(final ModConfigSpec.Builder builder) {
+            builder.push("bluff");
+            spawnConfig = new SpawnConfig(builder,
+                    10, 2, 3, 1,
+                    new BiomeConfig(builder, Collections.emptyList(), Collections.emptyList(), Collections.emptyList()),
+                    Collections.emptyList(),
+                    Collections.emptyList(),
+                    -65, -65, true, false, true,
+                    Collections.emptyList()
+            );
+            combatConfig = new CombatConfig(builder,1, 1);
+            builder.pop();
+        }
+
+        public final SpawnConfig spawnConfig;
+
+        public final CombatConfig combatConfig;
+    }
+
+    public static class Bluff {
+        Bluff(final ForgeConfigSpec.Builder builder) {
             builder.push("bluff");
             spawnConfig = new SpawnConfig(builder,
                     10, 2, 3, 1,
@@ -620,6 +640,9 @@ public final class ConfigHandler {
             durability = builder.comment("Ice crystal durability")
                     .translation(LANG_PREFIX + "durability")
                     .defineInRange("durability", 600, 1, Integer.MAX_VALUE);
+            freezeDuration = builder.comment("Freeze duration in ticks (applies to frostmaw too!)")
+                    .translation(LANG_PREFIX + "freeze_duration")
+                    .defineInRange("freeze_duration", 50, 1, Integer.MAX_VALUE);
             builder.pop();
         }
 
@@ -629,6 +652,8 @@ public final class ConfigHandler {
 
         public final ModConfigSpec.IntValue durability;
         public int durabilityValue;
+
+        public final IntValue freezeDuration;
     }
 
     public static class EarthrendGauntlet {
@@ -750,6 +775,20 @@ public final class ConfigHandler {
         public final ToolConfig toolConfig;
     }
 
+    public static class SculptorStaff {
+        SculptorStaff(final ForgeConfigSpec.Builder builder) {
+            builder.push("sculptor_staff");
+            toolConfig = new ToolConfig(builder, 3, 1f);
+            attackMultiplier = builder.comment("Multiply all damage done with the Sculptor Staff by this amount.")
+                    .translation(LANG_PREFIX + "attack_multiplier")
+                    .defineInRange("attack_multiplier", 1f, 0d, Double.MAX_VALUE);
+            builder.pop();
+        }
+        public final DoubleValue attackMultiplier;
+
+        public final ToolConfig toolConfig;
+    }
+
     public static class Mobs {
         Mobs(final ModConfigSpec.Builder builder) {
             builder.push("mobs");
@@ -831,6 +870,7 @@ public final class ConfigHandler {
     }
 
     public static class Client {
+
         private Client(final ModConfigSpec.Builder builder) {
             builder.push("client");
             this.glowEffect = builder.comment("Toggles the lantern glow effect, which may look bad with certain shaders.")
@@ -851,6 +891,9 @@ public final class ConfigHandler {
             this.customPlayerAnims = builder.comment("Use custom player animations.")
                     .translation(LANG_PREFIX + "custom_player_anims")
                     .define("custom_player_anims", true);
+            this.hidePlayerAnimsInFirstPerson = builder.comment("Set to true to hide your own 3rd-person player animations while you are in 1st-person view mode. This is useful with mods that render the 3rd-person model in 1st-person, as some of the Mowzie's Mobs 3rd-person animations can block the camera.")
+                    .translation(LANG_PREFIX + "hide_player_anims_in_first_person")
+                    .define("hide_player_anims_in_first_person", false);
             this.doUmvuthanaCraneHealSound = builder.comment("Play Umvuthana Crane heal sounds. Turn this off if you are experiencing crashes when Cranes appear during Umvuthi's boss battle.")
                     .translation(LANG_PREFIX + "crane_heal_sounds")
                     .define("crane_heal_sounds", true);
@@ -868,6 +911,8 @@ public final class ConfigHandler {
         public final ModConfigSpec.BooleanValue customBossBars;
 
         public final ModConfigSpec.BooleanValue customPlayerAnims;
+
+        public final BooleanValue hidePlayerAnimsInFirstPerson;
 
         public final ModConfigSpec.BooleanValue doUmvuthanaCraneHealSound;
     }

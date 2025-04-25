@@ -31,7 +31,6 @@ import com.bobmowzie.mowziesmobs.server.item.ItemNagaFangDagger;
 import com.bobmowzie.mowziesmobs.server.item.ItemSpear;
 import com.bobmowzie.mowziesmobs.server.item.ItemUmvuthanaMask;
 import com.bobmowzie.mowziesmobs.server.message.MessageFreezeEffect;
-import com.bobmowzie.mowziesmobs.server.message.MessagePlayerAttackMob;
 import com.bobmowzie.mowziesmobs.server.message.MessageSunblockEffect;
 import com.bobmowzie.mowziesmobs.server.potion.EffectGeomancy;
 import com.bobmowzie.mowziesmobs.server.potion.EffectHandler;
@@ -485,7 +484,7 @@ public final class ServerEventHandler {
         }
 
         ItemStack item = event.getItemStack();
-        
+
         if (item.getItem() == Items.FLINT_AND_STEEL || item.getItem() == Items.TNT_MINECART) {
             aggroUmvuthana(player);
         }
@@ -501,7 +500,7 @@ public final class ServerEventHandler {
             player.resetAttackStrengthTicker();
             return;
         }
-        
+
         Power[] powers = DataHandler.getData(player, DataHandler.PLAYER_DATA).getPowers();
         for (Power power : powers) {
             power.onRightClickBlock(event);
@@ -510,15 +509,7 @@ public final class ServerEventHandler {
 
     @SubscribeEvent
     public void onPlayerLeftClick(PlayerInteractEvent.LeftClickEmpty event) {
-        double range = 6.5;
         Player player = event.getEntity();
-        if (player.getMainHandItem().getItem() == ItemHandler.SPEAR.get()) {
-            LivingEntity entityHit = ItemSpear.raytraceEntities(player.getCommandSenderWorld(), player, range);
-            if (entityHit != null) {
-                PacketDistributor.sendToServer(MessagePlayerAttackMob.fromEntity(entityHit));
-            }
-        }
-        
         Power[] powers = DataHandler.getData(player, DataHandler.PLAYER_DATA).getPowers();
         for (Power power : powers) {
             power.onLeftClickEmpty(event);
@@ -537,6 +528,18 @@ public final class ServerEventHandler {
         if (event.getNewDamage() > 0 && event.getSource().getEntity() instanceof Player player) {
             if (player.getItemBySlot(EquipmentSlot.CHEST).is(ItemHandler.GEOMANCER_ROBE.get())) {
                 spawnBoulderNearPlayer(player);
+            }
+        }
+
+        if (entity instanceof Player player && event.getSource() == player.damageSources().fall() && player.getHealth() <= event.getAmount()) {
+            PlayerCapability.IPlayerCapability playerCapability = CapabilityHandler.getCapability(player, CapabilityHandler.PLAYER_CAPABILITY);
+            if (playerCapability != null && playerCapability.getTestingSculptor() != null) {
+                EntitySculptor sculptor = playerCapability.getTestingSculptor();
+                if (sculptor.getTestingPlayer() == player) {
+                    if (player instanceof ServerPlayer) {
+                        AdvancementHandler.SCULPTOR_FAILURE_TRIGGER.trigger((ServerPlayer) player);
+                    }
+                }
             }
         }
     }

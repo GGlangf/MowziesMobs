@@ -200,23 +200,30 @@ public final class MMSounds {
             ENTITY_NAGA_GROWL_3::get
     );
 
-    public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_SCULPTOR_AH = create("sculptor.ah");
-    public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_SCULPTOR_GREETING = create("sculptor.greeting");
-    public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_SCULPTOR_HM = create("sculptor.hm");
-    public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_SCULPTOR_LAUGH = create("sculptor.laugh");
-    public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_SCULPTOR_TEST_START = create("sculptor.test_start");
-    public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_SCULPTOR_DISAPPOINT = create("sculptor.disappoint");
-    public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_SCULPTOR_CONGRATS = create("sculptor.congrats");
-    public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_SCULPTOR_DEATH = create("sculptor.death");
-    public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_SCULPTOR_HURT = create("sculptor.hurt");
-    public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_SCULPTOR_ATTACK = create("sculptor.attack");
-    public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_SCULPTOR_MAKE_GAUNTLET = create("sculptor.make_gauntlet");
-    public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_SCULPTOR_MAKE_GAUNTLET_EFFECTS = create("sculptor.make_gauntlet_effects");
-    public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_SCULPTOR_MAKE_GAUNTLET_PIECE = create("sculptor.make_gauntlet_piece");
-    public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_SCULPTOR_DISAPPEAR = create("sculptor.disappear");
-    public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_SCULPTOR_DISAPPEAR_EFFECTS = create("sculptor.disappear_effects");
-    public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_SCULPTOR_CLAP = create("sculptor.clap");
-    public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_SCULPTOR_PLATFORM_CRUMBLE = create("sculptor.platform_crumble");
+    public static final RegistryObject<SoundEvent> ENTITY_SCULPTOR_AH = create("sculptor.ah");
+    public static final RegistryObject<SoundEvent> ENTITY_SCULPTOR_GREETING = create("sculptor.greeting");
+    public static final RegistryObject<SoundEvent> ENTITY_SCULPTOR_HM = create("sculptor.hm");
+    public static final RegistryObject<SoundEvent> ENTITY_SCULPTOR_LAUGH = create("sculptor.laugh");
+    public static final RegistryObject<SoundEvent> ENTITY_SCULPTOR_TEST_START = create("sculptor.test_start");
+    public static final RegistryObject<SoundEvent> ENTITY_SCULPTOR_DISAPPOINT = create("sculptor.disappoint");
+    public static final RegistryObject<SoundEvent> ENTITY_SCULPTOR_CONGRATS = create("sculptor.congrats");
+    public static final RegistryObject<SoundEvent> ENTITY_SCULPTOR_DEATH = create("sculptor.death");
+    public static final RegistryObject<SoundEvent> ENTITY_SCULPTOR_HURT = create("sculptor.hurt");
+    public static final RegistryObject<SoundEvent> ENTITY_SCULPTOR_ATTACK = create("sculptor.attack");
+    public static final RegistryObject<SoundEvent> ENTITY_SCULPTOR_MAKE_GAUNTLET = create("sculptor.make_gauntlet");
+    public static final RegistryObject<SoundEvent> ENTITY_SCULPTOR_MAKE_GAUNTLET_EFFECTS = create("sculptor.make_gauntlet_effects");
+    public static final RegistryObject<SoundEvent> ENTITY_SCULPTOR_MAKE_GAUNTLET_PIECE = create("sculptor.make_gauntlet_piece");
+    public static final RegistryObject<SoundEvent> ENTITY_SCULPTOR_DISAPPEAR = create("sculptor.disappear");
+    public static final RegistryObject<SoundEvent> ENTITY_SCULPTOR_DISAPPEAR_EFFECTS = create("sculptor.disappear_effects");
+    public static final RegistryObject<SoundEvent> ENTITY_SCULPTOR_CLAP = create("sculptor.clap");
+    public static final RegistryObject<SoundEvent> ENTITY_SCULPTOR_PLATFORM_CRUMBLE = create("sculptor.platform_crumble");
+
+    public static final RegistryObject<SoundEvent> ENTITY_BLUFF_ATTACK = create("bluff.attack");
+    public static final RegistryObject<SoundEvent> ENTITY_BLUFF_DEATH = create("bluff.death");
+    public static final RegistryObject<SoundEvent> ENTITY_BLUFF_HURT = create("bluff.hurt");
+    public static final RegistryObject<SoundEvent> ENTITY_BLUFF_IDLE = create("bluff.idle");
+    public static final RegistryObject<SoundEvent> ENTITY_BLUFF_SPIKE_EMERGE = create("bluff.spike_emerge");
+    public static final RegistryObject<SoundEvent> ENTITY_BLUFF_SPIKE_EXPLODE = create("bluff.spike_explode");
 
     public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_BLUFF_ATTACK = create("bluff.attack");
     public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_BLUFF_DEATH = create("bluff.death");

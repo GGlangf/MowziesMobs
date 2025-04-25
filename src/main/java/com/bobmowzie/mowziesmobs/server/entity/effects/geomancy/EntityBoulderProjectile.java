@@ -15,10 +15,12 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -42,6 +44,8 @@ public class EntityBoulderProjectile extends EntityBoulderBase {
     private boolean didShootParticles = false;
     private static final EntityDataAccessor<Vector3f> SHOOT_DIRECTION = SynchedEntityData.defineId(EntityBoulderProjectile.class, EntityDataSerializers.VECTOR3);
 
+    private List<Entity> hitEntities = new ArrayList<>();
+
     public EntityBoulderProjectile(EntityType<? extends EntityBoulderProjectile> type, Level world) {
         super(type, world);
     }
@@ -54,16 +58,16 @@ public class EntityBoulderProjectile extends EntityBoulderBase {
         super.setSizeParams();
         GeomancyTier size = getTier();
         if (size == GeomancyTier.MEDIUM) {
-            damage = 13;
-            speed = 1.2f;
+            damage = 14;
+            speed = 1.4f;
         }
         else if (size == GeomancyTier.LARGE) {
-            damage = 16;
-            speed = 1f;
+            damage = 18;
+            speed = 1.2f;
         }
         else if (size == GeomancyTier.HUGE) {
-            damage = 20;
-            speed = 0.8f;
+            damage = 25;
+            speed = 1.1f;
         }
 
         damage *= getDamageMult();
@@ -82,7 +86,21 @@ public class EntityBoulderProjectile extends EntityBoulderBase {
     @Override
     protected @NotNull AABB makeBoundingBox() {
         AABB boundingBox = super.makeBoundingBox();
-        if (shouldExtendBoundsDown()) boundingBox = boundingBox.expandTowards(0, -0.5, 0);
+        if (shouldExtendBoundsDown()) {
+            boundingBox = boundingBox.expandTowards(0, -0.5, 0);
+        }
+        if (isTravelling()) {
+            GeomancyTier size = getTier();
+            if (size == GeomancyTier.MEDIUM) {
+                boundingBox = boundingBox.deflate(0.15);
+            }
+            else if (size == GeomancyTier.LARGE) {
+                boundingBox = boundingBox.deflate(0.35);
+            }
+            else if (size == GeomancyTier.HUGE) {
+                boundingBox = boundingBox.deflate(0.6);
+            }
+        }
         return boundingBox;
     }
 
@@ -92,7 +110,7 @@ public class EntityBoulderProjectile extends EntityBoulderBase {
 
     protected void findRidingEntities() {
         if (!(getCaster() instanceof EntitySculptor)) {
-            ridingEntities.clear();
+            if (ridingEntities != null) ridingEntities.clear();
             List<Entity> onTopOfEntities = level().getEntities(this, getBoundingBox().contract(0, getBbHeight() - 1, 0).move(new Vec3(0, getBbHeight() - 0.5, 0)).inflate(0.6, 0.5, 0.6));
             for (Entity entity : onTopOfEntities) {
                 if (entity != null && entity.isPickable() && !(entity instanceof EntityBoulderProjectile) && entity.getY() >= this.getY() + 0.2 && entity.isPushable())
@@ -119,15 +137,25 @@ public class EntityBoulderProjectile extends EntityBoulderBase {
         List<Entity> entitiesHit = getEntitiesNearby(1.7);
         if (travelling && !entitiesHit.isEmpty()) {
             for (Entity entity : entitiesHit) {
+                if (entity.isRemoved()) continue;
+                if (entity instanceof LivingEntity livingEntity && livingEntity.isDeadOrDying()) continue;
                 if (level().isClientSide) continue;
                 if (entity == getCaster()) continue;
                 if (entity.noPhysics) continue;
                 if (!entity.canBeHitByProjectile()) continue;
+                if (entity instanceof ItemEntity) continue;
                 if (!travellingBlockedBy(entity)) continue;
                 if (ridingEntities != null && ridingEntities.contains(entity)) continue;
-                if (getCaster() != null) entity.hurt(damageSources().mobProjectile(this, getCaster()), damage);
-                else entity.hurt(damageSources().generic(), damage);
-                if (isAlive()) this.explode();
+                if (hitEntities.contains(entity)) continue;
+                boolean didHurt;
+                if (getCaster() != null) {
+                    didHurt = entity.hurt(damageSources().mobProjectile(this, getCaster()), damage);
+                }
+                else {
+                    didHurt = entity.hurt(damageSources().generic(), damage);
+                }
+                if (didHurt) hitEntities.add(entity);
+                if (isAlive() && getTier() != GeomancyTier.HUGE) this.explode();
             }
         }
 
@@ -155,6 +183,10 @@ public class EntityBoulderProjectile extends EntityBoulderBase {
         }
     }
 
+    public List<Entity> getRidingEntities() {
+        return ridingEntities;
+    }
+
     protected boolean startActive() {
         return true;
     }
@@ -171,7 +203,11 @@ public class EntityBoulderProjectile extends EntityBoulderBase {
     public boolean canCollideWith(Entity entity) {
         if (this.getCaster() instanceof EntitySculptor) {
             if (travelling && entity instanceof EntityEarthSpike) return false;
-            return super.canCollideWith(entity) && !(entity instanceof EntityBoulderBase && ((EntityBoulderProjectile)entity).getCaster() == getCaster());
+            // Don't collide with other boulders of the same sculptor caster
+            if (entity instanceof EntityBoulderBase && ((EntityBoulderProjectile)entity).getCaster() == getCaster()) return false;
+            // Don't collide with the sculptor that cast this boulder
+            if (entity == getCaster()) return false;
+            return super.canCollideWith(entity);
         }
         return super.canCollideWith(entity);
     }

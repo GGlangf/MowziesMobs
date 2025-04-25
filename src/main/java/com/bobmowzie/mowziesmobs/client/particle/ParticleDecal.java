@@ -23,6 +23,9 @@ import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
+import java.util.Arrays;
+import java.util.OptionalDouble;
+
 public class ParticleDecal extends AdvancedParticleBase {
     protected int spriteSize = 8;
     protected int bufferSize = 32;
@@ -38,6 +41,10 @@ public class ParticleDecal extends AdvancedParticleBase {
         this.bufferSize = bufferSize;
         this.setSpriteFromAge(sprites);
         this.sprites = sprites;
+    }
+
+    private static OptionalDouble max(double... v) {
+        return Arrays.stream(v).max();
     }
 
     @Override
@@ -71,8 +78,11 @@ public class ParticleDecal extends AdvancedParticleBase {
         int lightColor = this.getLightColor(partialTicks);
 
         float spriteScale = (float) spriteSize / (float) bufferSize;
-        Vec3 minCorner = new Vec3(-particleScale, -particleScale, -particleScale).yRot(decalRot).add(x, y, z);
-        Vec3 maxCorner = new Vec3(particleScale, particleScale, particleScale).yRot(decalRot).add(x, y, z);
+        Vec3 corner0 = new Vec3(-particleScale/2, 0, -particleScale/2).yRot(decalRot);
+        Vec3 corner1 = new Vec3(particleScale/2, 0, particleScale/2).yRot(decalRot);
+        double extent = max(corner0.x(), corner1.x(), corner0.z(), corner1.z()).orElse(1);
+        Vec3 minCorner = new Vec3(-extent, -particleScale, -extent).add(x, y, z);
+        Vec3 maxCorner = new Vec3(extent, particleScale, extent).add(x, y, z);
 
         for(BlockPos blockpos : BlockPos.betweenClosed(BlockPos.containing(minCorner), BlockPos.containing(maxCorner))) {
             renderBlockDecal(buffer, renderInfo, level, blockpos, x, y, z, u0, u1, v0, v1, particleScale, spriteScale, this.alpha, decalRot, this.rCol, this.gCol, this.bCol, lightColor);
@@ -110,7 +120,7 @@ public class ParticleDecal extends AdvancedParticleBase {
                         AABB aabb = voxelshape.bounds();
                         float d0 = blockPos.getX() + (float) aabb.minX;
                         float d1 = blockPos.getX() + (float) aabb.maxX;
-                        float d2 = blockPos.getY() + (float) aabb.minY + 0.015625f;
+                        float d2 = blockPos.getY() + (float) aabb.minY + 0.005625f;
                         float d3 = blockPos.getZ() + (float) aabb.minZ;
                         float d4 = blockPos.getZ() + (float) aabb.maxZ;
                         if (d0 < minX) d0 = (float) minX;

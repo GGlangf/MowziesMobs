@@ -125,7 +125,7 @@ public class EntityFrostmaw extends MowzieLLibraryEntity implements Enemy {
 
         moveControl = new MMEntityMoveHelper(this, 7);
     }
-
+    
     @Override
     protected void registerGoals() {
         super.registerGoals();
@@ -249,6 +249,11 @@ public class EntityFrostmaw extends MowzieLLibraryEntity implements Enemy {
     @Override
     public boolean canBePushedByEntity(Entity entity) {
         return false;
+    }
+
+    @Override
+    public PushReaction getPistonPushReaction() {
+        return PushReaction.IGNORE;
     }
 
     @Override

@@ -29,6 +29,7 @@ public class SpawnHandler {
     public static BiomeChecker LANTERN_BIOME_CHECKER;
     public static BiomeChecker NAGA_BIOME_CHECKER;
     public static BiomeChecker BLUFF_BIOME_CHECKER;
+    public static BiomeChecker BLUFF_BIOME_CHECKER;
 
     private static final SpawnPlacementType MM_SPAWN = (level, position, type) -> {
         BlockState below = level.getBlockState(position.below());

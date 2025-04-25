@@ -8,7 +8,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.UUID;
@@ -41,8 +40,8 @@ public class EntityFissurePiece extends Entity {
     }
 
     @Override
-    protected void defineSynchedData(@NotNull final SynchedEntityData.Builder builder) {
-        builder.define(GROW_TICK, 0);
+    protected void defineSynchedData() {
+        getEntityData().define(GROW_TICK, 0);
     }
 
     public void setOwner(@Nullable EntityFissure owner) {

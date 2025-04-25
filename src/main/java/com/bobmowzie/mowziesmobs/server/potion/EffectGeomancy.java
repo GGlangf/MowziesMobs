@@ -4,6 +4,7 @@ import com.bobmowzie.mowziesmobs.datagen.MMBlockTags;
 import com.bobmowzie.mowziesmobs.server.block.ICopiedBlockProperties;
 import com.bobmowzie.mowziesmobs.server.item.ItemHandler;
 import net.minecraft.tags.TagKey;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.block.Block;

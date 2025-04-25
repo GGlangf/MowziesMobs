@@ -1,12 +1,17 @@
 package com.bobmowzie.mowziesmobs.server.entity.effects.geomancy;
 
-import com.bobmowzie.mowziesmobs.MMCommon;
+import com.bobmowzie.mowziesmobs.MowziesMobs;
 import com.bobmowzie.mowziesmobs.client.sound.IGeomancyRumbler;
 import com.bobmowzie.mowziesmobs.server.entity.EntityHandler;
+import com.bobmowzie.mowziesmobs.server.entity.effects.EntityFallingBlock;
 import com.bobmowzie.mowziesmobs.server.entity.effects.EntityMagicEffect;
 import com.bobmowzie.mowziesmobs.server.entity.sculptor.EntitySculptor;
 import com.bobmowzie.mowziesmobs.server.sound.MMSounds;
+import net.minecraft.client.Camera;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -19,8 +24,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.NotNull;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -32,6 +37,8 @@ public class EntityPillar extends EntityGeomancyBase implements IGeomancyRumbler
 
     public float prevPrevHeight = 0;
     public float prevHeight = 0;
+
+    public List<Entity> popUpEntities = Collections.emptyList();
 
     public static final HashMap<GeomancyTier, Integer> SIZE_MAP = new HashMap<>();
     static {
@@ -77,7 +84,7 @@ public class EntityPillar extends EntityGeomancyBase implements IGeomancyRumbler
             playSound(MMSounds.EFFECT_GEOMANCY_BREAK_LARGE_1.get(), 2, 1);
             if (!isFalling()) startRising();
             if (level().isClientSide())
-                MMCommon.PROXY.playGeomancyRumbleSound(this);
+                MowziesMobs.PROXY.playGeomancyRumbleSound(this);
         }
 
         if (!level().isClientSide()) {
@@ -120,12 +127,17 @@ public class EntityPillar extends EntityGeomancyBase implements IGeomancyRumbler
 
         this.setBoundingBox(this.makeBoundingBox());
 
-        AABB popUpBounds = getBoundingBox().deflate(0.1f);
-        List<Entity> popUpEntities = level().getEntities(this, popUpBounds);
-        for (Entity entity : popUpEntities) {
-            if (entity.isPickable() && !(entity instanceof EntityBoulderBase) && !(entity instanceof EntityPillar) && !(entity instanceof EntityPillarPiece)) {
-                double belowAmount = entity.getY() - (getY() + getHeight());
-                if (belowAmount < 0.0) entity.move(MoverType.PISTON, new Vec3(0, -belowAmount, 0));
+        if (isRising()) {
+            AABB popUpBounds = getBoundingBox().deflate(0.1f).inflate(0, 1, 0);
+            popUpEntities = level().getEntities(this, popUpBounds);
+            for (Entity entity : popUpEntities) {
+                if (entity.isPickable() && !(entity instanceof EntityBoulderBase) && !(entity instanceof EntityPillar) && !(entity instanceof EntityPillarPiece)) {
+                    double belowAmount = entity.getY() - (getY() + getHeight());
+                    if (belowAmount < 0.0) entity.move(MoverType.PISTON, new Vec3(0, -belowAmount, 0));
+                    else {
+                        entity.move(MoverType.PISTON, new Vec3(0, 0.1, 0));
+                    }
+                }
             }
         }
         super.tick();
@@ -140,11 +152,11 @@ public class EntityPillar extends EntityGeomancyBase implements IGeomancyRumbler
     }
 
     @Override
-    protected void defineSynchedData(@NotNull SynchedEntityData.Builder builder) {
-        super.defineSynchedData(builder);
-        builder.define(HEIGHT, 0.0f);
-        builder.define(RISING, true);
-        builder.define(FALLING, false);
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        getEntityData().define(HEIGHT, 0.0f);
+        getEntityData().define(RISING, true);
+        getEntityData().define(FALLING, false);
     }
 
     public float getHeight() {
@@ -226,6 +238,40 @@ public class EntityPillar extends EntityGeomancyBase implements IGeomancyRumbler
         return (float) getZ();
     }
 
+    @Override
+    protected void explode() {
+        super.explode();
+        for (int i = 0; i < Math.min((getTier().ordinal() + 1) * getHeight() * 0.25, 30); i++) {
+            Vec3 particlePos = new Vec3(random.nextFloat() * getTier().ordinal() + 0.1, 0, 0);
+            particlePos = particlePos.yRot((float) (random.nextFloat() * 2 * Math.PI));
+            particlePos = particlePos.add(new Vec3(0, getHeight() * random.nextFloat(), 0));
+            EntityFallingBlock fallingBlock = new EntityFallingBlock(EntityHandler.FALLING_BLOCK.get(), level(), 70, getBlock());
+            fallingBlock.setPos(getX() + particlePos.x, getY() + 0.5 + particlePos.y, getZ() + particlePos.z);
+            particlePos = particlePos.normalize();
+            fallingBlock.setDeltaMovement((float) particlePos.x, 0.2f + random.nextFloat() * 0.6f, (float) particlePos.z);
+            level().addFreshEntity(fallingBlock);
+        }
+    }
+
+    @Override
+    protected void spawnExplosionParticles() {
+        float width = (getTier().ordinal() + 1);
+        for (int i = 0; i < 10 * width * getHeight(); i++) {
+            Vec3 particlePos = new Vec3(random.nextFloat() * 0.7 * width, 0, 0);
+            particlePos = particlePos.yRot((float) (random.nextFloat() * 2 * Math.PI));
+            particlePos = particlePos.xRot((float) (random.nextFloat() * 2 * Math.PI));
+            particlePos = particlePos.add(0, getHeight() * random.nextFloat(), 0);
+            Camera camera = Minecraft.getInstance().gameRenderer.getMainCamera();
+            boolean overrideLimiter = camera.getPosition().distanceToSqr(getX(), getY(), getZ()) < 64 * 64;
+            level().addAlwaysVisibleParticle(new BlockParticleOption(ParticleTypes.BLOCK, getBlock()), overrideLimiter, getX() + particlePos.x, getY() + 0.5 + particlePos.y, getZ() + particlePos.z, particlePos.x, particlePos.y, particlePos.z);
+        }
+    }
+
+    @Override
+    protected float fallingBlockCountMultiplier() {
+        return 0;
+    }
+
     public static class EntityPillarSculptor extends EntityPillar {
 
         public EntityPillarSculptor(EntityType<? extends EntityPillarSculptor> type, Level worldIn) {
@@ -262,9 +308,9 @@ public class EntityPillar extends EntityGeomancyBase implements IGeomancyRumbler
         @Override
         public void stopRising() {
             super.stopRising();
-//            if (caster instanceof EntitySculptor sculptor) {
-//                sculptor.numLivePaths = 0;
-//            }
+            if (getCaster() instanceof EntitySculptor sculptor) {
+                sculptor.setPos(this.position().add(0, getHeight(), 0));
+            }
         }
     }
 }

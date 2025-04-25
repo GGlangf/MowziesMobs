@@ -105,6 +105,7 @@ public class ItemHandler {
                 builder.remove(DataComponents.DAMAGE);
             }
         });
+    public static final RegistryObject<ForgeSpawnEggItem> BLUFF_SPAWN_EGG = REG.register("bluff_spawn_egg", () -> new ForgeSpawnEggItem(EntityHandler.BLUFF, 0x644236, 0x6cb22e, new Item.Properties()));
 
         event.modify(SOL_VISAGE.get(), builder -> {
             if (!ConfigHandler.COMMON.TOOLS_AND_ABILITIES.SOL_VISAGE.breakable.get()) {
@@ -122,6 +123,7 @@ public class ItemHandler {
 
         // Durability initially gets set in 'TieredItem' based on the tier
         event.modify(SCULPTOR_STAFF.get(), builder -> builder.set(DataComponents.MAX_DAMAGE, 200));
+        SCULPTOR_STAFF.get().getAttributesFromConfig();
     }
 
     public static void initializeDispenserBehaviors() {

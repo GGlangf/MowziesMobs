@@ -19,7 +19,7 @@ public class SpawnBoulderChargeSound extends AbstractTickableSoundInstance {
         super(MMSounds.EFFECT_GEOMANCY_BOULDER_CHARGE.get(), SoundSource.PLAYERS, SoundInstance.createUnseededRandom());
         this.user = user;
         volume = 1F;
-        pitch = 0.95f;
+        pitch = 1f;
         x = (float) user.getX();
         y = (float) user.getY();
         z = (float) user.getZ();

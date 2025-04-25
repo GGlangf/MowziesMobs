@@ -322,6 +322,11 @@ public class EntityUmvuthi extends MowzieGeckoEntity implements LeaderSunstrikeI
         return false;
     }
 
+    @Override
+    public PushReaction getPistonPushReaction() {
+        return PushReaction.BLOCK;
+    }
+
     public boolean shouldRenderSun() {
         return deathTime < 85 && !(getActiveAbilityType() == EntityUmvuthi.SUPERNOVA_ABILITY && getActiveAbility().getTicksInUse() > 5 && getActiveAbility().getTicksInUse() <= 90);
     }
@@ -918,10 +923,16 @@ public class EntityUmvuthi extends MowzieGeckoEntity implements LeaderSunstrikeI
     }
 
     @Override
+    public boolean isPushable() {
+        return false;
+    }
+
+    @Override
     public void push(double x, double y, double z) {
         super.push(0, y, 0);
     }
 
+    @OnlyIn(Dist.CLIENT)
     @Override
     public boolean hasBossMusic() {
         return true;
@@ -930,6 +941,11 @@ public class EntityUmvuthi extends MowzieGeckoEntity implements LeaderSunstrikeI
     @Override
     public BossMusic<?> getBossMusic() {
         return BossMusicPlayer.UMVUTHI_MUSIC;
+    }
+
+    @Override
+    public boolean hasBossMusic() {
+        return true;
     }
 
     @Override

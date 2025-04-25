@@ -332,7 +332,7 @@ public class GongBlock extends BaseEntityBlock {
             BlockPos basePos = getBasePos(state, pos);
             BlockState baseState = level.getBlockState(basePos);
             if (baseState.is(BlockHandler.GONG.get())) {
-                level.setBlock(basePos, Blocks.AIR.defaultBlockState(), 35);
+                level.destroyBlock(basePos, true, player);
                 level.levelEvent(player, 2001, basePos, Block.getId(state));
             }
 

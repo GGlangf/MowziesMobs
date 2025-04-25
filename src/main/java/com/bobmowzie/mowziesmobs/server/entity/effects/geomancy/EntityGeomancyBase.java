@@ -1,6 +1,5 @@
 package com.bobmowzie.mowziesmobs.server.entity.effects.geomancy;
 
-import com.bobmowzie.mowziesmobs.datagen.MMBlockTags;
 import com.bobmowzie.mowziesmobs.server.block.ICopiedBlockProperties;
 import com.bobmowzie.mowziesmobs.server.entity.EntityHandler;
 import com.bobmowzie.mowziesmobs.server.entity.effects.EntityCameraShake;
@@ -8,6 +7,7 @@ import com.bobmowzie.mowziesmobs.server.entity.effects.EntityFallingBlock;
 import com.bobmowzie.mowziesmobs.server.entity.effects.EntityMagicEffect;
 import com.bobmowzie.mowziesmobs.server.potion.EffectGeomancy;
 import com.bobmowzie.mowziesmobs.server.sound.MMSounds;
+import com.bobmowzie.mowziesmobs.server.tag.TagHandler;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -24,19 +24,17 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.fluids.FluidType;
+import net.minecraftforge.common.Tags;
+import net.minecraftforge.fluids.FluidType;
 import software.bernie.geckolib.animatable.GeoEntity;
-import net.neoforged.neoforge.common.Tags;
-import org.jetbrains.annotations.NotNull;
-import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 public abstract class EntityGeomancyBase extends EntityMagicEffect implements GeoEntity {
@@ -76,18 +74,17 @@ public abstract class EntityGeomancyBase extends EntityMagicEffect implements Ge
     }
 
     @Override
-    public boolean isPushedByFluid(final FluidType type) {
+    public boolean isPushedByFluid(FluidType type) {
         return false;
     }
 
     // Change the specified block to its geomancy version. I.E. Grass blocks turn to dirt, stairs and slabs turn to base versions.
     public BlockState changeBlock(BlockState blockState) {
-        if (!blockState.is(MMBlockTags.GEOMANCY_USEABLE)) {
-            Block block = ((ICopiedBlockProperties) blockState.getBlock().properties()).mowziesMobs$getBaseBlock();
-
-            if (block != null) {
-                blockState = block.defaultBlockState();
-                // FIXME 1.21 :: should this not also check for the tag (and early return if the tag is not matched)?
+        if (!blockState.is(TagHandler.GEOMANCY_USEABLE)) {
+            ICopiedBlockProperties properties = (ICopiedBlockProperties) blockState.getBlock().properties;
+            Block baseBlock = properties.getBaseBlock();
+            if (baseBlock != null) {
+                blockState = baseBlock.defaultBlockState();
             }
         }
 
@@ -103,8 +100,8 @@ public abstract class EntityGeomancyBase extends EntityMagicEffect implements Ge
         else if (blockState.is(BlockTags.NYLIUM)) blockState = Blocks.NETHERRACK.defaultBlockState();
         else if (blockState.is(Tags.Blocks.ORES_IN_GROUND_NETHERRACK)) blockState = Blocks.NETHERRACK.defaultBlockState();
         else if (blockState.is(Tags.Blocks.ORES_IN_GROUND_STONE)) blockState = Blocks.STONE.defaultBlockState();
-        else if (blockState.is(Tags.Blocks.SANDS_RED)) blockState = Blocks.RED_SANDSTONE.defaultBlockState();
-        else if (blockState.is(Tags.Blocks.SANDS_COLORLESS)) blockState = Blocks.SANDSTONE.defaultBlockState();
+        else if (blockState.is(Tags.Blocks.SAND_RED)) blockState = Blocks.RED_SANDSTONE.defaultBlockState();
+        else if (blockState.is(Tags.Blocks.SAND_COLORLESS)) blockState = Blocks.SANDSTONE.defaultBlockState();
         else if (blockState.getBlock() == Blocks.SOUL_SAND) blockState = Blocks.SOUL_SOIL.defaultBlockState();
 
         return blockState;
@@ -121,11 +118,11 @@ public abstract class EntityGeomancyBase extends EntityMagicEffect implements Ge
     }
 
     @Override
-    protected void defineSynchedData(@NotNull SynchedEntityData.Builder builder) {
-        super.defineSynchedData(builder);
-        builder.define(BLOCK_STATE, Blocks.DIRT.defaultBlockState());
-        builder.define(DEATH_TIME, 1200);
-        builder.define(TIER, 0);
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        getEntityData().define(BLOCK_STATE, Blocks.DIRT.defaultBlockState());
+        getEntityData().define(DEATH_TIME, 1200);
+        getEntityData().define(TIER, 0);
     }
 
     @Override
@@ -154,13 +151,17 @@ public abstract class EntityGeomancyBase extends EntityMagicEffect implements Ge
     }
 
     @Override
-    public boolean ignoreExplosion(Explosion explosion) {
+    public boolean ignoreExplosion() {
         return true;
     }
 
     protected void explode() {
         this.level().broadcastEntityEvent(this, EXPLOSION_PARTICLES_ID);
         GeomancyTier tier = getTier();
+        if (tier == GeomancyTier.NONE) {
+            playSound(MMSounds.EFFECT_GEOMANCY_MAGIC_SMALL.get(), 1.5f, 0.9f);
+            playSound(MMSounds.EFFECT_GEOMANCY_BREAK.get(), 1.5f, 1f);
+        }
         if (tier == GeomancyTier.SMALL) {
             playSound(MMSounds.EFFECT_GEOMANCY_MAGIC_SMALL.get(), 1.5f, 0.9f);
             playSound(MMSounds.EFFECT_GEOMANCY_BREAK.get(), 1.5f, 1f);
@@ -174,7 +175,7 @@ public abstract class EntityGeomancyBase extends EntityMagicEffect implements Ge
             playSound(MMSounds.EFFECT_GEOMANCY_BREAK_MEDIUM_1.get(), 1.5f, 0.9f);
             EntityCameraShake.cameraShake(level(), position(), 15, 0.05f, 0, 20);
 
-            for (int i = 0; i < 5; i++) {
+            for (int i = 0; i < 5 * fallingBlockCountMultiplier(); i++) {
                 Vec3 particlePos = new Vec3(random.nextFloat() * 2, 0, 0);
                 particlePos = particlePos.yRot((float) (random.nextFloat() * 2 * Math.PI));
                 particlePos = particlePos.xRot((float) (random.nextFloat() * 2 * Math.PI));
@@ -208,12 +209,12 @@ public abstract class EntityGeomancyBase extends EntityMagicEffect implements Ge
         return 1;
     }
 
-    private void spawnExplosionParticles() {
+    protected void spawnExplosionParticles() {
         for (int i = 0; i < 40 * getBbWidth(); i++) {
             Vec3 particlePos = new Vec3(random.nextFloat() * 0.7 * getBbWidth(), 0, 0);
             particlePos = particlePos.yRot((float) (random.nextFloat() * 2 * Math.PI));
             particlePos = particlePos.xRot((float) (random.nextFloat() * 2 * Math.PI));
-            particlePos.add(0, getBbHeight() / 2.0, 0);
+            particlePos = particlePos.add(0, getBbHeight() / 2.0, 0);
             Camera camera = Minecraft.getInstance().gameRenderer.getMainCamera();
             boolean overrideLimiter = camera.getPosition().distanceToSqr(getX(), getY(), getZ()) < 64 * 64;
             level().addAlwaysVisibleParticle(new BlockParticleOption(ParticleTypes.BLOCK, getBlock()), overrideLimiter, getX() + particlePos.x, getY() + 0.5 + particlePos.y, getZ() + particlePos.z, particlePos.x, particlePos.y, particlePos.z);

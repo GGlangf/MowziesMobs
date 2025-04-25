@@ -21,6 +21,9 @@ import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animation.AnimationState;
 import software.bernie.geckolib.animation.PlayState;
 import software.bernie.geckolib.animation.RawAnimation;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.object.PlayState;
 
 import java.util.List;
 import java.util.Random;
@@ -146,7 +149,7 @@ public class Ability<T extends LivingEntity> {
         return false;
     }
 
-    public Ability<?>getActiveAbility() {
+    public Ability<?> getActiveAbility() {
         AbilityData data = getAbilityCapability();
         if (data == null) return null;
         return getAbilityCapability().getActiveAbility();
@@ -156,7 +159,7 @@ public class Ability<T extends LivingEntity> {
         return false;
     }
 
-    public boolean canBeCanceledByAbility(Ability<?>ability) {
+    public boolean canBeCanceledByAbility(Ability<?> ability) {
         return false;
     }
 

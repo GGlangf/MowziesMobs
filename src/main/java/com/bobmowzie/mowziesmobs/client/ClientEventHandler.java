@@ -32,6 +32,7 @@ import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -92,6 +93,9 @@ public class ClientEventHandler {
     public static void renderLivingEvent(RenderLivingEvent.Pre<? extends LivingEntity, ? extends EntityModel<? extends LivingEntity>> event) {
         if (event.getEntity() instanceof Player player) {
             if (!ConfigHandler.CLIENT.customPlayerAnims.get()) return;
+            Player player = (Player) event.getEntity();
+            if (player == null) return;
+            if (ConfigHandler.CLIENT.hidePlayerAnimsInFirstPerson.get() && player == Minecraft.getInstance().player && Minecraft.getInstance().options.getCameraType() == CameraType.FIRST_PERSON) return;
             float delta = event.getPartialTick();
             AbilityData abilityData = DataHandler.getData(player, DataHandler.ABILITY_DATA);
 //            if ((player.tickCount / 20) % 2 == 0) {
@@ -141,11 +145,11 @@ public class ClientEventHandler {
     @SubscribeEvent
     public static void onRenderTick(RenderFrameEvent.Pre event) {
         Player player = Minecraft.getInstance().player;
-        
+
         if (player == null) {
             return;
         }
-        
+
 //        if (player != null) {
 //            PlayerCapability.Capability playerCapability = CapabilityHandler.getCapability(player, CapabilityHandler.PLAYER_CAPABILITY);
 //            if (playerCapability != null && playerCapability.getGeomancy().canUse(player) && playerCapability.getGeomancy().isSpawningBoulder() && playerCapability.getGeomancy().getSpawnBoulderCharge() > 2) {
@@ -308,6 +312,23 @@ public class ClientEventHandler {
         if (event.getLevel().isClientSide()) {
             MMCommon.PROXY.updateMarkedBlocks();
             BossMusicPlayer.tick();
+        }
+    }
+
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public void onInteractionKeyMappingTriggered(InputEvent.InteractionKeyMappingTriggered event) {
+        LocalPlayer player = Minecraft.getInstance().player;
+        if (player == null) return;
+        if (event.getKeyMapping() == Minecraft.getInstance().options.keyAttack) {
+            PlayerCapability.IPlayerCapability playerCapability = CapabilityHandler.getCapability(player, CapabilityHandler.PLAYER_CAPABILITY);
+            if (playerCapability != null) {
+                playerCapability.pressedAttackKey(player);
+            }
+        } else if (event.getKeyMapping() == Minecraft.getInstance().options.keyUse) {
+            PlayerCapability.IPlayerCapability playerCapability = CapabilityHandler.getCapability(player, CapabilityHandler.PLAYER_CAPABILITY);
+            if (playerCapability != null) {
+                playerCapability.pressedUseKey(player);
+            }
         }
     }
 }

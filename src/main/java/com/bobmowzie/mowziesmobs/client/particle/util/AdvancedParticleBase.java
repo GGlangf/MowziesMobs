@@ -4,6 +4,7 @@ import com.bobmowzie.mowziesmobs.client.model.tools.MathUtils;
 import com.bobmowzie.mowziesmobs.client.particle.ParticleRibbon;
 import com.bobmowzie.mowziesmobs.client.particle.types.AdvancedTypeBase;
 import com.bobmowzie.mowziesmobs.client.render.MMRenderType;
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import net.minecraft.client.Camera;
@@ -15,6 +16,7 @@ import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.client.particle.TextureSheetParticle;
 import net.minecraft.core.Holder;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
@@ -33,6 +35,7 @@ public class AdvancedParticleBase extends TextureSheetParticle {
     public ParticleRotation rotation;
     public boolean emissive;
     public double prevMotionX, prevMotionY, prevMotionZ;
+    public ParticleRenderType renderType = MMRenderType.PARTICLE_SHEET_TRANSLUCENT_NO_DEPTH;
 
     public ParticleComponent[] components;
 
@@ -76,7 +79,12 @@ public class AdvancedParticleBase extends TextureSheetParticle {
 
     @Override
     public @NotNull ParticleRenderType getRenderType() {
-        return MMRenderType.PARTICLE_SHEET_TRANSLUCENT_NO_DEPTH;
+        return renderType;
+    }
+
+    @Override
+    public void setSprite(TextureAtlasSprite sprite) {
+        super.setSprite(sprite);
     }
 
     public int getLightColor(float partialTick)
@@ -87,6 +95,10 @@ public class AdvancedParticleBase extends TextureSheetParticle {
             return 240 | k << 16;
         }
         else return i;
+    }
+
+    public ClientLevel getLevel() {
+        return level;
     }
 
     @Override

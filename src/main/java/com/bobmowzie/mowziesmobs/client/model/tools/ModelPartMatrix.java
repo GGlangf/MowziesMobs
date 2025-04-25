@@ -2,8 +2,10 @@ package com.bobmowzie.mowziesmobs.client.model.tools;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.geom.ModelPart;
+import net.royawesome.jlibnoise.MathHelper;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
+import org.joml.Vector3f;
 
 public class ModelPartMatrix extends ModelPart {
     private Matrix4f worldXform;
@@ -75,6 +77,7 @@ public class ModelPartMatrix extends ModelPart {
 
     public void setWorldXform(Matrix4f worldXform) {
         this.worldXform = worldXform;
+        eulerFromMatrix(worldXform);
     }
 
     public void setUseMatrixMode(boolean useMatrixMode) {
@@ -83,5 +86,18 @@ public class ModelPartMatrix extends ModelPart {
 
     public boolean isUseMatrixMode() {
         return useMatrixMode;
+    }
+
+    private void eulerFromMatrix(Matrix4f worldXform) {
+//        xRot = (float) Math.atan2(worldXform.m21(), worldXform.m22());
+//        yRot = (float) -Math.asin(worldXform.m20());
+//        zRot = (float) Math.atan2(worldXform.m10(), worldXform.m00());
+        Vector3f vec = RigUtils.eulerAnglesXYZFromMatrix(worldXform);
+        xRot = -vec.x();
+        yRot = -vec.y();
+        zRot = vec.z();
+        x = worldXform.m30();
+        y = worldXform.m31();
+        z = worldXform.m32();
     }
 }

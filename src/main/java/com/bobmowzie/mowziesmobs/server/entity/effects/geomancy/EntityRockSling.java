@@ -10,10 +10,10 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.animation.AnimatableManager;
-import software.bernie.geckolib.animation.AnimationController;
-import software.bernie.geckolib.animation.PlayState;
-import software.bernie.geckolib.animation.RawAnimation;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.object.PlayState;
 
 public class EntityRockSling extends EntityBoulderProjectile implements GeoEntity {
     private Vec3 launchVec;
@@ -42,12 +42,12 @@ public class EntityRockSling extends EntityBoulderProjectile implements GeoEntit
     public void tick() {
         super.tick();
 
-        if(tickCount > 30 + random.nextInt(35) && launchVec != null) {
+        if(tickCount > 15 + random.nextInt(10) && launchVec != null) {
             setDeltaMovement(launchVec.normalize().multiply(2f + random.nextFloat()/5, 2f, 2f + random.nextFloat()/5));
             setTravelling(true);
         }
 
-        if (tickCount > 60) discard();
+        if (tickCount > 45) discard();
     }
 
     @Override

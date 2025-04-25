@@ -59,6 +59,7 @@ public class EntityPoisonBall extends EntityMagicEffect {
                 if (entity instanceof ItemEntity) continue;
                 if (entity == getCaster()) continue;
                 if (entity instanceof EntityNaga) continue;
+                if (entity instanceof ItemEntity) continue;
                 if (entity.hurt(damageSources().indirectMagic(this, getCaster()), 3 * ConfigHandler.COMMON.MOBS.NAGA.combatConfig.attackMultiplier.get().floatValue()) && entity instanceof LivingEntity) {
                     ((LivingEntity)entity).addEffect(new MobEffectInstance(MobEffects.POISON, 80, 1, false, true));
                 }

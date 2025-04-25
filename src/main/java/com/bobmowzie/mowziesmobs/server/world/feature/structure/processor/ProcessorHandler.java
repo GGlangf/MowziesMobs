@@ -8,6 +8,8 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 
 public class ProcessorHandler {
     public static final DeferredRegister<StructureProcessorType<?>> MM_STRUCTURE_PROCESSORS = DeferredRegister.create(Registries.STRUCTURE_PROCESSOR, MMCommon.MODID);
+    public static StructureProcessorType<ChestProcessor> CHEST_PROCESSOR = () -> ChestProcessor.CODEC;
+    public static StructureProcessorType<MonasteryStairsProcessor> STAIRS_PROCESSOR = () -> MonasteryStairsProcessor.CODEC;
 
     public static final DeferredHolder<StructureProcessorType<?>, StructureProcessorType<BaseProcessor>> BASE_PROCESSOR = MM_STRUCTURE_PROCESSORS.register("base_processor", () -> () -> BaseProcessor.CODEC);
     public static final DeferredHolder<StructureProcessorType<?>, StructureProcessorType<BlockSwapProcessor>> BLOCK_SWAP_PROCESSOR = MM_STRUCTURE_PROCESSORS.register("block_swap_processor", () -> () -> BlockSwapProcessor.CODEC);

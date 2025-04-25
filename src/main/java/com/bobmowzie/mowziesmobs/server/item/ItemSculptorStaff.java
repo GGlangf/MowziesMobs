@@ -44,6 +44,11 @@ public class ItemSculptorStaff extends DiggerItem implements GeoItem {
     }
 
     @Override
+    public boolean isValidRepairItem(ItemStack tool, ItemStack ingredient) {
+        return ingredient.is(ItemHandler.BLUFF_ROD.get());
+    }
+
+    @Override
     public boolean isValidRepairItem(@NotNull ItemStack tool, ItemStack ingredient) {
         return ingredient.is(ItemHandler.BLUFF_ROD.get());
     }
@@ -58,7 +63,7 @@ public class ItemSculptorStaff extends DiggerItem implements GeoItem {
 
     @Override
     public int getUseDuration(ItemStack stack, LivingEntity entity) {
-        return 72_000;
+        return 72000;
     }
 
     @Override

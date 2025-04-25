@@ -1,4 +1,6 @@
 {
+  "__comment": "These blocks can be used with Geomancy abilities. Blocks that copy their properties from these tagged blocks will also be useable.",
+  "replace": false,
   "values": [
     "#mowziesmobs:geomancy_useable",
     "minecraft:snow",

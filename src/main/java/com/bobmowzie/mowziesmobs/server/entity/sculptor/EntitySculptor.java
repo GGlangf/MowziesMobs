@@ -19,8 +19,8 @@ import com.bobmowzie.mowziesmobs.server.advancement.AdvancementHandler;
 import com.bobmowzie.mowziesmobs.server.ai.UseAbilityAI;
 import com.bobmowzie.mowziesmobs.server.bossinfo.BossInfoSculptor;
 import com.bobmowzie.mowziesmobs.server.bossinfo.MMBossInfoServer;
-import com.bobmowzie.mowziesmobs.server.capability.DataHandler;
-import com.bobmowzie.mowziesmobs.server.capability.PlayerData;
+import com.bobmowzie.mowziesmobs.server.capability.CapabilityHandler;
+import com.bobmowzie.mowziesmobs.server.capability.PlayerCapability;
 import com.bobmowzie.mowziesmobs.server.config.ConfigHandler;
 import com.bobmowzie.mowziesmobs.server.entity.EntityHandler;
 import com.bobmowzie.mowziesmobs.server.entity.MowzieEntity;
@@ -34,6 +34,7 @@ import com.bobmowzie.mowziesmobs.server.item.ItemHandler;
 import com.bobmowzie.mowziesmobs.server.item.ItemSculptorStaff;
 import com.bobmowzie.mowziesmobs.server.loot.LootTableHandler;
 import com.bobmowzie.mowziesmobs.server.potion.EffectGeomancy;
+import com.bobmowzie.mowziesmobs.server.potion.EffectHandler;
 import com.bobmowzie.mowziesmobs.server.sound.MMSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -57,6 +58,8 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -76,6 +79,8 @@ import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.PushReaction;
+import net.minecraft.world.phys.*;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
@@ -83,11 +88,18 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.scores.Team;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4f;
 import org.joml.Vector3d;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.GeoItem;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.Animation;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.animation.Animation;
 import software.bernie.geckolib.animation.AnimationState;
@@ -105,7 +117,7 @@ import java.util.function.Predicate;
 public class EntitySculptor extends MowzieGeckoEntity {
     public static int TEST_HEIGHT = 60;
     public static int TEST_RADIUS_BOTTOM = 6;
-    public static int TEST_RADIUS = 12;
+    public static int TEST_RADIUS = 13;
     public static int TEST_MAX_RADIUS_HEIGHT = 20;
     public static double TEST_RADIUS_FALLOFF = 5;
     private static final int HEAL_PAUSE = 75;
@@ -164,8 +176,6 @@ public class EntitySculptor extends MowzieGeckoEntity {
     private static final EntityDataAccessor<Boolean> IS_FIGHTING = SynchedEntityData.defineId(EntitySculptor.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Optional<UUID>> TESTING_PLAYER = SynchedEntityData.defineId(EntitySculptor.class, EntityDataSerializers.OPTIONAL_UUID);
 
-    public boolean handLOpen = true;
-    public boolean handROpen = true;
     private Player customer;
     private Player testingPlayer;
     private Optional<Double> prevPlayerVelY;
@@ -190,6 +200,8 @@ public class EntitySculptor extends MowzieGeckoEntity {
     public ItemStack heldStaff;
 
     public GeckoDynamicChain beardChain;
+
+    private boolean hasPingedBlockThisPass = false;
 
     public EntitySculptor(EntityType<? extends MowzieEntity> type, Level world) {
         super(type, world);
@@ -343,6 +355,7 @@ public class EntitySculptor extends MowzieGeckoEntity {
                     sendAbilityMessage(IDLE_ABILITY);
                 }
                 else if (getLookControl().isLookingAtTarget()) {
+                    if (isTrading() && random.nextFloat() > 0.5) return;
                     if (random.nextFloat() > 0.4) {
                         if (!isTesting()) {
                             sendAbilityMessage(TALK_ABILITY);
@@ -379,6 +392,11 @@ public class EntitySculptor extends MowzieGeckoEntity {
     @Override
     public boolean canBePushedByEntity(Entity entity) {
         return false;
+    }
+
+    @Override
+    public PushReaction getPistonPushReaction() {
+        return PushReaction.IGNORE;
     }
 
     public void setDesires(ItemStack stack) {
@@ -444,6 +462,7 @@ public class EntitySculptor extends MowzieGeckoEntity {
             if (obstructionTestHeight == 0) {
                 isTestObstructed = isTestObstructedSoFar;
                 isTestObstructedSoFar = false;
+                hasPingedBlockThisPass = false;
             }
         }
 
@@ -502,6 +521,7 @@ public class EntitySculptor extends MowzieGeckoEntity {
 
     public boolean checkTestObstructed() {
         int height = EntitySculptor.TEST_HEIGHT + 3;
+        hasPingedBlockThisPass = false;
         for (int i = 1; i < height; i++) {
             checkTestObstructedAtHeight(i);
             if (isTestObstructed) return true;
@@ -522,7 +542,8 @@ public class EntitySculptor extends MowzieGeckoEntity {
                 BlockPos checkPos = pos.offset((int) offset.x, height, (int) offset.y);
                 double testRadius = testRadiusAtHeight(height);
                 if (offset.lengthSquared() < testRadius * testRadius) {
-                    if (!level().getBlockState(checkPos).isAir()) {
+                    BlockState checkState = level().getBlockState(checkPos);
+                    if (!(checkState.isAir() || checkState.is(Blocks.LIGHT))) {
                         isTestObstructed = true;
                         isTestObstructedSoFar = true;
                         if (level().isClientSide() && isPlayerInTestZone(MMCommon.PROXY.getLocalPlayer()) && blockHasExposedSide(checkPos)) {
@@ -532,6 +553,14 @@ public class EntitySculptor extends MowzieGeckoEntity {
                                     new ParticleComponent.PropertyControl(ParticleComponent.PropertyControl.EnumParticleProperty.ALPHA, ParticleComponent.KeyTrack.startAndEnd(0.7f, 0f), false),
                                     new ParticleComponent.PropertyControl(ParticleComponent.PropertyControl.EnumParticleProperty.SCALE, ParticleComponent.KeyTrack.startAndEnd(0f, 16.0f), false)
                             });
+                            if (!hasPingedBlockThisPass) {
+                                AdvancedParticleBase.spawnAlwaysVisibleParticle(level(), ParticleHandler.ORB2.get(), 64, getX(), getY() + getBbHeight() / 2.0, getZ(), 0, 0, 0, faceCamera, 6F, 0.83f, 1, 0.39f, 0.7, 1, 30, true, false, new ParticleComponent[]{
+                                        new ParticleComponent.PropertyControl(ParticleComponent.PropertyControl.EnumParticleProperty.POS_X, ParticleComponent.KeyTrack.startAndEnd((float) getX(), (float) (checkPos.getX() + 0.5)), false),
+                                        new ParticleComponent.PropertyControl(ParticleComponent.PropertyControl.EnumParticleProperty.POS_Y, ParticleComponent.KeyTrack.startAndEnd((float) getY() + getBbHeight() / 2.0f, (float) (checkPos.getY() + 0.5)), false),
+                                        new ParticleComponent.PropertyControl(ParticleComponent.PropertyControl.EnumParticleProperty.POS_Z, ParticleComponent.KeyTrack.startAndEnd((float) getZ(), (float) (checkPos.getZ() + 0.5)), false)
+                                });
+                                hasPingedBlockThisPass = true;
+                            }
                         }
                     }
                 }
@@ -550,11 +579,10 @@ public class EntitySculptor extends MowzieGeckoEntity {
 
     private void checkIfPlayerCheats() {
         if (testingPlayer == null) return;
-        prevPlayerPosition = Optional.of(testingPlayer.position());
         if (!isTesting() || testingPlayer.isCreative()) return;
 
         // Check if player moved too far away
-        if (testingPlayer != null && testingPlayer.position().multiply(1, 0, 1).distanceTo(position().multiply(1, 0, 1)) > TEST_RADIUS + 3) {
+        if (testingPlayer != null && testingPlayer.position().multiply(1, 0, 1).distanceTo(position().multiply(1, 0, 1)) > TEST_RADIUS + 4) {
             playerCheated();
             return;
         }
@@ -565,6 +593,10 @@ public class EntitySculptor extends MowzieGeckoEntity {
 
         // Check if testing player is flying
         if (testingPlayer != null && testingPlayer.getAbilities().flying) {
+            playerCheated();
+            return;
+        }
+        if (testingPlayer.isInWater() && !testingPlayer.onGround()) {
             playerCheated();
             return;
         }
@@ -594,11 +626,13 @@ public class EntitySculptor extends MowzieGeckoEntity {
         if (testingPlayer != null) {
             Vec3 currPosition = testingPlayer.position();
             if (prevPlayerPosition != null && prevPlayerPosition.isPresent()) {
-                if (currPosition.distanceTo(prevPlayerPosition.get()) > 3.0) {
+                Vec3 predictedPosition = prevPlayerPosition.get().add(testingPlayer.getDeltaMovement());
+                if (currPosition.distanceTo(predictedPosition) > 3.0) {
                     playerCheated();
                     return;
                 }
             }
+            prevPlayerPosition = Optional.of(testingPlayer.position());
         }
     }
 
@@ -702,7 +736,7 @@ public class EntitySculptor extends MowzieGeckoEntity {
     @Override
     protected InteractionResult mobInteract(Player player, InteractionHand hand) {
         if (isTesting() && getPillar() != null && !getPillar().isRising()) {
-            if (player == testingPlayer && getActiveAbilityType() != FAIL_TEST) {
+            if (player == testingPlayer && getActiveAbilityType() != FAIL_TEST && player.distanceToSqr(this) <= 20) {
                 sendAbilityMessage(PASS_TEST);
 
                 if (player instanceof ServerPlayer serverPlayer) {
@@ -824,6 +858,7 @@ public class EntitySculptor extends MowzieGeckoEntity {
         return ConfigHandler.COMMON.MOBS.SCULPTOR.testTimeLimit.get() * 20;
     }
 
+    @OnlyIn(Dist.CLIENT)
     @Override
     public boolean hasBossMusic() {
         return true;
@@ -832,6 +867,11 @@ public class EntitySculptor extends MowzieGeckoEntity {
     @Override
     public BossMusic<?> getBossMusic() {
         return BossMusicPlayer.SCULPTOR_MUSIC;
+    }
+
+    @Override
+    public boolean hasBossMusic() {
+        return true;
     }
 
     @Override
@@ -888,6 +928,8 @@ public class EntitySculptor extends MowzieGeckoEntity {
         public void start() {
             super.start();
             playAnimation(TEST_START_ANIM);
+            getUser().prevPlayerPosition = Optional.empty();
+            getUser().prevPlayerVelY = Optional.empty();
         }
 
         public static void placeStartingBoulders(EntitySculptor sculptor) {
@@ -1053,6 +1095,8 @@ public class EntitySculptor extends MowzieGeckoEntity {
                     EntityBoulderSculptor platformBelowPlayer = platforms.get(0);
                     platformBelowPlayer.descend();
                 }
+
+                getUser().testingPlayer.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, (int) (TEST_HEIGHT / 5f) * 20, 0, false, false));
             }
             super.start();
         }

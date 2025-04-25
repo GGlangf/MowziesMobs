@@ -108,6 +108,7 @@ public class EntityBoulderBase extends EntityGeomancyBase {
         List<Entity> popUpEntities = level().getEntities(this, getBoundingBox());
         for (Entity entity:popUpEntities) {
             if (entity.isPickable() && !(entity instanceof EntityBoulderBase)) {
+                if (getCaster() instanceof EntitySculptor && getCaster() == entity) continue;
                 if (boulderSize != GeomancyTier.HUGE) entity.move(MoverType.SHULKER_BOX, new Vec3(0, 2 * (Math.pow(2, -risingTick * (0.6 - 0.1 * boulderSize.ordinal()))), 0));
                 else entity.move(MoverType.SHULKER_BOX, new Vec3(0, 0.6f, 0));
             }
@@ -223,9 +224,9 @@ public class EntityBoulderBase extends EntityGeomancyBase {
     }
 
     @Override
-    protected void defineSynchedData(@NotNull final SynchedEntityData.Builder builder) {
-        super.defineSynchedData(builder);
-        builder.define(RISING_TICK, 0);
-        builder.define(ACTIVE, false);
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        getEntityData().define(RISING_TICK, 0);
+        getEntityData().define(ACTIVE, false);
     }
 }

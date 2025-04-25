@@ -71,6 +71,7 @@ public class EntitySuperNova extends EntityMagicEffect {
             for (Entity entity : hitList) {
                 if (entity instanceof ItemEntity) continue;
             	if (getCaster() == entity) continue;
+                if (entity instanceof ItemEntity) continue;
                 if (getCaster() instanceof EntityUmvuthi && entity instanceof LeaderSunstrikeImmune) continue;
                 if (entity instanceof LivingEntity livingEntity) {
                     if (getCaster().canAttack(livingEntity)) {

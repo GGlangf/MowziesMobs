@@ -20,7 +20,7 @@ import com.bobmowzie.mowziesmobs.server.ability.abilities.player.heliomancy.Supe
 import com.bobmowzie.mowziesmobs.server.capability.AbilityData;
 import com.bobmowzie.mowziesmobs.server.capability.DataHandler;
 import com.bobmowzie.mowziesmobs.server.message.MessageInterruptAbility;
-import com.bobmowzie.mowziesmobs.server.message.MessageJumpToAbilitySection;
+import com.bobmowzie.mowziesmobs.server.message.MessageJumpToAbilitySectionServerToClient;
 import com.bobmowzie.mowziesmobs.server.message.MessagePlayerUseAbility;
 import com.bobmowzie.mowziesmobs.server.message.MessageUseAbility;
 import net.minecraft.world.entity.LivingEntity;
@@ -67,15 +67,15 @@ public enum AbilityHandler {
             SPAWN_PILLAR_ABILITY,
             TUNNELING_ABILITY,
             HIT_BOULDER_ABILITY,
-            BOULDER_ROLL_ABILITY,
+//            BOULDER_ROLL_ABILITY,
             ROCK_SLING,
-            GROUND_SLAM_ABILITY,
+//            GROUND_SLAM_ABILITY,
 //            FISSURE_ABILITY,
             BACKSTAB_ABILITY
     };
 
     @Nullable
-    public Ability<?>getAbility(LivingEntity entity, AbilityType<?, ?> abilityType) {
+    public Ability<?> getAbility(LivingEntity entity, AbilityType<?, ?> abilityType) {
         return DataHandler.getData(entity, DataHandler.ABILITY_DATA).getAbilityMap().get(abilityType);
     }
 
@@ -121,7 +121,8 @@ public enum AbilityHandler {
 
             if (entity.level().isClientSide()) {
                 PacketDistributor.sendToServer(new MessageJumpToAbilitySection(entity.getId(), ArrayUtils.indexOf(data.getAbilityTypesOnEntity(entity), abilityType), sectionIndex));
-            } else {
+            }
+            else {
                 PacketDistributor.sendToPlayersTrackingEntityAndSelf(entity, new MessageJumpToAbilitySection(entity.getId(), ArrayUtils.indexOf(data.getAbilityTypesOnEntity(entity), abilityType), sectionIndex));
             }
         }

@@ -16,6 +16,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Blocks;
 import org.joml.Quaternionf;
+import org.joml.Quaternionf;
 
 import java.util.Map;
 import java.util.TreeMap;

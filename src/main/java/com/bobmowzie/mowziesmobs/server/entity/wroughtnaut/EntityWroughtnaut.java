@@ -335,6 +335,11 @@ public class EntityWroughtnaut extends MowzieLLibraryEntity implements Enemy {
         return false;
     }
 
+    @Override
+    public PushReaction getPistonPushReaction() {
+        return PushReaction.BLOCK;
+    }
+
     private boolean isAtRestPos() {
         Optional<BlockPos> restPos = getRestPos();
         if (restPos.isPresent()) {
@@ -614,6 +619,7 @@ public class EntityWroughtnaut extends MowzieLLibraryEntity implements Enemy {
         return BossEvent.BossBarColor.RED;
     }
 
+    @OnlyIn(Dist.CLIENT)
     @Override
     public boolean hasBossMusic() {
         return true;
@@ -622,6 +628,11 @@ public class EntityWroughtnaut extends MowzieLLibraryEntity implements Enemy {
     @Override
     public BossMusic<?> getBossMusic() {
         return BossMusicPlayer.FERROUS_WROUGHTNAUT_MUSIC;
+    }
+
+    @Override
+    public boolean hasBossMusic() {
+        return true;
     }
 
     @Override

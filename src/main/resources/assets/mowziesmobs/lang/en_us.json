@@ -86,9 +86,9 @@
   "item.mowziesmobs.grant_suns_blessing.text.9": ")",
 
   "item.mowziesmobs.earthrend_gauntlet.text.0": "§lBoulder Lift§r§7\nRight-click earthen ground to lift a boulder\nPunch boulder to fire it as projectile\nCharge right-click to lift bigger boulders\n",
-
-  "item.mowziesmobs.earthrend_gauntlet.text.1": "§lTunnel§r§7\nRight-click the air to start tunneling through the ground\nHold right-click and look in the direction you'd like to dig\nRelease right-click to surface and stop tunneling",
-  "item.mowziesmobs.earthrend_gauntlet.text.2": "Recharges while in inventory",
+  "item.mowziesmobs.earthrend_gauntlet.text.1": "§lTunnel§r§7\nRight-click the air to start tunneling through the ground\nHold right-click and look in the direction you'd like to dig\nRelease right-click to surface and stop tunneling\n",
+  "item.mowziesmobs.earthrend_gauntlet.text.2": "§lPillar Rise§r§7\nHold both Sneak and Jump to rise upward on a pillar of earth\nThe pillar's width increases if it grows through geomancy boulders",
+  "item.mowziesmobs.earthrend_gauntlet.text.3": "Recharges while in inventory",
 
   "item.mowziesmobs.mob_remover.text.0": "Left-click to remove a Mowzie's Mobs mob",
 
@@ -106,20 +106,20 @@
   "item.mowziesmobs.glowing_jelly.text.0": "Eat to briefly gain night vision",
 
   "item.mowziesmobs.naga_fang": "Naga Fang",
-  "item.mowziesmobs.naga_fang.text.0": "Used to brew Potion of Poison Resistance, craft a Naga Fang Dagger, or craft darts.",
+  "item.mowziesmobs.naga_fang.text.0": "Used to brew Potion of Poison Resistance, craft a Naga Fang Dagger, or craft darts",
 
   "item.mowziesmobs.naga_fang_dagger": "Naga Fang Dagger",
   "item.mowziesmobs.naga_fang_dagger.text.0": "Poisons targets",
   "item.mowziesmobs.naga_fang_dagger.text.1": "Deals double damage from behind",
 
   "item.mowziesmobs.sculptor_staff": "Geomancer Staff",
-  "item.mowziesmobs.sculptor_staff.text.0": "Spawns three small rocks that fire as projectiles after a delay.",
+  "item.mowziesmobs.sculptor_staff.text.0": "Spawns three small rocks that fire as projectiles after a delay",
 
   "item.mowziesmobs.sand_rake": "Sand Rake",
-  "item.mowziesmobs.sand_rake.text.0": "Use on sand to create raked patterns.\nRepair with wood planks.",
+  "item.mowziesmobs.sand_rake.text.0": "Use on sand to create raked patterns\nRepair with wood planks",
 
   "item.mowziesmobs.geomancer_beads": "Geomancer Beads",
-  "item.mowziesmobs.geomancer_beads.text.0": "+3 attack when punching",
+  "item.mowziesmobs.geomancer_beads.text.0": "+3 attack when punching (including attacks with the Earthrend Gauntlet)",
 
   "item.mowziesmobs.geomancer_robe": "Geomancer Robe",
   "item.mowziesmobs.geomancer_robe.text.0": "Chance to spawn a geomancy boulder nearby when you deal or take damage",
@@ -161,10 +161,15 @@
 
   "_comment": "Potions",
   "effect.mowziesmobs.suns_blessing": "Sun's Blessing",
+  "effect.mowziesmobs.suns_blessing.description": "§kAllows you to command the power of the sun.§r",
   "effect.mowziesmobs.geomancy": "Geomancy",
+  "effect.mowziesmobs.geomancy.description": "§kAllows you to command the power of the earth.§r",
   "effect.mowziesmobs.frozen": "Frozen",
+  "effect.mowziesmobs.frozen.description": "§kPrevents all actions for a short duration. Fire damage will remove the effect early.§r",
   "effect.mowziesmobs.sunblock": "Sunblock",
+  "effect.mowziesmobs.sunblock.description": "§kA small boost to regeneration and damage resistance.§r",
   "effect.mowziesmobs.poison_resist": "Poison Resistance",
+  "effect.mowziesmobs.poison_resist.description": "§kPrevents the Poison status effect.§r",
   "item.minecraft.potion.effect.poison_resist": "Potion of Poison Resistance",
   "item.minecraft.splash_potion.effect.poison_resist": "Splash Potion of Poison Resistance",
   "item.minecraft.lingering_potion.effect.poison_resist": "Lingering Potion of Poison Resistance",
@@ -175,7 +180,6 @@
   "item.minecraft.tipped_arrow.effect.long_poison_resist": "Arrow of Poison Resistance",
 
   "_comment": "Tile Entities",
-
 
   "_comment": "Containers",
   "entity.mowziesmobs.umvuthana.trade": "Umvuthana",
@@ -343,7 +347,7 @@
   "subtitles.mowziesmobs.wroughtnaut.creak": "Ferrous Wroughtnaut creaks",
   "subtitles.mowziesmobs.wroughtnaut.grunt": "Ferrous Wroughtnaut grunts",
   "subtitles.mowziesmobs.wroughtnaut.hurt": "Ferrous Wroughtnaut grunts",
-  "subtitles.mowziesmobs.wroughtnaut.pre_swing": "Ferrous Wroughtnaut",
+  "subtitles.mowziesmobs.wroughtnaut.pre_swing": "Ferrous Wroughtnaut grunts",
   "subtitles.mowziesmobs.wroughtnaut.pull": "Ferrous Wroughtnaut pulls his axe",
   "subtitles.mowziesmobs.wroughtnaut.release": "Ferrous Wroughtnaut frees his axe",
   "subtitles.mowziesmobs.wroughtnaut.shout": "Ferrous Wroughtnaut shouts",

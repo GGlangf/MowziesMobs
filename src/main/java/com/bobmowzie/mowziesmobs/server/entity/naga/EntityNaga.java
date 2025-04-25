@@ -51,6 +51,7 @@ import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.monster.RangedAttackMob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
@@ -70,7 +71,9 @@ import java.util.List;
  * Created by BobMowzie on 9/9/2018.
  */
 public class EntityNaga extends MowzieLLibraryEntity implements RangedAttackMob, Enemy, FlyingAnimal {
+    @OnlyIn(Dist.CLIENT)
     public DynamicChain dc;
+    @OnlyIn(Dist.CLIENT)
     public Vec3[] mouthPos;
 
     public static final Animation FLAP_ANIMATION = Animation.create(25);
@@ -98,9 +101,12 @@ public class EntityNaga extends MowzieLLibraryEntity implements RangedAttackMob,
     public float prevFlapAnimFrac;
 
     private boolean hasFlapSoundPlayed = false;
+    @OnlyIn(Dist.CLIENT)
     public float shoulderRot;
 
+    @OnlyIn(Dist.CLIENT)
     public float banking;
+    @OnlyIn(Dist.CLIENT)
     public float prevBanking;
 
     public static final int ROAR_DURATION = 30;
@@ -275,7 +281,7 @@ public class EntityNaga extends MowzieLLibraryEntity implements RangedAttackMob,
         this.goalSelector.addGoal(2, new SimpleAnimationAI<EntityNaga>(this, HURT_TO_FALL_ANIMATION, true) {
             @Override
             public void tick() {
-                System.out.println("Hello");
+//                System.out.println("Hello");
             }
         });
         this.goalSelector.addGoal(2, new SimpleAnimationAI<EntityNaga>(this, LAND_ANIMATION, true) {
@@ -392,9 +398,9 @@ public class EntityNaga extends MowzieLLibraryEntity implements RangedAttackMob,
 
         if (hasEffect(MobEffects.POISON)) removeEffectNoUpdate(MobEffects.POISON);
 
-        if (tickCount == 1) {
-            System.out.println("Naga at " + position());
-        }
+//        if (tickCount == 1) {
+//            System.out.println("Naga at " + position());
+//        }
 
         if (!level().isClientSide) {
             if (getTarget() != null && targetDistance < 29.5 && movement != EnumNagaMovement.FALLEN && movement != EnumNagaMovement.FALLING) {
@@ -740,7 +746,8 @@ public class EntityNaga extends MowzieLLibraryEntity implements RangedAttackMob,
             if (this.horizontalCollision && this.isFree(deltaMovement.x, deltaMovement.y + (double) 0.6F - this.getY() + y, deltaMovement.z)) {
                 this.setDeltaMovement(deltaMovement.x, 0.3F, deltaMovement.z);
             }
-        } else if (movement == EnumNagaMovement.HOVERING) {
+        }
+        else if (movement == EnumNagaMovement.HOVERING) {
             BlockPos ground = new BlockPos((int) this.getX(), (int) (this.getBoundingBox().minY - 1.0D), (int) this.getZ());
             float f = 0.91F;
             if (this.onGround()) {
@@ -767,7 +774,8 @@ public class EntityNaga extends MowzieLLibraryEntity implements RangedAttackMob,
                     setDeltaMovement(0, 0, 0);
                 }
             }
-        } else if (movement == EnumNagaMovement.GLIDING) {
+        }
+        else if (movement == EnumNagaMovement.GLIDING) {
             Vec3 vec3 = this.getDeltaMovement();
             if (vec3.y > -0.5D) {
                 this.fallDistance = 1.0F;
@@ -801,7 +809,8 @@ public class EntityNaga extends MowzieLLibraryEntity implements RangedAttackMob,
 
             if (moveDirection.y() < 0 && getAnimation() == NO_ANIMATION)
                 AnimationHandler.INSTANCE.sendAnimationMessage(this, FLAP_ANIMATION);
-        } else if (movement == EnumNagaMovement.FALLING || movement == EnumNagaMovement.FALLEN || isNoAi()) {
+        }
+        else if (movement == EnumNagaMovement.FALLING || movement == EnumNagaMovement.FALLEN || isNoAi()) {
             BlockPos blockpos = this.getBlockPosBelowThatAffectsMyMovement();
             float f2 = this.level().getBlockState(this.getBlockPosBelowThatAffectsMyMovement()).getFriction(level(), this.getBlockPosBelowThatAffectsMyMovement(), this);
             float f3 = this.onGround() ? f2 * 0.91F : 0.91F;
@@ -815,13 +824,15 @@ public class EntityNaga extends MowzieLLibraryEntity implements RangedAttackMob,
                 } else {
                     d2 = 0.0D;
                 }
-            } else if (!this.isNoGravity()) {
+            }
+            else if (!this.isNoGravity()) {
                 d2 -= gravity;
             }
 
             if (this.shouldDiscardFriction()) {
                 this.setDeltaMovement(vec35.x, d2, vec35.z);
-            } else {
+            }
+            else {
                 this.setDeltaMovement(vec35.x * (double)f3, d2 * (double)0.98F, vec35.z * (double)f3);
             }
         }

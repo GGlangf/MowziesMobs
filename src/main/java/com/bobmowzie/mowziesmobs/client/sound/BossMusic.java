@@ -4,7 +4,10 @@ import com.bobmowzie.mowziesmobs.MMCommon;
 import com.bobmowzie.mowziesmobs.server.entity.MowzieEntity;
 import com.ilexiconn.llibrary.client.model.tools.ControlledAnimation;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
+@OnlyIn(Dist.CLIENT)
 public class BossMusic<T extends MowzieEntity> {
     protected T boss;
     protected SoundEvent soundEvent;
@@ -51,7 +54,7 @@ public class BossMusic<T extends MowzieEntity> {
         volumeControl.setTimer(20);
         isPlaying = true;
         ticksPlaying = 0;
-        if (sound != null) {
+        if (soundEvent != null) {
             sound = new BossMusicSound(soundEvent, getBoss(), this);
             MMCommon.PROXY.playMusic(sound);
         }
@@ -62,6 +65,7 @@ public class BossMusic<T extends MowzieEntity> {
         isPlaying = false;
         BossMusicPlayer.currentMusic = null;
         ticksPlaying = 0;
+        sound = null;
     }
 
     public boolean isPlaying() {

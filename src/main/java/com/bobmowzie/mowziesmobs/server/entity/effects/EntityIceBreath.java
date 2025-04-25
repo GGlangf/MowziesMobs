@@ -50,7 +50,7 @@ public class EntityIceBreath extends EntityMagicEffect {
                 MMCommon.PROXY.playIceBreathSound(this);
             }
         }
-        if (getCaster() == null) this.discard() ;
+        if (tickCount > 1 && getCaster() == null) this.discard() ;
         if (getCaster() != null && !getCaster().isAlive()) this.discard() ;
         if (tickCount == 1) playSound(MMSounds.ENTITY_FROSTMAW_ICEBREATH_START.get(), 1, 0.6f);
         if (getCaster() instanceof Player player) {
@@ -103,6 +103,7 @@ public class EntityIceBreath extends EntityMagicEffect {
         for (Entity entityHit : entitiesHit) {
             if (entityHit instanceof ItemEntity) continue;
             if (entityHit == getCaster()) continue;
+            if (entityHit instanceof ItemEntity) continue;
 
             if (entityHit.getType().is(EntityTypeTags.FREEZE_IMMUNE_ENTITY_TYPES) || entityHit instanceof EnderDragon) continue;
 

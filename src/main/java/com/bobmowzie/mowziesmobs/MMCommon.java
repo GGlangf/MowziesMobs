@@ -12,6 +12,7 @@ import com.bobmowzie.mowziesmobs.server.block.entity.BlockEntityHandler;
 import com.bobmowzie.mowziesmobs.server.capability.DataHandler;
 import com.bobmowzie.mowziesmobs.server.config.ConfigHandler;
 import com.bobmowzie.mowziesmobs.server.creativetab.CreativeTabHandler;
+import com.bobmowzie.mowziesmobs.server.data.EntityDataHandler;
 import com.bobmowzie.mowziesmobs.server.entity.EntityHandler;
 import com.bobmowzie.mowziesmobs.server.inventory.ContainerHandler;
 import com.bobmowzie.mowziesmobs.server.item.ItemHandler;
@@ -58,6 +59,7 @@ public final class MMCommon {
         EntityHandler.REG.register(modBus);
         EntityHandler.SERIALIZER_REG.register(modBus);
         MaterialHandler.MM_ARMOR_MATERIALS.register(modBus);
+        EntityDataHandler.REG.register(bus);
         ItemHandler.REG.register(modBus);
         MMSounds.REG.register(modBus);
         BlockEntityHandler.REG.register(modBus);

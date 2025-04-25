@@ -26,6 +26,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.Difficulty;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
@@ -138,6 +139,7 @@ public abstract class MowzieEntity extends PathfinderMob implements IEntityWithC
     }
 
     public static boolean spawnPredicate(EntityType type, LevelAccessor world, MobSpawnType reason, BlockPos spawnPos, RandomSource rand) {
+        if (!(world instanceof ServerLevelAccessor)) return false;
         ConfigHandler.SpawnConfig spawnConfig = SpawnHandler.SPAWN_CONFIGS.get(type);
         if (spawnConfig != null) {
             if (rand.nextDouble() > spawnConfig.extraRarity.get()) return false;
