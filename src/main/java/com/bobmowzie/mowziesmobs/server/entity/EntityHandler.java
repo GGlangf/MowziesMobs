@@ -20,10 +20,6 @@ import com.bobmowzie.mowziesmobs.server.entity.effects.geomancy.EntityFissurePie
 import com.bobmowzie.mowziesmobs.server.entity.effects.geomancy.EntityPillar;
 import com.bobmowzie.mowziesmobs.server.entity.effects.geomancy.EntityPillarPiece;
 import com.bobmowzie.mowziesmobs.server.entity.effects.geomancy.EntityRockSling;
-import com.bobmowzie.mowziesmobs.MowziesMobs;
-import com.bobmowzie.mowziesmobs.server.entity.bluff.EntityBluff;
-import com.bobmowzie.mowziesmobs.server.entity.effects.*;
-import com.bobmowzie.mowziesmobs.server.entity.effects.geomancy.*;
 import com.bobmowzie.mowziesmobs.server.entity.foliaath.EntityBabyFoliaath;
 import com.bobmowzie.mowziesmobs.server.entity.foliaath.EntityFoliaath;
 import com.bobmowzie.mowziesmobs.server.entity.frostmaw.EntityFrostmaw;
@@ -89,7 +85,7 @@ public class EntityHandler {
     public static final DeferredHolder<EntityType<?>, EntityType<EntityNaga>> NAGA = REG.register("naga", () -> EntityType.Builder.of(EntityNaga::new, MobCategory.MONSTER).sized(3.0f, 1.0f).clientTrackingRange(13).canSpawnFarFromPlayer().setUpdateInterval(1).build(MMCommon.resource("naga").toString()));
     public static final DeferredHolder<EntityType<?>, EntityType<EntitySculptor>> SCULPTOR = REG.register("sculptor", () -> EntityType.Builder.of(EntitySculptor::new, MobCategory.MISC).sized(1.0f, 2.3f).clientTrackingRange(8).setUpdateInterval(1).build(MMCommon.resource("sculptor").toString()));
     public static final DeferredHolder<EntityType<?>, EntityType<EntityBluff>> BLUFF = REG.register("bluff", () -> EntityType.Builder.of(EntityBluff::new, MobCategory.MONSTER).sized(0.6F, 1.8F).clientTrackingRange(8).setUpdateInterval(1).build(MMCommon.resource("bluff").toString()));
-    public static final RegistryObject<EntityType<EntityBluff>> BLUFF = REG.register("bluff", () -> EntityType.Builder.of(EntityBluff::new, MobCategory.MONSTER).sized(0.6F, 1.8F).clientTrackingRange(8).setUpdateInterval(1).build(new ResourceLocation(MowziesMobs.MODID, "bluff").toString()));
+    public static final DeferredHolder<EntityType<EntityBluff>> BLUFF = REG.register("bluff", () -> EntityType.Builder.of(EntityBluff::new, MobCategory.MONSTER).sized(0.6F, 1.8F).clientTrackingRange(8).setUpdateInterval(1).build(new ResourceLocation(MowziesMobs.MODID, "bluff").toString()));
 
 
     private static EntityType.Builder<EntitySunstrike> sunstrikeBuilder() {
@@ -115,14 +111,10 @@ public class EntityHandler {
     private static EntityType.Builder<EntityBoulderSculptor.EntityBoulderSculptorCrumbling> boulderPlatformCrumblingBuilder() {
         return EntityType.Builder.of(EntityBoulderSculptor.EntityBoulderSculptorCrumbling::new, MobCategory.MISC);
     }
-    public static final RegistryObject<EntityType<EntityBoulderSculptor.EntityBoulderSculptorCrumbling>> BOULDER_SCULPTOR_CRUMBLING = REG.register("boulder_platform_crumbling", () -> boulderPlatformCrumblingBuilder().sized(1, 1).setUpdateInterval(1).build(new ResourceLocation(MowziesMobs.MODID, "boulder_platform_crumbling").toString()));
+    public static final DeferredHolder<EntityType<?>, EntityType<EntityBoulderSculptor.EntityBoulderSculptorCrumbling>> BOULDER_SCULPTOR_CRUMBLING = REG.register("boulder_platform_crumbling", () -> boulderPlatformCrumblingBuilder().sized(1, 1).setUpdateInterval(1).build(MMCommon.resource("boulder_platform_crumbling").toString()));
     private static EntityType.Builder<EntityPillar> pillarBuilder() {
         return EntityType.Builder.of(EntityPillar::new, MobCategory.MISC);
     }
-    private static EntityType.Builder<EntityBoulderSculptor.EntityBoulderSculptorCrumbling> boulderPlatformCrumblingBuilder() {
-        return EntityType.Builder.of(EntityBoulderSculptor.EntityBoulderSculptorCrumbling::new, MobCategory.MISC);
-    }
-    public static final DeferredHolder<EntityType<?>, EntityType<EntityBoulderSculptor.EntityBoulderSculptorCrumbling>> BOULDER_SCULPTOR_CRUMBLING = REG.register("boulder_platform_crumbling", () -> boulderPlatformCrumblingBuilder().sized(1, 1).setUpdateInterval(1).build(MMCommon.resource("boulder_platform_crumbling").toString()));
     public static final DeferredHolder<EntityType<?>, EntityType<EntityPillar>> PILLAR = REG.register("pillar", () -> pillarBuilder().sized(1f, 1f).setUpdateInterval(1).build(MMCommon.resource("pillar").toString()));
     private static EntityType.Builder<EntityPillar.EntityPillarSculptor> sculptorPillarBuilder() {
         return EntityType.Builder.of(EntityPillar.EntityPillarSculptor::new, MobCategory.MISC);
@@ -190,7 +182,7 @@ public class EntityHandler {
     }
     public static final RegistryObject<EntityType<EntityEarthSpike>> EARTH_SPIKE = REG.register("earth_spike", () -> earthSpikeBuilder().sized(1f, 1f).build(new ResourceLocation(MowziesMobs.MODID, "earth_spike").toString()));
 
-//    private static EntityType.Builder<EntityFissure> fissureBuilder() {
+    private static EntityType.Builder<EntityFissure> fissureBuilder() {
         return EntityType.Builder.of(EntityFissure::new, MobCategory.MISC);
     }
     public static final DeferredHolder<EntityType<?>, EntityType<EntityFissure>> FISSURE = REG.register("fissure", () -> fissureBuilder().sized(1f, 1f).setUpdateInterval(1).build(MMCommon.resource("fissure").toString()));
