@@ -9,9 +9,9 @@ import com.bobmowzie.mowziesmobs.client.particle.util.ParticleComponent;
 import com.bobmowzie.mowziesmobs.client.render.entity.player.GeckoPlayer;
 import com.bobmowzie.mowziesmobs.client.sound.IGeomancyRumbler;
 import com.bobmowzie.mowziesmobs.datagen.MMBlockTags;
-import com.bobmowzie.mowziesmobs.client.sound.IGeomancyRumbler;
 import com.bobmowzie.mowziesmobs.server.ability.*;
-import com.bobmowzie.mowziesmobs.server.capability.AbilityCapability;
+import com.bobmowzie.mowziesmobs.server.capability.AbilityData;
+import com.bobmowzie.mowziesmobs.server.capability.DataHandler;
 import com.bobmowzie.mowziesmobs.server.config.ConfigHandler;
 import com.bobmowzie.mowziesmobs.server.entity.EntityHandler;
 import com.bobmowzie.mowziesmobs.server.entity.effects.EntityBlockSwapper;
@@ -20,8 +20,6 @@ import com.bobmowzie.mowziesmobs.server.item.ItemEarthrendGauntlet;
 import com.bobmowzie.mowziesmobs.server.item.ItemHandler;
 import com.bobmowzie.mowziesmobs.server.potion.EffectGeomancy;
 import com.bobmowzie.mowziesmobs.server.sound.MMSounds;
-import com.bobmowzie.mowziesmobs.server.tag.TagHandler;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
@@ -105,7 +103,7 @@ public class TunnelingAbility extends PlayerAbility implements IGeomancyRumbler 
             pitch = 0;
         }
         if (getLevel().isClientSide())
-            MowziesMobs.PROXY.playGeomancyRumbleSound(this);
+            MMCommon.PROXY.playGeomancyRumbleSound(this);
     }
 
     public boolean damageGauntlet() {
@@ -137,9 +135,8 @@ public class TunnelingAbility extends PlayerAbility implements IGeomancyRumbler 
     @Override
     public void tick() {
         super.tick();
-        AbilityCapability.IAbilityCapability abilityCapability = AbilityHandler.INSTANCE.getAbilityCapability(getUser());
-        if (abilityCapability == null) return;
-        if (abilityCapability.getActiveAbility() == null || (abilityCapability.getActiveAbility().getAbilityType() != AbilityHandler.SPAWN_PILLAR_ABILITY && abilityCapability.getActiveAbility().getAbilityType() != AbilityHandler.TUNNELING_ABILITY)) {
+        AbilityData data = DataHandler.getData(getUser(), DataHandler.ABILITY_DATA);
+        if (data.getActiveAbility() == null || (data.getActiveAbility().getAbilityType() != AbilityHandler.SPAWN_PILLAR_ABILITY && data.getActiveAbility().getAbilityType() != AbilityHandler.TUNNELING_ABILITY)) {
             Player player = (Player) getUser();
             for (ItemStack stack : player.getInventory().items) {
                 restoreGauntlet(stack);

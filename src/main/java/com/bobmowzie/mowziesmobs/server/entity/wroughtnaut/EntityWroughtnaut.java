@@ -47,6 +47,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
@@ -337,7 +338,7 @@ public class EntityWroughtnaut extends MowzieLLibraryEntity implements Enemy {
 
     @Override
     public PushReaction getPistonPushReaction() {
-        return PushReaction.BLOCK;
+        return PushReaction.IGNORE;
     }
 
     private boolean isAtRestPos() {
@@ -619,7 +620,6 @@ public class EntityWroughtnaut extends MowzieLLibraryEntity implements Enemy {
         return BossEvent.BossBarColor.RED;
     }
 
-    @OnlyIn(Dist.CLIENT)
     @Override
     public boolean hasBossMusic() {
         return true;
@@ -628,11 +628,6 @@ public class EntityWroughtnaut extends MowzieLLibraryEntity implements Enemy {
     @Override
     public BossMusic<?> getBossMusic() {
         return BossMusicPlayer.FERROUS_WROUGHTNAUT_MUSIC;
-    }
-
-    @Override
-    public boolean hasBossMusic() {
-        return true;
     }
 
     @Override

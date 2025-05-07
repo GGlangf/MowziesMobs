@@ -14,16 +14,16 @@ import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.jetbrains.annotations.NotNull;
 
-public record MessageJumpToAbilitySection(int entityId, int index, int sectionIndex) implements CustomPacketPayload {
-    public static final CustomPacketPayload.Type<MessageJumpToAbilitySection> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(MMCommon.MODID, "message_jump_to_ability_section"));
-    public static final StreamCodec<ByteBuf, MessageJumpToAbilitySection> STREAM_CODEC = StreamCodec.composite(
-            ByteBufCodecs.INT, MessageJumpToAbilitySection::entityId,
-            ByteBufCodecs.INT, MessageJumpToAbilitySection::index,
-            ByteBufCodecs.INT, MessageJumpToAbilitySection::sectionIndex,
-            MessageJumpToAbilitySection::new
+public record MessageJumpToAbilitySectionServerToClient(int entityId, int index, int sectionIndex) implements CustomPacketPayload {
+    public static final CustomPacketPayload.Type<MessageJumpToAbilitySectionServerToClient> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(MMCommon.MODID, "message_jump_to_ability_section"));
+    public static final StreamCodec<ByteBuf, MessageJumpToAbilitySectionServerToClient> STREAM_CODEC = StreamCodec.composite(
+            ByteBufCodecs.INT, MessageJumpToAbilitySectionServerToClient::entityId,
+            ByteBufCodecs.INT, MessageJumpToAbilitySectionServerToClient::index,
+            ByteBufCodecs.INT, MessageJumpToAbilitySectionServerToClient::sectionIndex,
+            MessageJumpToAbilitySectionServerToClient::new
     );
 
-    public static void handleCommon(final MessageJumpToAbilitySection packet, final IPayloadContext context) {
+    public static void handleClient(final MessageJumpToAbilitySectionServerToClient packet, final IPayloadContext context) {
         context.enqueueWork(() -> {
             if (context.player().level().getEntity(packet.entityId()) instanceof LivingEntity living) {
                 AbilityData data = DataHandler.getData(living, DataHandler.ABILITY_DATA);

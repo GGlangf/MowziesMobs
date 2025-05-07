@@ -6,7 +6,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.fluids.FluidType;
+import net.minecraft.world.phys.Vec3;
 
 /**
  * Created by BobMowzie on 7/20/2017.
@@ -14,6 +14,11 @@ import net.minecraftforge.fluids.FluidType;
 public class EntityFrozenController extends Entity {
     public EntityFrozenController(EntityType<? extends EntityFrozenController> type, Level world) {
         super(type, world);
+    }
+
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+
     }
 
     @Override
@@ -27,11 +32,6 @@ public class EntityFrozenController extends Entity {
 //                if (!livingEntity.isPotionActive(PotionHandler.FROZEN)) discard() ;
 //            }
 //        }
-    }
-
-    @Override
-    protected void defineSynchedData() {
-
     }
 
     @Override
@@ -55,13 +55,13 @@ public class EntityFrozenController extends Entity {
     }
 
     @Override
-    public double getPassengersRidingOffset() {
-        return 0;
+    public Vec3 getPassengerRidingPosition(Entity entity) {
+        return this.position();
     }
-    
+
     @Override
-    public boolean canBeRiddenUnderFluidType(FluidType type, Entity rider) {
-    	return true;
+    public boolean canBeRiddenUnderFluidType(net.neoforged.neoforge.fluids.FluidType type, Entity rider) {
+        return true;
     }
 
     @Override

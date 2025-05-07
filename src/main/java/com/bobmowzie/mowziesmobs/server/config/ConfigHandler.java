@@ -3,7 +3,6 @@ package com.bobmowzie.mowziesmobs.server.config;
 import com.bobmowzie.mowziesmobs.MMCommon;
 import com.bobmowzie.mowziesmobs.datagen.MMBiomeTags;
 import com.bobmowzie.mowziesmobs.datagen.StructureSetHandler;
-import com.bobmowzie.mowziesmobs.server.item.ItemHandler;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
@@ -538,26 +537,6 @@ public final class ConfigHandler {
         public final CombatConfig combatConfig;
     }
 
-    public static class Bluff {
-        Bluff(final ForgeConfigSpec.Builder builder) {
-            builder.push("bluff");
-            spawnConfig = new SpawnConfig(builder,
-                    10, 2, 3, 1,
-                    new BiomeConfig(builder, Collections.emptyList(), Collections.emptyList(), Collections.emptyList()),
-                    Collections.emptyList(),
-                    Collections.emptyList(),
-                    -65, -65, true, false, true,
-                    Collections.emptyList()
-            );
-            combatConfig = new CombatConfig(builder,1, 1);
-            builder.pop();
-        }
-
-        public final SpawnConfig spawnConfig;
-
-        public final CombatConfig combatConfig;
-    }
-
     public static class WroughtHelm {
         WroughtHelm(final ModConfigSpec.Builder builder) {
             builder.push("wrought_helm");
@@ -653,7 +632,7 @@ public final class ConfigHandler {
         public final ModConfigSpec.IntValue durability;
         public int durabilityValue;
 
-        public final IntValue freezeDuration;
+        public final ModConfigSpec.IntValue freezeDuration;
     }
 
     public static class EarthrendGauntlet {
@@ -771,20 +750,6 @@ public final class ConfigHandler {
             builder.pop();
         }
         public final ModConfigSpec.DoubleValue attackMultiplier;
-
-        public final ToolConfig toolConfig;
-    }
-
-    public static class SculptorStaff {
-        SculptorStaff(final ForgeConfigSpec.Builder builder) {
-            builder.push("sculptor_staff");
-            toolConfig = new ToolConfig(builder, 3, 1f);
-            attackMultiplier = builder.comment("Multiply all damage done with the Sculptor Staff by this amount.")
-                    .translation(LANG_PREFIX + "attack_multiplier")
-                    .defineInRange("attack_multiplier", 1f, 0d, Double.MAX_VALUE);
-            builder.pop();
-        }
-        public final DoubleValue attackMultiplier;
 
         public final ToolConfig toolConfig;
     }
@@ -912,7 +877,7 @@ public final class ConfigHandler {
 
         public final ModConfigSpec.BooleanValue customPlayerAnims;
 
-        public final BooleanValue hidePlayerAnimsInFirstPerson;
+        public final ModConfigSpec.BooleanValue hidePlayerAnimsInFirstPerson;
 
         public final ModConfigSpec.BooleanValue doUmvuthanaCraneHealSound;
     }

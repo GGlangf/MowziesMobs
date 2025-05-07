@@ -531,13 +531,13 @@ public final class ServerEventHandler {
             }
         }
 
-        if (entity instanceof Player player && event.getSource() == player.damageSources().fall() && player.getHealth() <= event.getAmount()) {
-            PlayerCapability.IPlayerCapability playerCapability = CapabilityHandler.getCapability(player, CapabilityHandler.PLAYER_CAPABILITY);
-            if (playerCapability != null && playerCapability.getTestingSculptor() != null) {
-                EntitySculptor sculptor = playerCapability.getTestingSculptor();
+        if (entity instanceof Player player && event.getSource() == player.damageSources().fall() && player.getHealth() <= event.getNewDamage()) {
+            PlayerData data = DataHandler.getData(player, DataHandler.PLAYER_DATA);
+            if (data.getTestingSculptor() != null) {
+                EntitySculptor sculptor = data.getTestingSculptor();
                 if (sculptor.getTestingPlayer() == player) {
                     if (player instanceof ServerPlayer) {
-                        AdvancementHandler.SCULPTOR_FAILURE_TRIGGER.trigger((ServerPlayer) player);
+                        AdvancementHandler.SCULPTOR_FAILURE_TRIGGER.get().trigger((ServerPlayer) player);
                     }
                 }
             }

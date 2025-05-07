@@ -26,9 +26,7 @@ public class LootTableHandler {
     public static final ResourceKey<LootTable> UMVUTHANA_FAITH = register("entities/umvuthana_faith");
     public static final ResourceKey<LootTable> UMVUTHI = register("entities/umvuthi");
     public static final ResourceKey<LootTable> UMVUTHANA_GROVE_CHEST = register("chests/umvuthana_grove_chest");
-    public static final ResourceKey<LootTable> MONASTERY_CHEST = register("chests/monastery_chest");public static final ResourceLocation SCULPTOR = register("entities/sculptor");
-    public static final ResourceLocation BLUFF = register("entities/bluff");
-
+    public static final ResourceKey<LootTable> MONASTERY_CHEST = register("chests/monastery_chest");
     public static final ResourceKey<LootTable> SCULPTOR = register("entities/sculptor");
     public static final ResourceKey<LootTable> BLUFF = register("entities/bluff");
 

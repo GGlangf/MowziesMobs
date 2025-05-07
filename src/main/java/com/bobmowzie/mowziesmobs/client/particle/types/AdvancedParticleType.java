@@ -16,34 +16,34 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import org.jetbrains.annotations.NotNull;
 
-public class AdvancedTypeBase implements ParticleOptions {
-    public static final MapCodec<AdvancedTypeBase> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-            BuiltInRegistries.PARTICLE_TYPE.holderByNameCodec().fieldOf("type").forGetter(AdvancedTypeBase::type),
-            ParticleRotation.CODEC.fieldOf("rotation").forGetter(AdvancedTypeBase::rotation),
-            Codec.FLOAT.fieldOf("red").forGetter(AdvancedTypeBase::red),
-            Codec.FLOAT.fieldOf("green").forGetter(AdvancedTypeBase::green),
-            Codec.FLOAT.fieldOf("blue").forGetter(AdvancedTypeBase::blue),
-            Codec.FLOAT.fieldOf("alpha").forGetter(AdvancedTypeBase::alpha),
-            Codec.FLOAT.fieldOf("scale").forGetter(AdvancedTypeBase::scale),
-            Codec.FLOAT.fieldOf("duration").forGetter(AdvancedTypeBase::duration),
-            Codec.FLOAT.fieldOf("air_drag").forGetter(AdvancedTypeBase::airDrag),
-            Codec.BOOL.fieldOf("emissive").forGetter(AdvancedTypeBase::emissive),
-            Codec.BOOL.fieldOf("can_collide").forGetter(AdvancedTypeBase::canCollide)
-    ).apply(instance, AdvancedTypeBase::new));
+public class AdvancedParticleType implements ParticleOptions {
+    public static final MapCodec<AdvancedParticleType> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+            BuiltInRegistries.PARTICLE_TYPE.holderByNameCodec().fieldOf("type").forGetter(AdvancedParticleType::type),
+            ParticleRotation.CODEC.fieldOf("rotation").forGetter(AdvancedParticleType::rotation),
+            Codec.FLOAT.fieldOf("red").forGetter(AdvancedParticleType::red),
+            Codec.FLOAT.fieldOf("green").forGetter(AdvancedParticleType::green),
+            Codec.FLOAT.fieldOf("blue").forGetter(AdvancedParticleType::blue),
+            Codec.FLOAT.fieldOf("alpha").forGetter(AdvancedParticleType::alpha),
+            Codec.FLOAT.fieldOf("scale").forGetter(AdvancedParticleType::scale),
+            Codec.FLOAT.fieldOf("duration").forGetter(AdvancedParticleType::duration),
+            Codec.FLOAT.fieldOf("air_drag").forGetter(AdvancedParticleType::airDrag),
+            Codec.BOOL.fieldOf("emissive").forGetter(AdvancedParticleType::emissive),
+            Codec.BOOL.fieldOf("can_collide").forGetter(AdvancedParticleType::canCollide)
+    ).apply(instance, AdvancedParticleType::new));
 
-    public static final StreamCodec<RegistryFriendlyByteBuf, AdvancedTypeBase> STREAM_CODEC = NetworkHandler.composite(
-            ByteBufCodecs.holderRegistry(Registries.PARTICLE_TYPE), AdvancedTypeBase::type,
-            ByteBufCodecs.fromCodecWithRegistries(ParticleRotation.CODEC), AdvancedTypeBase::rotation,
-            ByteBufCodecs.FLOAT, AdvancedTypeBase::red,
-            ByteBufCodecs.FLOAT, AdvancedTypeBase::green,
-            ByteBufCodecs.FLOAT, AdvancedTypeBase::blue,
-            ByteBufCodecs.FLOAT, AdvancedTypeBase::alpha,
-            ByteBufCodecs.FLOAT, AdvancedTypeBase::scale,
-            ByteBufCodecs.FLOAT, AdvancedTypeBase::duration,
-            ByteBufCodecs.FLOAT, AdvancedTypeBase::airDrag,
-            ByteBufCodecs.BOOL, AdvancedTypeBase::emissive,
-            ByteBufCodecs.BOOL, AdvancedTypeBase::canCollide,
-            AdvancedTypeBase::new
+    public static final StreamCodec<RegistryFriendlyByteBuf, AdvancedParticleType> STREAM_CODEC = NetworkHandler.composite(
+            ByteBufCodecs.holderRegistry(Registries.PARTICLE_TYPE), AdvancedParticleType::type,
+            ByteBufCodecs.fromCodecWithRegistries(ParticleRotation.CODEC), AdvancedParticleType::rotation,
+            ByteBufCodecs.FLOAT, AdvancedParticleType::red,
+            ByteBufCodecs.FLOAT, AdvancedParticleType::green,
+            ByteBufCodecs.FLOAT, AdvancedParticleType::blue,
+            ByteBufCodecs.FLOAT, AdvancedParticleType::alpha,
+            ByteBufCodecs.FLOAT, AdvancedParticleType::scale,
+            ByteBufCodecs.FLOAT, AdvancedParticleType::duration,
+            ByteBufCodecs.FLOAT, AdvancedParticleType::airDrag,
+            ByteBufCodecs.BOOL, AdvancedParticleType::emissive,
+            ByteBufCodecs.BOOL, AdvancedParticleType::canCollide,
+            AdvancedParticleType::new
     );
 
     private final @NotNull Holder<ParticleType<?>> type;
@@ -61,15 +61,15 @@ public class AdvancedTypeBase implements ParticleOptions {
     private final boolean emissive;
     private final boolean canCollide;
 
-    public AdvancedTypeBase(final AdvancedTypeBase base) {
+    public AdvancedParticleType(final AdvancedParticleType base) {
         this(base.type(), base.rotation(), base.components(), base.red(), base.green(), base.blue(), base.alpha(), base.scale(), base.duration(), base.airDrag(), base.emissive(), base.canCollide());
     }
 
-    public AdvancedTypeBase(@NotNull Holder<ParticleType<?>> type, @NotNull ParticleRotation rotation, float red, float green, float blue, float alpha, float scale, float duration, float airDrag, boolean emissive, boolean canCollide) {
+    public AdvancedParticleType(@NotNull Holder<ParticleType<?>> type, @NotNull ParticleRotation rotation, float red, float green, float blue, float alpha, float scale, float duration, float airDrag, boolean emissive, boolean canCollide) {
         this(type, rotation, new ParticleComponent[]{}, red, green, blue, alpha, scale, duration, airDrag, emissive, canCollide);
     }
 
-    public AdvancedTypeBase(@NotNull Holder<ParticleType<?>> type, @NotNull ParticleRotation rotation, @NotNull ParticleComponent[] components, float red, float green, float blue, float alpha, float scale, float duration, float airDrag, boolean emissive, boolean canCollide) {
+    public AdvancedParticleType(@NotNull Holder<ParticleType<?>> type, @NotNull ParticleRotation rotation, @NotNull ParticleComponent[] components, float red, float green, float blue, float alpha, float scale, float duration, float airDrag, boolean emissive, boolean canCollide) {
         this.type = type;
         this.rotation = rotation;
         this.components = components;

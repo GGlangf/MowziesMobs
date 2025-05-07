@@ -74,15 +74,15 @@ public class MaterialHandler { // FIXME 1.21 :: unsure if or where the layer res
 
     public static final DeferredHolder<ArmorMaterial, ArmorMaterial> GEOMANCER_ARMOR_MATERIAL = MM_ARMOR_MATERIALS.register("geomancer_armor", () -> {
         ArmorMaterial material = new ArmorMaterial(Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
-            map.put(ArmorItem.Type.HELMET, ArmorMaterials.DIAMOND.value().getDefense(ArmorItem.Type.HELMET));
-            map.put(ArmorItem.Type.BODY, ArmorMaterials.DIAMOND.value().getDefense(ArmorItem.Type.BODY));
-            map.put(ArmorItem.Type.LEGGINGS, ArmorMaterials.DIAMOND.value().getDefense(ArmorItem.Type.LEGGINGS));
-            map.put(ArmorItem.Type.BOOTS, ArmorMaterials.DIAMOND.value().getDefense(ArmorItem.Type.BOOTS));
-        }), ArmorMaterials.DIAMOND.value().enchantmentValue(),
-                ArmorMaterials.DIAMOND.value().equipSound(),
+            map.put(ArmorItem.Type.BOOTS, 2);
+            map.put(ArmorItem.Type.LEGGINGS, 6);
+            map.put(ArmorItem.Type.CHESTPLATE, 7);
+            map.put(ArmorItem.Type.HELMET, 2);
+        }), ArmorMaterials.IRON.value().enchantmentValue(),
+                ArmorMaterials.IRON.value().equipSound(),
                 () -> Ingredient.of(ItemHandler.BLUFF_ROD.value()),
                 List.of(new ArmorMaterial.Layer(ResourceLocation.fromNamespaceAndPath(MMCommon.MODID, "geomancer_armor"))),
-                ArmorMaterials.DIAMOND.value().toughness(),
+                ArmorMaterials.IRON.value().toughness(),
                 0
         );
 

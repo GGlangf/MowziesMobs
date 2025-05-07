@@ -47,7 +47,7 @@ public class ItemHandler {
     public static final DeferredHolder<Item, ItemUmvuthanaMask> UMVUTHANA_MASK_FAITH = REG.register("umvuthana_mask_faith", () -> new ItemUmvuthanaMask(MaskType.FAITH, new Item.Properties()));
     public static final DeferredHolder<Item, ItemSolVisage> SOL_VISAGE = REG.register("sol_visage", () -> new ItemSolVisage(new Item.Properties().rarity(Rarity.RARE).durability(/* Golden */ ArmorItem.Type.HELMET.getDurability(7))));
     public static final DeferredHolder<Item, ItemDart> DART = REG.register("dart", () -> new ItemDart(new Item.Properties()));
-    public static final DeferredHolder<Item, ItemSpear> SPEAR = REG.register("spear", () -> new ItemSpear(new Item.Properties().stacksTo(1)));
+    public static final DeferredHolder<Item, ItemSpear> SPEAR = REG.register("spear", () -> new ItemSpear(new Item.Properties().attributes(ItemSpear.createAttributes()).stacksTo(1)));
     public static final DeferredHolder<Item, ItemBlowgun> BLOWGUN = REG.register("blowgun", () -> new ItemBlowgun(new Item.Properties().stacksTo(1).durability(300)));
     public static final DeferredHolder<Item, ItemGrantSunsBlessing> GRANT_SUNS_BLESSING = REG.register("grant_suns_blessing", () -> new ItemGrantSunsBlessing(new Item.Properties().stacksTo(1).rarity(Rarity.EPIC)));
     public static final DeferredHolder<Item, ItemIceCrystal> ICE_CRYSTAL = REG.register("ice_crystal", () -> new ItemIceCrystal(new Item.Properties().durability(ConfigHandler.COMMON.TOOLS_AND_ABILITIES.ICE_CRYSTAL.durabilityValue).rarity(Rarity.RARE)));
@@ -78,7 +78,10 @@ public class ItemHandler {
     public static final DeferredHolder<Item, DeferredSpawnEggItem> LANTERN_SPAWN_EGG = REG.register("lantern_spawn_egg", () -> new DeferredSpawnEggItem(EntityHandler.LANTERN, 0x6dea00, 0x235a10, new Item.Properties()));
     public static final DeferredHolder<Item, DeferredSpawnEggItem> NAGA_SPAWN_EGG = REG.register("naga_spawn_egg", () -> new DeferredSpawnEggItem(EntityHandler.NAGA, 0x154850, 0x8dd759, new Item.Properties()));
     public static final DeferredHolder<Item, DeferredSpawnEggItem> SCULPTOR_SPAWN_EGG = REG.register("sculptor_spawn_egg", () -> new DeferredSpawnEggItem(EntityHandler.SCULPTOR, 0xc4a137, 0xfff5e7, new Item.Properties()));
+    public static final DeferredHolder<Item, DeferredSpawnEggItem> BLUFF_SPAWN_EGG = REG.register("bluff_spawn_egg", () -> new DeferredSpawnEggItem(EntityHandler.BLUFF, 0x644236, 0x6cb22e, new Item.Properties()));
 
+
+    // TODO: Some tools missing
     public static void modifyComponents(ModifyDefaultComponentsEvent event) {
         if (!ConfigHandler.COMMON_CONFIG.isLoaded()) {
             // Should only be the case for data generation
@@ -105,7 +108,6 @@ public class ItemHandler {
                 builder.remove(DataComponents.DAMAGE);
             }
         });
-    public static final RegistryObject<ForgeSpawnEggItem> BLUFF_SPAWN_EGG = REG.register("bluff_spawn_egg", () -> new ForgeSpawnEggItem(EntityHandler.BLUFF, 0x644236, 0x6cb22e, new Item.Properties()));
 
         event.modify(SOL_VISAGE.get(), builder -> {
             if (!ConfigHandler.COMMON.TOOLS_AND_ABILITIES.SOL_VISAGE.breakable.get()) {
@@ -122,8 +124,9 @@ public class ItemHandler {
         });
 
         // Durability initially gets set in 'TieredItem' based on the tier
-        event.modify(SCULPTOR_STAFF.get(), builder -> builder.set(DataComponents.MAX_DAMAGE, 200));
-        SCULPTOR_STAFF.get().getAttributesFromConfig();
+        event.modify(SCULPTOR_STAFF.get(), builder -> {
+            builder.set(DataComponents.MAX_DAMAGE, 200);
+        });
     }
 
     public static void initializeDispenserBehaviors() {

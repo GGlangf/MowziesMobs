@@ -49,11 +49,6 @@ public class ItemSculptorStaff extends DiggerItem implements GeoItem {
     }
 
     @Override
-    public boolean isValidRepairItem(@NotNull ItemStack tool, ItemStack ingredient) {
-        return ingredient.is(ItemHandler.BLUFF_ROD.get());
-    }
-
-    @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         AbilityHandler.INSTANCE.sendAbilityMessage(player, AbilityHandler.ROCK_SLING);
         player.startUsingItem(hand);

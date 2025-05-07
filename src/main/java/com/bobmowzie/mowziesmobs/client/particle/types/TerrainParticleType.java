@@ -9,29 +9,29 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class TerrainParticleData extends AdvancedTypeBase {
-    public static final MapCodec<TerrainParticleData> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-                    AdvancedTypeBase.CODEC.fieldOf("base").forGetter(identity -> identity),
-                    BlockState.CODEC.fieldOf("state").forGetter(TerrainParticleData::state)
-            ).apply(instance, TerrainParticleData::new)
+public class TerrainParticleType extends AdvancedParticleType {
+    public static final MapCodec<TerrainParticleType> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+                    AdvancedParticleType.CODEC.fieldOf("base").forGetter(identity -> identity),
+                    BlockState.CODEC.fieldOf("state").forGetter(TerrainParticleType::state)
+            ).apply(instance, TerrainParticleType::new)
     );
 
-    public static final StreamCodec<RegistryFriendlyByteBuf, TerrainParticleData> STREAM_CODEC = StreamCodec.composite(
-            AdvancedTypeBase.STREAM_CODEC, identity -> identity,
-            ByteBufCodecs.fromCodecWithRegistries(BlockState.CODEC), TerrainParticleData::state,
-            TerrainParticleData::new
+    public static final StreamCodec<RegistryFriendlyByteBuf, TerrainParticleType> STREAM_CODEC = StreamCodec.composite(
+            AdvancedParticleType.STREAM_CODEC, identity -> identity,
+            ByteBufCodecs.fromCodecWithRegistries(BlockState.CODEC), TerrainParticleType::state,
+            TerrainParticleType::new
     );
 
     private final BlockState state;
     private BlockPos position;
 
-    public TerrainParticleData(final AdvancedTypeBase base, final BlockState state) {
+    public TerrainParticleType(final AdvancedParticleType base, final BlockState state) {
         super(base);
         this.state = state;
     }
 
     // FIXME :: this is never called anywhere but the position is used?
-    public TerrainParticleData setPosition(final BlockPos position) {
+    public TerrainParticleType setPosition(final BlockPos position) {
         this.position = position;
         return this;
     }

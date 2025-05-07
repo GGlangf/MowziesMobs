@@ -180,6 +180,38 @@ public class PlayerData implements INBTSerializable<CompoundTag> {
         }
     }
 
+    public void pressedAttackKey(Player player) {
+        if (!mouseLeftDown) {
+            mouseLeftDown = true;
+            PacketDistributor.sendToServer(new MessageLeftMouseDown());
+            for (Power power : powers) {
+                power.onLeftMouseDown(player);
+            }
+            AbilityData abilityData = DataHandler.getData(player, DataHandler.ABILITY_DATA);
+            for (Ability<?> ability : abilityData.getAbilities()) {
+                if (ability instanceof PlayerAbility) {
+                    ((PlayerAbility) ability).onLeftMouseDown(player);
+                }
+            }
+        }
+    }
+
+    public void pressedUseKey(Player player) {
+        if (!mouseRightDown) {
+            mouseRightDown = true;
+            PacketDistributor.sendToServer(new MessageRightMouseDown());
+            for (Power power : powers) {
+                power.onLeftMouseDown(player);
+            }
+            AbilityData abilityData = DataHandler.getData(player, DataHandler.ABILITY_DATA);
+            for (Ability<?> ability : abilityData.getAbilities()) {
+                if (ability instanceof PlayerAbility) {
+                    ((PlayerAbility) ability).onRightMouseDown(player);
+                }
+            }
+        }
+    }
+
     public void tick(PlayerTickEvent event) {
         Player player = event.getEntity();
 
@@ -230,36 +262,6 @@ public class PlayerData implements INBTSerializable<CompoundTag> {
         useIceCrystalStack(player);
 
         if (player.level().isClientSide()) {
-            if (Minecraft.getInstance().options.keyAttack.isDown() && !mouseLeftDown) {
-                mouseLeftDown = true;
-                PacketDistributor.sendToServer(new MessageLeftMouseDown());
-                for (int i = 0; i < powers.length; i++) {
-                    powers[i].onLeftMouseDown(player);
-                }
-                AbilityData abilityData = DataHandler.getData(player, DataHandler.ABILITY_DATA);
-                if (abilityData != null) {
-                    for (Ability<?> ability : abilityData.getAbilities()) {
-                        if (ability instanceof PlayerAbility) {
-                            ((PlayerAbility) ability).onLeftMouseDown(player);
-                        }
-                    }
-                }
-            }
-            if (Minecraft.getInstance().options.keyUse.isDown() && !mouseRightDown) {
-                mouseRightDown = true;
-                PacketDistributor.sendToServer(new MessageRightMouseDown());
-                for (int i = 0; i < powers.length; i++) {
-                    powers[i].onRightMouseDown(player);
-                }
-                AbilityData abilityData = DataHandler.getData(player, DataHandler.ABILITY_DATA);
-                if (abilityData != null) {
-                    for (Ability<?> ability : abilityData.getAbilities()) {
-                        if (ability instanceof PlayerAbility) {
-                            ((PlayerAbility) ability).onRightMouseDown(player);
-                        }
-                    }
-                }
-            }
             if (!Minecraft.getInstance().options.keyAttack.isDown() && mouseLeftDown) {
                 mouseLeftDown = false;
                 PacketDistributor.sendToServer(new MessageLeftMouseUp());

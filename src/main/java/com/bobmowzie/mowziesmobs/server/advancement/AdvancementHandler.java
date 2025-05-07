@@ -8,8 +8,6 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 
 public class AdvancementHandler {
     public static final DeferredRegister<CriterionTrigger<?>> MM_TRIGGERS = DeferredRegister.create(Registries.TRIGGER_TYPE, MMCommon.MODID);
-    public static final SculptorChallengeTrigger SCULPTOR_CHALLENGE_TRIGGER = CriteriaTriggers.register(new SculptorChallengeTrigger());
-    public static final SculptorFailureTrigger SCULPTOR_FAILURE_TRIGGER = CriteriaTriggers.register(new SculptorFailureTrigger());
 
     public static final DeferredHolder<CriterionTrigger<?>, StealIceCrystalTrigger> STEAL_ICE_CRYSTAL_TRIGGER = MM_TRIGGERS.register("steal_ice_crystal", StealIceCrystalTrigger::new);
     public static final DeferredHolder<CriterionTrigger<?>, GrottolKillFortuneTrigger> GROTTOL_KILL_FORTUNE_TRIGGER = MM_TRIGGERS.register("kill_grottol_fortune", GrottolKillFortuneTrigger::new);

@@ -71,9 +71,7 @@ import java.util.List;
  * Created by BobMowzie on 9/9/2018.
  */
 public class EntityNaga extends MowzieLLibraryEntity implements RangedAttackMob, Enemy, FlyingAnimal {
-    @OnlyIn(Dist.CLIENT)
     public DynamicChain dc;
-    @OnlyIn(Dist.CLIENT)
     public Vec3[] mouthPos;
 
     public static final Animation FLAP_ANIMATION = Animation.create(25);
@@ -101,12 +99,9 @@ public class EntityNaga extends MowzieLLibraryEntity implements RangedAttackMob,
     public float prevFlapAnimFrac;
 
     private boolean hasFlapSoundPlayed = false;
-    @OnlyIn(Dist.CLIENT)
     public float shoulderRot;
 
-    @OnlyIn(Dist.CLIENT)
     public float banking;
-    @OnlyIn(Dist.CLIENT)
     public float prevBanking;
 
     public static final int ROAR_DURATION = 30;

@@ -1,6 +1,6 @@
 package com.bobmowzie.mowziesmobs.client.particle;
 
-import com.bobmowzie.mowziesmobs.client.particle.types.AdvancedTypeBase;
+import com.bobmowzie.mowziesmobs.client.particle.types.AdvancedParticleType;
 import com.bobmowzie.mowziesmobs.client.particle.types.RibbonParticleType;
 import com.bobmowzie.mowziesmobs.client.particle.util.AdvancedParticleBase;
 import com.bobmowzie.mowziesmobs.client.particle.util.ParticleComponent;
@@ -242,7 +242,7 @@ public class ParticleRibbon extends AdvancedParticleBase {
 
     public static void spawnRibbon(Level world, Holder<ParticleType<?>> particle, int length, double x, double y, double z, double motionX, double motionY, double motionZ, boolean faceCamera, double yaw, double pitch, double roll, double scale, double red, double green, double blue, double alpha, double airDrag, double duration, boolean emissive, ParticleComponent[] components) {
         ParticleRotation rotation = faceCamera ? new ParticleRotation.FaceCamera((float) 0) : new ParticleRotation.EulerAngles((float)yaw, (float)pitch, (float)roll);
-        AdvancedTypeBase base = new AdvancedTypeBase(particle, rotation, components, (float) red, (float) green, (float) blue, (float) alpha, (float) scale, (float) duration, (float) airDrag, emissive, false);
+        AdvancedParticleType base = new AdvancedParticleType(particle, rotation, components, (float) red, (float) green, (float) blue, (float) alpha, (float) scale, (float) duration, (float) airDrag, emissive, false);
         world.addParticle(new RibbonParticleType(base, length), x, y, z, motionX, motionY, motionZ);
     }
 }

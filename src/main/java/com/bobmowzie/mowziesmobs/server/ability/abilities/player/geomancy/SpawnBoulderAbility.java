@@ -109,7 +109,7 @@ public class SpawnBoulderAbility extends PlayerAbility {
         if (getCurrentSection().sectionType == AbilitySection.AbilitySectionType.STARTUP) {
             spawnBoulderCharge++;
             if (spawnBoulderCharge > 2) getUser().addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 3, 0, false, false));
-            if (spawnBoulderCharge == 1 && getUser().level().isClientSide) MowziesMobs.PROXY.playBoulderChargeSound(getUser());
+            if (spawnBoulderCharge == 1 && getUser().level().isClientSide) MMCommon.PROXY.playBoulderChargeSound(getUser());
             if (spawnBoulderCharge == 45) {
                 if (getUser().level().isClientSide) {
                     AdvancedParticleBase.spawnParticle(getUser().level(), ParticleHandler.RING2, (float) getUser().getX(), (float) getUser().getY() + getUser().getBbHeight() / 2f, (float) getUser().getZ(), 0, 0, 0, true, 0, 0, 0, 0, 3.5F, 0.83f, 1, 0.39f, 1, 1, 20, true, true, new ParticleComponent[]{
@@ -141,7 +141,7 @@ public class SpawnBoulderAbility extends PlayerAbility {
                 else if (section == LARGE_CHARGE_SECTION) scale = 12;
                 else if (section == HUGE_CHARGE_SECTION) scale = 16;
 
-                AdvancedParticleBase.spawnParticle(getUser().level(), ParticleHandler.RING2.get(), (float) spawnBoulderPos.getX() + 0.5f, (float) spawnBoulderPos.getY() + 1.01, (float) spawnBoulderPos.getZ() + 0.5f, 0, 0, 0, false, 0, Math.PI / 2f, 0, 0, scale, 0.83f, 1, 0.39f, 1, 1, 10, true, true, new ParticleComponent[]{
+                AdvancedParticleBase.spawnParticle(getUser().level(), ParticleHandler.RING2, (float) spawnBoulderPos.getX() + 0.5f, (float) spawnBoulderPos.getY() + 1.01, (float) spawnBoulderPos.getZ() + 0.5f, 0, 0, 0, false, 0, Math.PI / 2f, 0, 0, scale, 0.83f, 1, 0.39f, 1, 1, 10, true, true, new ParticleComponent[]{
                         new ParticleComponent.PropertyControl(ParticleComponent.PropertyControl.EnumParticleProperty.ALPHA, ParticleComponent.KeyTrack.startAndEnd(0.7f, 0.0f), false)
                 });
             }

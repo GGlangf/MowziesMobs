@@ -118,13 +118,7 @@ public enum AbilityHandler {
 
         if (instance.isUsing()) {
             instance.jumpToSection(sectionIndex);
-
-            if (entity.level().isClientSide()) {
-                PacketDistributor.sendToServer(new MessageJumpToAbilitySection(entity.getId(), ArrayUtils.indexOf(data.getAbilityTypesOnEntity(entity), abilityType), sectionIndex));
-            }
-            else {
-                PacketDistributor.sendToPlayersTrackingEntityAndSelf(entity, new MessageJumpToAbilitySection(entity.getId(), ArrayUtils.indexOf(data.getAbilityTypesOnEntity(entity), abilityType), sectionIndex));
-            }
+            PacketDistributor.sendToPlayersTrackingEntityAndSelf(entity, new MessageJumpToAbilitySectionServerToClient(entity.getId(), ArrayUtils.indexOf(data.getAbilityTypesOnEntity(entity), abilityType), sectionIndex));
         }
     }
 }

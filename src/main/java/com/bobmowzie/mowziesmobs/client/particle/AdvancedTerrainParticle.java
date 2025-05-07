@@ -1,7 +1,7 @@
 package com.bobmowzie.mowziesmobs.client.particle;
 
-import com.bobmowzie.mowziesmobs.client.particle.types.AdvancedTypeBase;
-import com.bobmowzie.mowziesmobs.client.particle.types.TerrainParticleData;
+import com.bobmowzie.mowziesmobs.client.particle.types.AdvancedParticleType;
+import com.bobmowzie.mowziesmobs.client.particle.types.TerrainParticleType;
 import com.bobmowzie.mowziesmobs.client.particle.util.AdvancedParticleBase;
 import com.bobmowzie.mowziesmobs.client.particle.util.ParticleComponent;
 import com.bobmowzie.mowziesmobs.client.particle.util.ParticleRotation;
@@ -83,7 +83,7 @@ public class AdvancedTerrainParticle extends AdvancedParticleBase {
         return i == 0 && this.level.hasChunkAt(this.pos) ? LevelRenderer.getLightColor(this.level, this.pos) : i;
     }
 
-    public static class Factory implements ParticleProvider<TerrainParticleData> {
+    public static class Factory implements ParticleProvider<TerrainParticleType> {
         private final SpriteSet spriteSet;
 
         public Factory(SpriteSet sprite) {
@@ -91,7 +91,7 @@ public class AdvancedTerrainParticle extends AdvancedParticleBase {
         }
 
         @Override
-        public Particle createParticle(TerrainParticleData typeIn, @NotNull ClientLevel worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+        public Particle createParticle(TerrainParticleType typeIn, @NotNull ClientLevel worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
             BlockState blockstate = typeIn.state();
 
             if (blockstate.isAir() || blockstate.is(Blocks.MOVING_PISTON)) {
@@ -106,7 +106,7 @@ public class AdvancedTerrainParticle extends AdvancedParticleBase {
     }
 
     public static void spawnTerrainParticle(Level world, Holder<ParticleType<?>> particle, double x, double y, double z, double motionX, double motionY, double motionZ, double rotation, double scale, double drag, double duration, BlockState state, ParticleComponent[] components) {
-        AdvancedTypeBase base = new AdvancedTypeBase(particle, new ParticleRotation.FaceCamera((float) rotation), components, 0.6f, 0.6f, 0.6f, 1, (float) scale, (float) duration, (float) drag, false, false);
-        world.addParticle(new TerrainParticleData(base, state), x, y, z, motionX, motionY, motionZ);
+        AdvancedParticleType base = new AdvancedParticleType(particle, new ParticleRotation.FaceCamera((float) rotation), components, 0.6f, 0.6f, 0.6f, 1, (float) scale, (float) duration, (float) drag, false, false);
+        world.addParticle(new TerrainParticleType(base, state), x, y, z, motionX, motionY, motionZ);
     }
 }

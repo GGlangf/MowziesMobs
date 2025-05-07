@@ -2,7 +2,6 @@ package com.bobmowzie.mowziesmobs.server.entity.sculptor;
 
 import com.bobmowzie.mowziesmobs.MMCommon;
 import com.bobmowzie.mowziesmobs.client.model.tools.dynamics.GeckoDynamicChain;
-import com.bobmowzie.mowziesmobs.client.model.tools.geckolib.MowzieAnimationController;
 import com.bobmowzie.mowziesmobs.client.particle.ParticleHandler;
 import com.bobmowzie.mowziesmobs.client.particle.util.AdvancedParticleBase;
 import com.bobmowzie.mowziesmobs.client.particle.util.ParticleComponent;
@@ -19,8 +18,8 @@ import com.bobmowzie.mowziesmobs.server.advancement.AdvancementHandler;
 import com.bobmowzie.mowziesmobs.server.ai.UseAbilityAI;
 import com.bobmowzie.mowziesmobs.server.bossinfo.BossInfoSculptor;
 import com.bobmowzie.mowziesmobs.server.bossinfo.MMBossInfoServer;
-import com.bobmowzie.mowziesmobs.server.capability.CapabilityHandler;
-import com.bobmowzie.mowziesmobs.server.capability.PlayerCapability;
+import com.bobmowzie.mowziesmobs.server.capability.DataHandler;
+import com.bobmowzie.mowziesmobs.server.capability.PlayerData;
 import com.bobmowzie.mowziesmobs.server.config.ConfigHandler;
 import com.bobmowzie.mowziesmobs.server.entity.EntityHandler;
 import com.bobmowzie.mowziesmobs.server.entity.MowzieEntity;
@@ -34,7 +33,6 @@ import com.bobmowzie.mowziesmobs.server.item.ItemHandler;
 import com.bobmowzie.mowziesmobs.server.item.ItemSculptorStaff;
 import com.bobmowzie.mowziesmobs.server.loot.LootTableHandler;
 import com.bobmowzie.mowziesmobs.server.potion.EffectGeomancy;
-import com.bobmowzie.mowziesmobs.server.potion.EffectHandler;
 import com.bobmowzie.mowziesmobs.server.sound.MMSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -88,18 +86,11 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.scores.Team;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4f;
 import org.joml.Vector3d;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.GeoItem;
-import software.bernie.geckolib.core.animation.AnimatableManager;
-import software.bernie.geckolib.core.animation.Animation;
-import software.bernie.geckolib.core.animation.AnimationState;
-import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.animation.Animation;
 import software.bernie.geckolib.animation.AnimationState;
@@ -554,7 +545,7 @@ public class EntitySculptor extends MowzieGeckoEntity {
                                     new ParticleComponent.PropertyControl(ParticleComponent.PropertyControl.EnumParticleProperty.SCALE, ParticleComponent.KeyTrack.startAndEnd(0f, 16.0f), false)
                             });
                             if (!hasPingedBlockThisPass) {
-                                AdvancedParticleBase.spawnAlwaysVisibleParticle(level(), ParticleHandler.ORB2.get(), 64, getX(), getY() + getBbHeight() / 2.0, getZ(), 0, 0, 0, faceCamera, 6F, 0.83f, 1, 0.39f, 0.7, 1, 30, true, false, new ParticleComponent[]{
+                                AdvancedParticleBase.spawnAlwaysVisibleParticle(level(), ParticleHandler.ORB2, 64, getX(), getY() + getBbHeight() / 2.0, getZ(), 0, 0, 0, faceCamera, 6F, 0.83f, 1, 0.39f, 0.7, 1, 30, true, false, new ParticleComponent[]{
                                         new ParticleComponent.PropertyControl(ParticleComponent.PropertyControl.EnumParticleProperty.POS_X, ParticleComponent.KeyTrack.startAndEnd((float) getX(), (float) (checkPos.getX() + 0.5)), false),
                                         new ParticleComponent.PropertyControl(ParticleComponent.PropertyControl.EnumParticleProperty.POS_Y, ParticleComponent.KeyTrack.startAndEnd((float) getY() + getBbHeight() / 2.0f, (float) (checkPos.getY() + 0.5)), false),
                                         new ParticleComponent.PropertyControl(ParticleComponent.PropertyControl.EnumParticleProperty.POS_Z, ParticleComponent.KeyTrack.startAndEnd((float) getZ(), (float) (checkPos.getZ() + 0.5)), false)
@@ -858,7 +849,6 @@ public class EntitySculptor extends MowzieGeckoEntity {
         return ConfigHandler.COMMON.MOBS.SCULPTOR.testTimeLimit.get() * 20;
     }
 
-    @OnlyIn(Dist.CLIENT)
     @Override
     public boolean hasBossMusic() {
         return true;
@@ -867,11 +857,6 @@ public class EntitySculptor extends MowzieGeckoEntity {
     @Override
     public BossMusic<?> getBossMusic() {
         return BossMusicPlayer.SCULPTOR_MUSIC;
-    }
-
-    @Override
-    public boolean hasBossMusic() {
-        return true;
     }
 
     @Override

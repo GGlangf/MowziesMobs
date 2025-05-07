@@ -26,7 +26,7 @@ import java.util.List;
 /**
  * Created by BobMowzie on 4/14/2017.
  */
-public class EntityBoulderBase extends EntityGeomancyBase {
+public abstract class EntityBoulderBase extends EntityGeomancyBase {
     public BlockState storedBlock;
     public float animationOffset = 0;
     public GeomancyTier boulderSize = GeomancyTier.SMALL;
@@ -224,9 +224,9 @@ public class EntityBoulderBase extends EntityGeomancyBase {
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        getEntityData().define(RISING_TICK, 0);
-        getEntityData().define(ACTIVE, false);
+    protected void defineSynchedData(SynchedEntityData.@NotNull Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(RISING_TICK, 0);
+        builder.define(ACTIVE, false);
     }
 }

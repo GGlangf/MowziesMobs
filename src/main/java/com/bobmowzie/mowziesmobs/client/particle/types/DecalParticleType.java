@@ -8,16 +8,16 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 
-public class DecalParticleType extends AdvancedTypeBase {
+public class DecalParticleType extends AdvancedParticleType {
     public static final MapCodec<DecalParticleType> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-                    AdvancedTypeBase.CODEC.fieldOf("base").forGetter(identity -> identity),
+                    AdvancedParticleType.CODEC.fieldOf("base").forGetter(identity -> identity),
                     Codec.INT.fieldOf("sprite_size").forGetter(DecalParticleType::spriteSize),
                     Codec.INT.fieldOf("buffer_size").forGetter(DecalParticleType::bufferSize)
             ).apply(instance, DecalParticleType::new)
     );
 
     public static final StreamCodec<RegistryFriendlyByteBuf, DecalParticleType> STREAM_CODEC = StreamCodec.composite(
-            AdvancedTypeBase.STREAM_CODEC, identity -> identity,
+            AdvancedParticleType.STREAM_CODEC, identity -> identity,
             ByteBufCodecs.VAR_INT, DecalParticleType::spriteSize,
             ByteBufCodecs.VAR_INT, DecalParticleType::bufferSize,
             DecalParticleType::new
@@ -26,7 +26,7 @@ public class DecalParticleType extends AdvancedTypeBase {
     private final int spriteSize;
     private final int bufferSize;
 
-    public DecalParticleType(final AdvancedTypeBase base, int spriteSize, int bufferSize) {
+    public DecalParticleType(final AdvancedParticleType base, int spriteSize, int bufferSize) {
         super(base);
         this.spriteSize = spriteSize;
         this.bufferSize = bufferSize;

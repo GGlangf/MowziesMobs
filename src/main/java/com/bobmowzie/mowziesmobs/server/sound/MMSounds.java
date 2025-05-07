@@ -63,40 +63,40 @@ public final class MMSounds {
     public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_UMVUTHANA_IDLE_6 = create("umvuthana.idle6");
     public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_UMVUTHANA_IDLE_7 = create("umvuthana.idle7");
     public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_UMVUTHANA_IDLE_8 = create("umvuthana.idle8");
-    public static final ImmutableList<Supplier<SoundEvent>> ENTITY_UMVUTHANA_IDLE = ImmutableList.of(
-            ENTITY_UMVUTHANA_IDLE_1::get,
-            ENTITY_UMVUTHANA_IDLE_2::get,
-            ENTITY_UMVUTHANA_IDLE_3::get,
-            ENTITY_UMVUTHANA_IDLE_4::get,
-            ENTITY_UMVUTHANA_IDLE_5::get,
-            ENTITY_UMVUTHANA_IDLE_6::get,
-            ENTITY_UMVUTHANA_IDLE_7::get,
-            ENTITY_UMVUTHANA_IDLE_8::get
+    public static final ImmutableList<DeferredHolder<SoundEvent, SoundEvent>> ENTITY_UMVUTHANA_IDLE = ImmutableList.of(
+            ENTITY_UMVUTHANA_IDLE_1,
+            ENTITY_UMVUTHANA_IDLE_2,
+            ENTITY_UMVUTHANA_IDLE_3,
+            ENTITY_UMVUTHANA_IDLE_4,
+            ENTITY_UMVUTHANA_IDLE_5,
+            ENTITY_UMVUTHANA_IDLE_6,
+            ENTITY_UMVUTHANA_IDLE_7,
+            ENTITY_UMVUTHANA_IDLE_8
     );
     public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_UMVUTHANA_ATTACK_1 = create("umvuthana.attack1");
     public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_UMVUTHANA_ATTACK_2 = create("umvuthana.attack2");
     public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_UMVUTHANA_ATTACK_3 = create("umvuthana.attack3");
-    public static final ImmutableList<Supplier<SoundEvent>> ENTITY_UMVUTHANA_ATTACK = ImmutableList.of(
-            ENTITY_UMVUTHANA_ATTACK_1::get,
-            ENTITY_UMVUTHANA_ATTACK_2::get,
-            ENTITY_UMVUTHANA_ATTACK_3::get
+    public static final ImmutableList<DeferredHolder<SoundEvent, SoundEvent>> ENTITY_UMVUTHANA_ATTACK = ImmutableList.of(
+            ENTITY_UMVUTHANA_ATTACK_1,
+            ENTITY_UMVUTHANA_ATTACK_2,
+            ENTITY_UMVUTHANA_ATTACK_3
     );
     public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_UMVUTHANA_ATTACK_BIG = create("umvuthana.attack_big");
     public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_UMVUTHANA_HEAL_START_1 = create("umvuthana.healstart1");
     public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_UMVUTHANA_HEAL_START_2 = create("umvuthana.healstart2");
     public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_UMVUTHANA_HEAL_START_3 = create("umvuthana.healstart3");
-    public static final ImmutableList<Supplier<SoundEvent>> ENTITY_UMVUTHANA_HEAL_START = ImmutableList.of(
-            ENTITY_UMVUTHANA_HEAL_START_1::get,
-            ENTITY_UMVUTHANA_HEAL_START_2::get,
-            ENTITY_UMVUTHANA_HEAL_START_3::get
+    public static final ImmutableList<DeferredHolder<SoundEvent, SoundEvent>> ENTITY_UMVUTHANA_HEAL_START = ImmutableList.of(
+            ENTITY_UMVUTHANA_HEAL_START_1,
+            ENTITY_UMVUTHANA_HEAL_START_2,
+            ENTITY_UMVUTHANA_HEAL_START_3
     );
     public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_UMVUTHANA_TELEPORT_1 = create("umvuthana.teleport1");
     public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_UMVUTHANA_TELEPORT_2 = create("umvuthana.teleport2");
     public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_UMVUTHANA_TELEPORT_3 = create("umvuthana.teleport3");
-    public static final ImmutableList<Supplier<SoundEvent>> ENTITY_UMVUTHANA_TELEPORT = ImmutableList.of(
-            ENTITY_UMVUTHANA_TELEPORT_1::get,
-            ENTITY_UMVUTHANA_TELEPORT_2::get,
-            ENTITY_UMVUTHANA_TELEPORT_3::get
+    public static final ImmutableList<DeferredHolder<SoundEvent, SoundEvent>> ENTITY_UMVUTHANA_TELEPORT = ImmutableList.of(
+            ENTITY_UMVUTHANA_TELEPORT_1,
+            ENTITY_UMVUTHANA_TELEPORT_2,
+            ENTITY_UMVUTHANA_TELEPORT_3
     );
 
     public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_UMVUTHANA_HEAL_LOOP = create("umvuthana.healloop");
@@ -139,23 +139,23 @@ public final class MMSounds {
     public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_FROSTMAW_ATTACK_2 = create("frostmaw.attack2");
     public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_FROSTMAW_ATTACK_3 = create("frostmaw.attack3");
     public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_FROSTMAW_ATTACK_4 = create("frostmaw.attack4");
-    public static final ImmutableList<Supplier<SoundEvent>> ENTITY_FROSTMAW_ATTACK = ImmutableList.of(
-            ENTITY_FROSTMAW_ATTACK_1::get,
-            ENTITY_FROSTMAW_ATTACK_2::get,
-            ENTITY_FROSTMAW_ATTACK_3::get,
-            ENTITY_FROSTMAW_ATTACK_4::get
+    public static final ImmutableList<DeferredHolder<SoundEvent, SoundEvent>> ENTITY_FROSTMAW_ATTACK = ImmutableList.of(
+            ENTITY_FROSTMAW_ATTACK_1,
+            ENTITY_FROSTMAW_ATTACK_2,
+            ENTITY_FROSTMAW_ATTACK_3,
+            ENTITY_FROSTMAW_ATTACK_4
     );
     public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_FROSTMAW_BREATH_1 = create("frostmaw.breath1");
     public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_FROSTMAW_BREATH_2 = create("frostmaw.breath2");
-    public static final ImmutableList<Supplier<SoundEvent>> ENTITY_FROSTMAW_BREATH = ImmutableList.of(
-            ENTITY_FROSTMAW_BREATH_1::get,
-            ENTITY_FROSTMAW_BREATH_2::get
+    public static final ImmutableList<DeferredHolder<SoundEvent, SoundEvent>> ENTITY_FROSTMAW_BREATH = ImmutableList.of(
+            ENTITY_FROSTMAW_BREATH_1,
+            ENTITY_FROSTMAW_BREATH_2
     );
     public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_FROSTMAW_LIVING_1 = create("frostmaw.living1");
     public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_FROSTMAW_LIVING_2 = create("frostmaw.living2");
-    public static final ImmutableList<Supplier<SoundEvent>> ENTITY_FROSTMAW_LIVING = ImmutableList.of(
-            ENTITY_FROSTMAW_LIVING_1::get,
-            ENTITY_FROSTMAW_LIVING_2::get
+    public static final ImmutableList<DeferredHolder<SoundEvent, SoundEvent>> ENTITY_FROSTMAW_LIVING = ImmutableList.of(
+            ENTITY_FROSTMAW_LIVING_1,
+            ENTITY_FROSTMAW_LIVING_2
     );
     public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_FROSTMAW_WAKEUP = create("frostmaw.wakeup");
 
@@ -183,47 +183,40 @@ public final class MMSounds {
     public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_NAGA_ROAR_3 = create("naga.roar3");
     public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_NAGA_ROAR_4 = create("naga.roar4");
     public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_NAGA_SWOOP = create("naga.swoop");
-    public static final ImmutableList<Supplier<SoundEvent>> ENTITY_NAGA_ROAR = ImmutableList.of(
-            ENTITY_NAGA_ROAR_1::get,
-            ENTITY_NAGA_ROAR_2::get,
-            ENTITY_NAGA_ROAR_3::get,
-            ENTITY_NAGA_ROAR_4::get
+    public static final ImmutableList<DeferredHolder<SoundEvent, SoundEvent>> ENTITY_NAGA_ROAR = ImmutableList.of(
+            ENTITY_NAGA_ROAR_1,
+            ENTITY_NAGA_ROAR_2,
+            ENTITY_NAGA_ROAR_3,
+            ENTITY_NAGA_ROAR_4
     );
-    public static final ImmutableList<Supplier<SoundEvent>> ENTITY_NAGA_GRUNT = ImmutableList.of(
-            ENTITY_NAGA_GRUNT_1::get,
-            ENTITY_NAGA_GRUNT_2::get,
-            ENTITY_NAGA_GRUNT_3::get
+    public static final ImmutableList<DeferredHolder<SoundEvent, SoundEvent>> ENTITY_NAGA_GRUNT = ImmutableList.of(
+            ENTITY_NAGA_GRUNT_1,
+            ENTITY_NAGA_GRUNT_2,
+            ENTITY_NAGA_GRUNT_3
     );
-    public static final ImmutableList<Supplier<SoundEvent>> ENTITY_NAGA_GROWL = ImmutableList.of(
-            ENTITY_NAGA_GROWL_1::get,
-            ENTITY_NAGA_GROWL_2::get,
-            ENTITY_NAGA_GROWL_3::get
+    public static final ImmutableList<DeferredHolder<SoundEvent, SoundEvent>> ENTITY_NAGA_GROWL = ImmutableList.of(
+            ENTITY_NAGA_GROWL_1,
+            ENTITY_NAGA_GROWL_2,
+            ENTITY_NAGA_GROWL_3
     );
 
-    public static final RegistryObject<SoundEvent> ENTITY_SCULPTOR_AH = create("sculptor.ah");
-    public static final RegistryObject<SoundEvent> ENTITY_SCULPTOR_GREETING = create("sculptor.greeting");
-    public static final RegistryObject<SoundEvent> ENTITY_SCULPTOR_HM = create("sculptor.hm");
-    public static final RegistryObject<SoundEvent> ENTITY_SCULPTOR_LAUGH = create("sculptor.laugh");
-    public static final RegistryObject<SoundEvent> ENTITY_SCULPTOR_TEST_START = create("sculptor.test_start");
-    public static final RegistryObject<SoundEvent> ENTITY_SCULPTOR_DISAPPOINT = create("sculptor.disappoint");
-    public static final RegistryObject<SoundEvent> ENTITY_SCULPTOR_CONGRATS = create("sculptor.congrats");
-    public static final RegistryObject<SoundEvent> ENTITY_SCULPTOR_DEATH = create("sculptor.death");
-    public static final RegistryObject<SoundEvent> ENTITY_SCULPTOR_HURT = create("sculptor.hurt");
-    public static final RegistryObject<SoundEvent> ENTITY_SCULPTOR_ATTACK = create("sculptor.attack");
-    public static final RegistryObject<SoundEvent> ENTITY_SCULPTOR_MAKE_GAUNTLET = create("sculptor.make_gauntlet");
-    public static final RegistryObject<SoundEvent> ENTITY_SCULPTOR_MAKE_GAUNTLET_EFFECTS = create("sculptor.make_gauntlet_effects");
-    public static final RegistryObject<SoundEvent> ENTITY_SCULPTOR_MAKE_GAUNTLET_PIECE = create("sculptor.make_gauntlet_piece");
-    public static final RegistryObject<SoundEvent> ENTITY_SCULPTOR_DISAPPEAR = create("sculptor.disappear");
-    public static final RegistryObject<SoundEvent> ENTITY_SCULPTOR_DISAPPEAR_EFFECTS = create("sculptor.disappear_effects");
-    public static final RegistryObject<SoundEvent> ENTITY_SCULPTOR_CLAP = create("sculptor.clap");
-    public static final RegistryObject<SoundEvent> ENTITY_SCULPTOR_PLATFORM_CRUMBLE = create("sculptor.platform_crumble");
-
-    public static final RegistryObject<SoundEvent> ENTITY_BLUFF_ATTACK = create("bluff.attack");
-    public static final RegistryObject<SoundEvent> ENTITY_BLUFF_DEATH = create("bluff.death");
-    public static final RegistryObject<SoundEvent> ENTITY_BLUFF_HURT = create("bluff.hurt");
-    public static final RegistryObject<SoundEvent> ENTITY_BLUFF_IDLE = create("bluff.idle");
-    public static final RegistryObject<SoundEvent> ENTITY_BLUFF_SPIKE_EMERGE = create("bluff.spike_emerge");
-    public static final RegistryObject<SoundEvent> ENTITY_BLUFF_SPIKE_EXPLODE = create("bluff.spike_explode");
+    public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_SCULPTOR_AH = create("sculptor.ah");
+    public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_SCULPTOR_GREETING = create("sculptor.greeting");
+    public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_SCULPTOR_HM = create("sculptor.hm");
+    public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_SCULPTOR_LAUGH = create("sculptor.laugh");
+    public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_SCULPTOR_TEST_START = create("sculptor.test_start");
+    public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_SCULPTOR_DISAPPOINT = create("sculptor.disappoint");
+    public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_SCULPTOR_CONGRATS = create("sculptor.congrats");
+    public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_SCULPTOR_DEATH = create("sculptor.death");
+    public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_SCULPTOR_HURT = create("sculptor.hurt");
+    public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_SCULPTOR_ATTACK = create("sculptor.attack");
+    public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_SCULPTOR_MAKE_GAUNTLET = create("sculptor.make_gauntlet");
+    public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_SCULPTOR_MAKE_GAUNTLET_EFFECTS = create("sculptor.make_gauntlet_effects");
+    public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_SCULPTOR_MAKE_GAUNTLET_PIECE = create("sculptor.make_gauntlet_piece");
+    public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_SCULPTOR_DISAPPEAR = create("sculptor.disappear");
+    public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_SCULPTOR_DISAPPEAR_EFFECTS = create("sculptor.disappear_effects");
+    public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_SCULPTOR_CLAP = create("sculptor.clap");
+    public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_SCULPTOR_PLATFORM_CRUMBLE = create("sculptor.platform_crumble");
 
     public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_BLUFF_ATTACK = create("bluff.attack");
     public static final DeferredHolder<SoundEvent, SoundEvent> ENTITY_BLUFF_DEATH = create("bluff.death");
@@ -240,17 +233,17 @@ public final class MMSounds {
     public static final DeferredHolder<SoundEvent, SoundEvent> EFFECT_GEOMANCY_BREAK_MEDIUM_1 = create("geomancy.breakmedium");
     public static final DeferredHolder<SoundEvent, SoundEvent> EFFECT_GEOMANCY_BREAK_MEDIUM_2 = create("geomancy.breakmedium2");
     public static final DeferredHolder<SoundEvent, SoundEvent> EFFECT_GEOMANCY_BREAK_MEDIUM_3 = create("geomancy.breakmedium3");
-    public static final ImmutableList<Supplier<SoundEvent>> EFFECT_GEOMANCY_BREAK_MEDIUM = ImmutableList.of(
-            EFFECT_GEOMANCY_BREAK_MEDIUM_1::get,
-            EFFECT_GEOMANCY_BREAK_MEDIUM_2::get,
-            EFFECT_GEOMANCY_BREAK_MEDIUM_3::get
+    public static final ImmutableList<DeferredHolder<SoundEvent, SoundEvent>> EFFECT_GEOMANCY_BREAK_MEDIUM = ImmutableList.of(
+            EFFECT_GEOMANCY_BREAK_MEDIUM_1,
+            EFFECT_GEOMANCY_BREAK_MEDIUM_2,
+            EFFECT_GEOMANCY_BREAK_MEDIUM_3
     );
     public static final DeferredHolder<SoundEvent, SoundEvent> EFFECT_GEOMANCY_HIT = create("geomancy.hit");
     public static final DeferredHolder<SoundEvent, SoundEvent> EFFECT_GEOMANCY_HIT_MEDIUM_1 = create("geomancy.hitmedium");
     public static final DeferredHolder<SoundEvent, SoundEvent> EFFECT_GEOMANCY_HIT_MEDIUM_2 = create("geomancy.hitmedium2");
-    public static final ImmutableList<Supplier<SoundEvent>> EFFECT_GEOMANCY_HIT_MEDIUM = ImmutableList.of(
-            EFFECT_GEOMANCY_HIT_MEDIUM_1::get,
-            EFFECT_GEOMANCY_HIT_MEDIUM_2::get
+    public static final ImmutableList<DeferredHolder<SoundEvent, SoundEvent>> EFFECT_GEOMANCY_HIT_MEDIUM = ImmutableList.of(
+            EFFECT_GEOMANCY_HIT_MEDIUM_1,
+            EFFECT_GEOMANCY_HIT_MEDIUM_2
     );
     public static final DeferredHolder<SoundEvent, SoundEvent> EFFECT_GEOMANCY_BREAK = create("geomancy.rockbreak");
     public static final DeferredHolder<SoundEvent, SoundEvent> EFFECT_GEOMANCY_CRASH = create("geomancy.rockcrash1");
@@ -258,10 +251,10 @@ public final class MMSounds {
     public static final DeferredHolder<SoundEvent, SoundEvent> EFFECT_GEOMANCY_RUMBLE_1 = create("geomancy.rumble1");
     public static final DeferredHolder<SoundEvent, SoundEvent> EFFECT_GEOMANCY_RUMBLE_2 = create("geomancy.rumble2");
     public static final DeferredHolder<SoundEvent, SoundEvent> EFFECT_GEOMANCY_RUMBLE_3 = create("geomancy.rumble3");
-    public static final ImmutableList<Supplier<SoundEvent>> EFFECT_GEOMANCY_RUMBLE = ImmutableList.of(
-            EFFECT_GEOMANCY_RUMBLE_1::get,
-            EFFECT_GEOMANCY_RUMBLE_2::get,
-            EFFECT_GEOMANCY_RUMBLE_3::get
+    public static final ImmutableList<DeferredHolder<SoundEvent, SoundEvent>> EFFECT_GEOMANCY_RUMBLE = ImmutableList.of(
+            EFFECT_GEOMANCY_RUMBLE_1,
+            EFFECT_GEOMANCY_RUMBLE_2,
+            EFFECT_GEOMANCY_RUMBLE_3
     );
     public static final DeferredHolder<SoundEvent, SoundEvent> EFFECT_GEOMANCY_RUMBLE_LOOP = create("geomancy.rumble_loop");
 

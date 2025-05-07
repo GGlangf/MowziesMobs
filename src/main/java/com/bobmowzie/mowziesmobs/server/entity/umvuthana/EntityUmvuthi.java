@@ -82,6 +82,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.scores.PlayerTeam;
@@ -324,7 +325,7 @@ public class EntityUmvuthi extends MowzieGeckoEntity implements LeaderSunstrikeI
 
     @Override
     public PushReaction getPistonPushReaction() {
-        return PushReaction.BLOCK;
+        return PushReaction.IGNORE;
     }
 
     public boolean shouldRenderSun() {
@@ -923,16 +924,10 @@ public class EntityUmvuthi extends MowzieGeckoEntity implements LeaderSunstrikeI
     }
 
     @Override
-    public boolean isPushable() {
-        return false;
-    }
-
-    @Override
     public void push(double x, double y, double z) {
         super.push(0, y, 0);
     }
 
-    @OnlyIn(Dist.CLIENT)
     @Override
     public boolean hasBossMusic() {
         return true;
@@ -941,11 +936,6 @@ public class EntityUmvuthi extends MowzieGeckoEntity implements LeaderSunstrikeI
     @Override
     public BossMusic<?> getBossMusic() {
         return BossMusicPlayer.UMVUTHI_MUSIC;
-    }
-
-    @Override
-    public boolean hasBossMusic() {
-        return true;
     }
 
     @Override

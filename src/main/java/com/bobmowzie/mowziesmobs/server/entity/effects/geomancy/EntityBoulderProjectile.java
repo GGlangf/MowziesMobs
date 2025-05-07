@@ -28,6 +28,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
+import software.bernie.geckolib.animation.AnimatableManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -309,5 +310,10 @@ public class EntityBoulderProjectile extends EntityBoulderBase {
 
     public void setDamage(int dam){
         damage = dam;
+    }
+
+    @Override
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+
     }
 }

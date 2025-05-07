@@ -48,55 +48,6 @@ public class ItemGeomancerArmor extends ArmorItem implements GeoItem {
         tooltip.add(Component.translatable(getDescriptionId() + ".text.0").setStyle(ItemHandler.TOOLTIP_STYLE));
     }
 
-    private static class GeomancerArmorMaterial implements ArmorMaterial {
-        private static final EnumMap<Type, Integer> DEFENSE_MAP = Util.make(new EnumMap<>(ArmorItem.Type.class), (map) -> {
-            map.put(ArmorItem.Type.BOOTS, 2);
-            map.put(ArmorItem.Type.LEGGINGS, 6);
-            map.put(ArmorItem.Type.CHESTPLATE, 7);
-            map.put(ArmorItem.Type.HELMET, 2);
-        });
-
-        @Override
-        public int getDurabilityForType(Type equipmentSlotType) {
-            return ArmorMaterials.DIAMOND.getDurabilityForType(equipmentSlotType);
-        }
-
-        @Override
-        public int getDefenseForType(Type equipmentSlotType) {
-            return (int) (DEFENSE_MAP.get(equipmentSlotType) * ConfigHandler.COMMON.TOOLS_AND_ABILITIES.GEOMANCER_ARMOR.armorConfig.damageReductionMultiplierValue);
-        }
-
-        @Override
-        public int getEnchantmentValue() {
-            return ArmorMaterials.IRON.getEnchantmentValue();
-        }
-
-        @Override
-        public SoundEvent getEquipSound() {
-            return ArmorMaterials.IRON.getEquipSound();
-        }
-
-        @Override
-        public Ingredient getRepairIngredient() {
-            return Ingredient.of(ItemHandler.BLUFF_ROD.get());
-        }
-
-        @Override
-        public String getName() {
-            return "geomancer_armor";
-        }
-
-        @Override
-        public float getToughness() {
-            return 1 * ConfigHandler.COMMON.TOOLS_AND_ABILITIES.WROUGHT_HELM.armorConfig.toughnessMultiplierValue;
-        }
-
-        @Override
-        public float getKnockbackResistance() {
-            return 0;
-        }
-    }
-
     public static class ClientExtensions implements IClientItemExtensions {
         @Override
         public HumanoidModel<?> getHumanoidArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlot

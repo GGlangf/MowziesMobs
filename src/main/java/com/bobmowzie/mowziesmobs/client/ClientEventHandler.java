@@ -13,6 +13,7 @@ import com.bobmowzie.mowziesmobs.client.sound.BossMusicPlayer;
 import com.bobmowzie.mowziesmobs.server.capability.AbilityData;
 import com.bobmowzie.mowziesmobs.server.capability.DataHandler;
 import com.bobmowzie.mowziesmobs.server.capability.FrozenData;
+import com.bobmowzie.mowziesmobs.server.capability.PlayerData;
 import com.bobmowzie.mowziesmobs.server.config.ConfigHandler;
 import com.bobmowzie.mowziesmobs.server.entity.effects.EntityCameraShake;
 import com.bobmowzie.mowziesmobs.server.entity.frostmaw.EntityFrozenController;
@@ -93,8 +94,6 @@ public class ClientEventHandler {
     public static void renderLivingEvent(RenderLivingEvent.Pre<? extends LivingEntity, ? extends EntityModel<? extends LivingEntity>> event) {
         if (event.getEntity() instanceof Player player) {
             if (!ConfigHandler.CLIENT.customPlayerAnims.get()) return;
-            Player player = (Player) event.getEntity();
-            if (player == null) return;
             if (ConfigHandler.CLIENT.hidePlayerAnimsInFirstPerson.get() && player == Minecraft.getInstance().player && Minecraft.getInstance().options.getCameraType() == CameraType.FIRST_PERSON) return;
             float delta = event.getPartialTick();
             AbilityData abilityData = DataHandler.getData(player, DataHandler.ABILITY_DATA);
@@ -320,14 +319,14 @@ public class ClientEventHandler {
         LocalPlayer player = Minecraft.getInstance().player;
         if (player == null) return;
         if (event.getKeyMapping() == Minecraft.getInstance().options.keyAttack) {
-            PlayerCapability.IPlayerCapability playerCapability = CapabilityHandler.getCapability(player, CapabilityHandler.PLAYER_CAPABILITY);
-            if (playerCapability != null) {
-                playerCapability.pressedAttackKey(player);
+            PlayerData data = DataHandler.getData(player, DataHandler.PLAYER_DATA);
+            if (data != null) {
+                data.pressedAttackKey(player);
             }
         } else if (event.getKeyMapping() == Minecraft.getInstance().options.keyUse) {
-            PlayerCapability.IPlayerCapability playerCapability = CapabilityHandler.getCapability(player, CapabilityHandler.PLAYER_CAPABILITY);
-            if (playerCapability != null) {
-                playerCapability.pressedUseKey(player);
+            PlayerData data = DataHandler.getData(player, DataHandler.PLAYER_DATA);
+            if (data != null) {
+                data.pressedUseKey(player);
             }
         }
     }

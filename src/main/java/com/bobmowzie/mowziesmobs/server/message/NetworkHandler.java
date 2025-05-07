@@ -37,22 +37,17 @@ public class NetworkHandler {
         registrar.playToClient(MessageInterruptAbility.TYPE, MessageInterruptAbility.STREAM_CODEC, MessageInterruptAbility::handleClient);
         registrar.playToClient(MessageFreezeEffect.TYPE, MessageFreezeEffect.STREAM_CODEC, MessageFreezeEffect::handleClient);
         registrar.playToClient(MessageBlackPinkInYourArea.TYPE, MessageBlackPinkInYourArea.STREAM_CODEC, MessageBlackPinkInYourArea::handleClient);
+        registrar.playToClient(MessageJumpToAbilitySectionServerToClient.TYPE, MessageJumpToAbilitySectionServerToClient.STREAM_CODEC, MessageJumpToAbilitySectionServerToClient::handleClient);
         registrar.playToClient(AnimationMessage.TYPE, AnimationMessage.STREAM_CODEC, AnimationMessage::handleClient);
 
         // -> Server
         registrar.playToServer(MessageUmvuthiTrade.TYPE, MessageUmvuthiTrade.STREAM_CODEC, MessageUmvuthiTrade::handleServer);
         registrar.playToServer(MessageSculptorTrade.TYPE, MessageSculptorTrade.STREAM_CODEC, MessageSculptorTrade::handleServer);
         registrar.playToServer(MessagePlayerUseAbility.TYPE, MessagePlayerUseAbility.STREAM_CODEC, MessagePlayerUseAbility::handleServer);
-        registrar.playToServer(MessagePlayerSummonSunstrike.TYPE, MessagePlayerSummonSunstrike.STREAM_CODEC, MessagePlayerSummonSunstrike::handleServer);
-        registrar.playToServer(MessagePlayerSolarBeam.TYPE, MessagePlayerSolarBeam.STREAM_CODEC, MessagePlayerSolarBeam::handleServer);
-        registrar.playToServer(MessagePlayerAttackMob.TYPE, MessagePlayerAttackMob.STREAM_CODEC, MessagePlayerAttackMob::handleServer);
         registrar.playToServer(MessageRightMouseUp.TYPE, MessageRightMouseUp.STREAM_CODEC, MessageRightMouseUp::handleServer);
         registrar.playToServer(MessageRightMouseDown.TYPE, MessageRightMouseDown.STREAM_CODEC, MessageRightMouseDown::handleServer);
         registrar.playToServer(MessageLeftMouseUp.TYPE, MessageLeftMouseUp.STREAM_CODEC, MessageLeftMouseUp::handleServer);
         registrar.playToServer(MessageLeftMouseDown.TYPE, MessageLeftMouseDown.STREAM_CODEC, MessageLeftMouseDown::handleServer);
-
-        // -> Client & -> Server
-        registrar.playBidirectional(MessageJumpToAbilitySection.TYPE, MessageJumpToAbilitySection.STREAM_CODEC, MessageJumpToAbilitySection::handleCommon);
     }
 
     public static StreamCodec<FriendlyByteBuf, Vec3[]> VEC3_ARRAY = new StreamCodec<>() {
